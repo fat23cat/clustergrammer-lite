@@ -1,6 +1,5 @@
 var utils = require("../Utils_clust");
 var initialize_matrix = require("../initialize_matrix");
-var _ = require("underscore");
 
 module.exports = function ini_matrix_params(params) {
   var matrix = {};
@@ -32,7 +31,7 @@ module.exports = function ini_matrix_params(params) {
 
   matrix.orders = {};
 
-  _.each(["row", "col"], function (inst_rc) {
+  ["row", "col"].forEach(function (inst_rc) {
     // row ordering is based on col info and vice versa
     var other_rc;
     if (inst_rc === "row") {
@@ -48,7 +47,7 @@ module.exports = function ini_matrix_params(params) {
     var nodes_names = utils.pluck(inst_nodes, "name");
     var tmp = nodes_names.sort();
 
-    var alpha_index = _.map(tmp, function (d) {
+    var alpha_index = tmp.map(function (d) {
       return network_data[other_rc + "_nodes_names"].indexOf(d);
     });
 
@@ -56,19 +55,19 @@ module.exports = function ini_matrix_params(params) {
 
     var possible_orders = ["clust", "rank"];
 
-    if (_.has(inst_nodes[0], "rankvar")) {
+    if (utils(inst_nodes[0], "rankvar")) {
       possible_orders.push("rankvar");
     }
 
     if (params.viz.all_cats[other_rc].length > 0) {
-      _.each(params.viz.all_cats[other_rc], function (inst_cat) {
+      params.viz.all_cats[other_rc].forEach(function (inst_cat) {
         // the index of the category has replaced - with _
         inst_cat = inst_cat.replace("-", "_");
         possible_orders.push(inst_cat + "_index");
       });
     }
 
-    _.each(possible_orders, function (inst_order) {
+    possible_orders.forEach(function (inst_order) {
       var tmp_order_index = d3.range(num_nodes).sort(function (a, b) {
         return inst_nodes[b][inst_order] - inst_nodes[a][inst_order];
       });
@@ -78,13 +77,13 @@ module.exports = function ini_matrix_params(params) {
   });
 
   if (utils.has(network_data, "all_links")) {
-    matrix.max_link = _.max(network_data.all_links, function (d) {
-      return Math.abs(d.value);
-    }).value;
+    matrix.max_link = Math.max(
+      ...network_data.all_links.map((d) => Math.abs(d.value))
+    );
   } else {
-    matrix.max_link = _.max(network_data.links, function (d) {
-      return Math.abs(d.value);
-    }).value;
+    matrix.max_link = Math.max(
+      ...network_data.links.map((d) => Math.abs(d.value))
+    );
   }
 
   matrix.abs_max_val = Math.abs(matrix.max_link) * params.clamp_opacity;

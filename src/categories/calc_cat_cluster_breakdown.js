@@ -1,5 +1,5 @@
 var binom_test = require("./binom_test");
-var _ = require("underscore");
+var utils = require("../Utils_clust");
 
 module.exports = function calc_cat_cluster_breakdown(
   params,
@@ -31,7 +31,7 @@ module.exports = function calc_cat_cluster_breakdown(
   var is_downsampled = false;
 
   var inst_name;
-  _.each(all_nodes, function (inst_node) {
+  all_nodes.forEach(function (inst_node) {
     inst_name = inst_node.name;
 
     if (clust_names.indexOf(inst_name) >= 0) {
@@ -48,7 +48,7 @@ module.exports = function calc_cat_cluster_breakdown(
     var inst_cat_info = params.viz.cat_info[inst_rc];
 
     // tmp list of all categories
-    var tmp_types_index = _.keys(inst_cat_info);
+    var tmp_types_index = Object.keys(inst_cat_info || {});
     // this will hold the indexes of string-type categories
     var cat_types_index = [];
 
@@ -100,7 +100,7 @@ module.exports = function calc_cat_cluster_breakdown(
       // all rows/cols
       // params
 
-      _.each(cat_types_index, function (cat_index) {
+      cat_types_index.forEach(function (cat_index) {
         inst_index = cat_index.split("-")[1];
         type_name = cat_types_names[inst_index];
 
@@ -117,7 +117,7 @@ module.exports = function calc_cat_cluster_breakdown(
         tmp_run_count[type_name] = {};
 
         // loop through the nodes and keep a running count of categories
-        _.each(clust_nodes, function (tmp_node) {
+        clust_nodes.forEach(function (tmp_node) {
           cat_name = tmp_node[cat_index];
 
           if (cat_name.indexOf(": ") >= 0) {
@@ -179,7 +179,7 @@ module.exports = function calc_cat_cluster_breakdown(
 
           // working on tracking the 'real' number of nodes, which is only different
           // if downsampling has been done
-          if (_.has(inst_run_count[inst_cat], "num_nodes_ds")) {
+          if (utils.has(inst_run_count[inst_cat], "num_nodes_ds")) {
             var num_nodes_ds = inst_run_count[inst_cat].num_nodes_ds;
           } else {
             num_nodes_ds = null;

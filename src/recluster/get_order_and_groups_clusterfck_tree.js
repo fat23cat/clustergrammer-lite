@@ -1,5 +1,5 @@
 var get_max_distance_in_dm = require("./get_max_distance_in_dm");
-var underscore = require("underscore");
+var utils = require("../Utils_clust");
 var $ = require("jquery");
 
 module.exports = function get_order_and_groups_clusterfck_tree(
@@ -42,13 +42,13 @@ module.exports = function get_order_and_groups_clusterfck_tree(
     cutoff_indexes.push(i);
   }
 
-  underscore.each(["left", "right"], function (side) {
+  ["left", "right"].forEach(function (side) {
     get_leaves(tree[side], side, ini_level, tree_height, threshold_status);
   });
 
   function get_leaves(limb, side, inst_level, inst_dist, threshold_status) {
     // lock if distance is under resolvable distance
-    underscore.each(cutoff_indexes, function (index) {
+    cutoff_indexes.forEach(function (index) {
       if (inst_dist <= cutoff_vals[index]) {
         // increment group if going from above to below threshold
         if (threshold_status[index] === "above") {
@@ -63,18 +63,18 @@ module.exports = function get_order_and_groups_clusterfck_tree(
     });
 
     // if there are more branches then there is a distance
-    if (underscore.has(limb, "dist")) {
+    if (utils.has(limb, "dist")) {
       inst_dist = limb.dist;
       inst_level = inst_level + 1;
 
-      underscore.each(["left", "right"], function (side2) {
+      ["left", "right"].forEach(function (side2) {
         get_leaves(limb[side2], side2, inst_level, inst_dist, threshold_status);
       });
     } else {
       inst_key = limb.key;
 
       // increment group if leaf is above threshold
-      underscore.each(cutoff_indexes, function (index) {
+      cutoff_indexes.forEach(function (index) {
         if (threshold_status[index] === "above") {
           group[index] = group[index] + 1;
         }
@@ -109,7 +109,7 @@ module.exports = function get_order_and_groups_clusterfck_tree(
   // generate ordered names
   var inst_name;
   var ordered_names = [];
-  underscore.each(order_list, function (index) {
+  order_list.forEach(function (index) {
     inst_name = names[index];
     ordered_names.push(inst_name);
   });

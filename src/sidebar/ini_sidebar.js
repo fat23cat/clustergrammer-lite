@@ -4,7 +4,6 @@ var change_groups = require("../dendrogram/change_groups");
 var all_reorder = require("../reorder/all_reorder");
 var ini_cat_reorder = require("../reorder/ini_cat_reorder");
 var run_row_search = require("../search/run_row_search");
-var underscore = require("underscore");
 var $ = require("jquery");
 
 module.exports = function ini_sidebar(cgm) {
@@ -40,7 +39,7 @@ module.exports = function ini_sidebar(cgm) {
     reorder_types = ["row", "col"];
   }
 
-  underscore.each(reorder_types, function (inst_rc) {
+  reorder_types.forEach(function (inst_rc) {
     // reorder buttons
     $(params.root + " .toggle_" + inst_rc + "_order .btn")
       .off()

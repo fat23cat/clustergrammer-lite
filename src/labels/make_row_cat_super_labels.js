@@ -1,6 +1,6 @@
 var get_cat_title = require("../categories/get_cat_title");
 var d3_tip_custom = require("../tooltip/d3_tip_custom");
-var _ = require("underscore");
+var utils = require("../Utils_clust");
 
 module.exports = function make_row_cat_super_labels(cgm) {
   var params = cgm.params;
@@ -147,7 +147,7 @@ module.exports = function make_row_cat_super_labels(cgm) {
     d3.selectAll(params.root + " .row_cat_selection_bar").call(cat_tip);
   }
 
-  if (_.has(params.network_data, "row_cat_bars")) {
+  if (utils.has(params.network_data, "row_cat_bars")) {
     // Enrichrgram title
     /////////////////////
     d3.select(params.root + " .enr_title").remove();

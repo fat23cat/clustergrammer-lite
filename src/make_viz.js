@@ -14,7 +14,6 @@ var build_dendro_sliders = require("./dendrogram/build_dendro_sliders");
 // var build_tree_icon = require('./menus/build_tree_icon');
 // var build_filter_icon = require('./menus/build_filter_icon');
 var make_row_dendro_spillover = require("./spillover/make_row_dendro_spillover");
-var underscore = require("underscore");
 
 module.exports = function make_viz(cgm) {
   var params = cgm.params;
@@ -52,7 +51,7 @@ module.exports = function make_viz(cgm) {
 
   // initial trim text
   if (params.viz.ds_level === -1) {
-    underscore.each(["row", "col"], function (inst_rc) {
+    ["row", "col"].forEach(function (inst_rc) {
       var inst_fs = Number(
         d3
           .select("." + inst_rc + "_label_group")

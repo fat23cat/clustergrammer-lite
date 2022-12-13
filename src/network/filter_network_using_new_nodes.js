@@ -1,6 +1,5 @@
 var utils = require("../Utils_clust");
 var core = require("mathjs/core");
-var _ = require("underscore");
 var math = core.create();
 math.import(require("mathjs/lib/type/matrix"));
 math.import(require("mathjs/lib/function/matrix/zeros"));
@@ -20,12 +19,12 @@ module.exports = function filter_network_using_new_nodes(config, new_nodes) {
   );
   new_mat = new_mat.toArray();
 
-  var new_links = _.filter(links, function (inst_link) {
+  var new_links = links.filter(function (inst_link) {
     var inst_row = inst_link.name.split("_")[0];
     var inst_col = inst_link.name.split("_")[1];
 
-    var row_index = _.indexOf(row_names, inst_row);
-    var col_index = _.indexOf(col_names, inst_col);
+    var row_index = row_names.indexOf(inst_row);
+    var col_index = col_names.indexOf(inst_col);
 
     // only keep links that have not been filtered out
     if ((row_index > -1) & (col_index > -1)) {
@@ -61,7 +60,7 @@ module.exports = function filter_network_using_new_nodes(config, new_nodes) {
   new_network_data.views = config.network_data.views;
 
   // add cat_colors if necessary
-  if (_.has(config.network_data, "cat_colors")) {
+  if (utils.has(config.network_data, "cat_colors")) {
     new_network_data.cat_colors = config.network_data.cat_colors;
   }
 
