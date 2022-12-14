@@ -1,5 +1,5 @@
 var binom_test = require("./binom_test");
-var _ = require("underscore");
+var each = require("underscore/cjs/each");
 var utils = require("../Utils_clust");
 
 module.exports = function calc_cat_cluster_breakdown(
@@ -32,7 +32,7 @@ module.exports = function calc_cat_cluster_breakdown(
   var is_downsampled = false;
 
   var inst_name;
-  _.each(all_nodes, function (inst_node) {
+  each(all_nodes, function (inst_node) {
     inst_name = inst_node.name;
 
     if (clust_names.indexOf(inst_name) >= 0) {
@@ -101,7 +101,7 @@ module.exports = function calc_cat_cluster_breakdown(
       // all rows/cols
       // params
 
-      _.each(cat_types_index, function (cat_index) {
+      each(cat_types_index, function (cat_index) {
         inst_index = cat_index.split("-")[1];
         type_name = cat_types_names[inst_index];
 
@@ -118,7 +118,7 @@ module.exports = function calc_cat_cluster_breakdown(
         tmp_run_count[type_name] = {};
 
         // loop through the nodes and keep a running count of categories
-        _.each(clust_nodes, function (tmp_node) {
+        each(clust_nodes, function (tmp_node) {
           cat_name = tmp_node[cat_index];
 
           if (cat_name.indexOf(": ") >= 0) {

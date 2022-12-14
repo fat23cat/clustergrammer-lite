@@ -46,29 +46,28 @@ var Clustergrammer =
 /***/ (function(module, exports, __webpack_require__) {
 
 	var make_config = __webpack_require__(1);
-	var make_params = __webpack_require__(10);
-	var make_viz = __webpack_require__(90);
-	var resize_viz = __webpack_require__(155);
-	var play_demo = __webpack_require__(198);
-	var ini_demo = __webpack_require__(238);
-	var filter_viz_using_nodes = __webpack_require__(241);
-	var filter_viz_using_names = __webpack_require__(242);
-	var update_cats = __webpack_require__(243);
-	var reset_cats = __webpack_require__(244);
-	var two_translate_zoom = __webpack_require__(147);
-	var update_view = __webpack_require__(246);
-	var save_matrix = __webpack_require__(249);
-	var brush_crop_matrix = __webpack_require__(253);
-	var run_zoom = __webpack_require__(156);
-	var d3_tip_custom = __webpack_require__(101);
-	var all_reorder = __webpack_require__(146);
-	var make_matrix_string = __webpack_require__(251);
-	var d3 = __webpack_require__(255);
-	var _ = __webpack_require__(5);
-	var jQuery = __webpack_require__(81);
+	var make_params = __webpack_require__(22);
+	var make_viz = __webpack_require__(122);
+	var resize_viz = __webpack_require__(199);
+	var play_demo = __webpack_require__(242);
+	var ini_demo = __webpack_require__(283);
+	var filter_viz_using_nodes = __webpack_require__(286);
+	var filter_viz_using_names = __webpack_require__(287);
+	var update_cats = __webpack_require__(288);
+	var reset_cats = __webpack_require__(289);
+	var two_translate_zoom = __webpack_require__(191);
+	var update_view = __webpack_require__(291);
+	var save_matrix = __webpack_require__(294);
+	var brush_crop_matrix = __webpack_require__(298);
+	var run_zoom = __webpack_require__(200);
+	var d3_tip_custom = __webpack_require__(133);
+	var all_reorder = __webpack_require__(190);
+	var make_matrix_string = __webpack_require__(296);
+	var d3 = __webpack_require__(300);
+	var jQuery = __webpack_require__(111);
 
 	// moved d3.slider to src
-	d3.slider = __webpack_require__(256);
+	d3.slider = __webpack_require__(301);
 
 	/* eslint-disable */
 
@@ -184,10 +183,10 @@ var Clustergrammer =
 	var utils = __webpack_require__(2);
 	var transpose_network = __webpack_require__(3);
 	var get_available_filters = __webpack_require__(4);
-	var get_filter_default_state = __webpack_require__(6);
-	var set_defaults = __webpack_require__(7);
-	var check_sim_mat = __webpack_require__(8);
-	var check_nodes_for_categories = __webpack_require__(9);
+	var get_filter_default_state = __webpack_require__(18);
+	var set_defaults = __webpack_require__(19);
+	var check_sim_mat = __webpack_require__(20);
+	var check_nodes_for_categories = __webpack_require__(21);
 
 	module.exports = function make_config(args) {
 	  var defaults = set_defaults();
@@ -458,17 +457,17 @@ var Clustergrammer =
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(5);
+	var each = __webpack_require__(5);
 	var utils = __webpack_require__(2);
 
 	module.exports = function get_available_filters(views) {
 	  var possible_filters = {};
 	  var filter_data = {};
 
-	  _.each(views, function (inst_view) {
+	  each(views, function (inst_view) {
 	    var inst_keys = Object.keys(inst_view || {});
 
-	    _.each(inst_keys, function (inst_key) {
+	    inst_keys.forEach(function (inst_key) {
 	      if (inst_key != "nodes") {
 	        if (!utils.has(filter_data, inst_key)) {
 	          filter_data[inst_key] = [];
@@ -481,12 +480,12 @@ var Clustergrammer =
 
 	  var tmp_filters = Object.keys(filter_data);
 
-	  _.each(tmp_filters, function (inst_filter) {
+	  tmp_filters.forEach(function (inst_filter) {
 	    var options = filter_data[inst_filter];
 	    var num_options = options.length;
 
 	    var filter_type = "categorical";
-	    _.each(options, function (inst_option) {
+	    each(options, function (inst_option) {
 	      if (typeof inst_option === "number") {
 	        filter_type = "numerical";
 	      }
@@ -508,1572 +507,324 @@ var Clustergrammer =
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscore.js 1.8.3
-	//     http://underscorejs.org
-	//     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	//     Underscore may be freely distributed under the MIT license.
+	var _optimizeCb = __webpack_require__(6);
+	var _isArrayLike = __webpack_require__(7);
+	var keys = __webpack_require__(12);
 
-	(function () {
-
-	  // Baseline setup
-	  // --------------
-
-	  // Establish the root object, `window` in the browser, or `exports` on the server.
-	  var root = this;
-
-	  // Save the previous value of the `_` variable.
-	  var previousUnderscore = root._;
-
-	  // Save bytes in the minified (but not gzipped) version:
-	  var ArrayProto = Array.prototype,
-	      ObjProto = Object.prototype,
-	      FuncProto = Function.prototype;
-
-	  // Create quick reference variables for speed access to core prototypes.
-	  var push = ArrayProto.push,
-	      slice = ArrayProto.slice,
-	      toString = ObjProto.toString,
-	      hasOwnProperty = ObjProto.hasOwnProperty;
-
-	  // All **ECMAScript 5** native function implementations that we hope to use
-	  // are declared here.
-	  var nativeIsArray = Array.isArray,
-	      nativeKeys = Object.keys,
-	      nativeBind = FuncProto.bind,
-	      nativeCreate = Object.create;
-
-	  // Naked function reference for surrogate-prototype-swapping.
-	  var Ctor = function () {};
-
-	  // Create a safe reference to the Underscore object for use below.
-	  var _ = function (obj) {
-	    if (obj instanceof _) return obj;
-	    if (!(this instanceof _)) return new _(obj);
-	    this._wrapped = obj;
-	  };
-
-	  // Export the Underscore object for **Node.js**, with
-	  // backwards-compatibility for the old `require()` API. If we're in
-	  // the browser, add `_` as a global object.
-	  if (true) {
-	    if (typeof module !== 'undefined' && module.exports) {
-	      exports = module.exports = _;
+	// The cornerstone for collection functions, an `each`
+	// implementation, aka `forEach`.
+	// Handles raw objects in addition to array-likes. Treats all
+	// sparse array-likes as if they were dense.
+	function each(obj, iteratee, context) {
+	  iteratee = _optimizeCb(iteratee, context);
+	  var i, length;
+	  if (_isArrayLike(obj)) {
+	    for (i = 0, length = obj.length; i < length; i++) {
+	      iteratee(obj[i], i, obj);
 	    }
-	    exports._ = _;
 	  } else {
-	    root._ = _;
-	  }
-
-	  // Current version.
-	  _.VERSION = '1.8.3';
-
-	  // Internal function that returns an efficient (for current engines) version
-	  // of the passed-in callback, to be repeatedly applied in other Underscore
-	  // functions.
-	  var optimizeCb = function (func, context, argCount) {
-	    if (context === void 0) return func;
-	    switch (argCount == null ? 3 : argCount) {
-	      case 1:
-	        return function (value) {
-	          return func.call(context, value);
-	        };
-	      case 2:
-	        return function (value, other) {
-	          return func.call(context, value, other);
-	        };
-	      case 3:
-	        return function (value, index, collection) {
-	          return func.call(context, value, index, collection);
-	        };
-	      case 4:
-	        return function (accumulator, value, index, collection) {
-	          return func.call(context, accumulator, value, index, collection);
-	        };
-	    }
-	    return function () {
-	      return func.apply(context, arguments);
-	    };
-	  };
-
-	  // A mostly-internal function to generate callbacks that can be applied
-	  // to each element in a collection, returning the desired result — either
-	  // identity, an arbitrary callback, a property matcher, or a property accessor.
-	  var cb = function (value, context, argCount) {
-	    if (value == null) return _.identity;
-	    if (_.isFunction(value)) return optimizeCb(value, context, argCount);
-	    if (_.isObject(value)) return _.matcher(value);
-	    return _.property(value);
-	  };
-	  _.iteratee = function (value, context) {
-	    return cb(value, context, Infinity);
-	  };
-
-	  // An internal function for creating assigner functions.
-	  var createAssigner = function (keysFunc, undefinedOnly) {
-	    return function (obj) {
-	      var length = arguments.length;
-	      if (length < 2 || obj == null) return obj;
-	      for (var index = 1; index < length; index++) {
-	        var source = arguments[index],
-	            keys = keysFunc(source),
-	            l = keys.length;
-	        for (var i = 0; i < l; i++) {
-	          var key = keys[i];
-	          if (!undefinedOnly || obj[key] === void 0) obj[key] = source[key];
-	        }
-	      }
-	      return obj;
-	    };
-	  };
-
-	  // An internal function for creating a new object that inherits from another.
-	  var baseCreate = function (prototype) {
-	    if (!_.isObject(prototype)) return {};
-	    if (nativeCreate) return nativeCreate(prototype);
-	    Ctor.prototype = prototype;
-	    var result = new Ctor();
-	    Ctor.prototype = null;
-	    return result;
-	  };
-
-	  var property = function (key) {
-	    return function (obj) {
-	      return obj == null ? void 0 : obj[key];
-	    };
-	  };
-
-	  // Helper for collection methods to determine whether a collection
-	  // should be iterated as an array or as an object
-	  // Related: http://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength
-	  // Avoids a very nasty iOS 8 JIT bug on ARM-64. #2094
-	  var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
-	  var getLength = property('length');
-	  var isArrayLike = function (collection) {
-	    var length = getLength(collection);
-	    return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX;
-	  };
-
-	  // Collection Functions
-	  // --------------------
-
-	  // The cornerstone, an `each` implementation, aka `forEach`.
-	  // Handles raw objects in addition to array-likes. Treats all
-	  // sparse array-likes as if they were dense.
-	  _.each = _.forEach = function (obj, iteratee, context) {
-	    iteratee = optimizeCb(iteratee, context);
-	    var i, length;
-	    if (isArrayLike(obj)) {
-	      for (i = 0, length = obj.length; i < length; i++) {
-	        iteratee(obj[i], i, obj);
-	      }
-	    } else {
-	      var keys = _.keys(obj);
-	      for (i = 0, length = keys.length; i < length; i++) {
-	        iteratee(obj[keys[i]], keys[i], obj);
-	      }
-	    }
-	    return obj;
-	  };
-
-	  // Return the results of applying the iteratee to each element.
-	  _.map = _.collect = function (obj, iteratee, context) {
-	    iteratee = cb(iteratee, context);
-	    var keys = !isArrayLike(obj) && _.keys(obj),
-	        length = (keys || obj).length,
-	        results = Array(length);
-	    for (var index = 0; index < length; index++) {
-	      var currentKey = keys ? keys[index] : index;
-	      results[index] = iteratee(obj[currentKey], currentKey, obj);
-	    }
-	    return results;
-	  };
-
-	  // Create a reducing function iterating left or right.
-	  function createReduce(dir) {
-	    // Optimized iterator function as using arguments.length
-	    // in the main function will deoptimize the, see #1991.
-	    function iterator(obj, iteratee, memo, keys, index, length) {
-	      for (; index >= 0 && index < length; index += dir) {
-	        var currentKey = keys ? keys[index] : index;
-	        memo = iteratee(memo, obj[currentKey], currentKey, obj);
-	      }
-	      return memo;
-	    }
-
-	    return function (obj, iteratee, memo, context) {
-	      iteratee = optimizeCb(iteratee, context, 4);
-	      var keys = !isArrayLike(obj) && _.keys(obj),
-	          length = (keys || obj).length,
-	          index = dir > 0 ? 0 : length - 1;
-	      // Determine the initial value if none is provided.
-	      if (arguments.length < 3) {
-	        memo = obj[keys ? keys[index] : index];
-	        index += dir;
-	      }
-	      return iterator(obj, iteratee, memo, keys, index, length);
-	    };
-	  }
-
-	  // **Reduce** builds up a single result from a list of values, aka `inject`,
-	  // or `foldl`.
-	  _.reduce = _.foldl = _.inject = createReduce(1);
-
-	  // The right-associative version of reduce, also known as `foldr`.
-	  _.reduceRight = _.foldr = createReduce(-1);
-
-	  // Return the first value which passes a truth test. Aliased as `detect`.
-	  _.find = _.detect = function (obj, predicate, context) {
-	    var key;
-	    if (isArrayLike(obj)) {
-	      key = _.findIndex(obj, predicate, context);
-	    } else {
-	      key = _.findKey(obj, predicate, context);
-	    }
-	    if (key !== void 0 && key !== -1) return obj[key];
-	  };
-
-	  // Return all the elements that pass a truth test.
-	  // Aliased as `select`.
-	  _.filter = _.select = function (obj, predicate, context) {
-	    var results = [];
-	    predicate = cb(predicate, context);
-	    _.each(obj, function (value, index, list) {
-	      if (predicate(value, index, list)) results.push(value);
-	    });
-	    return results;
-	  };
-
-	  // Return all the elements for which a truth test fails.
-	  _.reject = function (obj, predicate, context) {
-	    return _.filter(obj, _.negate(cb(predicate)), context);
-	  };
-
-	  // Determine whether all of the elements match a truth test.
-	  // Aliased as `all`.
-	  _.every = _.all = function (obj, predicate, context) {
-	    predicate = cb(predicate, context);
-	    var keys = !isArrayLike(obj) && _.keys(obj),
-	        length = (keys || obj).length;
-	    for (var index = 0; index < length; index++) {
-	      var currentKey = keys ? keys[index] : index;
-	      if (!predicate(obj[currentKey], currentKey, obj)) return false;
-	    }
-	    return true;
-	  };
-
-	  // Determine if at least one element in the object matches a truth test.
-	  // Aliased as `any`.
-	  _.some = _.any = function (obj, predicate, context) {
-	    predicate = cb(predicate, context);
-	    var keys = !isArrayLike(obj) && _.keys(obj),
-	        length = (keys || obj).length;
-	    for (var index = 0; index < length; index++) {
-	      var currentKey = keys ? keys[index] : index;
-	      if (predicate(obj[currentKey], currentKey, obj)) return true;
-	    }
-	    return false;
-	  };
-
-	  // Determine if the array or object contains a given item (using `===`).
-	  // Aliased as `includes` and `include`.
-	  _.contains = _.includes = _.include = function (obj, item, fromIndex, guard) {
-	    if (!isArrayLike(obj)) obj = _.values(obj);
-	    if (typeof fromIndex != 'number' || guard) fromIndex = 0;
-	    return _.indexOf(obj, item, fromIndex) >= 0;
-	  };
-
-	  // Invoke a method (with arguments) on every item in a collection.
-	  _.invoke = function (obj, method) {
-	    var args = slice.call(arguments, 2);
-	    var isFunc = _.isFunction(method);
-	    return _.map(obj, function (value) {
-	      var func = isFunc ? method : value[method];
-	      return func == null ? func : func.apply(value, args);
-	    });
-	  };
-
-	  // Convenience version of a common use case of `map`: fetching a property.
-	  _.pluck = function (obj, key) {
-	    return _.map(obj, _.property(key));
-	  };
-
-	  // Convenience version of a common use case of `filter`: selecting only objects
-	  // containing specific `key:value` pairs.
-	  _.where = function (obj, attrs) {
-	    return _.filter(obj, _.matcher(attrs));
-	  };
-
-	  // Convenience version of a common use case of `find`: getting the first object
-	  // containing specific `key:value` pairs.
-	  _.findWhere = function (obj, attrs) {
-	    return _.find(obj, _.matcher(attrs));
-	  };
-
-	  // Return the maximum element (or element-based computation).
-	  _.max = function (obj, iteratee, context) {
-	    var result = -Infinity,
-	        lastComputed = -Infinity,
-	        value,
-	        computed;
-	    if (iteratee == null && obj != null) {
-	      obj = isArrayLike(obj) ? obj : _.values(obj);
-	      for (var i = 0, length = obj.length; i < length; i++) {
-	        value = obj[i];
-	        if (value > result) {
-	          result = value;
-	        }
-	      }
-	    } else {
-	      iteratee = cb(iteratee, context);
-	      _.each(obj, function (value, index, list) {
-	        computed = iteratee(value, index, list);
-	        if (computed > lastComputed || computed === -Infinity && result === -Infinity) {
-	          result = value;
-	          lastComputed = computed;
-	        }
-	      });
-	    }
-	    return result;
-	  };
-
-	  // Return the minimum element (or element-based computation).
-	  _.min = function (obj, iteratee, context) {
-	    var result = Infinity,
-	        lastComputed = Infinity,
-	        value,
-	        computed;
-	    if (iteratee == null && obj != null) {
-	      obj = isArrayLike(obj) ? obj : _.values(obj);
-	      for (var i = 0, length = obj.length; i < length; i++) {
-	        value = obj[i];
-	        if (value < result) {
-	          result = value;
-	        }
-	      }
-	    } else {
-	      iteratee = cb(iteratee, context);
-	      _.each(obj, function (value, index, list) {
-	        computed = iteratee(value, index, list);
-	        if (computed < lastComputed || computed === Infinity && result === Infinity) {
-	          result = value;
-	          lastComputed = computed;
-	        }
-	      });
-	    }
-	    return result;
-	  };
-
-	  // Shuffle a collection, using the modern version of the
-	  // [Fisher-Yates shuffle](http://en.wikipedia.org/wiki/Fisher–Yates_shuffle).
-	  _.shuffle = function (obj) {
-	    var set = isArrayLike(obj) ? obj : _.values(obj);
-	    var length = set.length;
-	    var shuffled = Array(length);
-	    for (var index = 0, rand; index < length; index++) {
-	      rand = _.random(0, index);
-	      if (rand !== index) shuffled[index] = shuffled[rand];
-	      shuffled[rand] = set[index];
-	    }
-	    return shuffled;
-	  };
-
-	  // Sample **n** random values from a collection.
-	  // If **n** is not specified, returns a single random element.
-	  // The internal `guard` argument allows it to work with `map`.
-	  _.sample = function (obj, n, guard) {
-	    if (n == null || guard) {
-	      if (!isArrayLike(obj)) obj = _.values(obj);
-	      return obj[_.random(obj.length - 1)];
-	    }
-	    return _.shuffle(obj).slice(0, Math.max(0, n));
-	  };
-
-	  // Sort the object's values by a criterion produced by an iteratee.
-	  _.sortBy = function (obj, iteratee, context) {
-	    iteratee = cb(iteratee, context);
-	    return _.pluck(_.map(obj, function (value, index, list) {
-	      return {
-	        value: value,
-	        index: index,
-	        criteria: iteratee(value, index, list)
-	      };
-	    }).sort(function (left, right) {
-	      var a = left.criteria;
-	      var b = right.criteria;
-	      if (a !== b) {
-	        if (a > b || a === void 0) return 1;
-	        if (a < b || b === void 0) return -1;
-	      }
-	      return left.index - right.index;
-	    }), 'value');
-	  };
-
-	  // An internal function used for aggregate "group by" operations.
-	  var group = function (behavior) {
-	    return function (obj, iteratee, context) {
-	      var result = {};
-	      iteratee = cb(iteratee, context);
-	      _.each(obj, function (value, index) {
-	        var key = iteratee(value, index, obj);
-	        behavior(result, value, key);
-	      });
-	      return result;
-	    };
-	  };
-
-	  // Groups the object's values by a criterion. Pass either a string attribute
-	  // to group by, or a function that returns the criterion.
-	  _.groupBy = group(function (result, value, key) {
-	    if (_.has(result, key)) result[key].push(value);else result[key] = [value];
-	  });
-
-	  // Indexes the object's values by a criterion, similar to `groupBy`, but for
-	  // when you know that your index values will be unique.
-	  _.indexBy = group(function (result, value, key) {
-	    result[key] = value;
-	  });
-
-	  // Counts instances of an object that group by a certain criterion. Pass
-	  // either a string attribute to count by, or a function that returns the
-	  // criterion.
-	  _.countBy = group(function (result, value, key) {
-	    if (_.has(result, key)) result[key]++;else result[key] = 1;
-	  });
-
-	  // Safely create a real, live array from anything iterable.
-	  _.toArray = function (obj) {
-	    if (!obj) return [];
-	    if (_.isArray(obj)) return slice.call(obj);
-	    if (isArrayLike(obj)) return _.map(obj, _.identity);
-	    return _.values(obj);
-	  };
-
-	  // Return the number of elements in an object.
-	  _.size = function (obj) {
-	    if (obj == null) return 0;
-	    return isArrayLike(obj) ? obj.length : _.keys(obj).length;
-	  };
-
-	  // Split a collection into two arrays: one whose elements all satisfy the given
-	  // predicate, and one whose elements all do not satisfy the predicate.
-	  _.partition = function (obj, predicate, context) {
-	    predicate = cb(predicate, context);
-	    var pass = [],
-	        fail = [];
-	    _.each(obj, function (value, key, obj) {
-	      (predicate(value, key, obj) ? pass : fail).push(value);
-	    });
-	    return [pass, fail];
-	  };
-
-	  // Array Functions
-	  // ---------------
-
-	  // Get the first element of an array. Passing **n** will return the first N
-	  // values in the array. Aliased as `head` and `take`. The **guard** check
-	  // allows it to work with `_.map`.
-	  _.first = _.head = _.take = function (array, n, guard) {
-	    if (array == null) return void 0;
-	    if (n == null || guard) return array[0];
-	    return _.initial(array, array.length - n);
-	  };
-
-	  // Returns everything but the last entry of the array. Especially useful on
-	  // the arguments object. Passing **n** will return all the values in
-	  // the array, excluding the last N.
-	  _.initial = function (array, n, guard) {
-	    return slice.call(array, 0, Math.max(0, array.length - (n == null || guard ? 1 : n)));
-	  };
-
-	  // Get the last element of an array. Passing **n** will return the last N
-	  // values in the array.
-	  _.last = function (array, n, guard) {
-	    if (array == null) return void 0;
-	    if (n == null || guard) return array[array.length - 1];
-	    return _.rest(array, Math.max(0, array.length - n));
-	  };
-
-	  // Returns everything but the first entry of the array. Aliased as `tail` and `drop`.
-	  // Especially useful on the arguments object. Passing an **n** will return
-	  // the rest N values in the array.
-	  _.rest = _.tail = _.drop = function (array, n, guard) {
-	    return slice.call(array, n == null || guard ? 1 : n);
-	  };
-
-	  // Trim out all falsy values from an array.
-	  _.compact = function (array) {
-	    return _.filter(array, _.identity);
-	  };
-
-	  // Internal implementation of a recursive `flatten` function.
-	  var flatten = function (input, shallow, strict, startIndex) {
-	    var output = [],
-	        idx = 0;
-	    for (var i = startIndex || 0, length = getLength(input); i < length; i++) {
-	      var value = input[i];
-	      if (isArrayLike(value) && (_.isArray(value) || _.isArguments(value))) {
-	        //flatten current level of array or arguments object
-	        if (!shallow) value = flatten(value, shallow, strict);
-	        var j = 0,
-	            len = value.length;
-	        output.length += len;
-	        while (j < len) {
-	          output[idx++] = value[j++];
-	        }
-	      } else if (!strict) {
-	        output[idx++] = value;
-	      }
-	    }
-	    return output;
-	  };
-
-	  // Flatten out an array, either recursively (by default), or just one level.
-	  _.flatten = function (array, shallow) {
-	    return flatten(array, shallow, false);
-	  };
-
-	  // Return a version of the array that does not contain the specified value(s).
-	  _.without = function (array) {
-	    return _.difference(array, slice.call(arguments, 1));
-	  };
-
-	  // Produce a duplicate-free version of the array. If the array has already
-	  // been sorted, you have the option of using a faster algorithm.
-	  // Aliased as `unique`.
-	  _.uniq = _.unique = function (array, isSorted, iteratee, context) {
-	    if (!_.isBoolean(isSorted)) {
-	      context = iteratee;
-	      iteratee = isSorted;
-	      isSorted = false;
-	    }
-	    if (iteratee != null) iteratee = cb(iteratee, context);
-	    var result = [];
-	    var seen = [];
-	    for (var i = 0, length = getLength(array); i < length; i++) {
-	      var value = array[i],
-	          computed = iteratee ? iteratee(value, i, array) : value;
-	      if (isSorted) {
-	        if (!i || seen !== computed) result.push(value);
-	        seen = computed;
-	      } else if (iteratee) {
-	        if (!_.contains(seen, computed)) {
-	          seen.push(computed);
-	          result.push(value);
-	        }
-	      } else if (!_.contains(result, value)) {
-	        result.push(value);
-	      }
-	    }
-	    return result;
-	  };
-
-	  // Produce an array that contains the union: each distinct element from all of
-	  // the passed-in arrays.
-	  _.union = function () {
-	    return _.uniq(flatten(arguments, true, true));
-	  };
-
-	  // Produce an array that contains every item shared between all the
-	  // passed-in arrays.
-	  _.intersection = function (array) {
-	    var result = [];
-	    var argsLength = arguments.length;
-	    for (var i = 0, length = getLength(array); i < length; i++) {
-	      var item = array[i];
-	      if (_.contains(result, item)) continue;
-	      for (var j = 1; j < argsLength; j++) {
-	        if (!_.contains(arguments[j], item)) break;
-	      }
-	      if (j === argsLength) result.push(item);
-	    }
-	    return result;
-	  };
-
-	  // Take the difference between one array and a number of other arrays.
-	  // Only the elements present in just the first array will remain.
-	  _.difference = function (array) {
-	    var rest = flatten(arguments, true, true, 1);
-	    return _.filter(array, function (value) {
-	      return !_.contains(rest, value);
-	    });
-	  };
-
-	  // Zip together multiple lists into a single array -- elements that share
-	  // an index go together.
-	  _.zip = function () {
-	    return _.unzip(arguments);
-	  };
-
-	  // Complement of _.zip. Unzip accepts an array of arrays and groups
-	  // each array's elements on shared indices
-	  _.unzip = function (array) {
-	    var length = array && _.max(array, getLength).length || 0;
-	    var result = Array(length);
-
-	    for (var index = 0; index < length; index++) {
-	      result[index] = _.pluck(array, index);
-	    }
-	    return result;
-	  };
-
-	  // Converts lists into objects. Pass either a single array of `[key, value]`
-	  // pairs, or two parallel arrays of the same length -- one of keys, and one of
-	  // the corresponding values.
-	  _.object = function (list, values) {
-	    var result = {};
-	    for (var i = 0, length = getLength(list); i < length; i++) {
-	      if (values) {
-	        result[list[i]] = values[i];
-	      } else {
-	        result[list[i][0]] = list[i][1];
-	      }
-	    }
-	    return result;
-	  };
-
-	  // Generator function to create the findIndex and findLastIndex functions
-	  function createPredicateIndexFinder(dir) {
-	    return function (array, predicate, context) {
-	      predicate = cb(predicate, context);
-	      var length = getLength(array);
-	      var index = dir > 0 ? 0 : length - 1;
-	      for (; index >= 0 && index < length; index += dir) {
-	        if (predicate(array[index], index, array)) return index;
-	      }
-	      return -1;
-	    };
-	  }
-
-	  // Returns the first index on an array-like that passes a predicate test
-	  _.findIndex = createPredicateIndexFinder(1);
-	  _.findLastIndex = createPredicateIndexFinder(-1);
-
-	  // Use a comparator function to figure out the smallest index at which
-	  // an object should be inserted so as to maintain order. Uses binary search.
-	  _.sortedIndex = function (array, obj, iteratee, context) {
-	    iteratee = cb(iteratee, context, 1);
-	    var value = iteratee(obj);
-	    var low = 0,
-	        high = getLength(array);
-	    while (low < high) {
-	      var mid = Math.floor((low + high) / 2);
-	      if (iteratee(array[mid]) < value) low = mid + 1;else high = mid;
-	    }
-	    return low;
-	  };
-
-	  // Generator function to create the indexOf and lastIndexOf functions
-	  function createIndexFinder(dir, predicateFind, sortedIndex) {
-	    return function (array, item, idx) {
-	      var i = 0,
-	          length = getLength(array);
-	      if (typeof idx == 'number') {
-	        if (dir > 0) {
-	          i = idx >= 0 ? idx : Math.max(idx + length, i);
-	        } else {
-	          length = idx >= 0 ? Math.min(idx + 1, length) : idx + length + 1;
-	        }
-	      } else if (sortedIndex && idx && length) {
-	        idx = sortedIndex(array, item);
-	        return array[idx] === item ? idx : -1;
-	      }
-	      if (item !== item) {
-	        idx = predicateFind(slice.call(array, i, length), _.isNaN);
-	        return idx >= 0 ? idx + i : -1;
-	      }
-	      for (idx = dir > 0 ? i : length - 1; idx >= 0 && idx < length; idx += dir) {
-	        if (array[idx] === item) return idx;
-	      }
-	      return -1;
-	    };
-	  }
-
-	  // Return the position of the first occurrence of an item in an array,
-	  // or -1 if the item is not included in the array.
-	  // If the array is large and already in sort order, pass `true`
-	  // for **isSorted** to use binary search.
-	  _.indexOf = createIndexFinder(1, _.findIndex, _.sortedIndex);
-	  _.lastIndexOf = createIndexFinder(-1, _.findLastIndex);
-
-	  // Generate an integer Array containing an arithmetic progression. A port of
-	  // the native Python `range()` function. See
-	  // [the Python documentation](http://docs.python.org/library/functions.html#range).
-	  _.range = function (start, stop, step) {
-	    if (stop == null) {
-	      stop = start || 0;
-	      start = 0;
-	    }
-	    step = step || 1;
-
-	    var length = Math.max(Math.ceil((stop - start) / step), 0);
-	    var range = Array(length);
-
-	    for (var idx = 0; idx < length; idx++, start += step) {
-	      range[idx] = start;
-	    }
-
-	    return range;
-	  };
-
-	  // Function (ahem) Functions
-	  // ------------------
-
-	  // Determines whether to execute a function as a constructor
-	  // or a normal function with the provided arguments
-	  var executeBound = function (sourceFunc, boundFunc, context, callingContext, args) {
-	    if (!(callingContext instanceof boundFunc)) return sourceFunc.apply(context, args);
-	    var self = baseCreate(sourceFunc.prototype);
-	    var result = sourceFunc.apply(self, args);
-	    if (_.isObject(result)) return result;
-	    return self;
-	  };
-
-	  // Create a function bound to a given object (assigning `this`, and arguments,
-	  // optionally). Delegates to **ECMAScript 5**'s native `Function.bind` if
-	  // available.
-	  _.bind = function (func, context) {
-	    if (nativeBind && func.bind === nativeBind) return nativeBind.apply(func, slice.call(arguments, 1));
-	    if (!_.isFunction(func)) throw new TypeError('Bind must be called on a function');
-	    var args = slice.call(arguments, 2);
-	    var bound = function () {
-	      return executeBound(func, bound, context, this, args.concat(slice.call(arguments)));
-	    };
-	    return bound;
-	  };
-
-	  // Partially apply a function by creating a version that has had some of its
-	  // arguments pre-filled, without changing its dynamic `this` context. _ acts
-	  // as a placeholder, allowing any combination of arguments to be pre-filled.
-	  _.partial = function (func) {
-	    var boundArgs = slice.call(arguments, 1);
-	    var bound = function () {
-	      var position = 0,
-	          length = boundArgs.length;
-	      var args = Array(length);
-	      for (var i = 0; i < length; i++) {
-	        args[i] = boundArgs[i] === _ ? arguments[position++] : boundArgs[i];
-	      }
-	      while (position < arguments.length) args.push(arguments[position++]);
-	      return executeBound(func, bound, this, this, args);
-	    };
-	    return bound;
-	  };
-
-	  // Bind a number of an object's methods to that object. Remaining arguments
-	  // are the method names to be bound. Useful for ensuring that all callbacks
-	  // defined on an object belong to it.
-	  _.bindAll = function (obj) {
-	    var i,
-	        length = arguments.length,
-	        key;
-	    if (length <= 1) throw new Error('bindAll must be passed function names');
-	    for (i = 1; i < length; i++) {
-	      key = arguments[i];
-	      obj[key] = _.bind(obj[key], obj);
-	    }
-	    return obj;
-	  };
-
-	  // Memoize an expensive function by storing its results.
-	  _.memoize = function (func, hasher) {
-	    var memoize = function (key) {
-	      var cache = memoize.cache;
-	      var address = '' + (hasher ? hasher.apply(this, arguments) : key);
-	      if (!_.has(cache, address)) cache[address] = func.apply(this, arguments);
-	      return cache[address];
-	    };
-	    memoize.cache = {};
-	    return memoize;
-	  };
-
-	  // Delays a function for the given number of milliseconds, and then calls
-	  // it with the arguments supplied.
-	  _.delay = function (func, wait) {
-	    var args = slice.call(arguments, 2);
-	    return setTimeout(function () {
-	      return func.apply(null, args);
-	    }, wait);
-	  };
-
-	  // Defers a function, scheduling it to run after the current call stack has
-	  // cleared.
-	  _.defer = _.partial(_.delay, _, 1);
-
-	  // Returns a function, that, when invoked, will only be triggered at most once
-	  // during a given window of time. Normally, the throttled function will run
-	  // as much as it can, without ever going more than once per `wait` duration;
-	  // but if you'd like to disable the execution on the leading edge, pass
-	  // `{leading: false}`. To disable execution on the trailing edge, ditto.
-	  _.throttle = function (func, wait, options) {
-	    var context, args, result;
-	    var timeout = null;
-	    var previous = 0;
-	    if (!options) options = {};
-	    var later = function () {
-	      previous = options.leading === false ? 0 : _.now();
-	      timeout = null;
-	      result = func.apply(context, args);
-	      if (!timeout) context = args = null;
-	    };
-	    return function () {
-	      var now = _.now();
-	      if (!previous && options.leading === false) previous = now;
-	      var remaining = wait - (now - previous);
-	      context = this;
-	      args = arguments;
-	      if (remaining <= 0 || remaining > wait) {
-	        if (timeout) {
-	          clearTimeout(timeout);
-	          timeout = null;
-	        }
-	        previous = now;
-	        result = func.apply(context, args);
-	        if (!timeout) context = args = null;
-	      } else if (!timeout && options.trailing !== false) {
-	        timeout = setTimeout(later, remaining);
-	      }
-	      return result;
-	    };
-	  };
-
-	  // Returns a function, that, as long as it continues to be invoked, will not
-	  // be triggered. The function will be called after it stops being called for
-	  // N milliseconds. If `immediate` is passed, trigger the function on the
-	  // leading edge, instead of the trailing.
-	  _.debounce = function (func, wait, immediate) {
-	    var timeout, args, context, timestamp, result;
-
-	    var later = function () {
-	      var last = _.now() - timestamp;
-
-	      if (last < wait && last >= 0) {
-	        timeout = setTimeout(later, wait - last);
-	      } else {
-	        timeout = null;
-	        if (!immediate) {
-	          result = func.apply(context, args);
-	          if (!timeout) context = args = null;
-	        }
-	      }
-	    };
-
-	    return function () {
-	      context = this;
-	      args = arguments;
-	      timestamp = _.now();
-	      var callNow = immediate && !timeout;
-	      if (!timeout) timeout = setTimeout(later, wait);
-	      if (callNow) {
-	        result = func.apply(context, args);
-	        context = args = null;
-	      }
-
-	      return result;
-	    };
-	  };
-
-	  // Returns the first function passed as an argument to the second,
-	  // allowing you to adjust arguments, run code before and after, and
-	  // conditionally execute the original function.
-	  _.wrap = function (func, wrapper) {
-	    return _.partial(wrapper, func);
-	  };
-
-	  // Returns a negated version of the passed-in predicate.
-	  _.negate = function (predicate) {
-	    return function () {
-	      return !predicate.apply(this, arguments);
-	    };
-	  };
-
-	  // Returns a function that is the composition of a list of functions, each
-	  // consuming the return value of the function that follows.
-	  _.compose = function () {
-	    var args = arguments;
-	    var start = args.length - 1;
-	    return function () {
-	      var i = start;
-	      var result = args[start].apply(this, arguments);
-	      while (i--) result = args[i].call(this, result);
-	      return result;
-	    };
-	  };
-
-	  // Returns a function that will only be executed on and after the Nth call.
-	  _.after = function (times, func) {
-	    return function () {
-	      if (--times < 1) {
-	        return func.apply(this, arguments);
-	      }
-	    };
-	  };
-
-	  // Returns a function that will only be executed up to (but not including) the Nth call.
-	  _.before = function (times, func) {
-	    var memo;
-	    return function () {
-	      if (--times > 0) {
-	        memo = func.apply(this, arguments);
-	      }
-	      if (times <= 1) func = null;
-	      return memo;
-	    };
-	  };
-
-	  // Returns a function that will be executed at most one time, no matter how
-	  // often you call it. Useful for lazy initialization.
-	  _.once = _.partial(_.before, 2);
-
-	  // Object Functions
-	  // ----------------
-
-	  // Keys in IE < 9 that won't be iterated by `for key in ...` and thus missed.
-	  var hasEnumBug = !{ toString: null }.propertyIsEnumerable('toString');
-	  var nonEnumerableProps = ['valueOf', 'isPrototypeOf', 'toString', 'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
-
-	  function collectNonEnumProps(obj, keys) {
-	    var nonEnumIdx = nonEnumerableProps.length;
-	    var constructor = obj.constructor;
-	    var proto = _.isFunction(constructor) && constructor.prototype || ObjProto;
-
-	    // Constructor is a special case.
-	    var prop = 'constructor';
-	    if (_.has(obj, prop) && !_.contains(keys, prop)) keys.push(prop);
-
-	    while (nonEnumIdx--) {
-	      prop = nonEnumerableProps[nonEnumIdx];
-	      if (prop in obj && obj[prop] !== proto[prop] && !_.contains(keys, prop)) {
-	        keys.push(prop);
-	      }
+	    var _keys = keys(obj);
+	    for (i = 0, length = _keys.length; i < length; i++) {
+	      iteratee(obj[_keys[i]], _keys[i], obj);
 	    }
 	  }
+	  return obj;
+	}
 
-	  // Retrieve the names of an object's own properties.
-	  // Delegates to **ECMAScript 5**'s native `Object.keys`
-	  _.keys = function (obj) {
-	    if (!_.isObject(obj)) return [];
-	    if (nativeKeys) return nativeKeys(obj);
-	    var keys = [];
-	    for (var key in obj) if (_.has(obj, key)) keys.push(key);
-	    // Ahem, IE < 9.
-	    if (hasEnumBug) collectNonEnumProps(obj, keys);
-	    return keys;
-	  };
-
-	  // Retrieve all the property names of an object.
-	  _.allKeys = function (obj) {
-	    if (!_.isObject(obj)) return [];
-	    var keys = [];
-	    for (var key in obj) keys.push(key);
-	    // Ahem, IE < 9.
-	    if (hasEnumBug) collectNonEnumProps(obj, keys);
-	    return keys;
-	  };
-
-	  // Retrieve the values of an object's properties.
-	  _.values = function (obj) {
-	    var keys = _.keys(obj);
-	    var length = keys.length;
-	    var values = Array(length);
-	    for (var i = 0; i < length; i++) {
-	      values[i] = obj[keys[i]];
-	    }
-	    return values;
-	  };
-
-	  // Returns the results of applying the iteratee to each element of the object
-	  // In contrast to _.map it returns an object
-	  _.mapObject = function (obj, iteratee, context) {
-	    iteratee = cb(iteratee, context);
-	    var keys = _.keys(obj),
-	        length = keys.length,
-	        results = {},
-	        currentKey;
-	    for (var index = 0; index < length; index++) {
-	      currentKey = keys[index];
-	      results[currentKey] = iteratee(obj[currentKey], currentKey, obj);
-	    }
-	    return results;
-	  };
-
-	  // Convert an object into a list of `[key, value]` pairs.
-	  _.pairs = function (obj) {
-	    var keys = _.keys(obj);
-	    var length = keys.length;
-	    var pairs = Array(length);
-	    for (var i = 0; i < length; i++) {
-	      pairs[i] = [keys[i], obj[keys[i]]];
-	    }
-	    return pairs;
-	  };
-
-	  // Invert the keys and values of an object. The values must be serializable.
-	  _.invert = function (obj) {
-	    var result = {};
-	    var keys = _.keys(obj);
-	    for (var i = 0, length = keys.length; i < length; i++) {
-	      result[obj[keys[i]]] = keys[i];
-	    }
-	    return result;
-	  };
-
-	  // Return a sorted list of the function names available on the object.
-	  // Aliased as `methods`
-	  _.functions = _.methods = function (obj) {
-	    var names = [];
-	    for (var key in obj) {
-	      if (_.isFunction(obj[key])) names.push(key);
-	    }
-	    return names.sort();
-	  };
-
-	  // Extend a given object with all the properties in passed-in object(s).
-	  _.extend = createAssigner(_.allKeys);
-
-	  // Assigns a given object with all the own properties in the passed-in object(s)
-	  // (https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
-	  _.extendOwn = _.assign = createAssigner(_.keys);
-
-	  // Returns the first key on an object that passes a predicate test
-	  _.findKey = function (obj, predicate, context) {
-	    predicate = cb(predicate, context);
-	    var keys = _.keys(obj),
-	        key;
-	    for (var i = 0, length = keys.length; i < length; i++) {
-	      key = keys[i];
-	      if (predicate(obj[key], key, obj)) return key;
-	    }
-	  };
-
-	  // Return a copy of the object only containing the whitelisted properties.
-	  _.pick = function (object, oiteratee, context) {
-	    var result = {},
-	        obj = object,
-	        iteratee,
-	        keys;
-	    if (obj == null) return result;
-	    if (_.isFunction(oiteratee)) {
-	      keys = _.allKeys(obj);
-	      iteratee = optimizeCb(oiteratee, context);
-	    } else {
-	      keys = flatten(arguments, false, false, 1);
-	      iteratee = function (value, key, obj) {
-	        return key in obj;
-	      };
-	      obj = Object(obj);
-	    }
-	    for (var i = 0, length = keys.length; i < length; i++) {
-	      var key = keys[i];
-	      var value = obj[key];
-	      if (iteratee(value, key, obj)) result[key] = value;
-	    }
-	    return result;
-	  };
-
-	  // Return a copy of the object without the blacklisted properties.
-	  _.omit = function (obj, iteratee, context) {
-	    if (_.isFunction(iteratee)) {
-	      iteratee = _.negate(iteratee);
-	    } else {
-	      var keys = _.map(flatten(arguments, false, false, 1), String);
-	      iteratee = function (value, key) {
-	        return !_.contains(keys, key);
-	      };
-	    }
-	    return _.pick(obj, iteratee, context);
-	  };
-
-	  // Fill in a given object with default properties.
-	  _.defaults = createAssigner(_.allKeys, true);
-
-	  // Creates an object that inherits from the given prototype object.
-	  // If additional properties are provided then they will be added to the
-	  // created object.
-	  _.create = function (prototype, props) {
-	    var result = baseCreate(prototype);
-	    if (props) _.extendOwn(result, props);
-	    return result;
-	  };
-
-	  // Create a (shallow-cloned) duplicate of an object.
-	  _.clone = function (obj) {
-	    if (!_.isObject(obj)) return obj;
-	    return _.isArray(obj) ? obj.slice() : _.extend({}, obj);
-	  };
-
-	  // Invokes interceptor with the obj, and then returns obj.
-	  // The primary purpose of this method is to "tap into" a method chain, in
-	  // order to perform operations on intermediate results within the chain.
-	  _.tap = function (obj, interceptor) {
-	    interceptor(obj);
-	    return obj;
-	  };
-
-	  // Returns whether an object has a given set of `key:value` pairs.
-	  _.isMatch = function (object, attrs) {
-	    var keys = _.keys(attrs),
-	        length = keys.length;
-	    if (object == null) return !length;
-	    var obj = Object(object);
-	    for (var i = 0; i < length; i++) {
-	      var key = keys[i];
-	      if (attrs[key] !== obj[key] || !(key in obj)) return false;
-	    }
-	    return true;
-	  };
-
-	  // Internal recursive comparison function for `isEqual`.
-	  var eq = function (a, b, aStack, bStack) {
-	    // Identical objects are equal. `0 === -0`, but they aren't identical.
-	    // See the [Harmony `egal` proposal](http://wiki.ecmascript.org/doku.php?id=harmony:egal).
-	    if (a === b) return a !== 0 || 1 / a === 1 / b;
-	    // A strict comparison is necessary because `null == undefined`.
-	    if (a == null || b == null) return a === b;
-	    // Unwrap any wrapped objects.
-	    if (a instanceof _) a = a._wrapped;
-	    if (b instanceof _) b = b._wrapped;
-	    // Compare `[[Class]]` names.
-	    var className = toString.call(a);
-	    if (className !== toString.call(b)) return false;
-	    switch (className) {
-	      // Strings, numbers, regular expressions, dates, and booleans are compared by value.
-	      case '[object RegExp]':
-	      // RegExps are coerced to strings for comparison (Note: '' + /a/i === '/a/i')
-	      case '[object String]':
-	        // Primitives and their corresponding object wrappers are equivalent; thus, `"5"` is
-	        // equivalent to `new String("5")`.
-	        return '' + a === '' + b;
-	      case '[object Number]':
-	        // `NaN`s are equivalent, but non-reflexive.
-	        // Object(NaN) is equivalent to NaN
-	        if (+a !== +a) return +b !== +b;
-	        // An `egal` comparison is performed for other numeric values.
-	        return +a === 0 ? 1 / +a === 1 / b : +a === +b;
-	      case '[object Date]':
-	      case '[object Boolean]':
-	        // Coerce dates and booleans to numeric primitive values. Dates are compared by their
-	        // millisecond representations. Note that invalid dates with millisecond representations
-	        // of `NaN` are not equivalent.
-	        return +a === +b;
-	    }
-
-	    var areArrays = className === '[object Array]';
-	    if (!areArrays) {
-	      if (typeof a != 'object' || typeof b != 'object') return false;
-
-	      // Objects with different constructors are not equivalent, but `Object`s or `Array`s
-	      // from different frames are.
-	      var aCtor = a.constructor,
-	          bCtor = b.constructor;
-	      if (aCtor !== bCtor && !(_.isFunction(aCtor) && aCtor instanceof aCtor && _.isFunction(bCtor) && bCtor instanceof bCtor) && 'constructor' in a && 'constructor' in b) {
-	        return false;
-	      }
-	    }
-	    // Assume equality for cyclic structures. The algorithm for detecting cyclic
-	    // structures is adapted from ES 5.1 section 15.12.3, abstract operation `JO`.
-
-	    // Initializing stack of traversed objects.
-	    // It's done here since we only need them for objects and arrays comparison.
-	    aStack = aStack || [];
-	    bStack = bStack || [];
-	    var length = aStack.length;
-	    while (length--) {
-	      // Linear search. Performance is inversely proportional to the number of
-	      // unique nested structures.
-	      if (aStack[length] === a) return bStack[length] === b;
-	    }
-
-	    // Add the first object to the stack of traversed objects.
-	    aStack.push(a);
-	    bStack.push(b);
-
-	    // Recursively compare objects and arrays.
-	    if (areArrays) {
-	      // Compare array lengths to determine if a deep comparison is necessary.
-	      length = a.length;
-	      if (length !== b.length) return false;
-	      // Deep compare the contents, ignoring non-numeric properties.
-	      while (length--) {
-	        if (!eq(a[length], b[length], aStack, bStack)) return false;
-	      }
-	    } else {
-	      // Deep compare objects.
-	      var keys = _.keys(a),
-	          key;
-	      length = keys.length;
-	      // Ensure that both objects contain the same number of properties before comparing deep equality.
-	      if (_.keys(b).length !== length) return false;
-	      while (length--) {
-	        // Deep compare each member
-	        key = keys[length];
-	        if (!(_.has(b, key) && eq(a[key], b[key], aStack, bStack))) return false;
-	      }
-	    }
-	    // Remove the first object from the stack of traversed objects.
-	    aStack.pop();
-	    bStack.pop();
-	    return true;
-	  };
-
-	  // Perform a deep comparison to check if two objects are equal.
-	  _.isEqual = function (a, b) {
-	    return eq(a, b);
-	  };
-
-	  // Is a given array, string, or object empty?
-	  // An "empty" object has no enumerable own-properties.
-	  _.isEmpty = function (obj) {
-	    if (obj == null) return true;
-	    if (isArrayLike(obj) && (_.isArray(obj) || _.isString(obj) || _.isArguments(obj))) return obj.length === 0;
-	    return _.keys(obj).length === 0;
-	  };
-
-	  // Is a given value a DOM element?
-	  _.isElement = function (obj) {
-	    return !!(obj && obj.nodeType === 1);
-	  };
-
-	  // Is a given value an array?
-	  // Delegates to ECMA5's native Array.isArray
-	  _.isArray = nativeIsArray || function (obj) {
-	    return toString.call(obj) === '[object Array]';
-	  };
-
-	  // Is a given variable an object?
-	  _.isObject = function (obj) {
-	    var type = typeof obj;
-	    return type === 'function' || type === 'object' && !!obj;
-	  };
-
-	  // Add some isType methods: isArguments, isFunction, isString, isNumber, isDate, isRegExp, isError.
-	  _.each(['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Error'], function (name) {
-	    _['is' + name] = function (obj) {
-	      return toString.call(obj) === '[object ' + name + ']';
-	    };
-	  });
-
-	  // Define a fallback version of the method in browsers (ahem, IE < 9), where
-	  // there isn't any inspectable "Arguments" type.
-	  if (!_.isArguments(arguments)) {
-	    _.isArguments = function (obj) {
-	      return _.has(obj, 'callee');
-	    };
-	  }
-
-	  // Optimize `isFunction` if appropriate. Work around some typeof bugs in old v8,
-	  // IE 11 (#1621), and in Safari 8 (#1929).
-	  if (typeof /./ != 'function' && typeof Int8Array != 'object') {
-	    _.isFunction = function (obj) {
-	      return typeof obj == 'function' || false;
-	    };
-	  }
-
-	  // Is a given object a finite number?
-	  _.isFinite = function (obj) {
-	    return isFinite(obj) && !isNaN(parseFloat(obj));
-	  };
-
-	  // Is the given value `NaN`? (NaN is the only number which does not equal itself).
-	  _.isNaN = function (obj) {
-	    return _.isNumber(obj) && obj !== +obj;
-	  };
-
-	  // Is a given value a boolean?
-	  _.isBoolean = function (obj) {
-	    return obj === true || obj === false || toString.call(obj) === '[object Boolean]';
-	  };
-
-	  // Is a given value equal to null?
-	  _.isNull = function (obj) {
-	    return obj === null;
-	  };
-
-	  // Is a given variable undefined?
-	  _.isUndefined = function (obj) {
-	    return obj === void 0;
-	  };
-
-	  // Shortcut function for checking if an object has a given property directly
-	  // on itself (in other words, not on a prototype).
-	  _.has = function (obj, key) {
-	    return obj != null && hasOwnProperty.call(obj, key);
-	  };
-
-	  // Utility Functions
-	  // -----------------
-
-	  // Run Underscore.js in *noConflict* mode, returning the `_` variable to its
-	  // previous owner. Returns a reference to the Underscore object.
-	  _.noConflict = function () {
-	    root._ = previousUnderscore;
-	    return this;
-	  };
-
-	  // Keep the identity function around for default iteratees.
-	  _.identity = function (value) {
-	    return value;
-	  };
-
-	  // Predicate-generating functions. Often useful outside of Underscore.
-	  _.constant = function (value) {
-	    return function () {
-	      return value;
-	    };
-	  };
-
-	  _.noop = function () {};
-
-	  _.property = property;
-
-	  // Generates a function for a given object that returns a given property.
-	  _.propertyOf = function (obj) {
-	    return obj == null ? function () {} : function (key) {
-	      return obj[key];
-	    };
-	  };
-
-	  // Returns a predicate for checking whether an object has a given set of
-	  // `key:value` pairs.
-	  _.matcher = _.matches = function (attrs) {
-	    attrs = _.extendOwn({}, attrs);
-	    return function (obj) {
-	      return _.isMatch(obj, attrs);
-	    };
-	  };
-
-	  // Run a function **n** times.
-	  _.times = function (n, iteratee, context) {
-	    var accum = Array(Math.max(0, n));
-	    iteratee = optimizeCb(iteratee, context, 1);
-	    for (var i = 0; i < n; i++) accum[i] = iteratee(i);
-	    return accum;
-	  };
-
-	  // Return a random integer between min and max (inclusive).
-	  _.random = function (min, max) {
-	    if (max == null) {
-	      max = min;
-	      min = 0;
-	    }
-	    return min + Math.floor(Math.random() * (max - min + 1));
-	  };
-
-	  // A (possibly faster) way to get the current timestamp as an integer.
-	  _.now = Date.now || function () {
-	    return new Date().getTime();
-	  };
-
-	  // List of HTML entities for escaping.
-	  var escapeMap = {
-	    '&': '&amp;',
-	    '<': '&lt;',
-	    '>': '&gt;',
-	    '"': '&quot;',
-	    "'": '&#x27;',
-	    '`': '&#x60;'
-	  };
-	  var unescapeMap = _.invert(escapeMap);
-
-	  // Functions for escaping and unescaping strings to/from HTML interpolation.
-	  var createEscaper = function (map) {
-	    var escaper = function (match) {
-	      return map[match];
-	    };
-	    // Regexes for identifying a key that needs to be escaped
-	    var source = '(?:' + _.keys(map).join('|') + ')';
-	    var testRegexp = RegExp(source);
-	    var replaceRegexp = RegExp(source, 'g');
-	    return function (string) {
-	      string = string == null ? '' : '' + string;
-	      return testRegexp.test(string) ? string.replace(replaceRegexp, escaper) : string;
-	    };
-	  };
-	  _.escape = createEscaper(escapeMap);
-	  _.unescape = createEscaper(unescapeMap);
-
-	  // If the value of the named `property` is a function then invoke it with the
-	  // `object` as context; otherwise, return it.
-	  _.result = function (object, property, fallback) {
-	    var value = object == null ? void 0 : object[property];
-	    if (value === void 0) {
-	      value = fallback;
-	    }
-	    return _.isFunction(value) ? value.call(object) : value;
-	  };
-
-	  // Generate a unique integer id (unique within the entire client session).
-	  // Useful for temporary DOM ids.
-	  var idCounter = 0;
-	  _.uniqueId = function (prefix) {
-	    var id = ++idCounter + '';
-	    return prefix ? prefix + id : id;
-	  };
-
-	  // By default, Underscore uses ERB-style template delimiters, change the
-	  // following template settings to use alternative delimiters.
-	  _.templateSettings = {
-	    evaluate: /<%([\s\S]+?)%>/g,
-	    interpolate: /<%=([\s\S]+?)%>/g,
-	    escape: /<%-([\s\S]+?)%>/g
-	  };
-
-	  // When customizing `templateSettings`, if you don't want to define an
-	  // interpolation, evaluation or escaping regex, we need one that is
-	  // guaranteed not to match.
-	  var noMatch = /(.)^/;
-
-	  // Certain characters need to be escaped so that they can be put into a
-	  // string literal.
-	  var escapes = {
-	    "'": "'",
-	    '\\': '\\',
-	    '\r': 'r',
-	    '\n': 'n',
-	    '\u2028': 'u2028',
-	    '\u2029': 'u2029'
-	  };
-
-	  var escaper = /\\|'|\r|\n|\u2028|\u2029/g;
-
-	  var escapeChar = function (match) {
-	    return '\\' + escapes[match];
-	  };
-
-	  // JavaScript micro-templating, similar to John Resig's implementation.
-	  // Underscore templating handles arbitrary delimiters, preserves whitespace,
-	  // and correctly escapes quotes within interpolated code.
-	  // NB: `oldSettings` only exists for backwards compatibility.
-	  _.template = function (text, settings, oldSettings) {
-	    if (!settings && oldSettings) settings = oldSettings;
-	    settings = _.defaults({}, settings, _.templateSettings);
-
-	    // Combine delimiters into one regular expression via alternation.
-	    var matcher = RegExp([(settings.escape || noMatch).source, (settings.interpolate || noMatch).source, (settings.evaluate || noMatch).source].join('|') + '|$', 'g');
-
-	    // Compile the template source, escaping string literals appropriately.
-	    var index = 0;
-	    var source = "__p+='";
-	    text.replace(matcher, function (match, escape, interpolate, evaluate, offset) {
-	      source += text.slice(index, offset).replace(escaper, escapeChar);
-	      index = offset + match.length;
-
-	      if (escape) {
-	        source += "'+\n((__t=(" + escape + "))==null?'':_.escape(__t))+\n'";
-	      } else if (interpolate) {
-	        source += "'+\n((__t=(" + interpolate + "))==null?'':__t)+\n'";
-	      } else if (evaluate) {
-	        source += "';\n" + evaluate + "\n__p+='";
-	      }
-
-	      // Adobe VMs need the match returned to produce the correct offest.
-	      return match;
-	    });
-	    source += "';\n";
-
-	    // If a variable is not specified, place data values in local scope.
-	    if (!settings.variable) source = 'with(obj||{}){\n' + source + '}\n';
-
-	    source = "var __t,__p='',__j=Array.prototype.join," + "print=function(){__p+=__j.call(arguments,'');};\n" + source + 'return __p;\n';
-
-	    try {
-	      var render = new Function(settings.variable || 'obj', '_', source);
-	    } catch (e) {
-	      e.source = source;
-	      throw e;
-	    }
-
-	    var template = function (data) {
-	      return render.call(this, data, _);
-	    };
-
-	    // Provide the compiled source as a convenience for precompilation.
-	    var argument = settings.variable || 'obj';
-	    template.source = 'function(' + argument + '){\n' + source + '}';
-
-	    return template;
-	  };
-
-	  // Add a "chain" function. Start chaining a wrapped Underscore object.
-	  _.chain = function (obj) {
-	    var instance = _(obj);
-	    instance._chain = true;
-	    return instance;
-	  };
-
-	  // OOP
-	  // ---------------
-	  // If Underscore is called as a function, it returns a wrapped object that
-	  // can be used OO-style. This wrapper holds altered versions of all the
-	  // underscore functions. Wrapped objects may be chained.
-
-	  // Helper function to continue chaining intermediate results.
-	  var result = function (instance, obj) {
-	    return instance._chain ? _(obj).chain() : obj;
-	  };
-
-	  // Add your own custom functions to the Underscore object.
-	  _.mixin = function (obj) {
-	    _.each(_.functions(obj), function (name) {
-	      var func = _[name] = obj[name];
-	      _.prototype[name] = function () {
-	        var args = [this._wrapped];
-	        push.apply(args, arguments);
-	        return result(this, func.apply(_, args));
-	      };
-	    });
-	  };
-
-	  // Add all of the Underscore functions to the wrapper object.
-	  _.mixin(_);
-
-	  // Add all mutator Array functions to the wrapper.
-	  _.each(['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift'], function (name) {
-	    var method = ArrayProto[name];
-	    _.prototype[name] = function () {
-	      var obj = this._wrapped;
-	      method.apply(obj, arguments);
-	      if ((name === 'shift' || name === 'splice') && obj.length === 0) delete obj[0];
-	      return result(this, obj);
-	    };
-	  });
-
-	  // Add all accessor Array functions to the wrapper.
-	  _.each(['concat', 'join', 'slice'], function (name) {
-	    var method = ArrayProto[name];
-	    _.prototype[name] = function () {
-	      return result(this, method.apply(this._wrapped, arguments));
-	    };
-	  });
-
-	  // Extracts the result from a wrapped and chained object.
-	  _.prototype.value = function () {
-	    return this._wrapped;
-	  };
-
-	  // Provide unwrapping proxy for some methods used in engine operations
-	  // such as arithmetic and JSON stringification.
-	  _.prototype.valueOf = _.prototype.toJSON = _.prototype.value;
-
-	  _.prototype.toString = function () {
-	    return '' + this._wrapped;
-	  };
-
-	  // AMD registration happens at the end for compatibility with AMD loaders
-	  // that may not enforce next-turn semantics on modules. Even though general
-	  // practice for AMD registration is to be anonymous, underscore registers
-	  // as a named module because, like jQuery, it is a base library that is
-	  // popular enough to be bundled in a third party lib, but not be part of
-	  // an AMD load request. Those cases could generate an error when an
-	  // anonymous define() is called outside of a loader request.
-	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
-	      return _;
-	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	  }
-	}).call(this);
+	module.exports = each;
 
 /***/ }),
 /* 6 */
+/***/ (function(module, exports) {
+
+	// Internal function that returns an efficient (for current engines) version
+	// of the passed-in callback, to be repeatedly applied in other Underscore
+	// functions.
+	function optimizeCb(func, context, argCount) {
+	  if (context === void 0) return func;
+	  switch (argCount == null ? 3 : argCount) {
+	    case 1:
+	      return function (value) {
+	        return func.call(context, value);
+	      };
+	    // The 2-argument case is omitted because we’re not using it.
+	    case 3:
+	      return function (value, index, collection) {
+	        return func.call(context, value, index, collection);
+	      };
+	    case 4:
+	      return function (accumulator, value, index, collection) {
+	        return func.call(context, accumulator, value, index, collection);
+	      };
+	  }
+	  return function () {
+	    return func.apply(context, arguments);
+	  };
+	}
+
+	module.exports = optimizeCb;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var _createSizePropertyCheck = __webpack_require__(8);
+	var _getLength = __webpack_require__(10);
+
+	// Internal helper for collection methods to determine whether a collection
+	// should be iterated as an array or as an object.
+	// Related: https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength
+	// Avoids a very nasty iOS 8 JIT bug on ARM-64. #2094
+	var isArrayLike = _createSizePropertyCheck(_getLength);
+
+	module.exports = isArrayLike;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var _setup = __webpack_require__(9);
+
+	// Common internal logic for `isArrayLike` and `isBufferLike`.
+	function createSizePropertyCheck(getSizeProperty) {
+	  return function (collection) {
+	    var sizeProperty = getSizeProperty(collection);
+	    return typeof sizeProperty == 'number' && sizeProperty >= 0 && sizeProperty <= _setup.MAX_ARRAY_INDEX;
+	  };
+	}
+
+	module.exports = createSizePropertyCheck;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {Object.defineProperty(exports, '__esModule', { value: true });
+
+	// Current version.
+	var VERSION = '1.13.6';
+
+	// Establish the root object, `window` (`self`) in the browser, `global`
+	// on the server, or `this` in some virtual machines. We use `self`
+	// instead of `window` for `WebWorker` support.
+	var root = typeof self == 'object' && self.self === self && self || typeof global == 'object' && global.global === global && global || Function('return this')() || {};
+
+	// Save bytes in the minified (but not gzipped) version:
+	var ArrayProto = Array.prototype,
+	    ObjProto = Object.prototype;
+	var SymbolProto = typeof Symbol !== 'undefined' ? Symbol.prototype : null;
+
+	// Create quick reference variables for speed access to core prototypes.
+	var push = ArrayProto.push,
+	    slice = ArrayProto.slice,
+	    toString = ObjProto.toString,
+	    hasOwnProperty = ObjProto.hasOwnProperty;
+
+	// Modern feature detection.
+	var supportsArrayBuffer = typeof ArrayBuffer !== 'undefined',
+	    supportsDataView = typeof DataView !== 'undefined';
+
+	// All **ECMAScript 5+** native function implementations that we hope to use
+	// are declared here.
+	var nativeIsArray = Array.isArray,
+	    nativeKeys = Object.keys,
+	    nativeCreate = Object.create,
+	    nativeIsView = supportsArrayBuffer && ArrayBuffer.isView;
+
+	// Create references to these builtin functions because we override them.
+	var _isNaN = isNaN,
+	    _isFinite = isFinite;
+
+	// Keys in IE < 9 that won't be iterated by `for key in ...` and thus missed.
+	var hasEnumBug = !{ toString: null }.propertyIsEnumerable('toString');
+	var nonEnumerableProps = ['valueOf', 'isPrototypeOf', 'toString', 'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
+
+	// The largest integer that can be represented exactly.
+	var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
+
+	exports.ArrayProto = ArrayProto;
+	exports.MAX_ARRAY_INDEX = MAX_ARRAY_INDEX;
+	exports.ObjProto = ObjProto;
+	exports.SymbolProto = SymbolProto;
+	exports.VERSION = VERSION;
+	exports._isFinite = _isFinite;
+	exports._isNaN = _isNaN;
+	exports.hasEnumBug = hasEnumBug;
+	exports.hasOwnProperty = hasOwnProperty;
+	exports.nativeCreate = nativeCreate;
+	exports.nativeIsArray = nativeIsArray;
+	exports.nativeIsView = nativeIsView;
+	exports.nativeKeys = nativeKeys;
+	exports.nonEnumerableProps = nonEnumerableProps;
+	exports.push = push;
+	exports.root = root;
+	exports.slice = slice;
+	exports.supportsArrayBuffer = supportsArrayBuffer;
+	exports.supportsDataView = supportsDataView;
+	exports.toString = toString;
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var _shallowProperty = __webpack_require__(11);
+
+	// Internal helper to obtain the `length` property of an object.
+	var getLength = _shallowProperty('length');
+
+	module.exports = getLength;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+	// Internal helper to generate a function to obtain property `key` from `obj`.
+	function shallowProperty(key) {
+	  return function (obj) {
+	    return obj == null ? void 0 : obj[key];
+	  };
+	}
+
+	module.exports = shallowProperty;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var isObject = __webpack_require__(13);
+	var _setup = __webpack_require__(9);
+	var _has = __webpack_require__(14);
+	var _collectNonEnumProps = __webpack_require__(15);
+
+	// Retrieve the names of an object's own properties.
+	// Delegates to **ECMAScript 5**'s native `Object.keys`.
+	function keys(obj) {
+	  if (!isObject(obj)) return [];
+	  if (_setup.nativeKeys) return _setup.nativeKeys(obj);
+	  var keys = [];
+	  for (var key in obj) if (_has(obj, key)) keys.push(key);
+	  // Ahem, IE < 9.
+	  if (_setup.hasEnumBug) _collectNonEnumProps(obj, keys);
+	  return keys;
+	}
+
+	module.exports = keys;
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports) {
+
+	// Is a given variable an object?
+	function isObject(obj) {
+	  var type = typeof obj;
+	  return type === 'function' || type === 'object' && !!obj;
+	}
+
+	module.exports = isObject;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var _setup = __webpack_require__(9);
+
+	// Internal function to check whether `key` is an own property name of `obj`.
+	function has(obj, key) {
+	  return obj != null && _setup.hasOwnProperty.call(obj, key);
+	}
+
+	module.exports = has;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var _setup = __webpack_require__(9);
+	var isFunction = __webpack_require__(16);
+	var _has = __webpack_require__(14);
+
+	// Internal helper to create a simple lookup structure.
+	// `collectNonEnumProps` used to depend on `_.contains`, but this led to
+	// circular imports. `emulatedSet` is a one-off solution that only works for
+	// arrays of strings.
+	function emulatedSet(keys) {
+	  var hash = {};
+	  for (var l = keys.length, i = 0; i < l; ++i) hash[keys[i]] = true;
+	  return {
+	    contains: function (key) {
+	      return hash[key] === true;
+	    },
+	    push: function (key) {
+	      hash[key] = true;
+	      return keys.push(key);
+	    }
+	  };
+	}
+
+	// Internal helper. Checks `keys` for the presence of keys in IE < 9 that won't
+	// be iterated by `for key in ...` and thus missed. Extends `keys` in place if
+	// needed.
+	function collectNonEnumProps(obj, keys) {
+	  keys = emulatedSet(keys);
+	  var nonEnumIdx = _setup.nonEnumerableProps.length;
+	  var constructor = obj.constructor;
+	  var proto = isFunction(constructor) && constructor.prototype || _setup.ObjProto;
+
+	  // Constructor is a special case.
+	  var prop = 'constructor';
+	  if (_has(obj, prop) && !keys.contains(prop)) keys.push(prop);
+
+	  while (nonEnumIdx--) {
+	    prop = _setup.nonEnumerableProps[nonEnumIdx];
+	    if (prop in obj && obj[prop] !== proto[prop] && !keys.contains(prop)) {
+	      keys.push(prop);
+	    }
+	  }
+	}
+
+	module.exports = collectNonEnumProps;
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var _tagTester = __webpack_require__(17);
+	var _setup = __webpack_require__(9);
+
+	var isFunction = _tagTester('Function');
+
+	// Optimize `isFunction` if appropriate. Work around some `typeof` bugs in old
+	// v8, IE 11 (#1621), Safari 8 (#1929), and PhantomJS (#2236).
+	var nodelist = _setup.root.document && _setup.root.document.childNodes;
+	if (typeof /./ != 'function' && typeof Int8Array != 'object' && typeof nodelist != 'function') {
+	  isFunction = function (obj) {
+	    return typeof obj == 'function' || false;
+	  };
+	}
+
+	var isFunction$1 = isFunction;
+
+	module.exports = isFunction$1;
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var _setup = __webpack_require__(9);
+
+	// Internal function for creating a `toString`-based type tester.
+	function tagTester(name) {
+	  var tag = '[object ' + name + ']';
+	  return function (obj) {
+	    return _setup.toString.call(obj) === tag;
+	  };
+	}
+
+	module.exports = tagTester;
+
+/***/ }),
+/* 18 */
 /***/ (function(module, exports) {
 
 	module.exports = function get_filter_default_state(filter_data, filter_type) {
@@ -2088,7 +839,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 7 */
+/* 19 */
 /***/ (function(module, exports) {
 
 	module.exports = function set_defaults() {
@@ -2170,26 +921,24 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 8 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var underscore = __webpack_require__(5);
+	var each = __webpack_require__(5);
 
 	module.exports = function check_sim_mat(config) {
-
 	  var sim_mat = false;
 
 	  var num_rows = config.network_data.row_nodes_names.length;
 	  var num_cols = config.network_data.col_nodes_names.length;
 
 	  if (num_rows == num_cols) {
-
 	    // the sort here was causing errors
 	    var rows = config.network_data.row_nodes_names;
 	    var cols = config.network_data.col_nodes_names;
 	    sim_mat = true;
 
-	    underscore.each(rows, function (inst_row) {
+	    each(rows, function (inst_row) {
 	      var inst_index = rows.indexOf(inst_row);
 	      if (inst_row !== cols[inst_index]) {
 	        sim_mat = false;
@@ -2205,17 +954,16 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 9 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var underscore = __webpack_require__(5);
+	var each = __webpack_require__(5);
 
 	module.exports = function check_nodes_for_categories(nodes) {
-
-	  var super_string = ': ';
+	  var super_string = ": ";
 	  var has_cat = true;
 
-	  underscore.each(nodes, function (inst_node) {
+	  each(nodes, function (inst_node) {
 	    var inst_name = String(inst_node.name);
 	    if (inst_name.indexOf(super_string) < 0) {
 	      has_cat = false;
@@ -2223,19 +971,19 @@ var Clustergrammer =
 	  });
 
 	  return has_cat;
-		};
+	};
 
 /***/ }),
-/* 10 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_network_using_view = __webpack_require__(11);
-	var ini_sidebar_params = __webpack_require__(65);
-	var make_requested_view = __webpack_require__(66);
+	var make_network_using_view = __webpack_require__(23);
+	var ini_sidebar_params = __webpack_require__(92);
+	var make_requested_view = __webpack_require__(93);
 	var get_available_filters = __webpack_require__(4);
-	var calc_viz_params = __webpack_require__(67);
-	var ini_zoom_info = __webpack_require__(89);
-	var $ = __webpack_require__(81);
+	var calc_viz_params = __webpack_require__(94);
+	var ini_zoom_info = __webpack_require__(121);
+	var $ = __webpack_require__(111);
 
 	/*
 	Params: calculates the size of all the visualization elements in the
@@ -2281,11 +1029,11 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 11 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var filter_network_using_new_nodes = __webpack_require__(12);
-	var get_subset_views = __webpack_require__(64);
+	var filter_network_using_new_nodes = __webpack_require__(24);
+	var get_subset_views = __webpack_require__(76);
 	var utils = __webpack_require__(2);
 
 	module.exports = function make_network_using_view(config, params, requested_view) {
@@ -2322,14 +1070,14 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 12 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
-	var core = __webpack_require__(13);
+	var core = __webpack_require__(25);
 	var math = core.create();
-	math.import(__webpack_require__(26));
-	math.import(__webpack_require__(63));
+	math.import(__webpack_require__(38));
+	math.import(__webpack_require__(75));
 
 	module.exports = function filter_network_using_new_nodes(config, new_nodes) {
 	  var links = config.network_data.links;
@@ -2393,21 +1141,21 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 13 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(14);
+	module.exports = __webpack_require__(26);
 
 /***/ }),
-/* 14 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var isFactory = __webpack_require__(15).isFactory;
-	var typedFactory = __webpack_require__(17);
-	var emitter = __webpack_require__(21);
+	var isFactory = __webpack_require__(27).isFactory;
+	var typedFactory = __webpack_require__(29);
+	var emitter = __webpack_require__(33);
 
-	var importFactory = __webpack_require__(23);
-	var configFactory = __webpack_require__(25);
+	var importFactory = __webpack_require__(35);
+	var configFactory = __webpack_require__(37);
 
 	/**
 	 * Math.js core. Creates a new, empty math.js instance
@@ -2533,12 +1281,12 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 15 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var isBigNumber = __webpack_require__(16);
+	var isBigNumber = __webpack_require__(28);
 
 	/**
 	 * Clone an object
@@ -2797,7 +1545,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 16 */
+/* 28 */
 /***/ (function(module, exports) {
 
 	/**
@@ -2810,13 +1558,13 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 17 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var typedFunction = __webpack_require__(18);
-	var digits = __webpack_require__(19).digits;
-	var isBigNumber = __webpack_require__(16);
-	var isMatrix = __webpack_require__(20);
+	var typedFunction = __webpack_require__(30);
+	var digits = __webpack_require__(31).digits;
+	var isBigNumber = __webpack_require__(28);
+	var isMatrix = __webpack_require__(32);
 
 	// returns a new instance of typed-function
 	var createTyped = function () {
@@ -3128,7 +1876,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 18 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -4482,7 +3230,7 @@ var Clustergrammer =
 	});
 
 /***/ }),
-/* 19 */
+/* 31 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -4973,7 +3721,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 20 */
+/* 32 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -4990,10 +3738,10 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 21 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var Emitter = __webpack_require__(22);
+	var Emitter = __webpack_require__(34);
 
 	/**
 	 * Extend given object with emitter functions `on`, `off`, `once`, `emit`
@@ -5014,7 +3762,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 22 */
+/* 34 */
 /***/ (function(module, exports) {
 
 	function E() {
@@ -5082,15 +3830,15 @@ var Clustergrammer =
 		module.exports = E;
 
 /***/ }),
-/* 23 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var lazy = __webpack_require__(15).lazy;
-	var isFactory = __webpack_require__(15).isFactory;
-	var traverse = __webpack_require__(15).traverse;
-	var ArgumentsError = __webpack_require__(24);
+	var lazy = __webpack_require__(27).lazy;
+	var isFactory = __webpack_require__(27).isFactory;
+	var traverse = __webpack_require__(27).traverse;
+	var ArgumentsError = __webpack_require__(36);
 
 	function factory(type, config, load, typed, math) {
 	  /**
@@ -5374,7 +4122,7 @@ var Clustergrammer =
 	exports.lazy = true;
 
 /***/ }),
-/* 24 */
+/* 36 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -5412,12 +4160,12 @@ var Clustergrammer =
 	module.exports = ArgumentsError;
 
 /***/ }),
-/* 25 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var object = __webpack_require__(15);
+	var object = __webpack_require__(27);
 
 	function factory(type, config, load, typed, math) {
 	  var MATRIX = ['Matrix', 'Array']; // valid values for option matrix
@@ -5537,23 +4285,23 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 26 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = [
 	// types
-	__webpack_require__(27), __webpack_require__(37), __webpack_require__(39), __webpack_require__(42), __webpack_require__(52), __webpack_require__(58), __webpack_require__(59), __webpack_require__(60),
+	__webpack_require__(39), __webpack_require__(49), __webpack_require__(51), __webpack_require__(54), __webpack_require__(64), __webpack_require__(70), __webpack_require__(71), __webpack_require__(72),
 
 	// construction functions
-	__webpack_require__(61), __webpack_require__(44), __webpack_require__(62)];
+	__webpack_require__(73), __webpack_require__(56), __webpack_require__(74)];
 
 /***/ }),
-/* 27 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var util = __webpack_require__(28);
+	var util = __webpack_require__(40);
 
 	var string = util.string;
 
@@ -5819,33 +4567,33 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 28 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	exports.array = __webpack_require__(29);
-	exports['boolean'] = __webpack_require__(35);
-	exports['function'] = __webpack_require__(36);
-	exports.number = __webpack_require__(19);
-	exports.object = __webpack_require__(15);
-	exports.string = __webpack_require__(30);
-	exports.types = __webpack_require__(32);
-	exports.emitter = __webpack_require__(21);
+	exports.array = __webpack_require__(41);
+	exports['boolean'] = __webpack_require__(47);
+	exports['function'] = __webpack_require__(48);
+	exports.number = __webpack_require__(31);
+	exports.object = __webpack_require__(27);
+	exports.string = __webpack_require__(42);
+	exports.types = __webpack_require__(44);
+	exports.emitter = __webpack_require__(33);
 
 /***/ }),
-/* 29 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var number = __webpack_require__(19);
-	var string = __webpack_require__(30);
-	var object = __webpack_require__(15);
-	var types = __webpack_require__(32);
+	var number = __webpack_require__(31);
+	var string = __webpack_require__(42);
+	var object = __webpack_require__(27);
+	var types = __webpack_require__(44);
 
-	var DimensionError = __webpack_require__(33);
-	var IndexError = __webpack_require__(34);
+	var DimensionError = __webpack_require__(45);
+	var IndexError = __webpack_require__(46);
 
 	/**
 	 * Calculate the size of a multi dimensional array.
@@ -6355,14 +5103,14 @@ var Clustergrammer =
 		exports.isArray = Array.isArray;
 
 /***/ }),
-/* 30 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var formatNumber = __webpack_require__(19).format;
-	var formatBigNumber = __webpack_require__(31).format;
-	var isBigNumber = __webpack_require__(16);
+	var formatNumber = __webpack_require__(31).format;
+	var formatBigNumber = __webpack_require__(43).format;
+	var isBigNumber = __webpack_require__(28);
 
 	/**
 	 * Test whether value is a string
@@ -6556,7 +5304,7 @@ var Clustergrammer =
 		}
 
 /***/ }),
-/* 31 */
+/* 43 */
 /***/ (function(module, exports) {
 
 	/**
@@ -6740,7 +5488,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 32 */
+/* 44 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -6790,7 +5538,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 33 */
+/* 45 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -6827,7 +5575,7 @@ var Clustergrammer =
 	module.exports = DimensionError;
 
 /***/ }),
-/* 34 */
+/* 46 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -6876,7 +5624,7 @@ var Clustergrammer =
 	module.exports = IndexError;
 
 /***/ }),
-/* 35 */
+/* 47 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -6892,7 +5640,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 36 */
+/* 48 */
 /***/ (function(module, exports) {
 
 	// function utils
@@ -6954,15 +5702,15 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 37 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var util = __webpack_require__(28);
-	var DimensionError = __webpack_require__(33);
-	var getSafeProperty = __webpack_require__(38).getSafeProperty;
-	var setSafeProperty = __webpack_require__(38).setSafeProperty;
+	var util = __webpack_require__(40);
+	var DimensionError = __webpack_require__(45);
+	var getSafeProperty = __webpack_require__(50).getSafeProperty;
+	var setSafeProperty = __webpack_require__(50).setSafeProperty;
 
 	var string = util.string;
 	var array = util.array;
@@ -6977,7 +5725,7 @@ var Clustergrammer =
 	var validateIndex = array.validateIndex;
 
 	function factory(type, config, load, typed) {
-	  var Matrix = load(__webpack_require__(27)); // force loading Matrix (do not use via type.Matrix)
+	  var Matrix = load(__webpack_require__(39)); // force loading Matrix (do not use via type.Matrix)
 
 	  /**
 	   * Dense Matrix implementation. A regular, dense matrix, supporting multi-dimensional matrices. This is the default matrix type.
@@ -7815,12 +6563,12 @@ var Clustergrammer =
 	exports.lazy = false; // no lazy loading, as we alter type.Matrix._storage
 
 /***/ }),
-/* 38 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var hasOwnProperty = __webpack_require__(15).hasOwnProperty;
+	var hasOwnProperty = __webpack_require__(27).hasOwnProperty;
 
 	/**
 	 * Get a property of a plain object
@@ -7973,13 +6721,13 @@ var Clustergrammer =
 	exports.isPlainObject = isPlainObject;
 
 /***/ }),
-/* 39 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var util = __webpack_require__(28);
-	var DimensionError = __webpack_require__(33);
+	var util = __webpack_require__(40);
+	var DimensionError = __webpack_require__(45);
 
 	var array = util.array;
 	var object = util.object;
@@ -7994,8 +6742,8 @@ var Clustergrammer =
 	var validateIndex = array.validateIndex;
 
 	function factory(type, config, load, typed) {
-	  var Matrix = load(__webpack_require__(27)); // force loading Matrix (do not use via type.Matrix)
-	  var equalScalar = load(__webpack_require__(40));
+	  var Matrix = load(__webpack_require__(39)); // force loading Matrix (do not use via type.Matrix)
+	  var equalScalar = load(__webpack_require__(52));
 
 	  /**
 	   * Sparse Matrix implementation. This type implements a Compressed Column Storage format
@@ -9358,13 +8106,13 @@ var Clustergrammer =
 	exports.lazy = false; // no lazy loading, as we alter type.Matrix._storage
 
 /***/ }),
-/* 40 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var nearlyEqual = __webpack_require__(19).nearlyEqual;
-	var bigNearlyEqual = __webpack_require__(41);
+	var nearlyEqual = __webpack_require__(31).nearlyEqual;
+	var bigNearlyEqual = __webpack_require__(53);
 
 	function factory(type, config, load, typed) {
 
@@ -9416,7 +8164,7 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 41 */
+/* 53 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -9465,15 +8213,15 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 42 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory(type, config, load) {
 
-	  var add = load(__webpack_require__(43));
-	  var equalScalar = load(__webpack_require__(40));
+	  var add = load(__webpack_require__(55));
+	  var equalScalar = load(__webpack_require__(52));
 
 	  /**
 	   * An ordered Sparse Accumulator is a representation for a sparse vector that includes a dense array 
@@ -9603,24 +8351,24 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 43 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var extend = __webpack_require__(15).extend;
+	var extend = __webpack_require__(27).extend;
 
 	function factory(type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(44));
-	  var addScalar = load(__webpack_require__(45));
-	  var latex = __webpack_require__(46);
+	  var matrix = load(__webpack_require__(56));
+	  var addScalar = load(__webpack_require__(57));
+	  var latex = __webpack_require__(58);
 
-	  var algorithm01 = load(__webpack_require__(47));
-	  var algorithm04 = load(__webpack_require__(48));
-	  var algorithm10 = load(__webpack_require__(49));
-	  var algorithm13 = load(__webpack_require__(50));
-	  var algorithm14 = load(__webpack_require__(51));
+	  var algorithm01 = load(__webpack_require__(59));
+	  var algorithm04 = load(__webpack_require__(60));
+	  var algorithm10 = load(__webpack_require__(61));
+	  var algorithm13 = load(__webpack_require__(62));
+	  var algorithm14 = load(__webpack_require__(63));
 
 	  /**
 	   * Add two or more values, `x + y`.
@@ -9772,7 +8520,7 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 44 */
+/* 56 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -9865,7 +8613,7 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 45 */
+/* 57 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -9921,7 +8669,7 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 46 */
+/* 58 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -10028,12 +8776,12 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 47 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var DimensionError = __webpack_require__(33);
+	var DimensionError = __webpack_require__(45);
 
 	function factory(type, config, load, typed) {
 
@@ -10142,16 +8890,16 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 48 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var DimensionError = __webpack_require__(33);
+	var DimensionError = __webpack_require__(45);
 
 	function factory(type, config, load, typed) {
 
-	  var equalScalar = load(__webpack_require__(40));
+	  var equalScalar = load(__webpack_require__(52));
 
 	  var SparseMatrix = type.SparseMatrix;
 
@@ -10326,7 +9074,7 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 49 */
+/* 61 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -10439,13 +9187,13 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 50 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var util = __webpack_require__(28);
-	var DimensionError = __webpack_require__(33);
+	var util = __webpack_require__(40);
+	var DimensionError = __webpack_require__(45);
 
 	var string = util.string,
 	    isString = string.isString;
@@ -10545,12 +9293,12 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 51 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var clone = __webpack_require__(15).clone;
+	var clone = __webpack_require__(27).clone;
 
 	function factory(type, config, load, typed) {
 
@@ -10631,15 +9379,15 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 52 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory(type, config, load, typed) {
 
-	  var smaller = load(__webpack_require__(53));
-	  var larger = load(__webpack_require__(57));
+	  var smaller = load(__webpack_require__(65));
+	  var larger = load(__webpack_require__(69));
 
 	  var oneOverLogPhi = 1.0 / Math.log((1.0 + Math.sqrt(5.0)) / 2.0);
 
@@ -10970,25 +9718,25 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 53 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var nearlyEqual = __webpack_require__(19).nearlyEqual;
-	var bigNearlyEqual = __webpack_require__(41);
+	var nearlyEqual = __webpack_require__(31).nearlyEqual;
+	var bigNearlyEqual = __webpack_require__(53);
 
 	function factory(type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(44));
+	  var matrix = load(__webpack_require__(56));
 
-	  var algorithm03 = load(__webpack_require__(54));
-	  var algorithm07 = load(__webpack_require__(55));
-	  var algorithm12 = load(__webpack_require__(56));
-	  var algorithm13 = load(__webpack_require__(50));
-	  var algorithm14 = load(__webpack_require__(51));
+	  var algorithm03 = load(__webpack_require__(66));
+	  var algorithm07 = load(__webpack_require__(67));
+	  var algorithm12 = load(__webpack_require__(68));
+	  var algorithm13 = load(__webpack_require__(62));
+	  var algorithm14 = load(__webpack_require__(63));
 
-	  var latex = __webpack_require__(46);
+	  var latex = __webpack_require__(58);
 
 	  /**
 	   * Test whether value x is smaller than y.
@@ -11154,12 +9902,12 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 54 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var DimensionError = __webpack_require__(33);
+	var DimensionError = __webpack_require__(45);
 
 	function factory(type, config, load, typed) {
 
@@ -11280,12 +10028,12 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 55 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var DimensionError = __webpack_require__(33);
+	var DimensionError = __webpack_require__(45);
 
 	function factory(type, config, load, typed) {
 
@@ -11406,7 +10154,7 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 56 */
+/* 68 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -11519,25 +10267,25 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 57 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var nearlyEqual = __webpack_require__(19).nearlyEqual;
-	var bigNearlyEqual = __webpack_require__(41);
+	var nearlyEqual = __webpack_require__(31).nearlyEqual;
+	var bigNearlyEqual = __webpack_require__(53);
 
 	function factory(type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(44));
+	  var matrix = load(__webpack_require__(56));
 
-	  var algorithm03 = load(__webpack_require__(54));
-	  var algorithm07 = load(__webpack_require__(55));
-	  var algorithm12 = load(__webpack_require__(56));
-	  var algorithm13 = load(__webpack_require__(50));
-	  var algorithm14 = load(__webpack_require__(51));
+	  var algorithm03 = load(__webpack_require__(66));
+	  var algorithm07 = load(__webpack_require__(67));
+	  var algorithm12 = load(__webpack_require__(68));
+	  var algorithm13 = load(__webpack_require__(62));
+	  var algorithm14 = load(__webpack_require__(63));
 
-	  var latex = __webpack_require__(46);
+	  var latex = __webpack_require__(58);
 
 	  /**
 	   * Test whether value x is larger than y.
@@ -11703,12 +10451,12 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 58 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var util = __webpack_require__(28);
+	var util = __webpack_require__(40);
 
 	var string = util.string;
 	var object = util.object;
@@ -11718,9 +10466,9 @@ var Clustergrammer =
 
 	function factory(type, config, load) {
 
-	  var DenseMatrix = load(__webpack_require__(37));
+	  var DenseMatrix = load(__webpack_require__(49));
 
-	  var smaller = load(__webpack_require__(53));
+	  var smaller = load(__webpack_require__(65));
 
 	  function ImmutableDenseMatrix(data, datatype) {
 	    if (!(this instanceof ImmutableDenseMatrix)) throw new SyntaxError('Constructor must be called with the new operator');
@@ -11934,13 +10682,13 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 59 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var clone = __webpack_require__(15).clone;
-	var isInteger = __webpack_require__(19).isInteger;
+	var clone = __webpack_require__(27).clone;
+	var isInteger = __webpack_require__(31).isInteger;
 
 	function factory(type) {
 
@@ -12218,12 +10966,12 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 60 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var number = __webpack_require__(19);
+	var number = __webpack_require__(31);
 
 	function factory(type, config, load, typed) {
 	  /**
@@ -12523,7 +11271,7 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 61 */
+/* 73 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -12590,7 +11338,7 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 62 */
+/* 74 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -12656,16 +11404,16 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 63 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var isInteger = __webpack_require__(19).isInteger;
-	var resize = __webpack_require__(29).resize;
+	var isInteger = __webpack_require__(31).isInteger;
+	var resize = __webpack_require__(41).resize;
 
 	function factory(type, config, load, typed) {
-	  var matrix = load(__webpack_require__(44));
+	  var matrix = load(__webpack_require__(56));
 
 	  /**
 	   * Create a matrix filled with zeros. The created matrix can have one or
@@ -12790,12 +11538,13 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 64 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
-	var get_filter_default_state = __webpack_require__(6);
-	var underscore = __webpack_require__(5);
+	var get_filter_default_state = __webpack_require__(18);
+	var filter = __webpack_require__(77);
+	var each = __webpack_require__(5);
 
 	module.exports = function get_subset_views(params, views, requested_view) {
 	  var inst_value;
@@ -12814,14 +11563,14 @@ var Clustergrammer =
 
 	    // only run filtering if any of the views has the filter
 	    found_filter = false;
-	    underscore.each(views, function (tmp_view) {
+	    each(views, function (tmp_view) {
 	      if (utils.has(tmp_view, inst_filter)) {
 	        found_filter = true;
 	      }
 	    });
 
 	    if (found_filter) {
-	      views = underscore.filter(views, function (d) {
+	      views = filter(views, function (d) {
 	        return d[inst_filter] == inst_value;
 	      });
 	    }
@@ -12835,7 +11584,7 @@ var Clustergrammer =
 
 	  // check if each view is a default state: all filters are at default
 	  // there can only be one of these
-	  underscore.each(views, function (inst_view) {
+	  each(views, function (inst_view) {
 	    check_default = true;
 
 	    // check each filter in a view to see if it is in the default state
@@ -12862,7 +11611,283 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 65 */
+/* 77 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var _cb = __webpack_require__(78);
+	var each = __webpack_require__(5);
+
+	// Return all the elements that pass a truth test.
+	function filter(obj, predicate, context) {
+	  var results = [];
+	  predicate = _cb(predicate, context);
+	  each(obj, function (value, index, list) {
+	    if (predicate(value, index, list)) results.push(value);
+	  });
+	  return results;
+	}
+
+	module.exports = filter;
+
+/***/ }),
+/* 78 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(79);
+	var _baseIteratee = __webpack_require__(80);
+	var iteratee = __webpack_require__(91);
+
+	// The function we call internally to generate a callback. It invokes
+	// `_.iteratee` if overridden, otherwise `baseIteratee`.
+	function cb(value, context, argCount) {
+	  if (underscore.iteratee !== iteratee) return underscore.iteratee(value, context);
+	  return _baseIteratee(value, context, argCount);
+	}
+
+	module.exports = cb;
+
+/***/ }),
+/* 79 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var _setup = __webpack_require__(9);
+
+	// If Underscore is called as a function, it returns a wrapped object that can
+	// be used OO-style. This wrapper holds altered versions of all functions added
+	// through `_.mixin`. Wrapped objects may be chained.
+	function _(obj) {
+	  if (obj instanceof _) return obj;
+	  if (!(this instanceof _)) return new _(obj);
+	  this._wrapped = obj;
+	}
+
+	_.VERSION = _setup.VERSION;
+
+	// Extracts the result from a wrapped and chained object.
+	_.prototype.value = function () {
+	  return this._wrapped;
+	};
+
+	// Provide unwrapping proxies for some methods used in engine operations
+	// such as arithmetic and JSON stringification.
+	_.prototype.valueOf = _.prototype.toJSON = _.prototype.value;
+
+	_.prototype.toString = function () {
+	  return String(this._wrapped);
+	};
+
+	module.exports = _;
+
+/***/ }),
+/* 80 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var identity = __webpack_require__(81);
+	var isFunction = __webpack_require__(16);
+	var isObject = __webpack_require__(13);
+	var isArray = __webpack_require__(82);
+	var matcher = __webpack_require__(83);
+	var property = __webpack_require__(87);
+	var _optimizeCb = __webpack_require__(6);
+
+	// An internal function to generate callbacks that can be applied to each
+	// element in a collection, returning the desired result — either `_.identity`,
+	// an arbitrary callback, a property matcher, or a property accessor.
+	function baseIteratee(value, context, argCount) {
+	  if (value == null) return identity;
+	  if (isFunction(value)) return _optimizeCb(value, context, argCount);
+	  if (isObject(value) && !isArray(value)) return matcher(value);
+	  return property(value);
+	}
+
+	module.exports = baseIteratee;
+
+/***/ }),
+/* 81 */
+/***/ (function(module, exports) {
+
+	// Keep the identity function around for default iteratees.
+	function identity(value) {
+	  return value;
+	}
+
+	module.exports = identity;
+
+/***/ }),
+/* 82 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var _setup = __webpack_require__(9);
+	var _tagTester = __webpack_require__(17);
+
+	// Is a given value an array?
+	// Delegates to ECMA5's native `Array.isArray`.
+	var isArray = _setup.nativeIsArray || _tagTester('Array');
+
+	module.exports = isArray;
+
+/***/ }),
+/* 83 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var extendOwn = __webpack_require__(84);
+	var isMatch = __webpack_require__(86);
+
+	// Returns a predicate for checking whether an object has a given set of
+	// `key:value` pairs.
+	function matcher(attrs) {
+	  attrs = extendOwn({}, attrs);
+	  return function (obj) {
+	    return isMatch(obj, attrs);
+	  };
+	}
+
+	module.exports = matcher;
+
+/***/ }),
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var _createAssigner = __webpack_require__(85);
+	var keys = __webpack_require__(12);
+
+	// Assigns a given object with all the own properties in the passed-in
+	// object(s).
+	// (https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
+	var extendOwn = _createAssigner(keys);
+
+	module.exports = extendOwn;
+
+/***/ }),
+/* 85 */
+/***/ (function(module, exports) {
+
+	// An internal function for creating assigner functions.
+	function createAssigner(keysFunc, defaults) {
+	  return function (obj) {
+	    var length = arguments.length;
+	    if (defaults) obj = Object(obj);
+	    if (length < 2 || obj == null) return obj;
+	    for (var index = 1; index < length; index++) {
+	      var source = arguments[index],
+	          keys = keysFunc(source),
+	          l = keys.length;
+	      for (var i = 0; i < l; i++) {
+	        var key = keys[i];
+	        if (!defaults || obj[key] === void 0) obj[key] = source[key];
+	      }
+	    }
+	    return obj;
+	  };
+	}
+
+	module.exports = createAssigner;
+
+/***/ }),
+/* 86 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var keys = __webpack_require__(12);
+
+	// Returns whether an object has a given set of `key:value` pairs.
+	function isMatch(object, attrs) {
+	  var _keys = keys(attrs),
+	      length = _keys.length;
+	  if (object == null) return !length;
+	  var obj = Object(object);
+	  for (var i = 0; i < length; i++) {
+	    var key = _keys[i];
+	    if (attrs[key] !== obj[key] || !(key in obj)) return false;
+	  }
+	  return true;
+	}
+
+	module.exports = isMatch;
+
+/***/ }),
+/* 87 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var _deepGet = __webpack_require__(88);
+	var _toPath = __webpack_require__(89);
+
+	// Creates a function that, when passed an object, will traverse that object’s
+	// properties down the given `path`, specified as an array of keys or indices.
+	function property(path) {
+	  path = _toPath(path);
+	  return function (obj) {
+	    return _deepGet(obj, path);
+	  };
+	}
+
+	module.exports = property;
+
+/***/ }),
+/* 88 */
+/***/ (function(module, exports) {
+
+	// Internal function to obtain a nested property in `obj` along `path`.
+	function deepGet(obj, path) {
+	  var length = path.length;
+	  for (var i = 0; i < length; i++) {
+	    if (obj == null) return void 0;
+	    obj = obj[path[i]];
+	  }
+	  return length ? obj : void 0;
+	}
+
+	module.exports = deepGet;
+
+/***/ }),
+/* 89 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(79);
+	__webpack_require__(90);
+
+	// Internal wrapper for `_.toPath` to enable minification.
+	// Similar to `cb` for `_.iteratee`.
+	function toPath(path) {
+	  return underscore.toPath(path);
+	}
+
+	module.exports = toPath;
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(79);
+	var isArray = __webpack_require__(82);
+
+	// Normalize a (deep) property `path` to array.
+	// Like `_.iteratee`, this function can be customized.
+	function toPath(path) {
+	  return isArray(path) ? path : [path];
+	}
+	underscore.toPath = toPath;
+
+	module.exports = toPath;
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(79);
+	var _baseIteratee = __webpack_require__(80);
+
+	// External wrapper for our callback generator. Users may customize
+	// `_.iteratee` if they want additional predicate/iteratee shorthand styles.
+	// This abstraction hides the internal-only `argCount` argument.
+	function iteratee(value, context) {
+	  return _baseIteratee(value, context, Infinity);
+	}
+	underscore.iteratee = iteratee;
+
+	module.exports = iteratee;
+
+/***/ }),
+/* 92 */
 /***/ (function(module, exports) {
 
 	module.exports = function ini_sidebar_params(params) {
@@ -12904,7 +11929,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 66 */
+/* 93 */
 /***/ (function(module, exports) {
 
 	module.exports = function make_view_request(params, requested_view) {
@@ -12929,22 +11954,22 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 67 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var ini_label_params = __webpack_require__(68);
-	var set_viz_wrapper_size = __webpack_require__(69);
-	var get_svg_dim = __webpack_require__(71);
-	var calc_label_params = __webpack_require__(72);
-	var calc_clust_width = __webpack_require__(73);
-	var calc_clust_height = __webpack_require__(74);
-	var calc_val_max = __webpack_require__(75);
-	var calc_matrix_params = __webpack_require__(76);
-	var set_zoom_params = __webpack_require__(82);
-	var calc_default_fs = __webpack_require__(84);
+	var ini_label_params = __webpack_require__(95);
+	var set_viz_wrapper_size = __webpack_require__(98);
+	var get_svg_dim = __webpack_require__(100);
+	var calc_label_params = __webpack_require__(101);
+	var calc_clust_width = __webpack_require__(102);
+	var calc_clust_height = __webpack_require__(104);
+	var calc_val_max = __webpack_require__(105);
+	var calc_matrix_params = __webpack_require__(106);
+	var set_zoom_params = __webpack_require__(112);
+	var calc_default_fs = __webpack_require__(114);
 	var utils = __webpack_require__(2);
 	var get_available_filters = __webpack_require__(4);
-	var make_cat_params = __webpack_require__(85);
+	var make_cat_params = __webpack_require__(115);
 
 	module.exports = function calc_viz_params(params, predefined_cat_colors = true) {
 	  params.labels = ini_label_params(params);
@@ -13104,13 +12129,12 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 68 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var underscore = __webpack_require__(5);
+	var max = __webpack_require__(96);
 
 	module.exports = function ini_label_params(params) {
-
 	  var labels = {};
 	  labels.super_label_scale = params.super_label_scale;
 	  labels.super_labels = params.super_labels;
@@ -13124,11 +12148,11 @@ var Clustergrammer =
 
 	  labels.show_label_tooltips = params.show_label_tooltips;
 
-	  labels.row_max_char = underscore.max(params.network_data.row_nodes, function (inst) {
+	  labels.row_max_char = max(params.network_data.row_nodes, function (inst) {
 	    return inst.name.length;
 	  }).name.length;
 
-	  labels.col_max_char = underscore.max(params.network_data.col_nodes, function (inst) {
+	  labels.col_max_char = max(params.network_data.col_nodes, function (inst) {
 	    return inst.name.length;
 	  }).name.length;
 
@@ -13138,10 +12162,67 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 69 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var calc_viz_dimensions = __webpack_require__(70);
+	var _isArrayLike = __webpack_require__(7);
+	var values = __webpack_require__(97);
+	var _cb = __webpack_require__(78);
+	var each = __webpack_require__(5);
+
+	// Return the maximum element (or element-based computation).
+	function max(obj, iteratee, context) {
+	  var result = -Infinity,
+	      lastComputed = -Infinity,
+	      value,
+	      computed;
+	  if (iteratee == null || typeof iteratee == 'number' && typeof obj[0] != 'object' && obj != null) {
+	    obj = _isArrayLike(obj) ? obj : values(obj);
+	    for (var i = 0, length = obj.length; i < length; i++) {
+	      value = obj[i];
+	      if (value != null && value > result) {
+	        result = value;
+	      }
+	    }
+	  } else {
+	    iteratee = _cb(iteratee, context);
+	    each(obj, function (v, index, list) {
+	      computed = iteratee(v, index, list);
+	      if (computed > lastComputed || computed === -Infinity && result === -Infinity) {
+	        result = v;
+	        lastComputed = computed;
+	      }
+	    });
+	  }
+	  return result;
+	}
+
+	module.exports = max;
+
+/***/ }),
+/* 97 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var keys = __webpack_require__(12);
+
+	// Retrieve the values of an object's properties.
+	function values(obj) {
+	  var _keys = keys(obj);
+	  var length = _keys.length;
+	  var values = Array(length);
+	  for (var i = 0; i < length; i++) {
+	    values[i] = obj[_keys[i]];
+	  }
+	  return values;
+	}
+
+	module.exports = values;
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var calc_viz_dimensions = __webpack_require__(99);
 
 	module.exports = function set_viz_wrapper_size(params) {
 	  // Create wrapper around SVG visualization
@@ -13168,7 +12249,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 70 */
+/* 99 */
 /***/ (function(module, exports) {
 
 	module.exports = function calc_viz_dimensions(params) {
@@ -13218,7 +12299,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 71 */
+/* 100 */
 /***/ (function(module, exports) {
 
 	module.exports = function get_svg_dim(params) {
@@ -13232,7 +12313,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 72 */
+/* 101 */
 /***/ (function(module, exports) {
 
 	module.exports = function calc_label_params(viz) {
@@ -13253,10 +12334,10 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 73 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(5);
+	var range = __webpack_require__(103);
 
 	module.exports = function calc_clust_width(viz) {
 	  viz.clust = {};
@@ -13276,7 +12357,7 @@ var Clustergrammer =
 	  var ini_clust_width = viz.svg_dim.width - viz.clust.margin.left - viz.spillover_col_slant;
 
 	  // make tmp scale to calc height of triangle col labels
-	  var tmp_x_scale = d3.scale.ordinal().rangeBands([0, ini_clust_width]).domain(_.range(viz.num_col_nodes));
+	  var tmp_x_scale = d3.scale.ordinal().rangeBands([0, ini_clust_width]).domain(range(viz.num_col_nodes));
 
 	  var triangle_height = tmp_x_scale.rangeBand() / 2;
 
@@ -13293,7 +12374,35 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 74 */
+/* 103 */
+/***/ (function(module, exports) {
+
+	// Generate an integer Array containing an arithmetic progression. A port of
+	// the native Python `range()` function. See
+	// [the Python documentation](https://docs.python.org/library/functions.html#range).
+	function range(start, stop, step) {
+	  if (stop == null) {
+	    stop = start || 0;
+	    start = 0;
+	  }
+	  if (!step) {
+	    step = stop < start ? -1 : 1;
+	  }
+
+	  var length = Math.max(Math.ceil((stop - start) / step), 0);
+	  var range = Array(length);
+
+	  for (var idx = 0; idx < length; idx++, start += step) {
+	    range[idx] = start;
+	  }
+
+	  return range;
+	}
+
+	module.exports = range;
+
+/***/ }),
+/* 104 */
 /***/ (function(module, exports) {
 
 	module.exports = function calc_clust_height(viz) {
@@ -13310,20 +12419,19 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 75 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var underscore = __webpack_require__(5);
+	var max = __webpack_require__(96);
 
 	module.exports = function calc_val_max(params) {
-
-	  var val_max = Math.abs(underscore.max(params.network_data.col_nodes, function (d) {
+	  var val_max = Math.abs(max(params.network_data.col_nodes, function (d) {
 	    return Math.abs(d.value);
 	  }).value);
 
 	  params.labels.bar_scale_col = d3.scale.linear().domain([0, val_max]).range([0, 0.75 * params.viz.norm_labels.width.col]);
 
-	  val_max = Math.abs(underscore.max(params.network_data.row_nodes, function (d) {
+	  val_max = Math.abs(max(params.network_data.row_nodes, function (d) {
 	    return Math.abs(d.value);
 	  }).value);
 
@@ -13333,11 +12441,11 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 76 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var ini_matrix_params = __webpack_require__(77);
-	var calc_downsampled_levels = __webpack_require__(79);
+	var ini_matrix_params = __webpack_require__(107);
+	var calc_downsampled_levels = __webpack_require__(109);
 
 	module.exports = function calc_matrix_params(params) {
 	  params.matrix = ini_matrix_params(params);
@@ -13381,12 +12489,12 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 77 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
-	var initialize_matrix = __webpack_require__(78);
-	var _ = __webpack_require__(5);
+	var initialize_matrix = __webpack_require__(108);
+	var max = __webpack_require__(96);
 
 	module.exports = function ini_matrix_params(params) {
 	  var matrix = {};
@@ -13464,11 +12572,11 @@ var Clustergrammer =
 	  });
 
 	  if (utils.has(network_data, "all_links")) {
-	    matrix.max_link = _.max(network_data.all_links, function (d) {
+	    matrix.max_link = max(network_data.all_links, function (d) {
 	      return Math.abs(d.value);
 	    }).value;
 	  } else {
-	    matrix.max_link = _.max(network_data.links, function (d) {
+	    matrix.max_link = max(network_data.links, function (d) {
 	      return Math.abs(d.value);
 	    }).value;
 	  }
@@ -13512,7 +12620,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 78 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
@@ -13592,11 +12700,11 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 79 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var calc_downsampled_matrix = __webpack_require__(80);
-	var $ = __webpack_require__(81);
+	var calc_downsampled_matrix = __webpack_require__(110);
+	var $ = __webpack_require__(111);
 
 	module.exports = function calc_downsampled_levels(params) {
 	  // console.log('---- before ---------')
@@ -13693,10 +12801,10 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 80 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(5);
+	var each = __webpack_require__(5);
 	var utils = __webpack_require__(2);
 
 	module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
@@ -13728,7 +12836,7 @@ var Clustergrammer =
 	    ds_mat.push(inst_obj);
 	  }
 
-	  _.each(mat, function (inst_row) {
+	  each(mat, function (inst_row) {
 	    // row ordering information is contained in y_scale
 	    var inst_y = params.viz.y_scale(inst_row.row_index);
 
@@ -13755,12 +12863,12 @@ var Clustergrammer =
 	  });
 
 	  // average the values
-	  _.each(ds_mat, function (tmp_ds) {
+	  ds_mat.forEach(function (tmp_ds) {
 	    var tmp_row_data = tmp_ds.row_data;
 
 	    var num_names = tmp_ds.all_names.length;
 
-	    _.each(tmp_row_data, function (tmp_obj) {
+	    each(tmp_row_data, function (tmp_obj) {
 	      tmp_obj.value = tmp_obj.value / num_names * opacity_factor;
 	    });
 	  });
@@ -13768,7 +12876,7 @@ var Clustergrammer =
 	  // all names were found
 	  var all_names = [];
 
-	  _.each(ds_mat, function (inst_row) {
+	  ds_mat.forEach(function (inst_row) {
 	    all_names = all_names.concat(inst_row.all_names);
 	  });
 
@@ -13776,7 +12884,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 81 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -23804,10 +22912,10 @@ var Clustergrammer =
 		});
 
 /***/ }),
-/* 82 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var calc_zoom_switching = __webpack_require__(83);
+	var calc_zoom_switching = __webpack_require__(113);
 
 	module.exports = function set_zoom_params(params) {
 
@@ -23825,7 +22933,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 83 */
+/* 113 */
 /***/ (function(module, exports) {
 
 	module.exports = function calc_zoom_switching(viz) {
@@ -23846,7 +22954,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 84 */
+/* 114 */
 /***/ (function(module, exports) {
 
 	module.exports = function calc_default_fs(params) {
@@ -23866,14 +22974,15 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 85 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var calc_cat_params = __webpack_require__(86);
+	var calc_cat_params = __webpack_require__(116);
 	var utils = __webpack_require__(2);
-	var colors = __webpack_require__(87);
-	var check_if_value_cats = __webpack_require__(88);
-	var _ = __webpack_require__(5);
+	var colors = __webpack_require__(117);
+	var check_if_value_cats = __webpack_require__(118);
+	var each = __webpack_require__(5);
+	var countBy = __webpack_require__(119);
 
 	module.exports = function make_cat_params(params, viz, predefined_cat_colors = true) {
 	  var super_string = ": ";
@@ -23918,7 +23027,7 @@ var Clustergrammer =
 	      viz.cat_info[inst_rc] = {};
 	      viz.cat_names[inst_rc] = {};
 
-	      _.each(viz.all_cats[inst_rc], function (cat_title) {
+	      each(viz.all_cats[inst_rc], function (cat_title) {
 	        var inst_node = params.network_data[inst_rc + "_nodes"][0];
 
 	        // look for title of category in category name
@@ -23955,7 +23064,7 @@ var Clustergrammer =
 	        // add histogram to inst_info
 	        if (inst_info.type === "cat_strings") {
 	          // remove titles from categories in hist
-	          var cat_hist = _.countBy(cat_instances);
+	          var cat_hist = countBy(cat_instances);
 	          inst_info.cat_hist = cat_hist;
 	        } else {
 	          inst_info.cat_hist = null;
@@ -24005,7 +23114,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 86 */
+/* 116 */
 /***/ (function(module, exports) {
 
 	module.exports = function calc_cat_params(params, viz) {
@@ -24056,7 +23165,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 87 */
+/* 117 */
 /***/ (function(module, exports) {
 
 	// colors from http://graphicdesign.stackexchange.com/revisions/3815/8
@@ -24090,10 +23199,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 88 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var underscore = __webpack_require__(5);
+	var max = __webpack_require__(96);
 
 	module.exports = function check_if_value_cats(cat_states) {
 	  var tmp_cat = cat_states[0];
@@ -24140,7 +23249,7 @@ var Clustergrammer =
 
 	  if (cat_types === "cat_values") {
 	    // get absolute value
-	    var max_value = underscore.max(all_values, function (d) {
+	    var max_value = max(all_values, function (d) {
 	      return Math.abs(d);
 	    });
 
@@ -24158,7 +23267,45 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 89 */
+/* 119 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var _group = __webpack_require__(120);
+	var _has = __webpack_require__(14);
+
+	// Counts instances of an object that group by a certain criterion. Pass
+	// either a string attribute to count by, or a function that returns the
+	// criterion.
+	var countBy = _group(function (result, value, key) {
+	  if (_has(result, key)) result[key]++;else result[key] = 1;
+	});
+
+	module.exports = countBy;
+
+/***/ }),
+/* 120 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var _cb = __webpack_require__(78);
+	var each = __webpack_require__(5);
+
+	// An internal function used for aggregate "group by" operations.
+	function group(behavior, partition) {
+	  return function (obj, iteratee, context) {
+	    var result = partition ? [[], []] : {};
+	    iteratee = _cb(iteratee, context);
+	    each(obj, function (value, index) {
+	      var key = iteratee(value, index, obj);
+	      behavior(result, value, key);
+	    });
+	    return result;
+	  };
+	}
+
+	module.exports = group;
+
+/***/ }),
+/* 121 */
 /***/ (function(module, exports) {
 
 	module.exports = function ini_zoom_info() {
@@ -24173,25 +23320,25 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 90 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var generate_matrix = __webpack_require__(91);
-	var make_row_label_container = __webpack_require__(102);
-	var make_col_label_container = __webpack_require__(134);
-	var generate_super_labels = __webpack_require__(142);
-	var spillover = __webpack_require__(143);
-	var initialize_resizing = __webpack_require__(154);
-	var ini_doubleclick = __webpack_require__(164);
-	var make_col_cat = __webpack_require__(186);
-	var make_row_cat = __webpack_require__(191);
-	var trim_text = __webpack_require__(149);
-	var make_row_dendro = __webpack_require__(192);
-	var make_col_dendro = __webpack_require__(193);
-	var build_dendro_sliders = __webpack_require__(194);
+	var generate_matrix = __webpack_require__(123);
+	var make_row_label_container = __webpack_require__(142);
+	var make_col_label_container = __webpack_require__(174);
+	var generate_super_labels = __webpack_require__(186);
+	var spillover = __webpack_require__(187);
+	var initialize_resizing = __webpack_require__(198);
+	var ini_doubleclick = __webpack_require__(208);
+	var make_col_cat = __webpack_require__(230);
+	var make_row_cat = __webpack_require__(235);
+	var trim_text = __webpack_require__(193);
+	var make_row_dendro = __webpack_require__(236);
+	var make_col_dendro = __webpack_require__(237);
+	var build_dendro_sliders = __webpack_require__(238);
 	// var build_tree_icon = require('./menus/build_tree_icon');
 	// var build_filter_icon = require('./menus/build_filter_icon');
-	var make_row_dendro_spillover = __webpack_require__(197);
+	var make_row_dendro_spillover = __webpack_require__(241);
 
 	module.exports = function make_viz(cgm) {
 	  var params = cgm.params;
@@ -24292,13 +23439,13 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 91 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
-	var draw_gridlines = __webpack_require__(92);
-	var add_click_hlight = __webpack_require__(93);
-	var make_matrix_rows = __webpack_require__(94);
+	var draw_gridlines = __webpack_require__(124);
+	var add_click_hlight = __webpack_require__(125);
+	var make_matrix_rows = __webpack_require__(126);
 
 	module.exports = function (params, svg_elem) {
 	  var network_data = params.network_data;
@@ -24382,7 +23529,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 92 */
+/* 124 */
 /***/ (function(module, exports) {
 
 	// var grid_lines_viz = require('./grid_lines_viz');
@@ -24433,7 +23580,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 93 */
+/* 125 */
 /***/ (function(module, exports) {
 
 	module.exports = function (params, clicked_rect) {
@@ -24493,50 +23640,49 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 94 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_simple_rows = __webpack_require__(95);
-	var d3_tip_custom = __webpack_require__(101);
-	var underscore = __webpack_require__(5);
+	var make_simple_rows = __webpack_require__(127);
+	var d3_tip_custom = __webpack_require__(133);
+	var each = __webpack_require__(5);
+	var contains = __webpack_require__(134);
 
 	// current matrix can change with downsampling
-	module.exports = function make_matrix_rows(params, current_matrix, row_names = 'all', ds_level = -1) {
-
+	module.exports = function make_matrix_rows(params, current_matrix, row_names = "all", ds_level = -1) {
 	  // defaults
 	  var y_scale = params.viz.y_scale;
 	  var make_tip = true;
-	  var row_class = 'row';
+	  var row_class = "row";
 
 	  if (ds_level >= 0) {
 	    y_scale = params.viz.ds[ds_level].y_scale;
 
 	    // do not show tip when rows are downsampled
 	    make_tip = false;
-	    row_class = 'ds' + String(ds_level) + '_row';
+	    row_class = "ds" + String(ds_level) + "_row";
 	  }
 
 	  if (make_tip) {
-
 	    // do not remove tile_tip here
 	    /////////////////////////////////
 
 	    // make rows in the matrix - add key names to rows in matrix
 	    /////////////////////////////////////////////////////////////
 	    // d3-tooltip - for tiles
-	    var tip = d3_tip_custom().attr('class', function () {
-	      var root_tip_selector = params.viz.root_tips.replace('.', '');
-	      var class_string = root_tip_selector + ' d3-tip ' + root_tip_selector + '_tile_tip';
+	    var tip = d3_tip_custom().attr("class", function () {
+	      var root_tip_selector = params.viz.root_tips.replace(".", "");
+	      var class_string = root_tip_selector + " d3-tip " + root_tip_selector + "_tile_tip";
 	      return class_string;
-	    }).style('display', 'none').direction('nw').offset([0, 0]).html(function (d) {
+	    }).style("display", "none").direction("nw").offset([0, 0]).html(function (d) {
 	      var inst_value = String(d.value.toFixed(3));
 	      var tooltip_string;
 
 	      if (params.keep_orig) {
 	        var orig_value = String(d.value_orig.toFixed(3));
-	        tooltip_string = '<p>' + d.row_name + ' and ' + d.col_name + '</p>' + '<p> normalized value: ' + inst_value + '</p>' + '<div> original value: ' + orig_value + '</div>';
+	        tooltip_string = "<p>" + d.row_name + " and " + d.col_name + "</p>" + "<p> normalized value: " + inst_value + "</p>" + "<div> original value: " + orig_value + "</div>";
 	      } else {
-	        tooltip_string = '<p>' + d.row_name + ' and ' + d.col_name + '</p>' + '<div> value: ' + inst_value + '</div>';
+	        tooltip_string = "<p>" + d.row_name + " and " + d.col_name + "</p>" + "<div> value: " + inst_value + "</div>";
 	      }
 
 	      return tooltip_string;
@@ -24547,41 +23693,41 @@ var Clustergrammer =
 
 	  // gather a subset of row data from the matrix or use all rows
 	  var matrix_subset = [];
-	  if (row_names === 'all') {
+	  if (row_names === "all") {
 	    matrix_subset = current_matrix;
 	  } else {
-	    underscore.each(current_matrix, function (inst_row) {
-	      if (underscore.contains(row_names, inst_row.name)) {
+	    each(current_matrix, function (inst_row) {
+	      if (contains(row_names, inst_row.name)) {
 	        matrix_subset.push(inst_row);
 	      }
 	    });
 	  }
 
-	  d3.select(params.root + ' .clust_group').selectAll('.row').data(matrix_subset, function (d) {
+	  d3.select(params.root + " .clust_group").selectAll(".row").data(matrix_subset, function (d) {
 	    return d.name;
-	  }).enter().append('g').classed(row_class, true).attr('transform', function (d) {
-	    return 'translate(0,' + y_scale(d.row_index) + ')';
+	  }).enter().append("g").classed(row_class, true).attr("transform", function (d) {
+	    return "translate(0," + y_scale(d.row_index) + ")";
 	  }).each(function (d) {
 	    make_simple_rows(params, d, tip, this, ds_level);
 	  });
 
 	  if (params.viz.ds_level === -1 && tip != null) {
-	    d3.selectAll(params.root + ' .row').call(tip);
+	    d3.selectAll(params.root + " .row").call(tip);
 	  }
-		};
+	};
 
 /***/ }),
-/* 95 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* eslint-disable */
 
-	var draw_up_tile = __webpack_require__(96);
-	var draw_dn_tile = __webpack_require__(97);
-	var mouseover_tile = __webpack_require__(98);
-	var mouseout_tile = __webpack_require__(99);
-	var fine_position_tile = __webpack_require__(100);
-	var _ = __webpack_require__(5);
+	var draw_up_tile = __webpack_require__(128);
+	var draw_dn_tile = __webpack_require__(129);
+	var mouseover_tile = __webpack_require__(130);
+	var mouseout_tile = __webpack_require__(131);
+	var fine_position_tile = __webpack_require__(132);
+	var filter = __webpack_require__(77);
 	var utils = __webpack_require__(2);
 
 	module.exports = function make_simple_rows(params, inst_data, tip, row_selection, ds_level = -1) {
@@ -24604,7 +23750,7 @@ var Clustergrammer =
 	  var row_values;
 	  if (keep_orig === false) {
 	    // value: remove zero values to make visualization faster
-	    row_values = _.filter(inp_row_data, function (num) {
+	    row_values = filter(inp_row_data, function (num) {
 	      return num.value !== 0;
 	    });
 	  } else {
@@ -24691,7 +23837,7 @@ var Clustergrammer =
 
 	  if (params.matrix.tile_type == "updn") {
 	    // value split
-	    var row_split_data = _.filter(inp_row_data, function (num) {
+	    var row_split_data = filter(inp_row_data, function (num) {
 	      return num.value_up != 0 || num.value_dn != 0;
 	    });
 
@@ -24755,7 +23901,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 96 */
+/* 128 */
 /***/ (function(module, exports) {
 
 	module.exports = function draw_up_tile(params) {
@@ -24771,7 +23917,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 97 */
+/* 129 */
 /***/ (function(module, exports) {
 
 	module.exports = function draw_dn_tile(params) {
@@ -24787,7 +23933,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 98 */
+/* 130 */
 /***/ (function(module, exports) {
 
 	module.exports = function mouseover_tile(params, inst_selection, tip, inst_arguments) {
@@ -24811,7 +23957,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 99 */
+/* 131 */
 /***/ (function(module, exports) {
 
 	module.exports = function mouseout_tile(params, inst_selection, tip) {
@@ -24826,7 +23972,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 100 */
+/* 132 */
 /***/ (function(module, exports) {
 
 	module.exports = function fine_position_tile(params, d) {
@@ -24846,7 +23992,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 101 */
+/* 133 */
 /***/ (function(module, exports) {
 
 	module.exports = function d3_tip_custom() {
@@ -25202,10 +24348,159 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 102 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_row_labels = __webpack_require__(103);
+	var _isArrayLike = __webpack_require__(7);
+	var values = __webpack_require__(97);
+	var indexOf = __webpack_require__(135);
+
+	// Determine if the array or object contains a given item (using `===`).
+	function contains(obj, item, fromIndex, guard) {
+	  if (!_isArrayLike(obj)) obj = values(obj);
+	  if (typeof fromIndex != 'number' || guard) fromIndex = 0;
+	  return indexOf(obj, item, fromIndex) >= 0;
+	}
+
+	module.exports = contains;
+
+/***/ }),
+/* 135 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var sortedIndex = __webpack_require__(136);
+	var findIndex = __webpack_require__(137);
+	var _createIndexFinder = __webpack_require__(139);
+
+	// Return the position of the first occurrence of an item in an array,
+	// or -1 if the item is not included in the array.
+	// If the array is large and already in sort order, pass `true`
+	// for **isSorted** to use binary search.
+	var indexOf = _createIndexFinder(1, findIndex, sortedIndex);
+
+	module.exports = indexOf;
+
+/***/ }),
+/* 136 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var _cb = __webpack_require__(78);
+	var _getLength = __webpack_require__(10);
+
+	// Use a comparator function to figure out the smallest index at which
+	// an object should be inserted so as to maintain order. Uses binary search.
+	function sortedIndex(array, obj, iteratee, context) {
+	  iteratee = _cb(iteratee, context, 1);
+	  var value = iteratee(obj);
+	  var low = 0,
+	      high = _getLength(array);
+	  while (low < high) {
+	    var mid = Math.floor((low + high) / 2);
+	    if (iteratee(array[mid]) < value) low = mid + 1;else high = mid;
+	  }
+	  return low;
+	}
+
+	module.exports = sortedIndex;
+
+/***/ }),
+/* 137 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var _createPredicateIndexFinder = __webpack_require__(138);
+
+	// Returns the first index on an array-like that passes a truth test.
+	var findIndex = _createPredicateIndexFinder(1);
+
+	module.exports = findIndex;
+
+/***/ }),
+/* 138 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var _cb = __webpack_require__(78);
+	var _getLength = __webpack_require__(10);
+
+	// Internal function to generate `_.findIndex` and `_.findLastIndex`.
+	function createPredicateIndexFinder(dir) {
+	  return function (array, predicate, context) {
+	    predicate = _cb(predicate, context);
+	    var length = _getLength(array);
+	    var index = dir > 0 ? 0 : length - 1;
+	    for (; index >= 0 && index < length; index += dir) {
+	      if (predicate(array[index], index, array)) return index;
+	    }
+	    return -1;
+	  };
+	}
+
+	module.exports = createPredicateIndexFinder;
+
+/***/ }),
+/* 139 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var _getLength = __webpack_require__(10);
+	var _setup = __webpack_require__(9);
+	var _isNaN = __webpack_require__(140);
+
+	// Internal function to generate the `_.indexOf` and `_.lastIndexOf` functions.
+	function createIndexFinder(dir, predicateFind, sortedIndex) {
+	  return function (array, item, idx) {
+	    var i = 0,
+	        length = _getLength(array);
+	    if (typeof idx == 'number') {
+	      if (dir > 0) {
+	        i = idx >= 0 ? idx : Math.max(idx + length, i);
+	      } else {
+	        length = idx >= 0 ? Math.min(idx + 1, length) : idx + length + 1;
+	      }
+	    } else if (sortedIndex && idx && length) {
+	      idx = sortedIndex(array, item);
+	      return array[idx] === item ? idx : -1;
+	    }
+	    if (item !== item) {
+	      idx = predicateFind(_setup.slice.call(array, i, length), _isNaN);
+	      return idx >= 0 ? idx + i : -1;
+	    }
+	    for (idx = dir > 0 ? i : length - 1; idx >= 0 && idx < length; idx += dir) {
+	      if (array[idx] === item) return idx;
+	    }
+	    return -1;
+	  };
+	}
+
+	module.exports = createIndexFinder;
+
+/***/ }),
+/* 140 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var _setup = __webpack_require__(9);
+	var isNumber = __webpack_require__(141);
+
+	// Is the given value `NaN`?
+	function isNaN(obj) {
+	  return isNumber(obj) && _setup._isNaN(obj);
+	}
+
+	module.exports = isNaN;
+
+/***/ }),
+/* 141 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var _tagTester = __webpack_require__(17);
+
+	var isNumber = _tagTester('Number');
+
+	module.exports = isNumber;
+
+/***/ }),
+/* 142 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var make_row_labels = __webpack_require__(143);
 
 	module.exports = function make_row_label_container(cgm, text_delay) {
 
@@ -25240,14 +24535,15 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 103 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
-	var add_row_click_hlight = __webpack_require__(104);
-	var row_reorder = __webpack_require__(105);
-	var make_row_tooltips = __webpack_require__(133);
-	var _ = __webpack_require__(5);
+	var add_row_click_hlight = __webpack_require__(144);
+	var row_reorder = __webpack_require__(145);
+	var make_row_tooltips = __webpack_require__(173);
+	var each = __webpack_require__(5);
+	var contains = __webpack_require__(134);
 
 	module.exports = function make_row_labels(cgm, row_names = "all", text_delay = 0) {
 	  // console.log('make_row_labels')
@@ -25259,8 +24555,8 @@ var Clustergrammer =
 	  if (row_names === "all") {
 	    row_nodes = params.network_data.row_nodes;
 	  } else {
-	    _.each(params.network_data.row_nodes, function (inst_row) {
-	      if (_.contains(row_names, inst_row.name)) {
+	    each(params.network_data.row_nodes, function (inst_row) {
+	      if (contains(row_names, inst_row.name)) {
 	        row_nodes.push(inst_row);
 	      }
 	    });
@@ -25349,7 +24645,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 104 */
+/* 144 */
 /***/ (function(module, exports) {
 
 	module.exports = function (params, clicked_row, id_clicked_row) {
@@ -25381,15 +24677,15 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 105 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var reposition_tile_highlight = __webpack_require__(106);
-	var toggle_dendro_view = __webpack_require__(107);
-	var ini_zoom_info = __webpack_require__(89);
-	var get_previous_zoom = __webpack_require__(132);
-	var calc_downsampled_levels = __webpack_require__(79);
-	var $ = __webpack_require__(81);
+	var reposition_tile_highlight = __webpack_require__(146);
+	var toggle_dendro_view = __webpack_require__(147);
+	var ini_zoom_info = __webpack_require__(121);
+	var get_previous_zoom = __webpack_require__(172);
+	var calc_downsampled_levels = __webpack_require__(109);
+	var $ = __webpack_require__(111);
 
 	module.exports = function row_reorder(cgm, row_selection, inst_row) {
 	  var params = cgm.params;
@@ -25508,7 +24804,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 106 */
+/* 146 */
 /***/ (function(module, exports) {
 
 	module.exports = function (params) {
@@ -25549,10 +24845,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 107 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_dendro_triangles = __webpack_require__(108);
+	var make_dendro_triangles = __webpack_require__(148);
 
 	module.exports = function toggle_dendro_view(cgm, inst_rc, wait_time = 1500) {
 
@@ -25594,16 +24890,16 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 108 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var calc_row_dendro_triangles = __webpack_require__(109);
-	var calc_col_dendro_triangles = __webpack_require__(110);
-	var dendro_group_highlight = __webpack_require__(111);
-	var d3_tip_custom = __webpack_require__(101);
-	var make_dendro_crop_buttons = __webpack_require__(113);
-	var make_cat_breakdown_graph = __webpack_require__(116);
-	var $ = __webpack_require__(81);
+	var calc_row_dendro_triangles = __webpack_require__(149);
+	var calc_col_dendro_triangles = __webpack_require__(150);
+	var dendro_group_highlight = __webpack_require__(151);
+	var d3_tip_custom = __webpack_require__(133);
+	var make_dendro_crop_buttons = __webpack_require__(153);
+	var make_cat_breakdown_graph = __webpack_require__(156);
+	var $ = __webpack_require__(111);
 
 	module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = false) {
 	  var params = cgm.params;
@@ -25801,10 +25097,10 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 109 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var underscore = __webpack_require__(5);
+	var each = __webpack_require__(5);
 	var utils = __webpack_require__(2);
 
 	module.exports = function calc_row_dendro_triangles(params) {
@@ -25813,7 +25109,7 @@ var Clustergrammer =
 	  var row_nodes = params.network_data.row_nodes;
 	  var row_nodes_names = params.network_data.row_nodes_names || [];
 
-	  underscore.each(row_nodes, function (d) {
+	  each(row_nodes, function (d) {
 	    var tmp_group = d.group[inst_level];
 	    var inst_index = row_nodes_names.indexOf(d.name);
 	    var inst_top = params.viz.y_scale(inst_index);
@@ -25848,7 +25144,7 @@ var Clustergrammer =
 
 	  var group_info = [];
 
-	  underscore.each(triangle_info, function (d) {
+	  each(triangle_info, function (d) {
 	    group_info.push(d);
 	  });
 
@@ -25856,10 +25152,10 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 110 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var underscore = __webpack_require__(5);
+	var each = __webpack_require__(5);
 	var utils = __webpack_require__(2);
 
 	module.exports = function calc_col_dendro_triangles(params) {
@@ -25868,7 +25164,7 @@ var Clustergrammer =
 	  var col_nodes = params.network_data.col_nodes;
 	  var col_nodes_names = params.network_data.col_nodes_names || [];
 
-	  underscore.each(col_nodes, function (d) {
+	  each(col_nodes, function (d) {
 	    var tmp_group = d.group[inst_level];
 	    var inst_index = col_nodes_names.indexOf(d.name);
 	    var inst_top = params.viz.x_scale(inst_index);
@@ -25903,7 +25199,7 @@ var Clustergrammer =
 
 	  var group_info = [];
 
-	  underscore.each(triangle_info, function (d) {
+	  each(triangle_info, function (d) {
 	    group_info.push(d);
 	  });
 
@@ -25911,10 +25207,10 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 111 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var dendro_shade_bars = __webpack_require__(112);
+	var dendro_shade_bars = __webpack_require__(152);
 
 	module.exports = function dendro_group_highlight(params, inst_selection, inst_data, inst_rc) {
 
@@ -25969,7 +25265,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 112 */
+/* 152 */
 /***/ (function(module, exports) {
 
 	module.exports = function dendro_shade_bars(params, inst_selection, inst_rc, inst_data) {
@@ -25999,15 +25295,15 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 113 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var calc_row_dendro_triangles = __webpack_require__(109);
-	var calc_col_dendro_triangles = __webpack_require__(110);
-	var d3_tip_custom = __webpack_require__(101);
-	var dendro_group_highlight = __webpack_require__(111);
-	var run_dendro_filter = __webpack_require__(114);
-	var zoom_crop_triangles = __webpack_require__(115);
+	var calc_row_dendro_triangles = __webpack_require__(149);
+	var calc_col_dendro_triangles = __webpack_require__(150);
+	var d3_tip_custom = __webpack_require__(133);
+	var dendro_group_highlight = __webpack_require__(151);
+	var run_dendro_filter = __webpack_require__(154);
+	var zoom_crop_triangles = __webpack_require__(155);
 
 	module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
 
@@ -26298,7 +25594,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 114 */
+/* 154 */
 /***/ (function(module, exports) {
 
 	module.exports = function run_dendro_filter(cgm, d, inst_rc) {
@@ -26339,7 +25635,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 115 */
+/* 155 */
 /***/ (function(module, exports) {
 
 	module.exports = function zoom_crop_triangles(params, zoom_info, inst_rc) {
@@ -26382,13 +25678,13 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 116 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var calc_cat_cluster_breakdown = __webpack_require__(117);
-	var underscore = __webpack_require__(5);
-	var cat_breakdown_bars = __webpack_require__(130);
-	var cat_breakdown_values = __webpack_require__(131);
+	var calc_cat_cluster_breakdown = __webpack_require__(157);
+	var each = __webpack_require__(5);
+	var cat_breakdown_bars = __webpack_require__(170);
+	var cat_breakdown_values = __webpack_require__(171);
 
 	module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, dendro_info, selector, tooltip = false) {
 	  /*
@@ -26437,7 +25733,7 @@ var Clustergrammer =
 	      // calculate the total number of nodes in downsampled case
 	      var inst_bar_data = cat_breakdown[0].bar_data;
 	      cluster_total = 0;
-	      underscore.each(inst_bar_data, function (tmp_data) {
+	      each(inst_bar_data, function (tmp_data) {
 	        cluster_total = cluster_total + tmp_data[num_nodes_ds_index];
 	      });
 	    }
@@ -26479,7 +25775,7 @@ var Clustergrammer =
 	    // the total amout to shift down the next category
 	    var shift_down = title_height;
 
-	    underscore.each(cat_breakdown, function (cat_data) {
+	    cat_breakdown.forEach(function (cat_data) {
 	      var max_bar_value = cat_data.bar_data[0][bars_index];
 
 	      var count_offset = digit_offset_scale(max_bar_value);
@@ -26542,11 +25838,11 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 117 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var binom_test = __webpack_require__(118);
-	var _ = __webpack_require__(5);
+	var binom_test = __webpack_require__(158);
+	var each = __webpack_require__(5);
 	var utils = __webpack_require__(2);
 
 	module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc) {
@@ -26575,7 +25871,7 @@ var Clustergrammer =
 	  var is_downsampled = false;
 
 	  var inst_name;
-	  _.each(all_nodes, function (inst_node) {
+	  each(all_nodes, function (inst_node) {
 	    inst_name = inst_node.name;
 
 	    if (clust_names.indexOf(inst_name) >= 0) {
@@ -26644,7 +25940,7 @@ var Clustergrammer =
 	      // all rows/cols
 	      // params
 
-	      _.each(cat_types_index, function (cat_index) {
+	      each(cat_types_index, function (cat_index) {
 	        inst_index = cat_index.split("-")[1];
 	        type_name = cat_types_names[inst_index];
 
@@ -26661,7 +25957,7 @@ var Clustergrammer =
 	        tmp_run_count[type_name] = {};
 
 	        // loop through the nodes and keep a running count of categories
-	        _.each(clust_nodes, function (tmp_node) {
+	        each(clust_nodes, function (tmp_node) {
 	          cat_name = tmp_node[cat_index];
 
 	          if (cat_name.indexOf(": ") >= 0) {
@@ -26739,7 +26035,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 118 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	
@@ -26747,11 +26043,11 @@ var Clustergrammer =
 	// Create a new, empty math.js instance
 	// It will only contain methods `import` and `config`
 	// math.import(require('mathjs/lib/type/fraction'));
-	var p_dict = __webpack_require__(119);
-	var core = __webpack_require__(13);
+	var p_dict = __webpack_require__(159);
+	var core = __webpack_require__(25);
 	var math = core.create();
 
-	math.import(__webpack_require__(120));
+	math.import(__webpack_require__(160));
 
 	module.exports = function binom_test(actual_k, n, p) {
 
@@ -26826,7 +26122,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 119 */
+/* 159 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -26835,16 +26131,16 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 120 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var deepMap = __webpack_require__(121);
+	var deepMap = __webpack_require__(161);
 
 	function factory(type, config, load, typed) {
-	  var gamma = load(__webpack_require__(122));
-	  var latex = __webpack_require__(46);
+	  var gamma = load(__webpack_require__(162));
+	  var latex = __webpack_require__(58);
 
 	  /**
 	   * Compute the factorial of a value
@@ -26901,7 +26197,7 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 121 */
+/* 161 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -26931,17 +26227,17 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 122 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var deepMap = __webpack_require__(121);
-	var isInteger = __webpack_require__(19).isInteger;
+	var deepMap = __webpack_require__(161);
+	var isInteger = __webpack_require__(31).isInteger;
 
 	function factory(type, config, load, typed) {
-	  var multiply = load(__webpack_require__(123));
-	  var pow = load(__webpack_require__(126));
+	  var multiply = load(__webpack_require__(163));
+	  var pow = load(__webpack_require__(166));
 
 	  /**
 	   * Compute the gamma function of a value using Lanczos approximation for
@@ -27117,24 +26413,24 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 123 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var extend = __webpack_require__(15).extend;
-	var array = __webpack_require__(29);
+	var extend = __webpack_require__(27).extend;
+	var array = __webpack_require__(41);
 
 	function factory(type, config, load, typed) {
-	  var latex = __webpack_require__(46);
+	  var latex = __webpack_require__(58);
 
-	  var matrix = load(__webpack_require__(44));
-	  var addScalar = load(__webpack_require__(45));
-	  var multiplyScalar = load(__webpack_require__(124));
-	  var equalScalar = load(__webpack_require__(40));
+	  var matrix = load(__webpack_require__(56));
+	  var addScalar = load(__webpack_require__(57));
+	  var multiplyScalar = load(__webpack_require__(164));
+	  var equalScalar = load(__webpack_require__(52));
 
-	  var algorithm11 = load(__webpack_require__(125));
-	  var algorithm14 = load(__webpack_require__(51));
+	  var algorithm11 = load(__webpack_require__(165));
+	  var algorithm14 = load(__webpack_require__(63));
 
 	  var DenseMatrix = type.DenseMatrix;
 	  var SparseMatrix = type.SparseMatrix;
@@ -28083,7 +27379,7 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 124 */
+/* 164 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -28145,14 +27441,14 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 125 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory(type, config, load, typed) {
 
-	  var equalScalar = load(__webpack_require__(40));
+	  var equalScalar = load(__webpack_require__(52));
 
 	  var SparseMatrix = type.SparseMatrix;
 
@@ -28258,21 +27554,21 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 126 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var isInteger = __webpack_require__(19).isInteger;
-	var size = __webpack_require__(29).size;
+	var isInteger = __webpack_require__(31).isInteger;
+	var size = __webpack_require__(41).size;
 
 	function factory(type, config, load, typed) {
-	  var latex = __webpack_require__(46);
-	  var eye = load(__webpack_require__(127));
-	  var multiply = load(__webpack_require__(123));
-	  var matrix = load(__webpack_require__(44));
-	  var fraction = load(__webpack_require__(128));
-	  var number = load(__webpack_require__(129));
+	  var latex = __webpack_require__(58);
+	  var eye = load(__webpack_require__(167));
+	  var multiply = load(__webpack_require__(163));
+	  var matrix = load(__webpack_require__(56));
+	  var fraction = load(__webpack_require__(168));
+	  var number = load(__webpack_require__(169));
 
 	  /**
 	   * Calculates the power of x to y, `x ^ y`.
@@ -28453,17 +27749,17 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 127 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var array = __webpack_require__(29);
-	var isInteger = __webpack_require__(19).isInteger;
+	var array = __webpack_require__(41);
+	var isInteger = __webpack_require__(31).isInteger;
 
 	function factory(type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(44));
+	  var matrix = load(__webpack_require__(56));
 
 	  /**
 	   * Create a 2-dimensional identity matrix with size m x n or n x n.
@@ -28604,12 +27900,12 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 128 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var deepMap = __webpack_require__(121);
+	var deepMap = __webpack_require__(161);
 
 	function factory(type, config, load, typed) {
 	  /**
@@ -28678,12 +27974,12 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 129 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var deepMap = __webpack_require__(121);
+	var deepMap = __webpack_require__(161);
 
 	function factory(type, config, load, typed) {
 	  /**
@@ -28762,7 +28058,7 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 130 */
+/* 170 */
 /***/ (function(module, exports) {
 
 	module.exports = function cat_breakdown_bars(params, cat_data, cat_graph_group, title_height, bars_index, max_bars, cat_bar_groups) {
@@ -28826,7 +28122,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 131 */
+/* 171 */
 /***/ (function(module, exports) {
 
 	module.exports = function cat_breakdown_values(params, cat_graph_group, cat_bar_groups, num_nodes_index, is_downsampled, count_offset, bars_index, cluster_total) {
@@ -28928,7 +28224,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 132 */
+/* 172 */
 /***/ (function(module, exports) {
 
 	module.exports = function get_previous_zoom(params) {
@@ -28956,7 +28252,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 133 */
+/* 173 */
 /***/ (function(module, exports) {
 
 	module.exports = function make_row_tooltips(params) {
@@ -28980,15 +28276,15 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 134 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
-	var add_col_click_hlight = __webpack_require__(135);
-	var col_reorder = __webpack_require__(136);
-	var row_reorder = __webpack_require__(105);
-	var make_col_tooltips = __webpack_require__(140);
-	var col_viz_aid_triangle = __webpack_require__(141);
+	var add_col_click_hlight = __webpack_require__(175);
+	var col_reorder = __webpack_require__(176);
+	var row_reorder = __webpack_require__(145);
+	var make_col_tooltips = __webpack_require__(184);
+	var col_viz_aid_triangle = __webpack_require__(185);
 
 	module.exports = function make_col_label_container(cgm, text_delay = 0) {
 
@@ -29118,7 +28414,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 135 */
+/* 175 */
 /***/ (function(module, exports) {
 
 	module.exports = function (params, clicked_col, id_clicked_col) {
@@ -29163,17 +28459,17 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 136 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// var utils = require('../Utils_clust');
-	var reposition_tile_highlight = __webpack_require__(106);
-	var toggle_dendro_view = __webpack_require__(107);
-	var show_visible_area = __webpack_require__(137);
-	var ini_zoom_info = __webpack_require__(89);
-	var get_previous_zoom = __webpack_require__(132);
-	var calc_downsampled_levels = __webpack_require__(79);
-	var $ = __webpack_require__(81);
+	var reposition_tile_highlight = __webpack_require__(146);
+	var toggle_dendro_view = __webpack_require__(147);
+	var show_visible_area = __webpack_require__(177);
+	var ini_zoom_info = __webpack_require__(121);
+	var get_previous_zoom = __webpack_require__(172);
+	var calc_downsampled_levels = __webpack_require__(109);
+	var $ = __webpack_require__(111);
 
 	module.exports = function col_reorder(cgm, col_selection, inst_term) {
 	  var params = cgm.params;
@@ -29288,17 +28584,17 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 137 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var find_viz_rows = __webpack_require__(138);
-	var make_matrix_rows = __webpack_require__(94);
-	var make_row_labels = __webpack_require__(103);
-	var make_row_visual_aid_triangles = __webpack_require__(139);
-	var underscore = __webpack_require__(5);
+	var find_viz_rows = __webpack_require__(178);
+	var make_matrix_rows = __webpack_require__(126);
+	var make_row_labels = __webpack_require__(143);
+	var make_row_visual_aid_triangles = __webpack_require__(179);
+	var contains = __webpack_require__(134);
+	var difference = __webpack_require__(180);
 
 	module.exports = function show_visible_area(cgm, zooming_stopped = false, zooming_out = false, make_all_rows = false) {
-
 	  // console.log('show_visible_area stopped: ' + String(zooming_stopped));
 
 	  var params = cgm.params;
@@ -29313,7 +28609,6 @@ var Clustergrammer =
 	  if (params.viz.ds === null) {
 	    check_ds_level = -1;
 	  } else {
-
 	    check_ds_level = Math.floor(Math.log(zoom_info.zoom_y) / Math.log(params.viz.ds_zt));
 
 	    if (check_ds_level > params.viz.ds_num_levels - 1) {
@@ -29342,7 +28637,6 @@ var Clustergrammer =
 	  var new_ds_level;
 
 	  if (zooming_stopped === true || override_ds === true) {
-
 	    // update new_ds_level if necessary (if decreasing detail, zooming out)
 	    new_ds_level = check_ds_level;
 
@@ -29370,27 +28664,27 @@ var Clustergrammer =
 
 	  var missing_rows;
 	  if (make_all_rows === false) {
-	    missing_rows = underscore.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
+	    missing_rows = difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
 	  } else {
 	    // make all rows (reordering)
-	    missing_rows = 'all';
+	    missing_rows = "all";
 
 	    // remove downsampled rows
-	    d3.selectAll(params.root + ' .ds' + String(new_ds_level) + '_row').remove();
+	    d3.selectAll(params.root + " .ds" + String(new_ds_level) + "_row").remove();
 	  }
 
 	  if (params.viz.ds != null) {
-	    var ds_row_class = '.ds' + String(params.viz.ds_level) + '_row';
-	    d3.selectAll(ds_row_class).style('display', 'block');
+	    var ds_row_class = ".ds" + String(params.viz.ds_level) + "_row";
+	    d3.selectAll(ds_row_class).style("display", "block");
 	  }
 
 	  // if downsampling
 	  if (new_ds_level >= 0) {
 	    // remove old rows
-	    d3.selectAll(params.root + ' .row').remove();
+	    d3.selectAll(params.root + " .row").remove();
 	    // remove tile tooltips and row tooltips
-	    d3.selectAll(params.viz.root_tips + '_tile_tip').remove();
-	    d3.selectAll(params.viz.root_tips + '_row_tip').remove();
+	    d3.selectAll(params.viz.root_tips + "_tile_tip").remove();
+	    d3.selectAll(params.viz.root_tips + "_row_tip").remove();
 	  }
 
 	  // default state for downsampling
@@ -29406,53 +28700,50 @@ var Clustergrammer =
 	    // set matrix to downsampled matrix
 	    inst_matrix = params.matrix.ds_matrix[new_ds_level];
 
-	    d3.selectAll(params.root + ' .row_cat_group path').remove();
+	    d3.selectAll(params.root + " .row_cat_group path").remove();
 	  }
 
 	  // also remove row visual aid triangles if zooming out
 	  if (zooming_out === true) {
-	    d3.selectAll(params.root + ' .row_cat_group path').remove();
+	    d3.selectAll(params.root + " .row_cat_group path").remove();
 	  }
 
 	  // remove rows and labels that are not visible and change ds_level
 	  /* run when zooming has stopped */
 	  if (zooming_stopped === true) {
-
 	    // remove not visible matrix rows
 	    if (new_ds_level >= 0) {
-
 	      // remove downsampled rows
-	      d3.selectAll(params.root + ' .ds' + String(new_ds_level) + '_row').each(function (d) {
-	        if (underscore.contains(params.viz.viz_nodes.row, d.name) === false) {
+	      d3.selectAll(params.root + " .ds" + String(new_ds_level) + "_row").each(function (d) {
+	        if (contains(params.viz.viz_nodes.row, d.name) === false) {
 	          d3.select(this).remove();
 	        }
 	      });
 	    } else {
 	      // remove real data rows
-	      d3.selectAll(params.root + ' .row').each(function (d) {
-	        if (underscore.contains(params.viz.viz_nodes.row, d.name) === false) {
+	      d3.selectAll(params.root + " .row").each(function (d) {
+	        if (contains(params.viz.viz_nodes.row, d.name) === false) {
 	          d3.select(this).remove();
 	        }
 	      });
 	    }
 
 	    // remove not visible row labels
-	    d3.selectAll(params.root + ' .row_label_group').each(function (d) {
-	      if (underscore.contains(params.viz.viz_nodes.row, d.name) === false) {
+	    d3.selectAll(params.root + " .row_label_group").each(function (d) {
+	      if (contains(params.viz.viz_nodes.row, d.name) === false) {
 	        d3.select(this).remove();
 	      }
 	    });
 
 	    // level change
 	    if (new_ds_level != old_ds_level) {
-
 	      // console.log('old: ' + String(old_ds_level) + ' new: '+ String(new_ds_level));
 
 	      // all visible rows are missing at new downsampling level
 	      missing_rows = params.viz.viz_nodes.row;
 
 	      // remove old level rows
-	      d3.selectAll(params.root + ' .ds' + String(old_ds_level) + '_row').remove();
+	      d3.selectAll(params.root + " .ds" + String(old_ds_level) + "_row").remove();
 	    }
 	  }
 
@@ -29460,26 +28751,24 @@ var Clustergrammer =
 	  // console.log(missing_rows)
 
 	  // only make new matrix_rows if there are missing rows
-	  if (missing_rows.length >= 1 || missing_rows === 'all') {
+	  if (missing_rows.length >= 1 || missing_rows === "all") {
 	    make_matrix_rows(params, inst_matrix, missing_rows, new_ds_level);
 	  }
 
 	  // only make new row_labels if there are missing row_labels, downsampled, and
 	  // not zooming out or zooming has stopped
 	  if (new_ds_level === -1) {
-
 	    if (zooming_out === false || zooming_stopped) {
-
 	      // check if labels need to be made
 	      ///////////////////////////////////
 	      // get the names visible row_labels
 	      var visible_row_labels = [];
-	      d3.selectAll(params.root + ' .row_label_group').each(function (d) {
+	      d3.selectAll(params.root + " .row_label_group").each(function (d) {
 	        visible_row_labels.push(d.name);
 	      });
 
 	      // find missing labels
-	      var missing_row_labels = underscore.difference(params.viz.viz_nodes.row, visible_row_labels);
+	      var missing_row_labels = difference(params.viz.viz_nodes.row, visible_row_labels);
 
 	      // make labels
 	      //////////////////////////////////
@@ -29490,10 +28779,10 @@ var Clustergrammer =
 	      }
 	    }
 	  }
-		};
+	};
 
 /***/ }),
-/* 138 */
+/* 178 */
 /***/ (function(module, exports) {
 
 	module.exports = function find_viz_rows(params, viz_area) {
@@ -29537,7 +28826,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 139 */
+/* 179 */
 /***/ (function(module, exports) {
 
 	module.exports = function make_row_visual_aid_triangles(params) {
@@ -29557,7 +28846,126 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 140 */
+/* 180 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var restArguments = __webpack_require__(181);
+	var _flatten = __webpack_require__(182);
+	var filter = __webpack_require__(77);
+	var contains = __webpack_require__(134);
+
+	// Take the difference between one array and a number of other arrays.
+	// Only the elements present in just the first array will remain.
+	var difference = restArguments(function (array, rest) {
+	  rest = _flatten(rest, true, true);
+	  return filter(array, function (value) {
+	    return !contains(rest, value);
+	  });
+	});
+
+	module.exports = difference;
+
+/***/ }),
+/* 181 */
+/***/ (function(module, exports) {
+
+	// Some functions take a variable number of arguments, or a few expected
+	// arguments at the beginning and then a variable number of values to operate
+	// on. This helper accumulates all remaining arguments past the function’s
+	// argument length (or an explicit `startIndex`), into an array that becomes
+	// the last argument. Similar to ES6’s "rest parameter".
+	function restArguments(func, startIndex) {
+	  startIndex = startIndex == null ? func.length - 1 : +startIndex;
+	  return function () {
+	    var length = Math.max(arguments.length - startIndex, 0),
+	        rest = Array(length),
+	        index = 0;
+	    for (; index < length; index++) {
+	      rest[index] = arguments[index + startIndex];
+	    }
+	    switch (startIndex) {
+	      case 0:
+	        return func.call(this, rest);
+	      case 1:
+	        return func.call(this, arguments[0], rest);
+	      case 2:
+	        return func.call(this, arguments[0], arguments[1], rest);
+	    }
+	    var args = Array(startIndex + 1);
+	    for (index = 0; index < startIndex; index++) {
+	      args[index] = arguments[index];
+	    }
+	    args[startIndex] = rest;
+	    return func.apply(this, args);
+	  };
+	}
+
+	module.exports = restArguments;
+
+/***/ }),
+/* 182 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var _getLength = __webpack_require__(10);
+	var _isArrayLike = __webpack_require__(7);
+	var isArray = __webpack_require__(82);
+	var isArguments = __webpack_require__(183);
+
+	// Internal implementation of a recursive `flatten` function.
+	function flatten(input, depth, strict, output) {
+	  output = output || [];
+	  if (!depth && depth !== 0) {
+	    depth = Infinity;
+	  } else if (depth <= 0) {
+	    return output.concat(input);
+	  }
+	  var idx = output.length;
+	  for (var i = 0, length = _getLength(input); i < length; i++) {
+	    var value = input[i];
+	    if (_isArrayLike(value) && (isArray(value) || isArguments(value))) {
+	      // Flatten current level of array or arguments object.
+	      if (depth > 1) {
+	        flatten(value, depth - 1, strict, output);
+	        idx = output.length;
+	      } else {
+	        var j = 0,
+	            len = value.length;
+	        while (j < len) output[idx++] = value[j++];
+	      }
+	    } else if (!strict) {
+	      output[idx++] = value;
+	    }
+	  }
+	  return output;
+	}
+
+	module.exports = flatten;
+
+/***/ }),
+/* 183 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var _tagTester = __webpack_require__(17);
+	var _has = __webpack_require__(14);
+
+	var isArguments = _tagTester('Arguments');
+
+	// Define a fallback version of the method in browsers (ahem, IE < 9), where
+	// there isn't any inspectable "Arguments" type.
+	(function () {
+	  if (!isArguments(arguments)) {
+	    isArguments = function (obj) {
+	      return _has(obj, 'callee');
+	    };
+	  }
+	})();
+
+	var isArguments$1 = isArguments;
+
+	module.exports = isArguments$1;
+
+/***/ }),
+/* 184 */
 /***/ (function(module, exports) {
 
 	module.exports = function make_col_tooltips(params) {
@@ -29575,7 +28983,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 141 */
+/* 185 */
 /***/ (function(module, exports) {
 
 	module.exports = function col_viz_aid_triangle(params) {
@@ -29592,7 +29000,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 142 */
+/* 186 */
 /***/ (function(module, exports) {
 
 	module.exports = function (params) {
@@ -29634,13 +29042,13 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 143 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var get_cat_title = __webpack_require__(144);
-	var ini_cat_reorder = __webpack_require__(145);
-	var make_row_cat_super_labels = __webpack_require__(153);
-	var make_dendro_crop_buttons = __webpack_require__(113);
+	var get_cat_title = __webpack_require__(188);
+	var ini_cat_reorder = __webpack_require__(189);
+	var make_row_cat_super_labels = __webpack_require__(197);
+	var make_dendro_crop_buttons = __webpack_require__(153);
 
 	module.exports = function Spillover(cgm) {
 	  var params = cgm.params;
@@ -29733,7 +29141,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 144 */
+/* 188 */
 /***/ (function(module, exports) {
 
 	module.exports = function get_cat_title(viz, inst_cat, inst_rc) {
@@ -29753,10 +29161,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 145 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var all_reorder = __webpack_require__(146);
+	var all_reorder = __webpack_require__(190);
 
 	module.exports = function ini_cat_reorder(cgm) {
 	  /* eslint-disable */
@@ -29785,15 +29193,15 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 146 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var toggle_dendro_view = __webpack_require__(107);
-	var show_visible_area = __webpack_require__(137);
-	var ini_zoom_info = __webpack_require__(89);
-	var calc_downsampled_levels = __webpack_require__(79);
-	var two_translate_zoom = __webpack_require__(147);
-	var get_previous_zoom = __webpack_require__(132);
+	var toggle_dendro_view = __webpack_require__(147);
+	var show_visible_area = __webpack_require__(177);
+	var ini_zoom_info = __webpack_require__(121);
+	var calc_downsampled_levels = __webpack_require__(109);
+	var two_translate_zoom = __webpack_require__(191);
+	var get_previous_zoom = __webpack_require__(172);
 
 	module.exports = function (cgm, inst_order, inst_rc) {
 	  var params = cgm.params;
@@ -29914,14 +29322,14 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 147 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
-	var label_constrain_and_trim = __webpack_require__(148);
-	var show_visible_area = __webpack_require__(137);
-	var ini_zoom_info = __webpack_require__(89);
-	var toggle_grid_lines = __webpack_require__(152);
+	var label_constrain_and_trim = __webpack_require__(192);
+	var show_visible_area = __webpack_require__(177);
+	var ini_zoom_info = __webpack_require__(121);
+	var toggle_grid_lines = __webpack_require__(196);
 
 	module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
 	  // console.log('pan_dy: ' + String(pan_dy))
@@ -30119,12 +29527,12 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 148 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
-	var trim_text = __webpack_require__(149);
-	var constrain_font_size = __webpack_require__(150);
+	var trim_text = __webpack_require__(193);
+	var constrain_font_size = __webpack_require__(194);
 
 	module.exports = function label_constrain_and_trim(params) {
 
@@ -30151,7 +29559,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 149 */
+/* 193 */
 /***/ (function(module, exports) {
 
 	
@@ -30262,10 +29670,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 150 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var calc_real_font_size = __webpack_require__(151);
+	var calc_real_font_size = __webpack_require__(195);
 
 	module.exports = function constrain_font_size(params) {
 
@@ -30329,7 +29737,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 151 */
+/* 195 */
 /***/ (function(module, exports) {
 
 	module.exports = function calc_real_font_size(params) {
@@ -30348,7 +29756,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 152 */
+/* 196 */
 /***/ (function(module, exports) {
 
 	module.exports = function toggle_grid_lines(params) {
@@ -30367,11 +29775,11 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 153 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var get_cat_title = __webpack_require__(144);
-	var d3_tip_custom = __webpack_require__(101);
+	var get_cat_title = __webpack_require__(188);
+	var d3_tip_custom = __webpack_require__(133);
 	var utils = __webpack_require__(2);
 
 	module.exports = function make_row_cat_super_labels(cgm) {
@@ -30503,10 +29911,10 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 154 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var resize_viz = __webpack_require__(155);
+	var resize_viz = __webpack_require__(199);
 
 	module.exports = function initialize_resizing(cgm) {
 	  // customization
@@ -30595,42 +30003,42 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 155 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
-	var run_zoom = __webpack_require__(156);
-	var ini_doubleclick = __webpack_require__(164);
-	var reset_zoom = __webpack_require__(165);
-	var resize_dendro = __webpack_require__(166);
-	var resize_super_labels = __webpack_require__(167);
-	var resize_spillover = __webpack_require__(168);
-	var resize_borders = __webpack_require__(169);
-	var resize_row_labels = __webpack_require__(170);
-	var resize_highlights = __webpack_require__(171);
-	var resize_row_viz = __webpack_require__(172);
-	var resize_col_labels = __webpack_require__(173);
-	var resize_col_text = __webpack_require__(174);
-	var resize_col_triangle = __webpack_require__(175);
-	var resize_col_hlight = __webpack_require__(176);
-	var recalc_params_for_resize = __webpack_require__(177);
-	var resize_row_tiles = __webpack_require__(178);
-	var resize_label_bars = __webpack_require__(179);
-	var label_constrain_and_trim = __webpack_require__(148);
-	var make_dendro_triangles = __webpack_require__(108);
-	var toggle_dendro_view = __webpack_require__(107);
-	var show_visible_area = __webpack_require__(137);
-	var calc_viz_dimensions = __webpack_require__(70);
-	var position_play_button = __webpack_require__(180);
-	var make_row_cat_super_labels = __webpack_require__(153);
-	var ini_cat_reorder = __webpack_require__(145);
-	var position_dendro_slider = __webpack_require__(181);
-	var position_tree_icon = __webpack_require__(182);
-	var position_filter_icon = __webpack_require__(183);
-	var position_tree_menu = __webpack_require__(184);
-	var ini_zoom_info = __webpack_require__(89);
-	var grid_lines_viz = __webpack_require__(185);
-	var underscore = __webpack_require__(5);
+	var run_zoom = __webpack_require__(200);
+	var ini_doubleclick = __webpack_require__(208);
+	var reset_zoom = __webpack_require__(209);
+	var resize_dendro = __webpack_require__(210);
+	var resize_super_labels = __webpack_require__(211);
+	var resize_spillover = __webpack_require__(212);
+	var resize_borders = __webpack_require__(213);
+	var resize_row_labels = __webpack_require__(214);
+	var resize_highlights = __webpack_require__(215);
+	var resize_row_viz = __webpack_require__(216);
+	var resize_col_labels = __webpack_require__(217);
+	var resize_col_text = __webpack_require__(218);
+	var resize_col_triangle = __webpack_require__(219);
+	var resize_col_hlight = __webpack_require__(220);
+	var recalc_params_for_resize = __webpack_require__(221);
+	var resize_row_tiles = __webpack_require__(222);
+	var resize_label_bars = __webpack_require__(223);
+	var label_constrain_and_trim = __webpack_require__(192);
+	var make_dendro_triangles = __webpack_require__(148);
+	var toggle_dendro_view = __webpack_require__(147);
+	var show_visible_area = __webpack_require__(177);
+	var calc_viz_dimensions = __webpack_require__(99);
+	var position_play_button = __webpack_require__(224);
+	var make_row_cat_super_labels = __webpack_require__(197);
+	var ini_cat_reorder = __webpack_require__(189);
+	var position_dendro_slider = __webpack_require__(225);
+	var position_tree_icon = __webpack_require__(226);
+	var position_filter_icon = __webpack_require__(227);
+	var position_tree_menu = __webpack_require__(228);
+	var ini_zoom_info = __webpack_require__(121);
+	var grid_lines_viz = __webpack_require__(229);
+	var each = __webpack_require__(5);
 
 	module.exports = function resize_viz(cgm) {
 	  var params = cgm.params;
@@ -30655,7 +30063,7 @@ var Clustergrammer =
 	  var svg_group = d3.select(params.viz.viz_svg);
 
 	  // redefine x and y positions
-	  underscore.each(params.network_data.links, function (d) {
+	  each(params.network_data.links, function (d) {
 	    d.x = params.viz.x_scale(d.target);
 	    d.y = params.viz.y_scale(d.source);
 	  });
@@ -30788,12 +30196,12 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 156 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var run_transformation = __webpack_require__(157);
-	var zoom_rules_y = __webpack_require__(162);
-	var zoom_rules_x = __webpack_require__(163);
+	var run_transformation = __webpack_require__(201);
+	var zoom_rules_y = __webpack_require__(206);
+	var zoom_rules_x = __webpack_require__(207);
 
 	module.exports = function zoomed(cgm) {
 
@@ -30828,16 +30236,16 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 157 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var constrain_font_size = __webpack_require__(150);
-	var show_visible_area = __webpack_require__(137);
-	var resize_label_val_bars = __webpack_require__(158);
-	var zoom_crop_triangles = __webpack_require__(115);
-	var get_previous_zoom = __webpack_require__(132);
-	var run_when_zoom_stopped = __webpack_require__(159);
-	var check_zoom_stop_status = __webpack_require__(161);
+	var constrain_font_size = __webpack_require__(194);
+	var show_visible_area = __webpack_require__(177);
+	var resize_label_val_bars = __webpack_require__(202);
+	var zoom_crop_triangles = __webpack_require__(155);
+	var get_previous_zoom = __webpack_require__(172);
+	var run_when_zoom_stopped = __webpack_require__(203);
+	var check_zoom_stop_status = __webpack_require__(205);
 
 	module.exports = function run_transformation(cgm) {
 
@@ -30929,7 +30337,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 158 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
@@ -30963,15 +30371,15 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 159 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var constrain_font_size = __webpack_require__(150);
-	var trim_text = __webpack_require__(149);
-	var num_visible_labels = __webpack_require__(160);
-	var toggle_grid_lines = __webpack_require__(152);
-	var show_visible_area = __webpack_require__(137);
-	var check_zoom_stop_status = __webpack_require__(161);
+	var constrain_font_size = __webpack_require__(194);
+	var trim_text = __webpack_require__(193);
+	var num_visible_labels = __webpack_require__(204);
+	var toggle_grid_lines = __webpack_require__(196);
+	var show_visible_area = __webpack_require__(177);
+	var check_zoom_stop_status = __webpack_require__(205);
 
 	module.exports = function run_when_zoom_stopped(cgm) {
 	  var params = cgm.params;
@@ -31044,7 +30452,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 160 */
+/* 204 */
 /***/ (function(module, exports) {
 
 	module.exports = function num_visible_labels(params, inst_rc) {
@@ -31072,7 +30480,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 161 */
+/* 205 */
 /***/ (function(module, exports) {
 
 	module.exports = function check_zoom_stop_status(params) {
@@ -31090,7 +30498,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 162 */
+/* 206 */
 /***/ (function(module, exports) {
 
 	module.exports = function zoom_rules_y(params, zoom_info) {
@@ -31124,7 +30532,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 163 */
+/* 207 */
 /***/ (function(module, exports) {
 
 	module.exports = function zoom_rules_x(params, zoom_info) {
@@ -31168,10 +30576,10 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 164 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var two_translate_zoom = __webpack_require__(147);
+	var two_translate_zoom = __webpack_require__(191);
 
 	module.exports = function ini_doubleclick(cgm) {
 
@@ -31185,7 +30593,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 165 */
+/* 209 */
 /***/ (function(module, exports) {
 
 	module.exports = function (params) {
@@ -31227,7 +30635,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 166 */
+/* 210 */
 /***/ (function(module, exports) {
 
 	module.exports = function resize_dendro(params, svg_group, delay_info = false) {
@@ -31329,7 +30737,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 167 */
+/* 211 */
 /***/ (function(module, exports) {
 
 	module.exports = function resize_super_labels(params, ini_svg_group, delay_info = false) {
@@ -31369,7 +30777,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 168 */
+/* 212 */
 /***/ (function(module, exports) {
 
 	module.exports = function resize_spillover(viz, ini_svg_group, delay_info = false) {
@@ -31487,7 +30895,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 169 */
+/* 213 */
 /***/ (function(module, exports) {
 
 	module.exports = function resize_borders(params, svg_group) {
@@ -31515,7 +30923,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 170 */
+/* 214 */
 /***/ (function(module, exports) {
 
 	module.exports = function resize_row_labels(params, ini_svg_group, delay_info = false) {
@@ -31564,7 +30972,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 171 */
+/* 215 */
 /***/ (function(module, exports) {
 
 	module.exports = function resize_highlights(params) {
@@ -31627,7 +31035,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 172 */
+/* 216 */
 /***/ (function(module, exports) {
 
 	module.exports = function resize_row_viz(params, ini_svg_group, delay_info = false) {
@@ -31667,7 +31075,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 173 */
+/* 217 */
 /***/ (function(module, exports) {
 
 	module.exports = function (params, ini_svg_group, delay_info = false) {
@@ -31719,7 +31127,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 174 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
@@ -31735,10 +31143,10 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 175 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var col_viz_aid_triangle = __webpack_require__(141);
+	var col_viz_aid_triangle = __webpack_require__(185);
 
 	module.exports = function resize_col_triangle(params, ini_svg_group, delay_info = false) {
 
@@ -31767,7 +31175,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 176 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
@@ -31802,18 +31210,17 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 177 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var get_svg_dim = __webpack_require__(71);
-	var calc_clust_height = __webpack_require__(74);
-	var calc_clust_width = __webpack_require__(73);
-	var calc_default_fs = __webpack_require__(84);
-	var calc_zoom_switching = __webpack_require__(83);
-	var underscore = __webpack_require__(5);
+	var get_svg_dim = __webpack_require__(100);
+	var calc_clust_height = __webpack_require__(104);
+	var calc_clust_width = __webpack_require__(102);
+	var calc_default_fs = __webpack_require__(114);
+	var calc_zoom_switching = __webpack_require__(113);
+	var each = __webpack_require__(5);
 
 	module.exports = function recalc_params_for_resize(params) {
-
 	  // Resetting some visualization parameters
 	  params = get_svg_dim(params);
 	  params.viz = calc_clust_width(params.viz);
@@ -31849,8 +31256,7 @@ var Clustergrammer =
 
 	  // recalc downsampled y_scale if necessary
 	  if (params.viz.ds_num_levels > 0) {
-	    underscore.each(params.viz.ds, function (inst_ds) {
-
+	    each(params.viz.ds, function (inst_ds) {
 	      // y_scale
 	      /////////////////////////
 	      inst_ds.y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
@@ -31870,12 +31276,12 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 178 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var draw_up_tile = __webpack_require__(96);
-	var draw_dn_tile = __webpack_require__(97);
-	var fine_position_tile = __webpack_require__(100);
+	var draw_up_tile = __webpack_require__(128);
+	var draw_dn_tile = __webpack_require__(129);
+	var fine_position_tile = __webpack_require__(132);
 
 	module.exports = function resize_row_tiles(params, svg_group) {
 	  var row_nodes_names = params.network_data.row_nodes_names || [];
@@ -31930,10 +31336,10 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 179 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var calc_val_max = __webpack_require__(75);
+	var calc_val_max = __webpack_require__(105);
 
 	module.exports = function resize_label_bars(cgm, svg_group) {
 	  var params = cgm.params;
@@ -31954,7 +31360,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 180 */
+/* 224 */
 /***/ (function(module, exports) {
 
 	module.exports = function position_play_button(params) {
@@ -31972,7 +31378,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 181 */
+/* 225 */
 /***/ (function(module, exports) {
 
 	module.exports = function position_dendro_slider(cgm, inst_rc = 'row') {
@@ -32022,7 +31428,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 182 */
+/* 226 */
 /***/ (function(module, exports) {
 
 	module.exports = function position_tree_icon(cgm) {
@@ -32054,7 +31460,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 183 */
+/* 227 */
 /***/ (function(module, exports) {
 
 	module.exports = function position_filter_icon(cgm) {
@@ -32086,7 +31492,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 184 */
+/* 228 */
 /***/ (function(module, exports) {
 
 	module.exports = function position_tree_menu(cgm) {
@@ -32107,7 +31513,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 185 */
+/* 229 */
 /***/ (function(module, exports) {
 
 	module.exports = function grid_lines_viz(params, duration = 0) {
@@ -32144,17 +31550,17 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 186 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var cat_tooltip_text = __webpack_require__(187);
-	var d3_tip_custom = __webpack_require__(101);
-	var reset_cat_opacity = __webpack_require__(188);
-	var ini_cat_opacity = __webpack_require__(189);
+	var cat_tooltip_text = __webpack_require__(231);
+	var d3_tip_custom = __webpack_require__(133);
+	var reset_cat_opacity = __webpack_require__(232);
+	var ini_cat_opacity = __webpack_require__(233);
 	// var click_filter_cats = require('./click_filter_cats');
-	var get_cat_names = __webpack_require__(190);
-	var underscore = __webpack_require__(5);
-	var $ = __webpack_require__(81);
+	var get_cat_names = __webpack_require__(234);
+	var each = __webpack_require__(5);
+	var $ = __webpack_require__(111);
 
 	module.exports = function make_col_cat(cgm) {
 	  var params = cgm.params;
@@ -32200,7 +31606,7 @@ var Clustergrammer =
 	    var inst_selection = this;
 	    var cat_rect;
 
-	    underscore.each(params.viz.all_cats.col, function (inst_cat) {
+	    each(params.viz.all_cats.col, function (inst_cat) {
 	      var inst_num = parseInt(inst_cat.split("-")[1], 10);
 	      var cat_rect_class = "col_cat_rect_" + String(inst_num);
 
@@ -32240,26 +31646,24 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 187 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var get_cat_title = __webpack_require__(144);
-	var underscore = __webpack_require__(5);
+	var get_cat_title = __webpack_require__(188);
 
 	module.exports = function cat_tooltip_text(params, inst_data, inst_selection, inst_rc) {
+	  d3.selectAll(params.viz.root_tips + "_col_cat_tip").style("display", "block");
 
-	  d3.selectAll(params.viz.root_tips + '_col_cat_tip').style('display', 'block');
-
-	  d3.selectAll(params.viz.root_tips + '_row_cat_tip').style('display', 'block');
+	  d3.selectAll(params.viz.root_tips + "_row_cat_tip").style("display", "block");
 
 	  // category index
-	  var inst_cat = d3.select(inst_selection).attr('cat');
+	  var inst_cat = d3.select(inst_selection).attr("cat");
 	  var cat_title = get_cat_title(params.viz, inst_cat, inst_rc);
 	  var cat_name = inst_data[inst_cat];
 
-	  if (typeof cat_name === 'string') {
-	    if (cat_name.indexOf(': ') >= 0) {
-	      cat_name = cat_name.split(': ')[1];
+	  if (typeof cat_name === "string") {
+	    if (cat_name.indexOf(": ") >= 0) {
+	      cat_name = cat_name.split(": ")[1];
 	    }
 	  }
 
@@ -32267,48 +31671,42 @@ var Clustergrammer =
 	  // var cat_string = cat_title + ': '+ cat_name;
 
 	  /* new string with click instructions */
-	  var cat_string = '<div>' + cat_title + ': ' + cat_name + '</div> <div> <br>Click for Category Menu </div>';
+	  var cat_string = "<div>" + cat_title + ": " + cat_name + "</div> <div> <br>Click for Category Menu </div>";
 
-	  d3.select(inst_selection).classed('hovering', true);
+	  d3.select(inst_selection).classed("hovering", true);
 
 	  setTimeout(highlight_categories, 500);
 
 	  return cat_string;
 
 	  function highlight_categories() {
-
 	    var run_highlighting = false;
 
-	    if (d3.select(inst_selection).classed('hovering')) {
-
+	    if (d3.select(inst_selection).classed("hovering")) {
 	      var node_types = [inst_rc];
 
 	      if (params.viz.sim_mat) {
-	        node_types = ['row', 'col'];
+	        node_types = ["row", "col"];
 	      }
 
-	      underscore.each(node_types, function (tmp_rc) {
-
+	      node_types.forEach(function (tmp_rc) {
 	        // only highlight string categories that are not 'false' categories
-	        if (typeof cat_name === 'string') {
-	          if (cat_name.indexOf('Not ') < 0 && cat_name != 'false') {
+	        if (typeof cat_name === "string") {
+	          if (cat_name.indexOf("Not ") < 0 && cat_name != "false") {
 	            run_highlighting = true;
 	          }
 	        }
 
 	        if (run_highlighting) {
+	          d3.selectAll(params.root + " ." + tmp_rc + "_cat_group").selectAll("rect").style("opacity", function (d) {
+	            var inst_opacity = d3.select(this).style("opacity");
 
-	          d3.selectAll(params.root + ' .' + tmp_rc + '_cat_group').selectAll('rect').style('opacity', function (d) {
-
-	            var inst_opacity = d3.select(this).style('opacity');
-
-	            if (d3.select(this).classed('cat_strings') && d3.select(this).classed('filtered_cat') === false) {
-
+	            if (d3.select(this).classed("cat_strings") && d3.select(this).classed("filtered_cat") === false) {
 	              var tmp_name;
-	              var tmp_cat = d3.select(this).attr('cat');
+	              var tmp_cat = d3.select(this).attr("cat");
 
-	              if (d[tmp_cat].indexOf(': ') >= 0) {
-	                tmp_name = d[tmp_cat].split(': ')[1];
+	              if (d[tmp_cat].indexOf(": ") >= 0) {
+	                tmp_name = d[tmp_cat].split(": ")[1];
 	              } else {
 	                tmp_name = d[tmp_cat];
 	              }
@@ -32326,10 +31724,10 @@ var Clustergrammer =
 	      });
 	    }
 	  }
-		};
+	};
 
 /***/ }),
-/* 188 */
+/* 232 */
 /***/ (function(module, exports) {
 
 	module.exports = function reset_cat_opacity(params) {
@@ -32347,7 +31745,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 189 */
+/* 233 */
 /***/ (function(module, exports) {
 
 	module.exports = function ini_cat_opacity(viz, inst_rc, cat_rect, inst_cat, updating = false) {
@@ -32408,40 +31806,39 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 190 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
-	var underscore = __webpack_require__(5);
+	var filter = __webpack_require__(5);
 
 	module.exports = function get_cat_names(params, inst_data, inst_selection, inst_rc) {
-
 	  // category index
-	  var inst_cat = d3.select(inst_selection).attr('cat');
+	  var inst_cat = d3.select(inst_selection).attr("cat");
 	  var cat_name = inst_data[inst_cat];
-	  var tmp_nodes = params.network_data[inst_rc + '_nodes'];
+	  var tmp_nodes = params.network_data[inst_rc + "_nodes"];
 
-	  var found_nodes = underscore.filter(tmp_nodes, function (d) {
+	  var found_nodes = filter(tmp_nodes, function (d) {
 	    return d[inst_cat] == cat_name;
 	  });
 
-	  var found_names = utils.pluck(found_nodes, 'name');
+	  var found_names = utils.pluck(found_nodes, "name");
 
 	  return found_names;
 	};
 
 /***/ }),
-/* 191 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var cat_tooltip_text = __webpack_require__(187);
-	var d3_tip_custom = __webpack_require__(101);
-	var reset_cat_opacity = __webpack_require__(188);
-	var ini_cat_opacity = __webpack_require__(189);
+	var cat_tooltip_text = __webpack_require__(231);
+	var d3_tip_custom = __webpack_require__(133);
+	var reset_cat_opacity = __webpack_require__(232);
+	var ini_cat_opacity = __webpack_require__(233);
 	// var click_filter_cats = require('./click_filter_cats');
-	var get_cat_names = __webpack_require__(190);
-	var underscore = __webpack_require__(5);
-	var $ = __webpack_require__(81);
+	var get_cat_names = __webpack_require__(234);
+	var each = __webpack_require__(5);
+	var $ = __webpack_require__(111);
 
 	module.exports = function make_row_cat(cgm, updating = false) {
 	  var params = cgm.params;
@@ -32497,7 +31894,7 @@ var Clustergrammer =
 	    d3.selectAll(params.root + " .row_cat_group").each(function () {
 	      inst_selection = this;
 
-	      underscore.each(params.viz.all_cats.row, function (inst_cat) {
+	      each(params.viz.all_cats.row, function (inst_cat) {
 	        var inst_num = parseInt(inst_cat.split("-")[1], 10);
 	        var cat_rect_class = "row_cat_rect_" + String(inst_num);
 
@@ -32550,10 +31947,10 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 192 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_dendro_triangles = __webpack_require__(108);
+	var make_dendro_triangles = __webpack_require__(148);
 
 	module.exports = function make_row_dendro(cgm) {
 	  var params = cgm.params;
@@ -32586,10 +31983,10 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 193 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_dendro_triangles = __webpack_require__(108);
+	var make_dendro_triangles = __webpack_require__(148);
 
 	module.exports = function make_col_dendro(cgm) {
 	  var params = cgm.params;
@@ -32623,10 +32020,10 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 194 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var build_single_dendro_slider = __webpack_require__(195);
+	var build_single_dendro_slider = __webpack_require__(239);
 
 	module.exports = function build_dendro_sliders(cgm) {
 
@@ -32635,11 +32032,11 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 195 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var change_groups = __webpack_require__(196);
-	var position_dendro_slider = __webpack_require__(181);
+	var change_groups = __webpack_require__(240);
+	var position_dendro_slider = __webpack_require__(225);
 
 	module.exports = function build_single_dendro_slider(cgm, inst_rc) {
 
@@ -32735,10 +32132,10 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 196 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_dendro_triangles = __webpack_require__(108);
+	var make_dendro_triangles = __webpack_require__(148);
 
 	/* Changes the groupings (x- and y-axis color bars).
 	 */
@@ -32758,10 +32155,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 197 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_dendro_crop_buttons = __webpack_require__(113);
+	var make_dendro_crop_buttons = __webpack_require__(153);
 
 	module.exports = function make_row_dendro_spillover(cgm) {
 	  var viz = cgm.params.viz;
@@ -32799,26 +32196,26 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 198 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* eslint-disable */
 
-	var run_segment = __webpack_require__(199);
-	var play_intro = __webpack_require__(200);
-	var play_zoom = __webpack_require__(202);
-	var play_reset_zoom = __webpack_require__(203);
-	var play_reorder_row = __webpack_require__(205);
-	var play_reorder_buttons = __webpack_require__(206);
-	var play_search = __webpack_require__(208);
-	var play_filter = __webpack_require__(209);
-	var quick_cluster = __webpack_require__(232);
-	var play_groups = __webpack_require__(233);
-	var play_categories = __webpack_require__(234);
-	var play_conclusion = __webpack_require__(235);
-	var toggle_play_button = __webpack_require__(236);
-	var play_menu_button = __webpack_require__(237);
-	var $ = __webpack_require__(81);
+	var run_segment = __webpack_require__(243);
+	var play_intro = __webpack_require__(244);
+	var play_zoom = __webpack_require__(246);
+	var play_reset_zoom = __webpack_require__(247);
+	var play_reorder_row = __webpack_require__(249);
+	var play_reorder_buttons = __webpack_require__(250);
+	var play_search = __webpack_require__(252);
+	var play_filter = __webpack_require__(253);
+	var quick_cluster = __webpack_require__(277);
+	var play_groups = __webpack_require__(278);
+	var play_categories = __webpack_require__(279);
+	var play_conclusion = __webpack_require__(280);
+	var toggle_play_button = __webpack_require__(281);
+	var play_menu_button = __webpack_require__(282);
+	var $ = __webpack_require__(111);
 
 	module.exports = function play_demo() {
 	  var cgm = this;
@@ -32878,7 +32275,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 199 */
+/* 243 */
 /***/ (function(module, exports) {
 
 	
@@ -32900,10 +32297,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 200 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var demo_text = __webpack_require__(201);
+	var demo_text = __webpack_require__(245);
 
 	module.exports = function play_intro() {
 
@@ -32928,7 +32325,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 201 */
+/* 245 */
 /***/ (function(module, exports) {
 
 	module.exports = function demo_text(params, text, read_duration) {
@@ -32960,11 +32357,11 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 202 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var demo_text = __webpack_require__(201);
-	var two_translate_zoom = __webpack_require__(147);
+	var demo_text = __webpack_require__(245);
+	var two_translate_zoom = __webpack_require__(191);
 
 	module.exports = function play_zoom() {
 
@@ -32988,12 +32385,12 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 203 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var demo_text = __webpack_require__(201);
-	var two_translate_zoom = __webpack_require__(147);
-	var sim_click = __webpack_require__(204);
+	var demo_text = __webpack_require__(245);
+	var two_translate_zoom = __webpack_require__(191);
+	var sim_click = __webpack_require__(248);
 
 	module.exports = function play_reset_zoom() {
 
@@ -33019,7 +32416,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 204 */
+/* 248 */
 /***/ (function(module, exports) {
 
 	module.exports = function sim_click(params, single_double, pos_x, pos_y) {
@@ -33036,12 +32433,12 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 205 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var demo_text = __webpack_require__(201);
-	var sim_click = __webpack_require__(204);
-	var $ = __webpack_require__(81);
+	var demo_text = __webpack_require__(245);
+	var sim_click = __webpack_require__(248);
+	var $ = __webpack_require__(111);
 
 	module.exports = function play_reorder_row() {
 	  /* eslint-disable */
@@ -33100,12 +32497,12 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 206 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var demo_text = __webpack_require__(201);
-	var highlight_sidebar_element = __webpack_require__(207);
-	var $ = __webpack_require__(81);
+	var demo_text = __webpack_require__(245);
+	var highlight_sidebar_element = __webpack_require__(251);
+	var $ = __webpack_require__(111);
 
 	module.exports = function play_reorder_buttons() {
 	  /* eslint-disable */
@@ -33140,7 +32537,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 207 */
+/* 251 */
 /***/ (function(module, exports) {
 
 	module.exports = function highlight_sidebar_element(params, highlight_class, duration = 4000) {
@@ -33153,13 +32550,13 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 208 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var demo_text = __webpack_require__(201);
-	var highlight_sidebar_element = __webpack_require__(207);
-	var two_translate_zoom = __webpack_require__(147);
-	var $ = __webpack_require__(81);
+	var demo_text = __webpack_require__(245);
+	var highlight_sidebar_element = __webpack_require__(251);
+	var two_translate_zoom = __webpack_require__(191);
+	var $ = __webpack_require__(111);
 
 	module.exports = function play_search() {
 	  function run(cgm) {
@@ -33202,13 +32599,13 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 209 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var demo_text = __webpack_require__(201);
-	var highlight_sidebar_element = __webpack_require__(207);
-	var update_viz_with_view = __webpack_require__(210);
-	var $ = __webpack_require__(81);
+	var demo_text = __webpack_require__(245);
+	var highlight_sidebar_element = __webpack_require__(251);
+	var update_viz_with_view = __webpack_require__(254);
+	var $ = __webpack_require__(111);
 
 	module.exports = function play_filter() {
 	  function run(cgm) {
@@ -33265,12 +32662,12 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 210 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_network_using_view = __webpack_require__(11);
-	var disable_sidebar = __webpack_require__(211);
-	var update_viz_with_network = __webpack_require__(212);
+	var make_network_using_view = __webpack_require__(23);
+	var disable_sidebar = __webpack_require__(255);
+	var update_viz_with_network = __webpack_require__(256);
 
 	module.exports = function update_viz_with_view(cgm, requested_view) {
 	  disable_sidebar(cgm.params);
@@ -33295,7 +32692,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 211 */
+/* 255 */
 /***/ (function(module, exports) {
 
 	module.exports = function disable_sidebar(params) {
@@ -33305,26 +32702,26 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 212 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_params = __webpack_require__(10);
-	var define_enter_exit_delays = __webpack_require__(213);
-	var enter_exit_update = __webpack_require__(214);
-	var initialize_resizing = __webpack_require__(154);
-	var make_col_cat = __webpack_require__(186);
-	var make_row_cat = __webpack_require__(191);
-	var make_row_dendro = __webpack_require__(192);
-	var make_col_dendro = __webpack_require__(193);
-	var ini_sidebar = __webpack_require__(225);
-	var enable_sidebar = __webpack_require__(227);
-	var ini_doubleclick = __webpack_require__(164);
-	var update_reorder_buttons = __webpack_require__(228);
-	var make_row_cat_super_labels = __webpack_require__(153);
-	var modify_row_node_cats = __webpack_require__(229);
-	var run_zoom = __webpack_require__(156);
-	var ds_enter_exit_update = __webpack_require__(231);
-	var make_cat_params = __webpack_require__(85);
+	var make_params = __webpack_require__(22);
+	var define_enter_exit_delays = __webpack_require__(257);
+	var enter_exit_update = __webpack_require__(259);
+	var initialize_resizing = __webpack_require__(198);
+	var make_col_cat = __webpack_require__(230);
+	var make_row_cat = __webpack_require__(235);
+	var make_row_dendro = __webpack_require__(236);
+	var make_col_dendro = __webpack_require__(237);
+	var ini_sidebar = __webpack_require__(270);
+	var enable_sidebar = __webpack_require__(272);
+	var ini_doubleclick = __webpack_require__(208);
+	var update_reorder_buttons = __webpack_require__(273);
+	var make_row_cat_super_labels = __webpack_require__(197);
+	var modify_row_node_cats = __webpack_require__(274);
+	var run_zoom = __webpack_require__(200);
+	var ds_enter_exit_update = __webpack_require__(276);
+	var make_cat_params = __webpack_require__(115);
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 	  // set runnning_update class, prevents multiple update from running at once
@@ -33464,38 +32861,38 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 213 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var underscore = __webpack_require__(5);
+	var map = __webpack_require__(258);
+	var difference = __webpack_require__(180);
 
 	module.exports = function (old_params, params) {
-
 	  // exit, update, enter
 
 	  // check if exit or enter or both are required
 	  var old_row_nodes = old_params.network_data.row_nodes;
 	  var old_col_nodes = old_params.network_data.col_nodes;
-	  var old_row = underscore.map(old_row_nodes, function (d) {
+	  var old_row = map(old_row_nodes, function (d) {
 	    return d.name;
 	  });
-	  var old_col = underscore.map(old_col_nodes, function (d) {
+	  var old_col = map(old_col_nodes, function (d) {
 	    return d.name;
 	  });
 	  var all_old_nodes = old_row.concat(old_col);
 
 	  var row_nodes = params.network_data.row_nodes;
 	  var col_nodes = params.network_data.col_nodes;
-	  var row = underscore.map(row_nodes, function (d) {
+	  var row = map(row_nodes, function (d) {
 	    return d.name;
 	  });
-	  var col = underscore.map(col_nodes, function (d) {
+	  var col = map(col_nodes, function (d) {
 	    return d.name;
 	  });
 	  var all_nodes = row.concat(col);
 
-	  var exit_nodes = underscore.difference(all_old_nodes, all_nodes).length;
-	  var enter_nodes = underscore.difference(all_nodes, all_old_nodes).length;
+	  var exit_nodes = difference(all_old_nodes, all_nodes).length;
+	  var enter_nodes = difference(all_nodes, all_old_nodes).length;
 
 	  var delays = {};
 
@@ -33529,19 +32926,42 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 214 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var reset_size_after_update = __webpack_require__(215);
-	var make_row_label_container = __webpack_require__(102);
-	var make_col_label_container = __webpack_require__(134);
-	var eeu_existing_row = __webpack_require__(216);
-	var exit_components = __webpack_require__(220);
-	var draw_gridlines = __webpack_require__(92);
-	var enter_row_groups = __webpack_require__(221);
-	var resize_containers = __webpack_require__(224);
-	var label_constrain_and_trim = __webpack_require__(148);
-	var d3_tip_custom = __webpack_require__(101);
+	var _cb = __webpack_require__(78);
+	var _isArrayLike = __webpack_require__(7);
+	var keys = __webpack_require__(12);
+
+	// Return the results of applying the iteratee to each element.
+	function map(obj, iteratee, context) {
+	  iteratee = _cb(iteratee, context);
+	  var _keys = !_isArrayLike(obj) && keys(obj),
+	      length = (_keys || obj).length,
+	      results = Array(length);
+	  for (var index = 0; index < length; index++) {
+	    var currentKey = _keys ? _keys[index] : index;
+	    results[index] = iteratee(obj[currentKey], currentKey, obj);
+	  }
+	  return results;
+	}
+
+	module.exports = map;
+
+/***/ }),
+/* 259 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var reset_size_after_update = __webpack_require__(260);
+	var make_row_label_container = __webpack_require__(142);
+	var make_col_label_container = __webpack_require__(174);
+	var eeu_existing_row = __webpack_require__(261);
+	var exit_components = __webpack_require__(265);
+	var draw_gridlines = __webpack_require__(124);
+	var enter_row_groups = __webpack_require__(266);
+	var resize_containers = __webpack_require__(269);
+	var label_constrain_and_trim = __webpack_require__(192);
+	var d3_tip_custom = __webpack_require__(133);
 
 	module.exports = function enter_exit_update(cgm, network_data, delays) {
 
@@ -33638,28 +33058,28 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 215 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
-	var calc_clust_height = __webpack_require__(74);
-	var get_svg_dim = __webpack_require__(71);
-	var calc_clust_width = __webpack_require__(73);
-	var reset_zoom = __webpack_require__(165);
-	var resize_dendro = __webpack_require__(166);
-	var resize_super_labels = __webpack_require__(167);
-	var resize_spillover = __webpack_require__(168);
-	var resize_row_labels = __webpack_require__(170);
-	var resize_row_viz = __webpack_require__(172);
-	var resize_col_labels = __webpack_require__(173);
-	var resize_col_text = __webpack_require__(174);
-	var resize_col_triangle = __webpack_require__(175);
-	var resize_col_hlight = __webpack_require__(176);
-	var resize_label_bars = __webpack_require__(179);
-	var calc_default_fs = __webpack_require__(84);
-	var calc_zoom_switching = __webpack_require__(83);
+	var calc_clust_height = __webpack_require__(104);
+	var get_svg_dim = __webpack_require__(100);
+	var calc_clust_width = __webpack_require__(102);
+	var reset_zoom = __webpack_require__(209);
+	var resize_dendro = __webpack_require__(210);
+	var resize_super_labels = __webpack_require__(211);
+	var resize_spillover = __webpack_require__(212);
+	var resize_row_labels = __webpack_require__(214);
+	var resize_row_viz = __webpack_require__(216);
+	var resize_col_labels = __webpack_require__(217);
+	var resize_col_text = __webpack_require__(218);
+	var resize_col_triangle = __webpack_require__(219);
+	var resize_col_hlight = __webpack_require__(220);
+	var resize_label_bars = __webpack_require__(223);
+	var calc_default_fs = __webpack_require__(114);
+	var calc_zoom_switching = __webpack_require__(113);
 	// var show_visible_area = require('../zoom/show_visible_area');
-	var ini_zoom_info = __webpack_require__(89);
+	var ini_zoom_info = __webpack_require__(121);
 
 	module.exports = function reset_size_after_update(cgm, duration = 0, delays = null) {
 	  if (delays === null) {
@@ -33823,23 +33243,24 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 216 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var exit_existing_row = __webpack_require__(217);
-	var enter_existing_row = __webpack_require__(218);
-	var update_split_tiles = __webpack_require__(219);
-	var mouseover_tile = __webpack_require__(98);
-	var mouseout_tile = __webpack_require__(99);
-	var fine_position_tile = __webpack_require__(100);
-	var _ = __webpack_require__(5);
+	var exit_existing_row = __webpack_require__(262);
+	var enter_existing_row = __webpack_require__(263);
+	var update_split_tiles = __webpack_require__(264);
+	var mouseover_tile = __webpack_require__(130);
+	var mouseout_tile = __webpack_require__(131);
+	var fine_position_tile = __webpack_require__(132);
+	var filter = __webpack_require__(77);
+	var contains = __webpack_require__(134);
 
 	// TODO add tip back to arguments
 	module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, duration, row_selection, tip) {
 	  var inp_row_data = ini_inp_row_data.row_data;
 
 	  // remove zero values from
-	  var row_values = _.filter(inp_row_data, function (num) {
+	  var row_values = filter(inp_row_data, function (num) {
 	    return num.value != 0;
 	  });
 
@@ -33865,8 +33286,7 @@ var Clustergrammer =
 
 	  if (delays.run_transition) {
 	    update_row_tiles.transition().delay(delays.update).duration(duration).attr("width", params.viz.rect_width).attr("height", params.viz.rect_height).attr("transform", function (d) {
-	      // if (_.contains(col_nodes_names, d.col_name)){
-	      if (_.contains(col_nodes_names, d.col_name)) {
+	      if (contains(col_nodes_names, d.col_name)) {
 	        return fine_position_tile(params, d);
 	      } else {
 	        return "translate(0,0)";
@@ -33874,7 +33294,7 @@ var Clustergrammer =
 	    });
 	  } else {
 	    update_row_tiles.attr("width", params.viz.rect_width).attr("height", params.viz.rect_height).attr("transform", function (d) {
-	      if (_.contains(col_nodes_names, d.col_name)) {
+	      if (contains(col_nodes_names, d.col_name)) {
 	        return fine_position_tile(params, d);
 	      } else {
 	        return "translate(0,0)";
@@ -33890,57 +33310,55 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 217 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var underscore = __webpack_require__(5);
+	var filter = __webpack_require__(77);
 
 	module.exports = function exit_existing_row(params, delays, cur_row_tiles, inp_row_data, row_selection) {
-
 	  if (delays.run_transition) {
-	    cur_row_tiles.exit().transition().duration(300).attr('fill-opacity', 0).remove();
+	    cur_row_tiles.exit().transition().duration(300).attr("fill-opacity", 0).remove();
 	  } else {
-	    cur_row_tiles.exit().attr('fill-opacity', 0).remove();
+	    cur_row_tiles.exit().attr("fill-opacity", 0).remove();
 	  }
 
-	  if (params.matrix.tile_type == 'updn') {
-
+	  if (params.matrix.tile_type == "updn") {
 	    // value split
-	    var row_split_data = underscore.filter(inp_row_data, function (num) {
+	    var row_split_data = filter(inp_row_data, function (num) {
 	      return num.value_up != 0 || num.value_dn != 0;
 	    });
 
 	    // tile_up
-	    var cur_tiles_up = d3.select(row_selection).selectAll('.tile_up').data(row_split_data, function (d) {
+	    var cur_tiles_up = d3.select(row_selection).selectAll(".tile_up").data(row_split_data, function (d) {
 	      return d.col_name;
 	    });
 
 	    if (delays.run_transition) {
-	      cur_tiles_up.exit().transition().duration(300).attr('fill', '0').remove();
+	      cur_tiles_up.exit().transition().duration(300).attr("fill", "0").remove();
 	    } else {
-	      cur_tiles_up.exit().attr('fill', 0).remove();
+	      cur_tiles_up.exit().attr("fill", 0).remove();
 	    }
 
 	    // tile_dn
-	    var cur_tiles_dn = d3.select(row_selection).selectAll('.tile_dn').data(row_split_data, function (d) {
+	    var cur_tiles_dn = d3.select(row_selection).selectAll(".tile_dn").data(row_split_data, function (d) {
 	      return d.col_name;
 	    });
 
 	    if (delays.run_transition) {
-	      cur_tiles_dn.exit().transition().duration(300).attr('fill', 0).remove();
+	      cur_tiles_dn.exit().transition().duration(300).attr("fill", 0).remove();
 	    } else {
-	      cur_tiles_dn.exit().attr('fill', 0).remove();
+	      cur_tiles_dn.exit().attr("fill", 0).remove();
 	    }
 	  }
-		};
+	};
 
 /***/ }),
-/* 218 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var mouseover_tile = __webpack_require__(98);
-	var mouseout_tile = __webpack_require__(99);
-	var fine_position_tile = __webpack_require__(100);
+	var mouseover_tile = __webpack_require__(130);
+	var mouseout_tile = __webpack_require__(131);
+	var fine_position_tile = __webpack_require__(132);
 
 	module.exports = function enter_existing_row(params, delays, duration, cur_row_tiles, tip) {
 
@@ -33978,77 +33396,76 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 219 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var draw_up_tile = __webpack_require__(96);
-	var draw_dn_tile = __webpack_require__(97);
-	var mouseover_tile = __webpack_require__(98);
-	var mouseout_tile = __webpack_require__(99);
-	var fine_position_tile = __webpack_require__(100);
-	var underscore = __webpack_require__(5);
+	var draw_up_tile = __webpack_require__(128);
+	var draw_dn_tile = __webpack_require__(129);
+	var mouseover_tile = __webpack_require__(130);
+	var mouseout_tile = __webpack_require__(131);
+	var fine_position_tile = __webpack_require__(132);
+	var filter = __webpack_require__(77);
 
 	module.exports = function update_split_tiles(params, inp_row_data, row_selection, delays, duration, cur_row_tiles, tip) {
-
 	  // value split
-	  var row_split_data = underscore.filter(inp_row_data, function (num) {
+	  var row_split_data = filter(inp_row_data, function (num) {
 	    return num.value_up != 0 || num.value_dn != 0;
 	  });
 
 	  // tile_up
-	  var cur_tiles_up = d3.select(row_selection).selectAll('.tile_up').data(row_split_data, function (d) {
+	  var cur_tiles_up = d3.select(row_selection).selectAll(".tile_up").data(row_split_data, function (d) {
 	    return d.col_name;
 	  });
 
 	  // update split tiles_up
-	  var update_tiles_up = cur_tiles_up.on('mouseover', function (...args) {
+	  var update_tiles_up = cur_tiles_up.on("mouseover", function (...args) {
 	    mouseover_tile(params, this, tip, args);
-	  }).on('mouseout', function mouseout() {
+	  }).on("mouseout", function mouseout() {
 	    mouseout_tile(params, this, tip);
 	  });
 
 	  if (delays.run_transition) {
-	    update_tiles_up.transition().delay(delays.update).duration(duration).attr('d', function () {
+	    update_tiles_up.transition().delay(delays.update).duration(duration).attr("d", function () {
 	      return draw_up_tile(params);
-	    }).attr('transform', function (d) {
+	    }).attr("transform", function (d) {
 	      return fine_position_tile(params, d);
 	    });
 	  } else {
-	    update_tiles_up.attr('d', function () {
+	    update_tiles_up.attr("d", function () {
 	      return draw_up_tile(params);
-	    }).attr('transform', function (d) {
+	    }).attr("transform", function (d) {
 	      return fine_position_tile(params, d);
 	    });
 	  }
 
 	  // tile_dn
-	  var cur_tiles_dn = d3.select(row_selection).selectAll('.tile_dn').data(row_split_data, function (d) {
+	  var cur_tiles_dn = d3.select(row_selection).selectAll(".tile_dn").data(row_split_data, function (d) {
 	    return d.col_name;
 	  });
 
 	  // update split tiles_dn
-	  var update_tiles_dn = cur_tiles_dn.on('mouseover', function (...args) {
+	  var update_tiles_dn = cur_tiles_dn.on("mouseover", function (...args) {
 	    mouseover_tile(params, this, tip, args);
-	  }).on('mouseout', function mouseout() {
+	  }).on("mouseout", function mouseout() {
 	    mouseout_tile(params, this, tip);
 	  });
 
 	  if (delays.run_transition) {
-	    update_tiles_dn.transition().delay(delays.update).duration(duration).attr('d', function () {
+	    update_tiles_dn.transition().delay(delays.update).duration(duration).attr("d", function () {
 	      return draw_dn_tile(params);
-	    }).attr('transform', function (d) {
+	    }).attr("transform", function (d) {
 	      return fine_position_tile(params, d);
 	    });
 	  } else {
-	    update_tiles_dn.attr('d', function () {
+	    update_tiles_dn.attr("d", function () {
 	      return draw_dn_tile(params);
-	    }).attr('transform', function (d) {
+	    }).attr("transform", function (d) {
 	      return fine_position_tile(params, d);
 	    });
 	  }
 
 	  // remove tiles when splitting is done
-	  cur_row_tiles.selectAll('.tile').each(function (d) {
+	  cur_row_tiles.selectAll(".tile").each(function (d) {
 	    if (Math.abs(d.value_up) > 0 && Math.abs(d.value_dn) > 0) {
 	      d3.select(this).remove();
 	    }
@@ -34056,7 +33473,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 220 */
+/* 265 */
 /***/ (function(module, exports) {
 
 	module.exports = function exit_components(params, delays, duration) {
@@ -34118,10 +33535,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 221 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var enter_new_rows = __webpack_require__(222);
+	var enter_new_rows = __webpack_require__(267);
 
 	module.exports = function enter_row_groups(params, delays, duration, tip) {
 
@@ -34138,99 +33555,97 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 222 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var enter_split_tiles = __webpack_require__(223);
-	var mouseover_tile = __webpack_require__(98);
-	var mouseout_tile = __webpack_require__(99);
-	var fine_position_tile = __webpack_require__(100);
-	var underscore = __webpack_require__(5);
+	var enter_split_tiles = __webpack_require__(268);
+	var mouseover_tile = __webpack_require__(130);
+	var mouseout_tile = __webpack_require__(131);
+	var fine_position_tile = __webpack_require__(132);
+	var filter = __webpack_require__(77);
 
 	// make each row in the clustergram
 	module.exports = function enter_new_rows(params, ini_inp_row_data, delays, duration, tip, row_selection) {
-
 	  var inp_row_data = ini_inp_row_data.row_data;
 
 	  // remove zero values to make visualization faster
-	  var row_data = underscore.filter(inp_row_data, function (num) {
+	  var row_data = filter(inp_row_data, function (num) {
 	    return num.value !== 0;
 	  });
 
 	  // update tiles
 	  ////////////////////////////////////////////
-	  var tile = d3.select(row_selection).selectAll('rect').data(row_data, function (d) {
+	  var tile = d3.select(row_selection).selectAll("rect").data(row_data, function (d) {
 	    return d.col_name;
-	  }).enter().append('rect').attr('class', 'tile row_tile').attr('width', params.viz.rect_width).attr('height', params.viz.rect_height)
+	  }).enter().append("rect").attr("class", "tile row_tile").attr("width", params.viz.rect_width).attr("height", params.viz.rect_height)
 	  // switch the color based on up/dn value
-	  .style('fill', function (d) {
+	  .style("fill", function (d) {
 	    return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
-	  }).on('mouseover', function (...args) {
+	  }).on("mouseover", function (...args) {
 	    mouseover_tile(params, this, tip, args);
-	  }).on('mouseout', function mouseout() {
+	  }).on("mouseout", function mouseout() {
 	    mouseout_tile(params, this, tip);
 	  });
 
-	  tile.style('fill-opacity', 0).transition().delay(delays.enter).duration(duration).style('fill-opacity', function (d) {
+	  tile.style("fill-opacity", 0).transition().delay(delays.enter).duration(duration).style("fill-opacity", function (d) {
 	    // calculate output opacity using the opacity scale
 	    var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
 	    return output_opacity;
 	  });
 
-	  tile.attr('transform', function (d) {
+	  tile.attr("transform", function (d) {
 	    return fine_position_tile(params, d);
 	  });
 
-	  if (params.matrix.tile_type == 'updn') {
+	  if (params.matrix.tile_type == "updn") {
 	    enter_split_tiles(params, inp_row_data, row_selection, tip, delays, duration, tile);
 	  }
-		};
+	};
 
 /***/ }),
-/* 223 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var draw_up_tile = __webpack_require__(96);
-	var draw_dn_tile = __webpack_require__(97);
-	var fine_position_tile = __webpack_require__(100);
-	var underscore = __webpack_require__(5);
+	var draw_up_tile = __webpack_require__(128);
+	var draw_dn_tile = __webpack_require__(129);
+	var fine_position_tile = __webpack_require__(132);
+	var filter = __webpack_require__(77);
 
 	module.exports = function enter_split_tiles(params, inp_row_data, row_selection, tip, delays, duration, tile) {
-
 	  // value split
-	  var row_split_data = underscore.filter(inp_row_data, function (num) {
+	  var row_split_data = filter(inp_row_data, function (num) {
 	    return num.value_up != 0 || num.value_dn != 0;
 	  });
 
 	  // tile_up
-	  var new_tiles_up = d3.select(row_selection).selectAll('.tile_up').data(row_split_data, function (d) {
+	  var new_tiles_up = d3.select(row_selection).selectAll(".tile_up").data(row_split_data, function (d) {
 	    return d.col_name;
-	  }).enter().append('path').attr('class', 'tile_up').attr('d', function () {
+	  }).enter().append("path").attr("class", "tile_up").attr("d", function () {
 	    return draw_up_tile(params);
-	  }).attr('transform', function (d) {
+	  }).attr("transform", function (d) {
 	    return fine_position_tile(params, d);
-	  }).style('fill', function () {
+	  }).style("fill", function () {
 	    return params.matrix.tile_colors[0];
-	  }).on('mouseover', function (p) {
+	  }).on("mouseover", function (p) {
 	    // highlight row - set text to active if
-	    d3.selectAll(params.root + ' .row_label_group text').classed('active', function (d) {
+	    d3.selectAll(params.root + " .row_label_group text").classed("active", function (d) {
 	      return p.row_name === d.name;
 	    });
 
-	    d3.selectAll(params.root + ' .col_label_text text').classed('active', function (d) {
+	    d3.selectAll(params.root + " .col_label_text text").classed("active", function (d) {
 	      return p.col_name === d.name;
 	    });
 	    if (params.matrix.show_tile_tooltips) {
 	      tip.show(p);
 	    }
-	  }).on('mouseout', function () {
-	    d3.selectAll(params.root + ' text').classed('active', false);
+	  }).on("mouseout", function () {
+	    d3.selectAll(params.root + " text").classed("active", false);
 	    if (params.matrix.show_tile_tooltips) {
 	      tip.hide();
 	    }
 	  });
 
-	  new_tiles_up.style('fill-opacity', 0).transition().delay(delays.enter).duration(duration).style('fill-opacity', function (d) {
+	  new_tiles_up.style("fill-opacity", 0).transition().delay(delays.enter).duration(duration).style("fill-opacity", function (d) {
 	    var inst_opacity = 0;
 	    if (Math.abs(d.value_dn) > 0) {
 	      inst_opacity = params.matrix.opacity_scale(Math.abs(d.value_up));
@@ -34239,34 +33654,34 @@ var Clustergrammer =
 	  });
 
 	  // tile_dn
-	  var new_tiles_dn = d3.select(row_selection).selectAll('.tile_dn').data(row_split_data, function (d) {
+	  var new_tiles_dn = d3.select(row_selection).selectAll(".tile_dn").data(row_split_data, function (d) {
 	    return d.col_name;
-	  }).enter().append('path').attr('class', 'tile_dn').attr('d', function () {
+	  }).enter().append("path").attr("class", "tile_dn").attr("d", function () {
 	    return draw_dn_tile(params);
-	  }).attr('transform', function (d) {
+	  }).attr("transform", function (d) {
 	    return fine_position_tile(params, d);
-	  }).style('fill', function () {
+	  }).style("fill", function () {
 	    return params.matrix.tile_colors[1];
-	  }).on('mouseover', function (p) {
+	  }).on("mouseover", function (p) {
 	    // highlight row - set text to active if
-	    d3.selectAll(params.root + ' .row_label_group text').classed('active', function (d) {
+	    d3.selectAll(params.root + " .row_label_group text").classed("active", function (d) {
 	      return p.row_name === d.name;
 	    });
 
-	    d3.selectAll(params.root + ' .col_label_text text').classed('active', function (d) {
+	    d3.selectAll(params.root + " .col_label_text text").classed("active", function (d) {
 	      return p.col_name === d.name;
 	    });
 	    if (params.matrix.show_tile_tooltips) {
 	      tip.show(p);
 	    }
-	  }).on('mouseout', function () {
-	    d3.selectAll(params.root + ' text').classed('active', false);
+	  }).on("mouseout", function () {
+	    d3.selectAll(params.root + " text").classed("active", false);
 	    if (params.matrix.show_tile_tooltips) {
 	      tip.hide();
 	    }
 	  });
 
-	  new_tiles_dn.style('fill-opacity', 0).transition().delay(delays.enter).duration(duration).style('fill-opacity', function (d) {
+	  new_tiles_dn.style("fill-opacity", 0).transition().delay(delays.enter).duration(duration).style("fill-opacity", function (d) {
 	    var inst_opacity = 0;
 	    if (Math.abs(d.value_up) > 0) {
 	      inst_opacity = params.matrix.opacity_scale(Math.abs(d.value_dn));
@@ -34280,10 +33695,10 @@ var Clustergrammer =
 	      d3.select(this).remove();
 	    }
 	  });
-		};
+	};
 
 /***/ }),
-/* 224 */
+/* 269 */
 /***/ (function(module, exports) {
 
 	module.exports = function resize_containers(params) {
@@ -34302,16 +33717,16 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 225 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* eslint-disable */
 
-	var change_groups = __webpack_require__(196);
-	var all_reorder = __webpack_require__(146);
-	var ini_cat_reorder = __webpack_require__(145);
-	var run_row_search = __webpack_require__(226);
-	var $ = __webpack_require__(81);
+	var change_groups = __webpack_require__(240);
+	var all_reorder = __webpack_require__(190);
+	var ini_cat_reorder = __webpack_require__(189);
+	var run_row_search = __webpack_require__(271);
+	var $ = __webpack_require__(111);
 
 	module.exports = function ini_sidebar(cgm) {
 	  var params = cgm.params;
@@ -34402,10 +33817,10 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 226 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var two_translate_zoom = __webpack_require__(147);
+	var two_translate_zoom = __webpack_require__(191);
 
 	module.exports = function run_row_search(cgm, search_term, entities) {
 	  var prop = "name";
@@ -34444,7 +33859,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 227 */
+/* 272 */
 /***/ (function(module, exports) {
 
 	module.exports = function enable_sidebar(params) {
@@ -34478,7 +33893,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 228 */
+/* 273 */
 /***/ (function(module, exports) {
 
 	module.exports = function update_reorder_buttons(tmp_config, params) {
@@ -34497,15 +33912,15 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 229 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var remove_node_cats = __webpack_require__(230);
+	var remove_node_cats = __webpack_require__(275);
 	var utils = __webpack_require__(2);
-	var underscore = __webpack_require__(5);
+	var each = __webpack_require__(5);
+	var contains = __webpack_require__(134);
 
 	module.exports = function modify_row_node_cats(cat_data, inst_nodes, strip_names = false) {
-
 	  // console.log('MODIFY ROW NODE CATS')
 	  // console.log('CAT_DATA')
 	  // console.log(cat_data)
@@ -34523,8 +33938,7 @@ var Clustergrammer =
 
 	  // loop through row nodes
 	  //////////////////////////
-	  underscore.each(inst_nodes, function (inst_node) {
-
+	  each(inst_nodes, function (inst_node) {
 	    inst_name = inst_node.name;
 
 	    // not sure if this is needed
@@ -34534,10 +33948,10 @@ var Clustergrammer =
 	      // only consider first part of inst_name
 	      ////////////////////////////////////////////
 	      // may improve this
-	      if (inst_name.indexOf(' ')) {
-	        inst_name = inst_name.split(' ')[0];
-	      } else if (inst_name.indexOf('_')) {
-	        inst_name = inst_name.split('_')[0];
+	      if (inst_name.indexOf(" ")) {
+	        inst_name = inst_name.split(" ")[0];
+	      } else if (inst_name.indexOf("_")) {
+	        inst_name = inst_name.split("_")[0];
 	      }
 	    }
 
@@ -34546,26 +33960,23 @@ var Clustergrammer =
 	    remove_node_cats(inst_node);
 
 	    // loop through each category type
-	    underscore.each(cat_data, function (inst_cat_data) {
-
+	    each(cat_data, function (inst_cat_data) {
 	      inst_cat_title = inst_cat_data.cat_title;
 	      inst_cats = inst_cat_data.cats;
 
 	      // initialize with no category
-	      inst_category = 'false';
+	      inst_category = "false";
 	      inst_index = -1;
 
 	      inst_cat_num = 0;
 
 	      // loop through each category in the category-type
-	      underscore.each(inst_cats, function (inst_cat) {
-
+	      each(inst_cats, function (inst_cat) {
 	        inst_cat_name = inst_cat.cat_name;
 	        inst_members = inst_cat.members;
 
 	        // add category if node is a member
-	        if (underscore.contains(inst_members, inst_name)) {
-
+	        if (contains(inst_members, inst_name)) {
 	          inst_category = inst_cat_name;
 	          inst_index = inst_cat_num;
 	        }
@@ -34573,29 +33984,27 @@ var Clustergrammer =
 	        inst_cat_num = inst_cat_num + 1;
 	      });
 
-	      if (utils.has(inst_cat_data, 'pval')) {
-
+	      if (utils.has(inst_cat_data, "pval")) {
 	        var inst_pval = inst_cat_data.pval.toExponential();
-	        inst_full_cat = inst_cat_title + ': ' + inst_category + '<p> Pval ' + String(inst_pval) + '</p>';
+	        inst_full_cat = inst_cat_title + ": " + inst_category + "<p> Pval " + String(inst_pval) + "</p>";
 	      } else {
-
-	        if (inst_cat_title.indexOf('cat-') === -1) {
-	          inst_full_cat = inst_cat_title + ': ' + inst_category;
+	        if (inst_cat_title.indexOf("cat-") === -1) {
+	          inst_full_cat = inst_cat_title + ": " + inst_category;
 	        } else {
 	          inst_full_cat = inst_category;
 	        }
 	      }
 
-	      inst_node['cat-' + String(cat_type_num)] = inst_full_cat;
-	      inst_node['cat_' + String(cat_type_num) + '_index'] = inst_index;
+	      inst_node["cat-" + String(cat_type_num)] = inst_full_cat;
+	      inst_node["cat_" + String(cat_type_num) + "_index"] = inst_index;
 
 	      cat_type_num = cat_type_num + 1;
 	    });
 	  });
-		};
+	};
 
 /***/ }),
-/* 230 */
+/* 275 */
 /***/ (function(module, exports) {
 
 	module.exports = function remove_node_cats(inst_node) {
@@ -34613,13 +34022,13 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 231 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var reset_size_after_update = __webpack_require__(215);
-	var make_col_label_container = __webpack_require__(134);
-	var show_visible_area = __webpack_require__(137);
-	var resize_containers = __webpack_require__(224);
+	var reset_size_after_update = __webpack_require__(260);
+	var make_col_label_container = __webpack_require__(174);
+	var show_visible_area = __webpack_require__(177);
+	var resize_containers = __webpack_require__(269);
 
 	module.exports = function ds_enter_exit_update(cgm) {
 
@@ -34675,11 +34084,11 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 232 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var sim_click = __webpack_require__(204);
-	var $ = __webpack_require__(81);
+	var sim_click = __webpack_require__(248);
+	var $ = __webpack_require__(111);
 
 	module.exports = function quick_cluster() {
 	  /* eslint-disable */
@@ -34733,13 +34142,13 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 233 */
+/* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var demo_text = __webpack_require__(201);
-	var highlight_sidebar_element = __webpack_require__(207);
-	var change_groups = __webpack_require__(196);
-	var $ = __webpack_require__(81);
+	var demo_text = __webpack_require__(245);
+	var highlight_sidebar_element = __webpack_require__(251);
+	var change_groups = __webpack_require__(240);
+	var $ = __webpack_require__(111);
 
 	module.exports = function play_groups() {
 	  /* eslint-disable */
@@ -34774,12 +34183,12 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 234 */
+/* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var demo_text = __webpack_require__(201);
-	var sim_click = __webpack_require__(204);
-	var $ = __webpack_require__(81);
+	var demo_text = __webpack_require__(245);
+	var sim_click = __webpack_require__(248);
+	var $ = __webpack_require__(111);
 
 	module.exports = function play_category() {
 	  /* eslint-disable */
@@ -34826,11 +34235,11 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 235 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var demo_text = __webpack_require__(201);
-	var toggle_play_button = __webpack_require__(236);
+	var demo_text = __webpack_require__(245);
+	var toggle_play_button = __webpack_require__(281);
 
 	module.exports = function play_conclusion() {
 
@@ -34865,10 +34274,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 236 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var $ = __webpack_require__(81);
+	var $ = __webpack_require__(111);
 
 	module.exports = function toggle_play_button(params, show) {
 	  if (show === false) {
@@ -34881,12 +34290,12 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 237 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var demo_text = __webpack_require__(201);
-	var sim_click = __webpack_require__(204);
-	var $ = __webpack_require__(81);
+	var demo_text = __webpack_require__(245);
+	var sim_click = __webpack_require__(248);
+	var $ = __webpack_require__(111);
 
 	module.exports = function play_menu_button() {
 	  /* eslint-disable */
@@ -34959,11 +34368,11 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 238 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_play_button = __webpack_require__(239);
-	var make_demo_text_containers = __webpack_require__(240);
+	var make_play_button = __webpack_require__(284);
+	var make_demo_text_containers = __webpack_require__(285);
 
 	module.exports = function ini_demo() {
 
@@ -34977,10 +34386,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 239 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var position_play_button = __webpack_require__(180);
+	var position_play_button = __webpack_require__(224);
 
 	module.exports = function make_play_button(cgm) {
 
@@ -35019,7 +34428,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 240 */
+/* 285 */
 /***/ (function(module, exports) {
 
 	module.exports = function make_demo_text_containers(params, demo_text_size) {
@@ -35058,11 +34467,11 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 241 */
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var filter_network_using_new_nodes = __webpack_require__(12);
-	var update_viz_with_network = __webpack_require__(212);
+	var filter_network_using_new_nodes = __webpack_require__(24);
+	var update_viz_with_network = __webpack_require__(256);
 
 	module.exports = function filter_viz_using_nodes(new_nodes) {
 
@@ -35071,13 +34480,13 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 242 */
+/* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var filter_network_using_new_nodes = __webpack_require__(12);
-	var update_viz_with_network = __webpack_require__(212);
+	var filter_network_using_new_nodes = __webpack_require__(24);
+	var update_viz_with_network = __webpack_require__(256);
 	var utils = __webpack_require__(2);
-	var $ = __webpack_require__(81);
+	var $ = __webpack_require__(111);
 
 	module.exports = function filter_viz_using_names(names, external_cgm = false) {
 	  // names is an object with row and column names that will be used to filter
@@ -35135,13 +34544,13 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 243 */
+/* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_row_cat = __webpack_require__(191);
-	var calc_viz_params = __webpack_require__(67);
-	var resize_viz = __webpack_require__(155);
-	var modify_row_node_cats = __webpack_require__(229);
+	var make_row_cat = __webpack_require__(235);
+	var calc_viz_params = __webpack_require__(94);
+	var resize_viz = __webpack_require__(199);
+	var modify_row_node_cats = __webpack_require__(274);
 
 	module.exports = function update_cats(cgm, cat_data) {
 
@@ -35171,14 +34580,14 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 244 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_row_cat = __webpack_require__(191);
-	var calc_viz_params = __webpack_require__(67);
-	var resize_viz = __webpack_require__(155);
-	var modify_row_node_cats = __webpack_require__(229);
-	var generate_cat_data = __webpack_require__(245);
+	var make_row_cat = __webpack_require__(235);
+	var calc_viz_params = __webpack_require__(94);
+	var resize_viz = __webpack_require__(199);
+	var modify_row_node_cats = __webpack_require__(274);
+	var generate_cat_data = __webpack_require__(290);
 
 	module.exports = function reset_cats(run_resize_viz = true) {
 
@@ -35212,10 +34621,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 245 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var underscore = __webpack_require__(5);
+	var each = __webpack_require__(5);
 
 	module.exports = function generate_cat_data(cgm) {
 	  // only row category resetting is supported currently
@@ -35326,7 +34735,7 @@ var Clustergrammer =
 
 	              // check if cat_name is in cats
 	              found_cat_name = false;
-	              underscore.each(inst_cat_type.cats, function (inst_cat_obj) {
+	              each(inst_cat_type.cats, function (inst_cat_obj) {
 	                // found category name, add cat_row_name to members
 	                if (cat_name === inst_cat_obj.cat_name) {
 	                  found_cat_name = true;
@@ -35382,11 +34791,11 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 246 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var update_viz_with_view = __webpack_require__(210);
-	var reset_other_filter_sliders = __webpack_require__(247);
+	var update_viz_with_view = __webpack_require__(254);
+	var reset_other_filter_sliders = __webpack_require__(292);
 
 	module.exports = function update_view(cgm, filter_type, inst_state) {
 
@@ -35401,10 +34810,10 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 247 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_filter_title = __webpack_require__(248);
+	var make_filter_title = __webpack_require__(293);
 
 	module.exports = function reset_other_filter_sliders(cgm, filter_type, inst_state) {
 	  var params = cgm.params;
@@ -35449,10 +34858,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 248 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var get_filter_default_state = __webpack_require__(6);
+	var get_filter_default_state = __webpack_require__(18);
 
 	module.exports = function make_filter_title(params, filter_type) {
 	  var filter_title = {};
@@ -35506,11 +34915,11 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 249 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var file_saver = __webpack_require__(250);
-	var make_matrix_string = __webpack_require__(251);
+	var file_saver = __webpack_require__(295);
+	var make_matrix_string = __webpack_require__(296);
 
 	module.exports = function save_matrix() {
 
@@ -35525,7 +34934,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 250 */
+/* 295 */
 /***/ (function(module, exports) {
 
 	module.exports = function file_saver() {
@@ -35740,11 +35149,11 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 251 */
+/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_full_name = __webpack_require__(252);
-	var underscore = __webpack_require__(5);
+	var make_full_name = __webpack_require__(297);
+	var each = __webpack_require__(5);
 
 	module.exports = function make_matrix_string(params) {
 	  var inst_matrix = params.matrix;
@@ -35789,7 +35198,7 @@ var Clustergrammer =
 	  var row_data;
 	  matrix_string = matrix_string + "\n";
 
-	  underscore.each(order_indexes.row, function (inst_index) {
+	  each(order_indexes.row, function (inst_index) {
 	    // row names
 	    row_data = inst_matrix.matrix[inst_index].row_data;
 
@@ -35820,7 +35229,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 252 */
+/* 297 */
 /***/ (function(module, exports) {
 
 	module.exports = function make_full_name(params, inst_node, inst_rc) {
@@ -35851,14 +35260,13 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 253 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var deactivate_cropping = __webpack_require__(254);
-	var underscore = __webpack_require__(5);
+	var deactivate_cropping = __webpack_require__(299);
+	var each = __webpack_require__(5);
 
 	module.exports = function brush_crop_matrix() {
-
 	  // get rows/cols from brush-extent
 	  // works for differnt brushing directions (e.g. start end sites)
 
@@ -35872,19 +35280,18 @@ var Clustergrammer =
 	  var y = d3.scale.linear().domain([0, clust_height]).range([0, clust_height]);
 
 	  // make brush group
-	  d3.select(params.root + ' .clust_container').append('g').classed('brush_group', true);
+	  d3.select(params.root + " .clust_container").append("g").classed("brush_group", true);
 
 	  cgm.params.is_cropping = true;
 
 	  var brush = d3.svg.brush().x(x).y(y).on("brushend", brushend);
 
-	  d3.select(params.root + ' .brush_group').call(brush);
+	  d3.select(params.root + " .brush_group").call(brush);
 
 	  function brushend() {
-
 	    // do not display dendro crop buttons when cropping with brushing
-	    d3.select(cgm.params.root + ' .col_dendro_icons_container').style('display', 'none');
-	    d3.select(cgm.params.root + ' .row_dendro_icons_container').style('display', 'none');
+	    d3.select(cgm.params.root + " .col_dendro_icons_container").style("display", "none");
+	    d3.select(cgm.params.root + " .row_dendro_icons_container").style("display", "none");
 
 	    var brushing_extent = brush.extent();
 	    var brush_start = brushing_extent[0];
@@ -35897,7 +35304,6 @@ var Clustergrammer =
 	    var y_end = brush_end[1];
 
 	    if (x_start != x_end && y_start != y_end) {
-
 	      setTimeout(deactivate_cropping, 500, cgm);
 
 	      // find cropped nodes
@@ -35905,12 +35311,11 @@ var Clustergrammer =
 
 	      cgm.filter_viz_using_names(found_nodes);
 
-	      d3.select(params.root + ' .crop_button').style('color', '#337ab7').classed('fa-crop', false).classed('fa-undo', true);
+	      d3.select(params.root + " .crop_button").style("color", "#337ab7").classed("fa-crop", false).classed("fa-undo", true);
 	    }
 	  }
 
 	  function find_cropped_nodes(x_start, x_end, y_start, y_end, brush_start, brush_end) {
-
 	    // reverse if necessary (depending on how brushing was done)
 	    if (x_start > x_end) {
 	      x_start = brush_end[0];
@@ -35947,7 +35352,7 @@ var Clustergrammer =
 
 	    //   });
 
-	    underscore.each(params.matrix.matrix, function (row_data) {
+	    each(params.matrix.matrix, function (row_data) {
 	      var y_trans = params.viz.y_scale(row_data.row_index);
 
 	      if (y_trans > y_start && y_trans < y_end) {
@@ -35955,15 +35360,13 @@ var Clustergrammer =
 	      }
 	    });
 
-	    d3.selectAll(params.root + ' .col_label_text').each(function (inst_col) {
-
+	    d3.selectAll(params.root + " .col_label_text").each(function (inst_col) {
 	      // there is already bound data on the cols
-	      var inst_trans = d3.select(this).attr('transform');
+	      var inst_trans = d3.select(this).attr("transform");
 
-	      var x_trans = Number(inst_trans.split(',')[0].split('(')[1]);
+	      var x_trans = Number(inst_trans.split(",")[0].split("(")[1]);
 
 	      if (x_trans > x_start && x_trans < x_end) {
-
 	        found_nodes.col.push(inst_col.name);
 	      }
 	    });
@@ -35971,11 +35374,11 @@ var Clustergrammer =
 	    return found_nodes;
 	  }
 
-	  d3.selectAll(params.root + ' .extent').style('opacity', 0.2).style('fill', 'black');
+	  d3.selectAll(params.root + " .extent").style("opacity", 0.2).style("fill", "black");
 		};
 
 /***/ }),
-/* 254 */
+/* 299 */
 /***/ (function(module, exports) {
 
 	module.exports = function deactivate_cropping(cgm) {
@@ -35986,13 +35389,13 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 255 */
+/* 300 */
 /***/ (function(module, exports) {
 
 	module.exports = d3;
 
 /***/ }),
-/* 256 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -36004,7 +35407,7 @@ var Clustergrammer =
 	(function (root, factory) {
 	  if (true) {
 	    // AMD. Register as an anonymous module.
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(255)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(300)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if (typeof exports === 'object') {
 	    if (process.browser) {
 	      // Browserify. Import css too using cssify.

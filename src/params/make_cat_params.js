@@ -2,7 +2,8 @@ var calc_cat_params = require("./calc_cat_params");
 var utils = require("../Utils_clust");
 var colors = require("../Colors");
 var check_if_value_cats = require("./check_if_value_cats");
-var _ = require("underscore");
+var each = require("underscore/cjs/each");
+var countBy = require("underscore/cjs/countBy");
 
 module.exports = function make_cat_params(
   params,
@@ -53,7 +54,7 @@ module.exports = function make_cat_params(
       viz.cat_info[inst_rc] = {};
       viz.cat_names[inst_rc] = {};
 
-      _.each(viz.all_cats[inst_rc], function (cat_title) {
+      each(viz.all_cats[inst_rc], function (cat_title) {
         var inst_node = params.network_data[inst_rc + "_nodes"][0];
 
         // look for title of category in category name
@@ -91,7 +92,7 @@ module.exports = function make_cat_params(
         // add histogram to inst_info
         if (inst_info.type === "cat_strings") {
           // remove titles from categories in hist
-          var cat_hist = _.countBy(cat_instances);
+          var cat_hist = countBy(cat_instances);
           inst_info.cat_hist = cat_hist;
         } else {
           inst_info.cat_hist = null;

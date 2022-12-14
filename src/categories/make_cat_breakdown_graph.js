@@ -1,5 +1,5 @@
 var calc_cat_cluster_breakdown = require("./calc_cat_cluster_breakdown");
-var underscore = require("underscore");
+var each = require("underscore/cjs/each");
 var cat_breakdown_bars = require("./cat_breakdown_bars");
 var cat_breakdown_values = require("./cat_breakdown_values");
 
@@ -59,7 +59,7 @@ module.exports = function make_cat_breakdown_graph(
       // calculate the total number of nodes in downsampled case
       var inst_bar_data = cat_breakdown[0].bar_data;
       cluster_total = 0;
-      underscore.each(inst_bar_data, function (tmp_data) {
+      each(inst_bar_data, function (tmp_data) {
         cluster_total = cluster_total + tmp_data[num_nodes_ds_index];
       });
     }

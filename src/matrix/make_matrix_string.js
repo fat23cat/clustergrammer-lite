@@ -1,5 +1,5 @@
 var make_full_name = require("./make_full_name");
-var underscore = require("underscore");
+var each = require("underscore/cjs/each");
 
 module.exports = function make_matrix_string(params) {
   var inst_matrix = params.matrix;
@@ -44,7 +44,7 @@ module.exports = function make_matrix_string(params) {
   var row_data;
   matrix_string = matrix_string + "\n";
 
-  underscore.each(order_indexes.row, function (inst_index) {
+  each(order_indexes.row, function (inst_index) {
     // row names
     row_data = inst_matrix.matrix[inst_index].row_data;
 

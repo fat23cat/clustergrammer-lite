@@ -4,7 +4,7 @@ var reset_cat_opacity = require("./reset_cat_opacity");
 var ini_cat_opacity = require("./ini_cat_opacity");
 // var click_filter_cats = require('./click_filter_cats');
 var get_cat_names = require("../categories/get_cat_names");
-var underscore = require("underscore");
+var each = require("underscore/cjs/each");
 var $ = require("jquery");
 
 module.exports = function make_row_cat(cgm, updating = false) {
@@ -104,7 +104,7 @@ module.exports = function make_row_cat(cgm, updating = false) {
     d3.selectAll(params.root + " .row_cat_group").each(function () {
       inst_selection = this;
 
-      underscore.each(params.viz.all_cats.row, function (inst_cat) {
+      each(params.viz.all_cats.row, function (inst_cat) {
         var inst_num = parseInt(inst_cat.split("-")[1], 10);
         var cat_rect_class = "row_cat_rect_" + String(inst_num);
 

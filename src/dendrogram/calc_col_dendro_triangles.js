@@ -1,4 +1,4 @@
-var underscore = require("underscore");
+var each = require("underscore/cjs/each");
 var utils = require("../Utils_clust");
 
 module.exports = function calc_col_dendro_triangles(params) {
@@ -7,7 +7,7 @@ module.exports = function calc_col_dendro_triangles(params) {
   var col_nodes = params.network_data.col_nodes;
   var col_nodes_names = params.network_data.col_nodes_names || [];
 
-  underscore.each(col_nodes, function (d) {
+  each(col_nodes, function (d) {
     var tmp_group = d.group[inst_level];
     var inst_index = col_nodes_names.indexOf(d.name);
     var inst_top = params.viz.x_scale(inst_index);
@@ -44,7 +44,7 @@ module.exports = function calc_col_dendro_triangles(params) {
 
   var group_info = [];
 
-  underscore.each(triangle_info, function (d) {
+  each(triangle_info, function (d) {
     group_info.push(d);
   });
 

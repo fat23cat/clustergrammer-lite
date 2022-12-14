@@ -1,6 +1,7 @@
 var utils = require("../Utils_clust");
 var get_filter_default_state = require("./get_filter_default_state");
-var underscore = require("underscore");
+var filter = require("underscore/cjs/filter");
+var each = require("underscore/cjs/each");
 
 module.exports = function get_subset_views(params, views, requested_view) {
   var inst_value;
@@ -19,14 +20,14 @@ module.exports = function get_subset_views(params, views, requested_view) {
 
     // only run filtering if any of the views has the filter
     found_filter = false;
-    underscore.each(views, function (tmp_view) {
+    each(views, function (tmp_view) {
       if (utils.has(tmp_view, inst_filter)) {
         found_filter = true;
       }
     });
 
     if (found_filter) {
-      views = underscore.filter(views, function (d) {
+      views = filter(views, function (d) {
         return d[inst_filter] == inst_value;
       });
     }
@@ -40,7 +41,7 @@ module.exports = function get_subset_views(params, views, requested_view) {
 
   // check if each view is a default state: all filters are at default
   // there can only be one of these
-  underscore.each(views, function (inst_view) {
+  each(views, function (inst_view) {
     check_default = true;
 
     // check each filter in a view to see if it is in the default state

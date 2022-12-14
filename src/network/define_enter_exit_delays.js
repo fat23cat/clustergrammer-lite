@@ -1,5 +1,5 @@
-var underscore = require("underscore");
-var utils = require("../Utils_clust");
+var map = require("underscore/cjs/map");
+var difference = require("underscore/cjs/difference");
 
 module.exports = function (old_params, params) {
   // exit, update, enter
@@ -7,26 +7,26 @@ module.exports = function (old_params, params) {
   // check if exit or enter or both are required
   var old_row_nodes = old_params.network_data.row_nodes;
   var old_col_nodes = old_params.network_data.col_nodes;
-  var old_row = underscore.map(old_row_nodes, function (d) {
+  var old_row = map(old_row_nodes, function (d) {
     return d.name;
   });
-  var old_col = underscore.map(old_col_nodes, function (d) {
+  var old_col = map(old_col_nodes, function (d) {
     return d.name;
   });
   var all_old_nodes = old_row.concat(old_col);
 
   var row_nodes = params.network_data.row_nodes;
   var col_nodes = params.network_data.col_nodes;
-  var row = underscore.map(row_nodes, function (d) {
+  var row = map(row_nodes, function (d) {
     return d.name;
   });
-  var col = underscore.map(col_nodes, function (d) {
+  var col = map(col_nodes, function (d) {
     return d.name;
   });
   var all_nodes = row.concat(col);
 
-  var exit_nodes = utils.difference(all_old_nodes, all_nodes).length;
-  var enter_nodes = utils.difference(all_nodes, all_old_nodes).length;
+  var exit_nodes = difference(all_old_nodes, all_nodes).length;
+  var enter_nodes = difference(all_nodes, all_old_nodes).length;
 
   var delays = {};
 

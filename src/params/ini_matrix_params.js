@@ -1,6 +1,6 @@
 var utils = require("../Utils_clust");
 var initialize_matrix = require("../initialize_matrix");
-var _ = require("underscore");
+var max = require("underscore/cjs/max");
 
 module.exports = function ini_matrix_params(params) {
   var matrix = {};
@@ -78,11 +78,11 @@ module.exports = function ini_matrix_params(params) {
   });
 
   if (utils.has(network_data, "all_links")) {
-    matrix.max_link = _.max(network_data.all_links, function (d) {
+    matrix.max_link = max(network_data.all_links, function (d) {
       return Math.abs(d.value);
     }).value;
   } else {
-    matrix.max_link = _.max(network_data.links, function (d) {
+    matrix.max_link = max(network_data.links, function (d) {
       return Math.abs(d.value);
     }).value;
   }

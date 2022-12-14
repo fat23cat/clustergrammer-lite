@@ -5,7 +5,7 @@ var draw_dn_tile = require("../enter/draw_dn_tile");
 var mouseover_tile = require("./mouseover_tile");
 var mouseout_tile = require("./mouseout_tile");
 var fine_position_tile = require("./fine_position_tile");
-var _ = require("underscore");
+var filter = require("underscore/cjs/filter");
 var utils = require("../Utils_clust");
 
 module.exports = function make_simple_rows(
@@ -34,7 +34,7 @@ module.exports = function make_simple_rows(
   var row_values;
   if (keep_orig === false) {
     // value: remove zero values to make visualization faster
-    row_values = _.filter(inp_row_data, function (num) {
+    row_values = filter(inp_row_data, function (num) {
       return num.value !== 0;
     });
   } else {
@@ -141,7 +141,7 @@ module.exports = function make_simple_rows(
 
   if (params.matrix.tile_type == "updn") {
     // value split
-    var row_split_data = _.filter(inp_row_data, function (num) {
+    var row_split_data = filter(inp_row_data, function (num) {
       return num.value_up != 0 || num.value_dn != 0;
     });
 

@@ -1,4 +1,4 @@
-var underscore = require("underscore");
+var each = require("underscore/cjs/each");
 
 module.exports = function generate_cat_data(cgm) {
   // only row category resetting is supported currently
@@ -109,7 +109,7 @@ module.exports = function generate_cat_data(cgm) {
 
               // check if cat_name is in cats
               found_cat_name = false;
-              underscore.each(inst_cat_type.cats, function (inst_cat_obj) {
+              each(inst_cat_type.cats, function (inst_cat_obj) {
                 // found category name, add cat_row_name to members
                 if (cat_name === inst_cat_obj.cat_name) {
                   found_cat_name = true;

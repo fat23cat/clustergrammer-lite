@@ -1,4 +1,4 @@
-var _ = require("underscore");
+var each = require("underscore/cjs/each");
 var utils = require("../Utils_clust");
 
 module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
@@ -31,7 +31,7 @@ module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
     ds_mat.push(inst_obj);
   }
 
-  _.each(mat, function (inst_row) {
+  each(mat, function (inst_row) {
     // row ordering information is contained in y_scale
     var inst_y = params.viz.y_scale(inst_row.row_index);
 
@@ -64,7 +64,7 @@ module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
 
     var num_names = tmp_ds.all_names.length;
 
-    _.each(tmp_row_data, function (tmp_obj) {
+    each(tmp_row_data, function (tmp_obj) {
       tmp_obj.value = (tmp_obj.value / num_names) * opacity_factor;
     });
   });

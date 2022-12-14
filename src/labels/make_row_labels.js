@@ -2,7 +2,8 @@ var utils = require("../Utils_clust");
 var add_row_click_hlight = require("./add_row_click_hlight");
 var row_reorder = require("../reorder/row_reorder");
 var make_row_tooltips = require("./make_row_tooltips");
-var _ = require("underscore");
+var each = require("underscore/cjs/each");
+var contains = require("underscore/cjs/contains");
 
 module.exports = function make_row_labels(
   cgm,
@@ -18,8 +19,8 @@ module.exports = function make_row_labels(
   if (row_names === "all") {
     row_nodes = params.network_data.row_nodes;
   } else {
-    _.each(params.network_data.row_nodes, function (inst_row) {
-      if (_.contains(row_names, inst_row.name)) {
+    each(params.network_data.row_nodes, function (inst_row) {
+      if (contains(row_names, inst_row.name)) {
         row_nodes.push(inst_row);
       }
     });

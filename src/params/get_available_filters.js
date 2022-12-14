@@ -1,11 +1,11 @@
-var _ = require("underscore");
+var each = require("underscore/cjs/each");
 var utils = require("../Utils_clust");
 
 module.exports = function get_available_filters(views) {
   var possible_filters = {};
   var filter_data = {};
 
-  _.each(views, function (inst_view) {
+  each(views, function (inst_view) {
     var inst_keys = Object.keys(inst_view || {});
 
     inst_keys.forEach(function (inst_key) {
@@ -26,7 +26,7 @@ module.exports = function get_available_filters(views) {
     var num_options = options.length;
 
     var filter_type = "categorical";
-    _.each(options, function (inst_option) {
+    each(options, function (inst_option) {
       if (typeof inst_option === "number") {
         filter_type = "numerical";
       }

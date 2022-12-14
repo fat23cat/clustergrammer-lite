@@ -2,8 +2,8 @@ var find_viz_rows = require("../zoom/find_viz_rows");
 var make_matrix_rows = require("../matrix/make_matrix_rows");
 var make_row_labels = require("../labels/make_row_labels");
 var make_row_visual_aid_triangles = require("../labels/make_row_visual_aid_triangles");
-var underscore = require("underscore");
-var utils = require("../Utils_clust");
+var contains = require("underscore/cjs/contains");
+var difference = require("underscore/cjs/difference");
 
 module.exports = function show_visible_area(
   cgm,
@@ -92,7 +92,7 @@ module.exports = function show_visible_area(
 
   var missing_rows;
   if (make_all_rows === false) {
-    missing_rows = utils.difference(
+    missing_rows = difference(
       params.viz.viz_nodes.row,
       params.viz.viz_nodes.curr_row
     );
@@ -147,7 +147,7 @@ module.exports = function show_visible_area(
       // remove downsampled rows
       d3.selectAll(params.root + " .ds" + String(new_ds_level) + "_row").each(
         function (d) {
-          if (underscore.contains(params.viz.viz_nodes.row, d.name) === false) {
+          if (contains(params.viz.viz_nodes.row, d.name) === false) {
             d3.select(this).remove();
           }
         }
@@ -155,7 +155,7 @@ module.exports = function show_visible_area(
     } else {
       // remove real data rows
       d3.selectAll(params.root + " .row").each(function (d) {
-        if (underscore.contains(params.viz.viz_nodes.row, d.name) === false) {
+        if (contains(params.viz.viz_nodes.row, d.name) === false) {
           d3.select(this).remove();
         }
       });
@@ -163,7 +163,7 @@ module.exports = function show_visible_area(
 
     // remove not visible row labels
     d3.selectAll(params.root + " .row_label_group").each(function (d) {
-      if (underscore.contains(params.viz.viz_nodes.row, d.name) === false) {
+      if (contains(params.viz.viz_nodes.row, d.name) === false) {
         d3.select(this).remove();
       }
     });
@@ -203,7 +203,7 @@ module.exports = function show_visible_area(
       });
 
       // find missing labels
-      var missing_row_labels = underscore.difference(
+      var missing_row_labels = difference(
         params.viz.viz_nodes.row,
         visible_row_labels
       );

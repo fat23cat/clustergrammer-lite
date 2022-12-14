@@ -30,7 +30,7 @@ var position_filter_icon = require("../menus/position_filter_icon");
 var position_tree_menu = require("../menus/position_tree_menu");
 var ini_zoom_info = require("../zoom/ini_zoom_info");
 var grid_lines_viz = require("../matrix/grid_lines_viz");
-var underscore = require("underscore");
+var each = require("underscore/cjs/each");
 
 module.exports = function resize_viz(cgm) {
   var params = cgm.params;
@@ -60,7 +60,7 @@ module.exports = function resize_viz(cgm) {
   var svg_group = d3.select(params.viz.viz_svg);
 
   // redefine x and y positions
-  underscore.each(params.network_data.links, function (d) {
+  each(params.network_data.links, function (d) {
     d.x = params.viz.x_scale(d.target);
     d.y = params.viz.y_scale(d.source);
   });
