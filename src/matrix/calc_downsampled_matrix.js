@@ -59,7 +59,7 @@ module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
   });
 
   // average the values
-  _.each(ds_mat, function (tmp_ds) {
+  ds_mat.forEach(function (tmp_ds) {
     var tmp_row_data = tmp_ds.row_data;
 
     var num_names = tmp_ds.all_names.length;
@@ -72,7 +72,7 @@ module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
   // all names were found
   var all_names = [];
 
-  _.each(ds_mat, function (inst_row) {
+  ds_mat.forEach(function (inst_row) {
     all_names = all_names.concat(inst_row.all_names);
   });
 

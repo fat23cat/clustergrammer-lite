@@ -8,7 +8,7 @@ module.exports = function get_available_filters(views) {
   _.each(views, function (inst_view) {
     var inst_keys = Object.keys(inst_view || {});
 
-    _.each(inst_keys, function (inst_key) {
+    inst_keys.forEach(function (inst_key) {
       if (inst_key != "nodes") {
         if (!utils.has(filter_data, inst_key)) {
           filter_data[inst_key] = [];
@@ -21,7 +21,7 @@ module.exports = function get_available_filters(views) {
 
   var tmp_filters = Object.keys(filter_data);
 
-  _.each(tmp_filters, function (inst_filter) {
+  tmp_filters.forEach(function (inst_filter) {
     var options = filter_data[inst_filter];
     var num_options = options.length;
 

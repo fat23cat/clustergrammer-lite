@@ -116,7 +116,7 @@ module.exports = function make_cat_breakdown_graph(
     // the total amout to shift down the next category
     var shift_down = title_height;
 
-    underscore.each(cat_breakdown, function (cat_data) {
+    cat_breakdown.forEach(function (cat_data) {
       var max_bar_value = cat_data.bar_data[0][bars_index];
 
       var count_offset = digit_offset_scale(max_bar_value);
