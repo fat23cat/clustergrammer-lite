@@ -85,8 +85,7 @@ module.exports = function make_row_cat(cgm, updating = false) {
     .append("g")
     .attr("class", "row_cat_group")
     .attr("transform", function (d) {
-      var inst_index = underscore.indexOf(
-        params.network_data.row_nodes_names,
+      var inst_index = (params.network_data.row_nodes_names || []).indexOf(
         d.name
       );
       return "translate(0, " + params.viz.y_scale(inst_index) + ")";

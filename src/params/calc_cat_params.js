@@ -1,5 +1,3 @@
-var _ = require("underscore");
-
 module.exports = function calc_cat_params(params, viz) {
   var separtion_room;
 
@@ -14,17 +12,13 @@ module.exports = function calc_cat_params(params, viz) {
   viz.cat_room.symbol_width = 12;
   viz.cat_room.separation = 3;
 
-  _.each(["row", "col"], function (inst_rc) {
+  ["row", "col"].forEach(function (inst_rc) {
     viz.norm_labels.width[inst_rc] =
       label_scale(params.labels[inst_rc + "_max_char"]) *
       params[inst_rc + "_label_scale"];
 
     viz["num_" + inst_rc + "_nodes"] =
       params.network_data[inst_rc + "_nodes"].length;
-
-    // if (_.has(config, 'group_level')){
-    //   config.group_level[inst_rc] = 5;
-    // }
 
     if (inst_rc === "row") {
       viz.dendro_room[inst_rc] = viz.dendro_room.symbol_width;

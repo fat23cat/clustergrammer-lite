@@ -5,7 +5,6 @@ var math = core.create();
 var dist_fun = require("./distance_functions");
 var get_order_and_groups_clusterfck_tree = require("./get_order_and_groups_clusterfck_tree");
 var update_view = require("../update/update_view");
-var underscore = require("underscore");
 var $ = require("jquery");
 
 math.import(require("mathjs/lib/function/matrix/transpose"));
@@ -37,7 +36,7 @@ module.exports = function recluster(cgm, distance_metric, linkage_type) {
     cgm.params.network_data.col_nodes
   );
 
-  underscore.each(["row", "col"], function (inst_rc) {
+  ["row", "col"].forEach(function (inst_rc) {
     var mat;
     var transpose = math.transpose;
     var names;

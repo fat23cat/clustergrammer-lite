@@ -29,15 +29,17 @@ module.exports = function make_cat_params(
   viz.cat_colors.value_opacity = ini_val_opacity;
 
   var num_colors = 0;
-  _.each(["row", "col"], function (inst_rc) {
+  ["row", "col"].forEach(function (inst_rc) {
     viz.show_categories[inst_rc] = false;
 
     viz.all_cats[inst_rc] = [];
-    var tmp_keys = _.keys(params.network_data[inst_rc + "_nodes"][0]);
+    var tmp_keys = Object.keys(
+      params.network_data[inst_rc + "_nodes"][0] || {}
+    );
 
     tmp_keys = tmp_keys.sort();
 
-    _.each(tmp_keys, function (d) {
+    tmp_keys.forEach(function (d) {
       if (d.indexOf("cat-") >= 0) {
         viz.show_categories[inst_rc] = true;
         viz.all_cats[inst_rc].push(d);
@@ -66,13 +68,11 @@ module.exports = function make_cat_params(
           viz.cat_names[inst_rc][cat_title] = cat_title;
         }
 
-        var cat_instances_titles = utils.pluck(
-          params.network_data[inst_rc + "_nodes"],
-          cat_title
-        );
+        var cat_instances_titles =
+          utils.pluck(params.network_data[inst_rc + "_nodes"], cat_title) || [];
         var cat_instances = [];
 
-        _.each(cat_instances_titles, function (inst_cat) {
+        cat_instances_titles.forEach(function (inst_cat) {
           var new_cat;
           if (inst_cat.indexOf(": ") > 0) {
             new_cat = inst_cat.split(": ")[1];
@@ -83,7 +83,7 @@ module.exports = function make_cat_params(
           cat_instances.push(new_cat);
         });
 
-        var cat_states = _.uniq(cat_instances_titles).sort();
+        var cat_states = Array.from(new Set(cat_instances_titles)).sort();
 
         // check whether all the categories are of value type
         inst_info = check_if_value_cats(cat_states);
@@ -102,7 +102,7 @@ module.exports = function make_cat_params(
 
         viz.cat_colors[inst_rc][cat_title] = {};
 
-        _.each(cat_states, function (cat_tmp, inst_index) {
+        cat_states.forEach(function (cat_tmp, inst_index) {
           inst_color = colors.get_random_color(inst_index + num_colors);
 
           viz.cat_colors[inst_rc][cat_title][cat_tmp] = inst_color;
@@ -124,7 +124,7 @@ module.exports = function make_cat_params(
     }
 
     if (
-      _.has(params.network_data, "cat_colors") &&
+      utils.has(params.network_data, "cat_colors") &&
       predefined_cat_colors === true
     ) {
       viz.cat_colors[inst_rc] = params.network_data.cat_colors[inst_rc];

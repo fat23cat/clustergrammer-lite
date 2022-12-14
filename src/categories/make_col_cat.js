@@ -58,8 +58,7 @@ module.exports = function make_col_cat(cgm) {
     .append("g")
     .attr("class", "col_cat_group")
     .attr("transform", function (d) {
-      var inst_index = underscore.indexOf(
-        params.network_data.col_nodes_names,
+      var inst_index = (params.network_data.col_nodes_names || []).indexOf(
         d.name
       );
       // return 'translate(' + params.viz.x_scale(d.col_index) + ',0)';

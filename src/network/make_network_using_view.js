@@ -1,6 +1,6 @@
 var filter_network_using_new_nodes = require("./filter_network_using_new_nodes");
 var get_subset_views = require("../filters/get_subset_views");
-var _ = require("underscore");
+var utils = require("../Utils_clust");
 
 module.exports = function make_network_using_view(
   config,
@@ -10,7 +10,7 @@ module.exports = function make_network_using_view(
   var orig_views = config.network_data.views;
 
   var is_enr = false;
-  if (_.has(orig_views[0], "enr_score_type")) {
+  if (utils.has(orig_views[0], "enr_score_type")) {
     is_enr = true;
   }
 

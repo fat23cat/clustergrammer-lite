@@ -1,5 +1,6 @@
 var binom_test = require("./binom_test");
 var _ = require("underscore");
+var utils = require("../Utils_clust");
 
 module.exports = function calc_cat_cluster_breakdown(
   params,
@@ -48,7 +49,7 @@ module.exports = function calc_cat_cluster_breakdown(
     var inst_cat_info = params.viz.cat_info[inst_rc];
 
     // tmp list of all categories
-    var tmp_types_index = _.keys(inst_cat_info);
+    var tmp_types_index = Object.keys(inst_cat_info || {});
     // this will hold the indexes of string-type categories
     var cat_types_index = [];
 
@@ -179,7 +180,7 @@ module.exports = function calc_cat_cluster_breakdown(
 
           // working on tracking the 'real' number of nodes, which is only different
           // if downsampling has been done
-          if (_.has(inst_run_count[inst_cat], "num_nodes_ds")) {
+          if (utils.has(inst_run_count[inst_cat], "num_nodes_ds")) {
             var num_nodes_ds = inst_run_count[inst_cat].num_nodes_ds;
           } else {
             num_nodes_ds = null;

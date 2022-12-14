@@ -5,7 +5,6 @@ var show_visible_area = require("../zoom/show_visible_area");
 var ini_zoom_info = require("../zoom/ini_zoom_info");
 var get_previous_zoom = require("../zoom/get_previous_zoom");
 var calc_downsampled_levels = require("../matrix/calc_downsampled_levels");
-var underscore = require("underscore");
 var $ = require("jquery");
 
 module.exports = function col_reorder(cgm, col_selection, inst_term) {
@@ -36,7 +35,7 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
     });
 
     // find index
-    var inst_col = underscore.indexOf(tmp_arr, inst_term);
+    var inst_col = tmp_arr.indexOf(inst_term);
 
     // gather the values of the input genes
     tmp_arr = [];
@@ -57,7 +56,7 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
 
     var t;
 
-    var row_nodes_names = params.network_data.row_nodes_names;
+    var row_nodes_names = params.network_data.row_nodes_names || [];
 
     // reorder
     if (params.network_data.links.length > params.matrix.def_large_matrix) {
@@ -71,7 +70,7 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
 
     // reorder row_label_triangle groups
     t.selectAll(".row_cat_group").attr("transform", function (d) {
-      var inst_index = underscore.indexOf(row_nodes_names, d.name);
+      var inst_index = row_nodes_names.indexOf(d.name);
       return "translate(0," + params.viz.y_scale(inst_index) + ")";
     });
 
@@ -79,7 +78,7 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
     t.select(".row_label_zoom_container")
       .selectAll(".row_label_group")
       .attr("transform", function (d) {
-        var inst_index = underscore.indexOf(row_nodes_names, d.name);
+        var inst_index = row_nodes_names.indexOf(d.name);
         return "translate(0," + params.viz.y_scale(inst_index) + ")";
       });
 
@@ -87,7 +86,7 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
     if (params.viz.ds_level === -1) {
       // reorder matrix rows
       t.selectAll(".row").attr("transform", function (d) {
-        var inst_index = underscore.indexOf(row_nodes_names, d.name);
+        var inst_index = row_nodes_names.indexOf(d.name);
         return "translate(0," + params.viz.y_scale(inst_index) + ")";
       });
     }
