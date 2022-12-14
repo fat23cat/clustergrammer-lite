@@ -192,7 +192,6 @@ module.exports =
 	var set_defaults = __webpack_require__(7);
 	var check_sim_mat = __webpack_require__(8);
 	var check_nodes_for_categories = __webpack_require__(9);
-	var _ = __webpack_require__(5);
 
 	module.exports = function make_config(args) {
 	  var defaults = set_defaults();
@@ -205,8 +204,8 @@ module.exports =
 	  var super_string = ": ";
 
 	  // replace undersores with space in row/col names
-	  _.each(["row", "col"], function (inst_rc) {
-	    var inst_nodes = config.network_data[inst_rc + "_nodes"];
+	  ["row", "col"].forEach(function (inst_rc) {
+	    var inst_nodes = config.network_data[inst_rc + "_nodes"] || [];
 
 	    var has_cats = check_nodes_for_categories(inst_nodes);
 
@@ -234,17 +233,17 @@ module.exports =
 	  var filters = get_available_filters(config.network_data.views);
 
 	  var default_states = {};
-	  _.each(_.keys(filters.possible_filters), function (inst_filter) {
+	  Object.keys(filters.possible_filters || {}).forEach(function (inst_filter) {
 	    var tmp_state = get_filter_default_state(filters.filter_data, inst_filter);
 
 	    default_states[inst_filter] = tmp_state;
 	  });
 
 	  // process view
-	  if (_.has(config.network_data, "views")) {
+	  if (utils.has(config.network_data, "views")) {
 	    config.network_data.views.forEach(function (inst_view) {
-	      _.each(_.keys(filters.possible_filters), function (inst_filter) {
-	        if (!_.has(inst_view, inst_filter)) {
+	      Object.keys(filters.possible_filters || {}).forEach(function (inst_filter) {
+	        if (!utils.has(inst_view, inst_filter)) {
 	          inst_view[inst_filter] = default_states[inst_filter];
 	        }
 	      });
@@ -252,7 +251,7 @@ module.exports =
 	      var inst_nodes = inst_view.nodes;
 
 	      // proc row/col nodes names in views
-	      _.each(["row", "col"], function (inst_rc) {
+	      ["row", "col"].forEach(function (inst_rc) {
 	        var has_cats = check_nodes_for_categories(inst_nodes[inst_rc + "_nodes"]);
 
 	        inst_nodes[inst_rc + "_nodes"].forEach(function (d, i) {
@@ -273,17 +272,11 @@ module.exports =
 	  var col_nodes = config.network_data.col_nodes;
 	  var row_nodes = config.network_data.row_nodes;
 
-	  // console.log( config.network_data.links[0] )
-	  // console.log( config.network_data.links[1] )
-	  // console.log( config.network_data.links[2] )
-
-	  // console.log(_.has(config.network_data,'mat'));
-
 	  ///////////////////////////
 	  // convert 'mat' to links
 	  ///////////////////////////
 
-	  if (_.has(config.network_data, "mat")) {
+	  if (utils.has(config.network_data, "mat")) {
 	    var links = [];
 	    var mat = config.network_data.mat;
 	    var inst_link = {};
@@ -30044,14 +30037,13 @@ module.exports =
 	"use strict";
 
 	var all_reorder = __webpack_require__(147);
-	var _ = __webpack_require__(5);
 
 	module.exports = function ini_cat_reorder(cgm) {
 	  /* eslint-disable */
 
 	  var params = cgm.params;
 
-	  _.each(["row", "col"], function (inst_rc) {
+	  ["row", "col"].forEach(function (inst_rc) {
 	    if (params.viz.show_categories[inst_rc]) {
 	      d3.selectAll(params.root + " ." + inst_rc + "_cat_super").on("dblclick", function () {
 	        if (params.sim_mat) {
