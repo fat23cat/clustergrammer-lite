@@ -1,5 +1,5 @@
-var deactivate_cropping = require("./deactivate_cropping");
-var each = require("underscore/cjs/each");
+var deactivate_cropping = require('./deactivate_cropping');
+var each = require('underscore/cjs/each');
 
 module.exports = function brush_crop_matrix() {
   // get rows/cols from brush-extent
@@ -15,25 +15,25 @@ module.exports = function brush_crop_matrix() {
   var y = d3.scale.linear().domain([0, clust_height]).range([0, clust_height]);
 
   // make brush group
-  d3.select(params.root + " .clust_container")
-    .append("g")
-    .classed("brush_group", true);
+  d3.select(params.root + ' .clust_container')
+    .append('g')
+    .classed('brush_group', true);
 
   cgm.params.is_cropping = true;
 
-  var brush = d3.svg.brush().x(x).y(y).on("brushend", brushend);
+  var brush = d3.svg.brush().x(x).y(y).on('brushend', brushend);
 
-  d3.select(params.root + " .brush_group").call(brush);
+  d3.select(params.root + ' .brush_group').call(brush);
 
   function brushend() {
     // do not display dendro crop buttons when cropping with brushing
-    d3.select(cgm.params.root + " .col_dendro_icons_container").style(
-      "display",
-      "none"
+    d3.select(cgm.params.root + ' .col_dendro_icons_container').style(
+      'display',
+      'none'
     );
-    d3.select(cgm.params.root + " .row_dendro_icons_container").style(
-      "display",
-      "none"
+    d3.select(cgm.params.root + ' .row_dendro_icons_container').style(
+      'display',
+      'none'
     );
 
     var brushing_extent = brush.extent();
@@ -61,10 +61,10 @@ module.exports = function brush_crop_matrix() {
 
       cgm.filter_viz_using_names(found_nodes);
 
-      d3.select(params.root + " .crop_button")
-        .style("color", "#337ab7")
-        .classed("fa-crop", false)
-        .classed("fa-undo", true);
+      d3.select(params.root + ' .crop_button')
+        .style('color', '#337ab7')
+        .classed('fa-crop', false)
+        .classed('fa-undo', true);
     }
   }
 
@@ -120,11 +120,11 @@ module.exports = function brush_crop_matrix() {
       }
     });
 
-    d3.selectAll(params.root + " .col_label_text").each(function (inst_col) {
+    d3.selectAll(params.root + ' .col_label_text').each(function (inst_col) {
       // there is already bound data on the cols
-      var inst_trans = d3.select(this).attr("transform");
+      var inst_trans = d3.select(this).attr('transform');
 
-      var x_trans = Number(inst_trans.split(",")[0].split("(")[1]);
+      var x_trans = Number(inst_trans.split(',')[0].split('(')[1]);
 
       if (x_trans > x_start && x_trans < x_end) {
         found_nodes.col.push(inst_col.name);
@@ -134,7 +134,7 @@ module.exports = function brush_crop_matrix() {
     return found_nodes;
   }
 
-  d3.selectAll(params.root + " .extent")
-    .style("opacity", 0.2)
-    .style("fill", "black");
+  d3.selectAll(params.root + ' .extent')
+    .style('opacity', 0.2)
+    .style('fill', 'black');
 };

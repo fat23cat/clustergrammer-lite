@@ -1,7 +1,7 @@
-var each = require("underscore/cjs/each");
+var each = require('underscore/cjs/each');
 
 module.exports = function check_nodes_for_categories(nodes) {
-  var super_string = ": ";
+  var super_string = ': ';
   var has_cat = true;
 
   each(nodes, function (inst_node) {

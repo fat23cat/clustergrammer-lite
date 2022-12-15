@@ -3,39 +3,39 @@
 module.exports = function set_up_reorder(params, sidebar) {
   var button_dict;
   var tmp_orders;
-  var rc_dict = { row: "Row", col: "Column", both: "" };
+  var rc_dict = { row: 'Row', col: 'Column', both: '' };
   var is_active;
   var inst_reorder;
   // var all_cats;
   // var inst_order_label;
 
   var reorder_section = sidebar
-    .append("div")
-    .style("padding-left", "10px")
-    .style("padding-right", "10px")
-    .classed("reorder_section", true);
+    .append('div')
+    .style('padding-left', '10px')
+    .style('padding-right', '10px')
+    .classed('reorder_section', true);
 
   var reorder_types;
   if (params.sim_mat) {
-    reorder_types = ["both"];
+    reorder_types = ['both'];
   } else {
-    reorder_types = ["row", "col"];
+    reorder_types = ['row', 'col'];
   }
 
   reorder_types.forEach(function (inst_rc) {
     button_dict = {
-      clust: "Cluster",
-      rank: "Rank by Sum",
-      rankvar: "Rank by Variance",
-      ini: "Initial Order",
-      alpha: "Alphabetically",
+      clust: 'Cluster',
+      rank: 'Rank by Sum',
+      rankvar: 'Rank by Variance',
+      ini: 'Initial Order',
+      alpha: 'Alphabetically'
     };
 
     var other_rc;
-    if (inst_rc === "row") {
-      other_rc = "col";
+    if (inst_rc === 'row') {
+      other_rc = 'col';
     } else {
-      other_rc = "row";
+      other_rc = 'row';
     }
 
     tmp_orders = Object.keys(params.matrix.orders || {});
@@ -44,9 +44,9 @@ module.exports = function set_up_reorder(params, sidebar) {
 
     tmp_orders.forEach(function (inst_name) {
       if (inst_name.indexOf(other_rc) > -1) {
-        inst_name = inst_name.replace("_row", "").replace("_col", "");
+        inst_name = inst_name.replace('_row', '').replace('_col', '');
 
-        if (inst_name.indexOf("cat_") < 0) {
+        if (inst_name.indexOf('cat_') < 0) {
           possible_orders.push(inst_name);
         }
       }
@@ -54,9 +54,9 @@ module.exports = function set_up_reorder(params, sidebar) {
 
     // specific to Enrichr
     if (
-      Object.keys(params.viz.filter_data || {}).indexOf("enr_score_type") > -1
+      Object.keys(params.viz.filter_data || {}).indexOf('enr_score_type') > -1
     ) {
-      possible_orders = ["clust", "rank"];
+      possible_orders = ['clust', 'rank'];
     }
 
     possible_orders = Array.from(new Set(possible_orders));
@@ -64,43 +64,43 @@ module.exports = function set_up_reorder(params, sidebar) {
     possible_orders = possible_orders.sort();
 
     var reorder_text;
-    if (inst_rc != "both") {
-      reorder_text = " Order";
+    if (inst_rc != 'both') {
+      reorder_text = ' Order';
     } else {
-      reorder_text = "Reorder Matrix";
+      reorder_text = 'Reorder Matrix';
     }
 
     reorder_section
-      .append("div")
-      .classed("sidebar_button_text", true)
-      .style("clear", "both")
-      .style("margin-top", "10px")
+      .append('div')
+      .classed('sidebar_button_text', true)
+      .style('clear', 'both')
+      .style('margin-top', '10px')
       .html(rc_dict[inst_rc] + reorder_text);
 
     inst_reorder = reorder_section
-      .append("div")
-      .classed("btn-group-vertical", true)
-      .style("width", "100%")
-      .classed("toggle_" + inst_rc + "_order", true)
-      .attr("role", "group");
+      .append('div')
+      .classed('btn-group-vertical', true)
+      .style('width', '100%')
+      .classed('toggle_' + inst_rc + '_order', true)
+      .attr('role', 'group');
 
     inst_reorder
-      .selectAll(".button")
+      .selectAll('.button')
       .data(possible_orders)
       .enter()
-      .append("button")
-      .attr("type", "button")
-      .classed("btn", true)
-      .classed("btn-primary", true)
-      .classed("sidebar_button_text", true)
-      .classed("active", function (d) {
+      .append('button')
+      .attr('type', 'button')
+      .classed('btn', true)
+      .classed('btn-primary', true)
+      .classed('sidebar_button_text', true)
+      .classed('active', function (d) {
         is_active = false;
         if (d == params.viz.inst_order[other_rc]) {
           is_active = true;
         }
         return is_active;
       })
-      .attr("name", function (d) {
+      .attr('name', function (d) {
         return d;
       })
       .html(function (d) {

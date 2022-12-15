@@ -1,9 +1,9 @@
-var find_viz_rows = require("../zoom/find_viz_rows");
-var make_matrix_rows = require("../matrix/make_matrix_rows");
-var make_row_labels = require("../labels/make_row_labels");
-var make_row_visual_aid_triangles = require("../labels/make_row_visual_aid_triangles");
-var contains = require("underscore/cjs/contains");
-var difference = require("underscore/cjs/difference");
+var find_viz_rows = require('../zoom/find_viz_rows');
+var make_matrix_rows = require('../matrix/make_matrix_rows');
+var make_row_labels = require('../labels/make_row_labels');
+var make_row_visual_aid_triangles = require('../labels/make_row_visual_aid_triangles');
+var contains = require('underscore/cjs/contains');
+var difference = require('underscore/cjs/difference');
 
 module.exports = function show_visible_area(
   cgm,
@@ -98,24 +98,24 @@ module.exports = function show_visible_area(
     );
   } else {
     // make all rows (reordering)
-    missing_rows = "all";
+    missing_rows = 'all';
 
     // remove downsampled rows
-    d3.selectAll(params.root + " .ds" + String(new_ds_level) + "_row").remove();
+    d3.selectAll(params.root + ' .ds' + String(new_ds_level) + '_row').remove();
   }
 
   if (params.viz.ds != null) {
-    var ds_row_class = ".ds" + String(params.viz.ds_level) + "_row";
-    d3.selectAll(ds_row_class).style("display", "block");
+    var ds_row_class = '.ds' + String(params.viz.ds_level) + '_row';
+    d3.selectAll(ds_row_class).style('display', 'block');
   }
 
   // if downsampling
   if (new_ds_level >= 0) {
     // remove old rows
-    d3.selectAll(params.root + " .row").remove();
+    d3.selectAll(params.root + ' .row').remove();
     // remove tile tooltips and row tooltips
-    d3.selectAll(params.viz.root_tips + "_tile_tip").remove();
-    d3.selectAll(params.viz.root_tips + "_row_tip").remove();
+    d3.selectAll(params.viz.root_tips + '_tile_tip').remove();
+    d3.selectAll(params.viz.root_tips + '_row_tip').remove();
   }
 
   // default state for downsampling
@@ -131,12 +131,12 @@ module.exports = function show_visible_area(
     // set matrix to downsampled matrix
     inst_matrix = params.matrix.ds_matrix[new_ds_level];
 
-    d3.selectAll(params.root + " .row_cat_group path").remove();
+    d3.selectAll(params.root + ' .row_cat_group path').remove();
   }
 
   // also remove row visual aid triangles if zooming out
   if (zooming_out === true) {
-    d3.selectAll(params.root + " .row_cat_group path").remove();
+    d3.selectAll(params.root + ' .row_cat_group path').remove();
   }
 
   // remove rows and labels that are not visible and change ds_level
@@ -145,7 +145,7 @@ module.exports = function show_visible_area(
     // remove not visible matrix rows
     if (new_ds_level >= 0) {
       // remove downsampled rows
-      d3.selectAll(params.root + " .ds" + String(new_ds_level) + "_row").each(
+      d3.selectAll(params.root + ' .ds' + String(new_ds_level) + '_row').each(
         function (d) {
           if (contains(params.viz.viz_nodes.row, d.name) === false) {
             d3.select(this).remove();
@@ -154,7 +154,7 @@ module.exports = function show_visible_area(
       );
     } else {
       // remove real data rows
-      d3.selectAll(params.root + " .row").each(function (d) {
+      d3.selectAll(params.root + ' .row').each(function (d) {
         if (contains(params.viz.viz_nodes.row, d.name) === false) {
           d3.select(this).remove();
         }
@@ -162,7 +162,7 @@ module.exports = function show_visible_area(
     }
 
     // remove not visible row labels
-    d3.selectAll(params.root + " .row_label_group").each(function (d) {
+    d3.selectAll(params.root + ' .row_label_group').each(function (d) {
       if (contains(params.viz.viz_nodes.row, d.name) === false) {
         d3.select(this).remove();
       }
@@ -177,7 +177,7 @@ module.exports = function show_visible_area(
 
       // remove old level rows
       d3.selectAll(
-        params.root + " .ds" + String(old_ds_level) + "_row"
+        params.root + ' .ds' + String(old_ds_level) + '_row'
       ).remove();
     }
   }
@@ -186,7 +186,7 @@ module.exports = function show_visible_area(
   // console.log(missing_rows)
 
   // only make new matrix_rows if there are missing rows
-  if (missing_rows.length >= 1 || missing_rows === "all") {
+  if (missing_rows.length >= 1 || missing_rows === 'all') {
     make_matrix_rows(params, inst_matrix, missing_rows, new_ds_level);
   }
 
@@ -198,7 +198,7 @@ module.exports = function show_visible_area(
       ///////////////////////////////////
       // get the names visible row_labels
       var visible_row_labels = [];
-      d3.selectAll(params.root + " .row_label_group").each(function (d) {
+      d3.selectAll(params.root + ' .row_label_group').each(function (d) {
         visible_row_labels.push(d.name);
       });
 

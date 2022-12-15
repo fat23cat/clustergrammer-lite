@@ -1,9 +1,9 @@
-var constrain_font_size = require("./constrain_font_size");
-var trim_text = require("./trim_text");
-var num_visible_labels = require("./num_visible_labels");
-var toggle_grid_lines = require("../matrix/toggle_grid_lines");
-var show_visible_area = require("./show_visible_area");
-var check_zoom_stop_status = require("./check_zoom_stop_status");
+var constrain_font_size = require('./constrain_font_size');
+var trim_text = require('./trim_text');
+var num_visible_labels = require('./num_visible_labels');
+var toggle_grid_lines = require('../matrix/toggle_grid_lines');
+var show_visible_area = require('./show_visible_area');
+var check_zoom_stop_status = require('./check_zoom_stop_status');
 
 module.exports = function run_when_zoom_stopped(cgm) {
   var params = cgm.params;
@@ -17,35 +17,35 @@ module.exports = function run_when_zoom_stopped(cgm) {
     // console.log('\nZOOMING HAS ACTUALLY STOPPED\n============================');
     // console.log(params.zoom_info.zoom_y)
 
-    ["row", "col"].forEach(function (inst_rc) {
-      d3.selectAll(params.root + " ." + inst_rc + "_label_group")
-        .select("text")
-        .style("opacity", 1);
+    ['row', 'col'].forEach(function (inst_rc) {
+      d3.selectAll(params.root + ' .' + inst_rc + '_label_group')
+        .select('text')
+        .style('opacity', 1);
 
-      d3.selectAll(params.root + " ." + inst_rc + "_cat_group")
-        .select("path")
-        .style("display", "block");
+      d3.selectAll(params.root + ' .' + inst_rc + '_cat_group')
+        .select('path')
+        .style('display', 'block');
     });
 
     show_visible_area(cgm, true);
 
-    d3.selectAll(params.viz.root_tips).style("display", "block");
+    d3.selectAll(params.viz.root_tips).style('display', 'block');
 
-    d3.selectAll(params.root + " .row_label_group")
-      .select("text")
-      .style("display", "none");
-    d3.selectAll(params.root + " .row_label_group")
-      .select("text")
-      .style("display", "block");
+    d3.selectAll(params.root + ' .row_label_group')
+      .select('text')
+      .style('display', 'none');
+    d3.selectAll(params.root + ' .row_label_group')
+      .select('text')
+      .style('display', 'block');
 
-    d3.select(params.root + " .viz_svg").attr("stopped_zoom", 0);
+    d3.select(params.root + ' .viz_svg').attr('stopped_zoom', 0);
 
-    d3.selectAll(params.root + " .row_label_group")
-      .select("text")
-      .style("display", "block");
-    d3.selectAll(params.root + " .col_label_group")
-      .select("text")
-      .style("display", "block");
+    d3.selectAll(params.root + ' .row_label_group')
+      .select('text')
+      .style('display', 'block');
+    d3.selectAll(params.root + ' .col_label_group')
+      .select('text')
+      .style('display', 'block');
 
     toggle_grid_lines(params);
 
@@ -55,11 +55,11 @@ module.exports = function run_when_zoom_stopped(cgm) {
     var max_labels_to_trim = 150;
     // probably do not need
     /////////////////////////
-    ["row", "col"].forEach(function (inst_rc) {
+    ['row', 'col'].forEach(function (inst_rc) {
       var inst_num_visible = num_visible_labels(params, inst_rc);
 
       if (inst_num_visible < max_labels_to_trim) {
-        d3.selectAll(params.root + " ." + inst_rc + "_label_group").each(
+        d3.selectAll(params.root + ' .' + inst_rc + '_label_group').each(
           function () {
             trim_text(params, this, inst_rc);
           }
@@ -78,15 +78,15 @@ module.exports = function run_when_zoom_stopped(cgm) {
   }
 
   function text_patch() {
-    ["row", "col"].forEach(function (inst_rc) {
-      d3.selectAll(params.root + " ." + inst_rc + "_label_group")
+    ['row', 'col'].forEach(function (inst_rc) {
+      d3.selectAll(params.root + ' .' + inst_rc + '_label_group')
         .filter(function () {
-          return d3.select(this).style("display") != "none";
+          return d3.select(this).style('display') != 'none';
         })
-        .select("text")
-        .style("font-size", function () {
+        .select('text')
+        .style('font-size', function () {
           var inst_fs = Number(
-            d3.select(this).style("font-size").replace("px", "")
+            d3.select(this).style('font-size').replace('px', '')
           );
           return inst_fs;
         });

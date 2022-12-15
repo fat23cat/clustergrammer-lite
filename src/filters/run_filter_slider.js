@@ -1,8 +1,8 @@
-var update_viz_with_view = require("../network/update_viz_with_view");
-var reset_other_filter_sliders = require("./reset_other_filter_sliders");
-var get_current_orders = require("./get_current_orders");
-var make_requested_view = require("./make_requested_view");
-var utils = require("../Utils_clust");
+var update_viz_with_view = require('../network/update_viz_with_view');
+var reset_other_filter_sliders = require('./reset_other_filter_sliders');
+var get_current_orders = require('./get_current_orders');
+var make_requested_view = require('./make_requested_view');
+var utils = require('../Utils_clust');
 
 module.exports = function run_filter_slider(
   cgm,
@@ -11,7 +11,7 @@ module.exports = function run_filter_slider(
   inst_index
 ) {
   // only update if not running update
-  if (d3.select(cgm.params.viz.viz_svg).classed("running_update") === false) {
+  if (d3.select(cgm.params.viz.viz_svg).classed('running_update') === false) {
     var params = cgm.params;
 
     // get value
@@ -26,10 +26,10 @@ module.exports = function run_filter_slider(
 
     requested_view = make_requested_view(params, requested_view);
 
-    if (utils.has(available_views[0], "enr_score_type")) {
+    if (utils.has(available_views[0], 'enr_score_type')) {
       var enr_state = d3
-        .select(params.root + " .toggle_enr_score_type")
-        .attr("current_state");
+        .select(params.root + ' .toggle_enr_score_type')
+        .attr('current_state');
 
       requested_view.enr_score_type = enr_state;
     }

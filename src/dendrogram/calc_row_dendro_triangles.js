@@ -1,5 +1,5 @@
-var each = require("underscore/cjs/each");
-var utils = require("../Utils_clust");
+var each = require('underscore/cjs/each');
+var utils = require('../Utils_clust');
 
 module.exports = function calc_row_dendro_triangles(params) {
   var triangle_info = {};
@@ -22,7 +22,7 @@ module.exports = function calc_row_dendro_triangles(params) {
       triangle_info[tmp_group].pos_mid = (inst_top + inst_bot) / 2;
       triangle_info[tmp_group].name = tmp_group;
       triangle_info[tmp_group].all_names = [];
-      triangle_info[tmp_group].inst_rc = "row";
+      triangle_info[tmp_group].inst_rc = 'row';
     }
 
     triangle_info[tmp_group].all_names.push(d.name);

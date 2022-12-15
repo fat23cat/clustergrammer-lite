@@ -1,11 +1,11 @@
-var exit_existing_row = require("../exit/exit_existing_row");
-var enter_existing_row = require("./enter_existing_row");
-var update_split_tiles = require("../update/update_split_tiles");
-var mouseover_tile = require("../matrix/mouseover_tile");
-var mouseout_tile = require("../matrix/mouseout_tile");
-var fine_position_tile = require("../matrix/fine_position_tile");
-var filter = require("underscore/cjs/filter");
-var contains = require("underscore/cjs/contains");
+var exit_existing_row = require('../exit/exit_existing_row');
+var enter_existing_row = require('./enter_existing_row');
+var update_split_tiles = require('../update/update_split_tiles');
+var mouseover_tile = require('../matrix/mouseover_tile');
+var mouseout_tile = require('../matrix/mouseout_tile');
+var fine_position_tile = require('../matrix/fine_position_tile');
+var filter = require('underscore/cjs/filter');
+var contains = require('underscore/cjs/contains');
 
 // TODO add tip back to arguments
 module.exports = function eeu_existing_row(
@@ -26,7 +26,7 @@ module.exports = function eeu_existing_row(
   // bind data to tiles
   var cur_row_tiles = d3
     .select(row_selection)
-    .selectAll(".tile")
+    .selectAll('.tile')
     .data(row_values, function (d) {
       return d.col_name;
     });
@@ -39,10 +39,10 @@ module.exports = function eeu_existing_row(
 
   // update tiles in x direction
   var update_row_tiles = cur_row_tiles
-    .on("mouseover", function (...args) {
+    .on('mouseover', function (...args) {
       mouseover_tile(params, this, tip, args);
     })
-    .on("mouseout", function mouseout() {
+    .on('mouseout', function mouseout() {
       mouseout_tile(params, this, tip);
     });
 
@@ -53,29 +53,29 @@ module.exports = function eeu_existing_row(
       .transition()
       .delay(delays.update)
       .duration(duration)
-      .attr("width", params.viz.rect_width)
-      .attr("height", params.viz.rect_height)
-      .attr("transform", function (d) {
+      .attr('width', params.viz.rect_width)
+      .attr('height', params.viz.rect_height)
+      .attr('transform', function (d) {
         if (contains(col_nodes_names, d.col_name)) {
           return fine_position_tile(params, d);
         } else {
-          return "translate(0,0)";
+          return 'translate(0,0)';
         }
       });
   } else {
     update_row_tiles
-      .attr("width", params.viz.rect_width)
-      .attr("height", params.viz.rect_height)
-      .attr("transform", function (d) {
+      .attr('width', params.viz.rect_width)
+      .attr('height', params.viz.rect_height)
+      .attr('transform', function (d) {
         if (contains(col_nodes_names, d.col_name)) {
           return fine_position_tile(params, d);
         } else {
-          return "translate(0,0)";
+          return 'translate(0,0)';
         }
       });
   }
 
-  if (params.matrix.tile_type == "updn") {
+  if (params.matrix.tile_type == 'updn') {
     update_split_tiles(
       params,
       inp_row_data,

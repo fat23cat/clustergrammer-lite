@@ -1,6 +1,6 @@
-var get_max_distance_in_dm = require("./get_max_distance_in_dm");
-var $ = require("jquery");
-var utils = require("../Utils_clust");
+var get_max_distance_in_dm = require('./get_max_distance_in_dm');
+var $ = require('jquery');
+var utils = require('../Utils_clust');
 
 module.exports = function get_order_and_groups_clusterfck_tree(
   clusters,
@@ -29,12 +29,12 @@ module.exports = function get_order_and_groups_clusterfck_tree(
   for (var i = 0; i <= 10; i++) {
     cutoff_vals.push((max_distance_in_dm * i) / 10);
     // cutoff_vals.push(manual_cutoff);
-    threshold_status.push("above");
+    threshold_status.push('above');
     group.push(0);
     cutoff_indexes.push(i);
   }
 
-  ["left", "right"].forEach(function (side) {
+  ['left', 'right'].forEach(function (side) {
     get_leaves(tree[side], side, ini_level, tree_height, threshold_status);
   });
 
@@ -43,23 +43,23 @@ module.exports = function get_order_and_groups_clusterfck_tree(
     cutoff_indexes.forEach(function (index) {
       if (inst_dist <= cutoff_vals[index]) {
         // increment group if going from above to below threshold
-        if (threshold_status[index] === "above") {
+        if (threshold_status[index] === 'above') {
           group[index] = group[index] + 1;
         }
 
         // locks[index] = true;
-        threshold_status[index] = "below";
+        threshold_status[index] = 'below';
       } else {
-        threshold_status[index] = "above";
+        threshold_status[index] = 'above';
       }
     });
 
     // if there are more branches then there is a distance
-    if (utils.has(limb, "dist")) {
+    if (utils.has(limb, 'dist')) {
       inst_dist = limb.dist;
       inst_level = inst_level + 1;
 
-      ["left", "right"].forEach(function (side2) {
+      ['left', 'right'].forEach(function (side2) {
         get_leaves(limb[side2], side2, inst_level, inst_dist, threshold_status);
       });
     } else {
@@ -67,7 +67,7 @@ module.exports = function get_order_and_groups_clusterfck_tree(
 
       // increment group if leaf is above threshold
       cutoff_indexes.forEach(function (index) {
-        if (threshold_status[index] === "above") {
+        if (threshold_status[index] === 'above') {
           group[index] = group[index] + 1;
         }
       });

@@ -2,17 +2,17 @@
  * ----------------------------------------------------------------------- */
 module.exports = {
   normal_name: function (d) {
-    var inst_name = d.name.replace(/_/g, " ").split("#")[0];
+    var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
     return inst_name;
   },
   is_supported_order: function (order) {
     return (
-      order === "ini" ||
-      order === "clust" ||
-      order === "rank_var" ||
-      order === "rank" ||
-      order === "class" ||
-      order == "alpha"
+      order === 'ini' ||
+      order === 'clust' ||
+      order === 'rank_var' ||
+      order === 'rank' ||
+      order === 'class' ||
+      order == 'alpha'
     );
   },
 
@@ -45,12 +45,12 @@ module.exports = {
   extend: function (target, source) {
     target = target || {};
     for (var prop in source) {
-      if (typeof source[prop] === "object") {
+      if (typeof source[prop] === 'object') {
         target[prop] = this.extend(target[prop], source[prop]);
       } else {
         target[prop] = source[prop];
       }
     }
     return target;
-  },
+  }
 };

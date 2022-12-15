@@ -18,7 +18,7 @@ module.exports = function resize_row_labels(
 
   if (delays.run_transition) {
     ini_svg_group
-      .selectAll(".row_label_group")
+      .selectAll('.row_label_group')
       // data bind necessary for loss/gain of rows
       .data(row_nodes, function (d) {
         return d.name;
@@ -26,12 +26,12 @@ module.exports = function resize_row_labels(
       .transition()
       .delay(delays.update)
       .duration(duration)
-      .attr("transform", function (d) {
+      .attr('transform', function (d) {
         var inst_index = row_nodes_names.indexOf(d.name);
-        return "translate(0," + params.viz.y_scale(inst_index) + ")";
+        return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
       })
       .attr(
-        "y",
+        'y',
         params.viz.rect_height * 0.5 + params.labels.default_fs_row * 0.35
       );
 
@@ -41,17 +41,17 @@ module.exports = function resize_row_labels(
       .duration(duration);
   } else {
     ini_svg_group
-      .selectAll(".row_label_group")
+      .selectAll('.row_label_group')
       // data bind necessary for loss/gain of rows
       .data(row_nodes, function (d) {
         return d.name;
       })
-      .attr("transform", function (d) {
+      .attr('transform', function (d) {
         var inst_index = row_nodes_names.indexOf(d.name);
-        return "translate(0," + params.viz.y_scale(inst_index) + ")";
+        return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
       })
       .attr(
-        "y",
+        'y',
         params.viz.rect_height * 0.5 + params.labels.default_fs_row * 0.35
       );
 
@@ -59,24 +59,24 @@ module.exports = function resize_row_labels(
   }
 
   svg_group
-    .select(params.root + " .row_container")
+    .select(params.root + ' .row_container')
     .attr(
-      "transform",
-      "translate(" +
+      'transform',
+      'translate(' +
         params.viz.norm_labels.margin.left +
-        "," +
+        ',' +
         params.viz.clust.margin.top +
-        ")"
+        ')'
     );
 
   svg_group
-    .select(params.root + " .row_container")
-    .select(".white_bars")
-    .attr("width", params.viz.label_background.row)
-    .attr("height", 30 * params.viz.clust.dim.height + "px");
+    .select(params.root + ' .row_container')
+    .select('.white_bars')
+    .attr('width', params.viz.label_background.row)
+    .attr('height', 30 * params.viz.clust.dim.height + 'px');
 
   svg_group
-    .select(params.root + " .row_container")
-    .select(".row_label_container")
-    .attr("transform", "translate(" + params.viz.norm_labels.width.row + ",0)");
+    .select(params.root + ' .row_container')
+    .select('.row_label_container')
+    .attr('transform', 'translate(' + params.viz.norm_labels.width.row + ',0)');
 };

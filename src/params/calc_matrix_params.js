@@ -1,5 +1,5 @@
-var ini_matrix_params = require("./ini_matrix_params");
-var calc_downsampled_levels = require("../matrix/calc_downsampled_levels");
+var ini_matrix_params = require('./ini_matrix_params');
+var calc_downsampled_levels = require('../matrix/calc_downsampled_levels');
 
 module.exports = function calc_matrix_params(params) {
   params.matrix = ini_matrix_params(params);
@@ -16,20 +16,20 @@ module.exports = function calc_matrix_params(params) {
 
   var inst_order;
 
-  ["row", "col"].forEach(function (inst_rc) {
+  ['row', 'col'].forEach(function (inst_rc) {
     inst_order = params.viz.inst_order[inst_rc];
 
-    if (inst_order === "custom") {
-      inst_order = "clust";
+    if (inst_order === 'custom') {
+      inst_order = 'clust';
     }
 
-    if (inst_rc === "row") {
+    if (inst_rc === 'row') {
       params.viz.x_scale.domain(
-        params.matrix.orders[inst_order + "_" + inst_rc]
+        params.matrix.orders[inst_order + '_' + inst_rc]
       );
     } else {
       params.viz.y_scale.domain(
-        params.matrix.orders[inst_order + "_" + inst_rc]
+        params.matrix.orders[inst_order + '_' + inst_rc]
       );
     }
   });

@@ -1,9 +1,9 @@
-var get_svg_dim = require("../params/get_svg_dim");
-var calc_clust_height = require("../params/calc_clust_height");
-var calc_clust_width = require("../params/calc_clust_width");
-var calc_default_fs = require("../params/calc_default_fs");
-var calc_zoom_switching = require("../zoom/calc_zoom_switching");
-var each = require("underscore/cjs/each");
+var get_svg_dim = require('../params/get_svg_dim');
+var calc_clust_height = require('../params/calc_clust_height');
+var calc_clust_width = require('../params/calc_clust_width');
+var calc_default_fs = require('../params/calc_default_fs');
+var calc_zoom_switching = require('../zoom/calc_zoom_switching');
+var each = require('underscore/cjs/each');
 
 module.exports = function recalc_params_for_resize(params) {
   // Resetting some visualization parameters

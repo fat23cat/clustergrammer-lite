@@ -10,10 +10,10 @@ module.exports = function make_view_request(params, requested_view) {
     inst_filter
   ) {
     if (inst_filter != changed_component) {
-      if (!d3.select(params.root + " .slider_" + inst_filter).empty()) {
+      if (!d3.select(params.root + ' .slider_' + inst_filter).empty()) {
         var inst_state = d3
-          .select(params.root + " .slider_" + inst_filter)
-          .attr("current_state");
+          .select(params.root + ' .slider_' + inst_filter)
+          .attr('current_state');
 
         requested_view[inst_filter] = inst_state;
       }

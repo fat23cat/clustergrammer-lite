@@ -1,20 +1,20 @@
-var reposition_tile_highlight = require("./reposition_tile_highlight");
-var toggle_dendro_view = require("../dendrogram/toggle_dendro_view");
-var ini_zoom_info = require("../zoom/ini_zoom_info");
-var get_previous_zoom = require("../zoom/get_previous_zoom");
-var calc_downsampled_levels = require("../matrix/calc_downsampled_levels");
-var $ = require("jquery");
+var reposition_tile_highlight = require('./reposition_tile_highlight');
+var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
+var ini_zoom_info = require('../zoom/ini_zoom_info');
+var get_previous_zoom = require('../zoom/get_previous_zoom');
+var calc_downsampled_levels = require('../matrix/calc_downsampled_levels');
+var $ = require('jquery');
 
 module.exports = function row_reorder(cgm, row_selection, inst_row) {
   var params = cgm.params;
   var prev_zoom = get_previous_zoom(params);
 
   if (prev_zoom.zoom_y === 1 && prev_zoom.zoom_x === 1) {
-    params.viz.inst_order.row = "custom";
-    toggle_dendro_view(cgm, "col");
+    params.viz.inst_order.row = 'custom';
+    toggle_dendro_view(cgm, 'col');
 
-    d3.selectAll(params.root + " .toggle_col_order .btn").classed(
-      "active",
+    d3.selectAll(params.root + ' .toggle_col_order .btn').classed(
+      'active',
       false
     );
 
@@ -54,10 +54,10 @@ module.exports = function row_reorder(cgm, row_selection, inst_row) {
     ////////////////////
     var t;
     if (params.network_data.links.length > params.matrix.def_large_matrix) {
-      t = d3.select(params.root + " .viz_svg");
+      t = d3.select(params.root + ' .viz_svg');
     } else {
       t = d3
-        .select(params.root + " .viz_svg")
+        .select(params.root + ' .viz_svg')
         .transition()
         .duration(2500);
     }
@@ -65,42 +65,42 @@ module.exports = function row_reorder(cgm, row_selection, inst_row) {
     var col_nodes_names = params.network_data.col_nodes_names || [];
 
     // Move Col Labels
-    t.select(".col_zoom_container")
-      .selectAll(".col_label_text")
-      .attr("transform", function (d) {
+    t.select('.col_zoom_container')
+      .selectAll('.col_label_text')
+      .attr('transform', function (d) {
         var inst_index = col_nodes_names.indexOf(d.name);
-        return "translate(" + params.viz.x_scale(inst_index) + ")rotate(-90)";
+        return 'translate(' + params.viz.x_scale(inst_index) + ')rotate(-90)';
       });
 
     // reorder col_class groups
-    t.selectAll(".col_cat_group").attr("transform", function (d) {
+    t.selectAll('.col_cat_group').attr('transform', function (d) {
       var inst_index = col_nodes_names.indexOf(d.name);
-      return "translate(" + params.viz.x_scale(inst_index) + ",0)";
+      return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
     });
 
     // reorder tiles in matrix (do not change row order)
     if (params.viz.ds_level === -1) {
-      t.selectAll(".tile").attr("transform", function (d) {
-        return "translate(" + params.viz.x_scale(d.pos_x) + ",0)";
+      t.selectAll('.tile').attr('transform', function (d) {
+        return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
       });
 
-      t.selectAll(".tile_up").attr("transform", function (d) {
-        return "translate(" + params.viz.x_scale(d.pos_x) + ",0)";
+      t.selectAll('.tile_up').attr('transform', function (d) {
+        return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
       });
 
-      t.selectAll(".tile_dn").attr("transform", function (d) {
-        return "translate(" + params.viz.x_scale(d.pos_x) + ",0)";
+      t.selectAll('.tile_dn').attr('transform', function (d) {
+        return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
       });
     }
 
     // highlight selected row
     ///////////////////////////////
     // unhilight and unbold all columns (already unbolded earlier)
-    d3.selectAll(params.root + " .row_label_group")
-      .select("rect")
-      .style("opacity", 0);
+    d3.selectAll(params.root + ' .row_label_group')
+      .select('rect')
+      .style('opacity', 0);
     // highlight column name
-    d3.select(row_selection).select("rect").style("opacity", 1);
+    d3.select(row_selection).select('rect').style('opacity', 1);
 
     reposition_tile_highlight(params);
 

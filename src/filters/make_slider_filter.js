@@ -1,9 +1,9 @@
-var make_filter_title = require("./make_filter_title");
-var run_filter_slider = require("./run_filter_slider");
-var get_filter_default_state = require("./get_filter_default_state");
-var get_subset_views = require("./get_subset_views");
-d3.slider = require("../d3.slider");
-var debounce = require("underscore/cjs/debounce");
+var make_filter_title = require('./make_filter_title');
+var run_filter_slider = require('./run_filter_slider');
+var get_filter_default_state = require('./get_filter_default_state');
+var get_subset_views = require('./get_subset_views');
+d3.slider = require('../d3.slider');
+var debounce = require('underscore/cjs/debounce');
 
 module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
   var params = cgm.params;
@@ -24,19 +24,19 @@ module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
   var filter_title = make_filter_title(params, filter_type);
 
   div_filters
-    .append("div")
-    .classed("title_" + filter_type, true)
-    .classed("sidebar_text", true)
-    .classed("slider_description", true)
-    .style("margin-top", "5px")
-    .style("margin-bottom", "3px")
+    .append('div')
+    .classed('title_' + filter_type, true)
+    .classed('sidebar_text', true)
+    .classed('slider_description', true)
+    .style('margin-top', '5px')
+    .style('margin-bottom', '3px')
     .text(filter_title.text + filter_title.state + filter_title.suffix);
 
   div_filters
-    .append("div")
-    .classed("slider_" + filter_type, true)
-    .classed("slider", true)
-    .attr("current_state", filter_title.state);
+    .append('div')
+    .classed('slider_' + filter_type, true)
+    .classed('slider', true)
+    .attr('current_state', filter_title.state);
 
   var views = params.network_data.views;
 
@@ -54,7 +54,7 @@ module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
   if (params.requested_view !== null && filter_type in params.requested_view) {
     var inst_filter_value = params.requested_view[filter_type];
 
-    if (inst_filter_value != "all") {
+    if (inst_filter_value != 'all') {
       var found_value = available_views
         .map(function (e) {
           return e[filter_type];
@@ -75,17 +75,17 @@ module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
     .min(0)
     .max(inst_max)
     .step(1)
-    .on("slide", function (evt, value) {
+    .on('slide', function (evt, value) {
       run_filter_slider_db(cgm, filter_type, available_views, value);
     })
-    .on("slideend", function (evt, value) {
+    .on('slideend', function (evt, value) {
       run_filter_slider_db(cgm, filter_type, available_views, value);
     });
 
   // save slider function in order to reset value later
   cgm.slider_functions[filter_type] = slide_filter_fun;
 
-  d3.select(cgm.params.root + " .slider_" + filter_type).call(slide_filter_fun);
+  d3.select(cgm.params.root + ' .slider_' + filter_type).call(slide_filter_fun);
 
   //////////////////////////////////////////////////////////////////////
 

@@ -1,7 +1,7 @@
-var remove_node_cats = require("./remove_node_cats");
-var utils = require("../Utils_clust");
-var each = require("underscore/cjs/each");
-var contains = require("underscore/cjs/contains");
+var remove_node_cats = require('./remove_node_cats');
+var utils = require('../Utils_clust');
+var each = require('underscore/cjs/each');
+var contains = require('underscore/cjs/contains');
 
 module.exports = function modify_row_node_cats(
   cat_data,
@@ -35,10 +35,10 @@ module.exports = function modify_row_node_cats(
       // only consider first part of inst_name
       ////////////////////////////////////////////
       // may improve this
-      if (inst_name.indexOf(" ")) {
-        inst_name = inst_name.split(" ")[0];
-      } else if (inst_name.indexOf("_")) {
-        inst_name = inst_name.split("_")[0];
+      if (inst_name.indexOf(' ')) {
+        inst_name = inst_name.split(' ')[0];
+      } else if (inst_name.indexOf('_')) {
+        inst_name = inst_name.split('_')[0];
       }
     }
 
@@ -52,7 +52,7 @@ module.exports = function modify_row_node_cats(
       inst_cats = inst_cat_data.cats;
 
       // initialize with no category
-      inst_category = "false";
+      inst_category = 'false';
       inst_index = -1;
 
       inst_cat_num = 0;
@@ -71,25 +71,25 @@ module.exports = function modify_row_node_cats(
         inst_cat_num = inst_cat_num + 1;
       });
 
-      if (utils.has(inst_cat_data, "pval")) {
+      if (utils.has(inst_cat_data, 'pval')) {
         var inst_pval = inst_cat_data.pval.toExponential();
         inst_full_cat =
           inst_cat_title +
-          ": " +
+          ': ' +
           inst_category +
-          "<p> Pval " +
+          '<p> Pval ' +
           String(inst_pval) +
-          "</p>";
+          '</p>';
       } else {
-        if (inst_cat_title.indexOf("cat-") === -1) {
-          inst_full_cat = inst_cat_title + ": " + inst_category;
+        if (inst_cat_title.indexOf('cat-') === -1) {
+          inst_full_cat = inst_cat_title + ': ' + inst_category;
         } else {
           inst_full_cat = inst_category;
         }
       }
 
-      inst_node["cat-" + String(cat_type_num)] = inst_full_cat;
-      inst_node["cat_" + String(cat_type_num) + "_index"] = inst_index;
+      inst_node['cat-' + String(cat_type_num)] = inst_full_cat;
+      inst_node['cat_' + String(cat_type_num) + '_index'] = inst_index;
 
       cat_type_num = cat_type_num + 1;
     });

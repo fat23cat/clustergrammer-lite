@@ -1,7 +1,7 @@
-var draw_up_tile = require("./draw_up_tile");
-var draw_dn_tile = require("./draw_dn_tile");
-var fine_position_tile = require("../matrix/fine_position_tile");
-var filter = require("underscore/cjs/filter");
+var draw_up_tile = require('./draw_up_tile');
+var draw_dn_tile = require('./draw_dn_tile');
+var fine_position_tile = require('../matrix/fine_position_tile');
+var filter = require('underscore/cjs/filter');
 
 module.exports = function enter_split_tiles(
   params,
@@ -20,33 +20,33 @@ module.exports = function enter_split_tiles(
   // tile_up
   var new_tiles_up = d3
     .select(row_selection)
-    .selectAll(".tile_up")
+    .selectAll('.tile_up')
     .data(row_split_data, function (d) {
       return d.col_name;
     })
     .enter()
-    .append("path")
-    .attr("class", "tile_up")
-    .attr("d", function () {
+    .append('path')
+    .attr('class', 'tile_up')
+    .attr('d', function () {
       return draw_up_tile(params);
     })
-    .attr("transform", function (d) {
+    .attr('transform', function (d) {
       return fine_position_tile(params, d);
     })
-    .style("fill", function () {
+    .style('fill', function () {
       return params.matrix.tile_colors[0];
     })
-    .on("mouseover", function (p) {
+    .on('mouseover', function (p) {
       // highlight row - set text to active if
-      d3.selectAll(params.root + " .row_label_group text").classed(
-        "active",
+      d3.selectAll(params.root + ' .row_label_group text').classed(
+        'active',
         function (d) {
           return p.row_name === d.name;
         }
       );
 
-      d3.selectAll(params.root + " .col_label_text text").classed(
-        "active",
+      d3.selectAll(params.root + ' .col_label_text text').classed(
+        'active',
         function (d) {
           return p.col_name === d.name;
         }
@@ -55,19 +55,19 @@ module.exports = function enter_split_tiles(
         tip.show(p);
       }
     })
-    .on("mouseout", function () {
-      d3.selectAll(params.root + " text").classed("active", false);
+    .on('mouseout', function () {
+      d3.selectAll(params.root + ' text').classed('active', false);
       if (params.matrix.show_tile_tooltips) {
         tip.hide();
       }
     });
 
   new_tiles_up
-    .style("fill-opacity", 0)
+    .style('fill-opacity', 0)
     .transition()
     .delay(delays.enter)
     .duration(duration)
-    .style("fill-opacity", function (d) {
+    .style('fill-opacity', function (d) {
       var inst_opacity = 0;
       if (Math.abs(d.value_dn) > 0) {
         inst_opacity = params.matrix.opacity_scale(Math.abs(d.value_up));
@@ -78,33 +78,33 @@ module.exports = function enter_split_tiles(
   // tile_dn
   var new_tiles_dn = d3
     .select(row_selection)
-    .selectAll(".tile_dn")
+    .selectAll('.tile_dn')
     .data(row_split_data, function (d) {
       return d.col_name;
     })
     .enter()
-    .append("path")
-    .attr("class", "tile_dn")
-    .attr("d", function () {
+    .append('path')
+    .attr('class', 'tile_dn')
+    .attr('d', function () {
       return draw_dn_tile(params);
     })
-    .attr("transform", function (d) {
+    .attr('transform', function (d) {
       return fine_position_tile(params, d);
     })
-    .style("fill", function () {
+    .style('fill', function () {
       return params.matrix.tile_colors[1];
     })
-    .on("mouseover", function (p) {
+    .on('mouseover', function (p) {
       // highlight row - set text to active if
-      d3.selectAll(params.root + " .row_label_group text").classed(
-        "active",
+      d3.selectAll(params.root + ' .row_label_group text').classed(
+        'active',
         function (d) {
           return p.row_name === d.name;
         }
       );
 
-      d3.selectAll(params.root + " .col_label_text text").classed(
-        "active",
+      d3.selectAll(params.root + ' .col_label_text text').classed(
+        'active',
         function (d) {
           return p.col_name === d.name;
         }
@@ -113,19 +113,19 @@ module.exports = function enter_split_tiles(
         tip.show(p);
       }
     })
-    .on("mouseout", function () {
-      d3.selectAll(params.root + " text").classed("active", false);
+    .on('mouseout', function () {
+      d3.selectAll(params.root + ' text').classed('active', false);
       if (params.matrix.show_tile_tooltips) {
         tip.hide();
       }
     });
 
   new_tiles_dn
-    .style("fill-opacity", 0)
+    .style('fill-opacity', 0)
     .transition()
     .delay(delays.enter)
     .duration(duration)
-    .style("fill-opacity", function (d) {
+    .style('fill-opacity', function (d) {
       var inst_opacity = 0;
       if (Math.abs(d.value_up) > 0) {
         inst_opacity = params.matrix.opacity_scale(Math.abs(d.value_dn));

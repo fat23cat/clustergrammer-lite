@@ -1,5 +1,5 @@
-var map = require("underscore/cjs/map");
-var difference = require("underscore/cjs/difference");
+var map = require('underscore/cjs/map');
+var difference = require('underscore/cjs/difference');
 
 module.exports = function (old_params, params) {
   // exit, update, enter

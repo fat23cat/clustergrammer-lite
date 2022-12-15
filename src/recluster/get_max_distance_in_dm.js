@@ -1,4 +1,4 @@
-var each = require("underscore/cjs/each");
+var each = require('underscore/cjs/each');
 
 module.exports = function get_max_tree_distance(dm) {
   var max_distance_in_dm = 0;

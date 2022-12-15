@@ -1,4 +1,4 @@
-var max = require("underscore/cjs/max");
+var max = require('underscore/cjs/max');
 
 module.exports = function ini_label_params(params) {
   var labels = {};

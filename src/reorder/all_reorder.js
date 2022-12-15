@@ -1,9 +1,9 @@
-var toggle_dendro_view = require("../dendrogram/toggle_dendro_view");
-var show_visible_area = require("../zoom/show_visible_area");
-var ini_zoom_info = require("../zoom/ini_zoom_info");
-var calc_downsampled_levels = require("../matrix/calc_downsampled_levels");
-var two_translate_zoom = require("../zoom/two_translate_zoom");
-var get_previous_zoom = require("../zoom/get_previous_zoom");
+var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
+var show_visible_area = require('../zoom/show_visible_area');
+var ini_zoom_info = require('../zoom/ini_zoom_info');
+var calc_downsampled_levels = require('../matrix/calc_downsampled_levels');
+var two_translate_zoom = require('../zoom/two_translate_zoom');
+var get_previous_zoom = require('../zoom/get_previous_zoom');
 
 module.exports = function (cgm, inst_order, inst_rc) {
   var params = cgm.params;
@@ -19,18 +19,18 @@ module.exports = function (cgm, inst_order, inst_rc) {
 
   // row/col names are swapped, will improve later
   var other_rc;
-  if (inst_rc === "row") {
-    other_rc = "col";
-  } else if (inst_rc === "col") {
-    other_rc = "row";
+  if (inst_rc === 'row') {
+    other_rc = 'col';
+  } else if (inst_rc === 'col') {
+    other_rc = 'row';
   }
 
   params.viz.run_trans = true;
 
   // save order state
-  if (other_rc === "row") {
+  if (other_rc === 'row') {
     params.viz.inst_order.row = inst_order;
-  } else if (other_rc === "col") {
+  } else if (other_rc === 'col') {
     params.viz.inst_order.col = inst_order;
   }
 
@@ -38,29 +38,29 @@ module.exports = function (cgm, inst_order, inst_rc) {
     toggle_dendro_view(cgm, inst_rc);
   }
 
-  if (other_rc === "row") {
+  if (other_rc === 'row') {
     params.viz.x_scale.domain(
-      params.matrix.orders[params.viz.inst_order.row + "_row"]
+      params.matrix.orders[params.viz.inst_order.row + '_row']
     );
-  } else if (other_rc == "col") {
+  } else if (other_rc == 'col') {
     params.viz.y_scale.domain(
-      params.matrix.orders[params.viz.inst_order.col + "_col"]
+      params.matrix.orders[params.viz.inst_order.col + '_col']
     );
   }
 
   // only animate transition if there are a small number of tiles
   var t;
   if (
-    d3.selectAll(params.root + " .tile")[0].length <
+    d3.selectAll(params.root + ' .tile')[0].length <
     params.matrix.def_large_matrix
   ) {
     t = d3
-      .select(params.root + " .viz_svg")
+      .select(params.root + ' .viz_svg')
       .transition()
       .duration(2500)
       .delay(delay_reorder);
   } else {
-    t = d3.select(params.root + " .viz_svg");
+    t = d3.select(params.root + ' .viz_svg');
   }
 
   var row_nodes_names = params.network_data.row_nodes_names || [];
@@ -68,51 +68,51 @@ module.exports = function (cgm, inst_order, inst_rc) {
 
   // only update matrix if not downsampled (otherwise rows are updated)
   if (params.viz.ds_level === -1) {
-    t.selectAll(".row")
-      .attr("transform", function (d) {
+    t.selectAll('.row')
+      .attr('transform', function (d) {
         var inst_index = row_nodes_names.indexOf(d.name);
-        return "translate(0," + params.viz.y_scale(inst_index) + ")";
+        return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
       })
-      .selectAll(".tile")
-      .attr("transform", function (d) {
-        return "translate(" + params.viz.x_scale(d.pos_x) + " , 0)";
+      .selectAll('.tile')
+      .attr('transform', function (d) {
+        return 'translate(' + params.viz.x_scale(d.pos_x) + ' , 0)';
       });
 
-    t.selectAll(".tile_up").attr("transform", function (d) {
-      return "translate(" + params.viz.x_scale(d.pos_x) + " , 0)";
+    t.selectAll('.tile_up').attr('transform', function (d) {
+      return 'translate(' + params.viz.x_scale(d.pos_x) + ' , 0)';
     });
 
-    t.selectAll(".tile_dn").attr("transform", function (d) {
-      return "translate(" + params.viz.x_scale(d.pos_x) + " , 0)";
+    t.selectAll('.tile_dn').attr('transform', function (d) {
+      return 'translate(' + params.viz.x_scale(d.pos_x) + ' , 0)';
     });
   }
 
   // Move Row Labels
-  t.select(".row_label_zoom_container")
-    .selectAll(".row_label_group")
-    .attr("transform", function (d) {
+  t.select('.row_label_zoom_container')
+    .selectAll('.row_label_group')
+    .attr('transform', function (d) {
       var inst_index = row_nodes_names.indexOf(d.name);
-      return "translate(0," + params.viz.y_scale(inst_index) + ")";
+      return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
     });
 
   // Move Col Labels
-  t.select(".col_zoom_container")
-    .selectAll(".col_label_text")
-    .attr("transform", function (d) {
+  t.select('.col_zoom_container')
+    .selectAll('.col_label_text')
+    .attr('transform', function (d) {
       var inst_index = col_nodes_names.indexOf(d.name);
-      return "translate(" + params.viz.x_scale(inst_index) + ") rotate(-90)";
+      return 'translate(' + params.viz.x_scale(inst_index) + ') rotate(-90)';
     });
 
   // reorder row categories
-  t.selectAll(".row_cat_group").attr("transform", function (d) {
+  t.selectAll('.row_cat_group').attr('transform', function (d) {
     var inst_index = row_nodes_names.indexOf(d.name);
-    return "translate(0," + params.viz.y_scale(inst_index) + ")";
+    return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
   });
 
   // reorder col_class groups
-  t.selectAll(".col_cat_group").attr("transform", function (d) {
+  t.selectAll('.col_cat_group').attr('transform', function (d) {
     var inst_index = col_nodes_names.indexOf(d.name);
-    return "translate(" + params.viz.x_scale(inst_index) + ",0)";
+    return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
   });
 
   // redefine x and y positions

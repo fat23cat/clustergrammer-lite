@@ -1,11 +1,11 @@
-var each = require("underscore/cjs/each");
+var each = require('underscore/cjs/each');
 
 module.exports = function generate_cat_data(cgm) {
   // only row category resetting is supported currently
 
   // get row_nodes from config, since this is has the original network
   var row_nodes = cgm.config.network_data.row_nodes || [];
-  var title_sep = ": ";
+  var title_sep = ': ';
 
   // contains all the category information stored as an array of
   // cat_type
@@ -27,11 +27,11 @@ module.exports = function generate_cat_data(cgm) {
   var tmp_title;
   var cat_index;
   node_keys.forEach(function (inst_prop) {
-    if (inst_prop.indexOf("cat-") >= 0) {
+    if (inst_prop.indexOf('cat-') >= 0) {
       // generate titles from cat info
       tmp_cat = check_node[inst_prop];
 
-      cat_index = parseInt(inst_prop.split("cat-")[1], 10);
+      cat_index = parseInt(inst_prop.split('cat-')[1], 10);
 
       // use given title
       if (tmp_cat.indexOf(title_sep) >= 0) {
@@ -65,10 +65,10 @@ module.exports = function generate_cat_data(cgm) {
     var all_props = Object.keys(inst_node || {});
 
     all_props.forEach(function (inst_prop) {
-      if (inst_prop.indexOf("cat-") > -1) {
+      if (inst_prop.indexOf('cat-') > -1) {
         cat_name = inst_node[inst_prop];
 
-        cat_index = parseInt(inst_prop.split("cat-")[1], 10);
+        cat_index = parseInt(inst_prop.split('cat-')[1], 10);
 
         // default title and name
         var cat_title = inst_prop;

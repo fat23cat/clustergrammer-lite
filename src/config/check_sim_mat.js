@@ -1,4 +1,4 @@
-var each = require("underscore/cjs/each");
+var each = require('underscore/cjs/each');
 
 module.exports = function check_sim_mat(config) {
   var sim_mat = false;

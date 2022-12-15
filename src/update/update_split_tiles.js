@@ -1,9 +1,9 @@
-var draw_up_tile = require("../enter/draw_up_tile");
-var draw_dn_tile = require("../enter/draw_dn_tile");
-var mouseover_tile = require("../matrix/mouseover_tile");
-var mouseout_tile = require("../matrix/mouseout_tile");
-var fine_position_tile = require("../matrix/fine_position_tile");
-var filter = require("underscore/cjs/filter");
+var draw_up_tile = require('../enter/draw_up_tile');
+var draw_dn_tile = require('../enter/draw_dn_tile');
+var mouseover_tile = require('../matrix/mouseover_tile');
+var mouseout_tile = require('../matrix/mouseout_tile');
+var fine_position_tile = require('../matrix/fine_position_tile');
+var filter = require('underscore/cjs/filter');
 
 module.exports = function update_split_tiles(
   params,
@@ -22,17 +22,17 @@ module.exports = function update_split_tiles(
   // tile_up
   var cur_tiles_up = d3
     .select(row_selection)
-    .selectAll(".tile_up")
+    .selectAll('.tile_up')
     .data(row_split_data, function (d) {
       return d.col_name;
     });
 
   // update split tiles_up
   var update_tiles_up = cur_tiles_up
-    .on("mouseover", function (...args) {
+    .on('mouseover', function (...args) {
       mouseover_tile(params, this, tip, args);
     })
-    .on("mouseout", function mouseout() {
+    .on('mouseout', function mouseout() {
       mouseout_tile(params, this, tip);
     });
 
@@ -41,18 +41,18 @@ module.exports = function update_split_tiles(
       .transition()
       .delay(delays.update)
       .duration(duration)
-      .attr("d", function () {
+      .attr('d', function () {
         return draw_up_tile(params);
       })
-      .attr("transform", function (d) {
+      .attr('transform', function (d) {
         return fine_position_tile(params, d);
       });
   } else {
     update_tiles_up
-      .attr("d", function () {
+      .attr('d', function () {
         return draw_up_tile(params);
       })
-      .attr("transform", function (d) {
+      .attr('transform', function (d) {
         return fine_position_tile(params, d);
       });
   }
@@ -60,17 +60,17 @@ module.exports = function update_split_tiles(
   // tile_dn
   var cur_tiles_dn = d3
     .select(row_selection)
-    .selectAll(".tile_dn")
+    .selectAll('.tile_dn')
     .data(row_split_data, function (d) {
       return d.col_name;
     });
 
   // update split tiles_dn
   var update_tiles_dn = cur_tiles_dn
-    .on("mouseover", function (...args) {
+    .on('mouseover', function (...args) {
       mouseover_tile(params, this, tip, args);
     })
-    .on("mouseout", function mouseout() {
+    .on('mouseout', function mouseout() {
       mouseout_tile(params, this, tip);
     });
 
@@ -79,24 +79,24 @@ module.exports = function update_split_tiles(
       .transition()
       .delay(delays.update)
       .duration(duration)
-      .attr("d", function () {
+      .attr('d', function () {
         return draw_dn_tile(params);
       })
-      .attr("transform", function (d) {
+      .attr('transform', function (d) {
         return fine_position_tile(params, d);
       });
   } else {
     update_tiles_dn
-      .attr("d", function () {
+      .attr('d', function () {
         return draw_dn_tile(params);
       })
-      .attr("transform", function (d) {
+      .attr('transform', function (d) {
         return fine_position_tile(params, d);
       });
   }
 
   // remove tiles when splitting is done
-  cur_row_tiles.selectAll(".tile").each(function (d) {
+  cur_row_tiles.selectAll('.tile').each(function (d) {
     if (Math.abs(d.value_up) > 0 && Math.abs(d.value_dn) > 0) {
       d3.select(this).remove();
     }
