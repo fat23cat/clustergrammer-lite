@@ -39,7 +39,7 @@ module.exports = function make_row_dendro(cgm) {
   }
 
   // customization hide dendrogram
-  // make_dendro_triangles(cgm, "row", false);
+  make_dendro_triangles(cgm, "row", false);
 
   if (params.viz.inst_order.col != "clust") {
     d3.selectAll(params.root + " .row_dendro_group").remove();
