@@ -92,7 +92,9 @@ module.exports = function make_viz(cgm) {
   // build_filter_icon(cgm);
 
   // customization hide sliders
-  build_dendro_sliders(cgm);
+  if (cgm.config.show_dendrogram) {
+    build_dendro_sliders(cgm);
+  }
 
   function border_colors() {
     var inst_color = params.viz.super_border_color;
