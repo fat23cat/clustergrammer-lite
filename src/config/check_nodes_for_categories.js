@@ -1,4 +1,4 @@
-var each = require('underscore/cjs/each');
+var each = require('underscore/cjs/each.js');
 
 module.exports = function check_nodes_for_categories(nodes) {
   var super_string = ': ';

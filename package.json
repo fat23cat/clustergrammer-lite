@@ -1,18 +1,26 @@
 {
-  "name": "clustergrammer",
-  "version": "v3.0.0",
+  "name": "clustergrammer-lite",
+  "version": "3.0.0",
+  "main": "dist/clustergrammer-lite.cjs.js",
+  "module": "dist/clustergrammer-lite.esm.js",
+  "browser": "dist/clustergrammer-lite.umd.js",
   "description": "This is a clustergram implemented in D3.js. I started from the example http://bost.ocks.org/mike/miserables/ and added the following features",
-  "main": "clustergrammer.node.js",
   "scripts": {
+    "build": "rollup --config",
+    "dev": "rollup -c -w",
     "pre-commit": "lint-staged --allow-empty",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Nicolas Fernandez",
   "license": "MIT",
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^23.0.5",
+    "@rollup/plugin-node-resolve": "^15.0.1",
     "husky": "^7.0.4",
     "lint-staged": "^13.0.3",
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+    "rollup": "^3.7.4",
+    "rollup-plugin-import-css": "^3.1.0"
   },
   "dependencies": {
     "d3": "^3.5.15",

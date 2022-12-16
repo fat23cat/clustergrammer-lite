@@ -2,8 +2,8 @@ var calc_cat_params = require('./calc_cat_params');
 var utils = require('../Utils_clust');
 var colors = require('../Colors');
 var check_if_value_cats = require('./check_if_value_cats');
-var each = require('underscore/cjs/each');
-var countBy = require('underscore/cjs/countBy');
+var each = require('underscore/cjs/each.js');
+var countBy = require('underscore/cjs/countBy.js');
 
 module.exports = function make_cat_params(
   params,

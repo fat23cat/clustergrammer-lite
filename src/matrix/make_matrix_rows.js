@@ -1,7 +1,7 @@
 var make_simple_rows = require('./make_simple_rows');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
-var each = require('underscore/cjs/each');
-var contains = require('underscore/cjs/contains');
+var each = require('underscore/cjs/each.js');
+var contains = require('underscore/cjs/contains.js');
 
 // current matrix can change with downsampling
 module.exports = function make_matrix_rows(

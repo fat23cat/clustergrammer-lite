@@ -1,6 +1,6 @@
 var utils = require('../Utils_clust');
 var initialize_matrix = require('../initialize_matrix');
-var max = require('underscore/cjs/max');
+var max = require('underscore/cjs/max.js');
 
 module.exports = function ini_matrix_params(params) {
   var matrix = {};

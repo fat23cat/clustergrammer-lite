@@ -1,5 +1,5 @@
 var binom_test = require('./binom_test');
-var each = require('underscore/cjs/each');
+var each = require('underscore/cjs/each.js');
 var utils = require('../Utils_clust');
 
 module.exports = function calc_cat_cluster_breakdown(

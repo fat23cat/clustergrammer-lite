@@ -1,4 +1,4 @@
-var range = require('underscore/cjs/range');
+var range = require('underscore/cjs/range.js');
 
 module.exports = function calc_clust_width(viz) {
   viz.clust = {};

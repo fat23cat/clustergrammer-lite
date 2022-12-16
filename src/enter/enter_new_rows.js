@@ -2,7 +2,7 @@ var enter_split_tiles = require('./enter_split_tiles');
 var mouseover_tile = require('../matrix/mouseover_tile');
 var mouseout_tile = require('../matrix/mouseout_tile');
 var fine_position_tile = require('../matrix/fine_position_tile');
-var filter = require('underscore/cjs/filter');
+var filter = require('underscore/cjs/filter.js');
 
 // make each row in the clustergram
 module.exports = function enter_new_rows(

@@ -1,7 +1,7 @@
 var draw_up_tile = require('./draw_up_tile');
 var draw_dn_tile = require('./draw_dn_tile');
 var fine_position_tile = require('../matrix/fine_position_tile');
-var filter = require('underscore/cjs/filter');
+var filter = require('underscore/cjs/filter.js');
 
 module.exports = function enter_split_tiles(
   params,

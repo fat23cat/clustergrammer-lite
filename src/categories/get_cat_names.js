@@ -1,5 +1,5 @@
 var utils = require('../Utils_clust');
-var filter = require('underscore/cjs/each');
+var filter = require('underscore/cjs/each.js');
 
 module.exports = function get_cat_names(
   params,

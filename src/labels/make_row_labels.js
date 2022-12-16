@@ -2,8 +2,8 @@ var utils = require('../Utils_clust');
 var add_row_click_hlight = require('./add_row_click_hlight');
 var row_reorder = require('../reorder/row_reorder');
 var make_row_tooltips = require('./make_row_tooltips');
-var each = require('underscore/cjs/each');
-var contains = require('underscore/cjs/contains');
+var each = require('underscore/cjs/each.js');
+var contains = require('underscore/cjs/contains.js');
 
 module.exports = function make_row_labels(
   cgm,

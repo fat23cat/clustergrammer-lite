@@ -4,8 +4,8 @@ var update_split_tiles = require('../update/update_split_tiles');
 var mouseover_tile = require('../matrix/mouseover_tile');
 var mouseout_tile = require('../matrix/mouseout_tile');
 var fine_position_tile = require('../matrix/fine_position_tile');
-var filter = require('underscore/cjs/filter');
-var contains = require('underscore/cjs/contains');
+var filter = require('underscore/cjs/filter.js');
+var contains = require('underscore/cjs/contains.js');
 
 // TODO add tip back to arguments
 module.exports = function eeu_existing_row(

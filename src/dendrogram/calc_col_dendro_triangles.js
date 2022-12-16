@@ -1,4 +1,4 @@
-var each = require('underscore/cjs/each');
+var each = require('underscore/cjs/each.js');
 var utils = require('../Utils_clust');
 
 module.exports = function calc_col_dendro_triangles(params) {

@@ -1,4 +1,4 @@
-var max = require('underscore/cjs/max');
+var max = require('underscore/cjs/max.js');
 
 module.exports = function check_if_value_cats(cat_states) {
   var tmp_cat = cat_states[0];

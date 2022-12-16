@@ -1,5 +1,5 @@
 var deactivate_cropping = require('./deactivate_cropping');
-var each = require('underscore/cjs/each');
+var each = require('underscore/cjs/each.js');
 
 module.exports = function brush_crop_matrix() {
   // get rows/cols from brush-extent

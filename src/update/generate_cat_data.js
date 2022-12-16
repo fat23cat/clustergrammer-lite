@@ -1,4 +1,4 @@
-var each = require('underscore/cjs/each');
+var each = require('underscore/cjs/each.js');
 
 module.exports = function generate_cat_data(cgm) {
   // only row category resetting is supported currently

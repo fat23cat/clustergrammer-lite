@@ -1,7 +1,7 @@
 var utils = require('../Utils_clust');
 var get_filter_default_state = require('./get_filter_default_state');
-var filter = require('underscore/cjs/filter');
-var each = require('underscore/cjs/each');
+var filter = require('underscore/cjs/filter.js');
+var each = require('underscore/cjs/each.js');
 
 module.exports = function get_subset_views(params, views, requested_view) {
   var inst_value;

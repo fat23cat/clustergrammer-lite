@@ -1,4 +1,4 @@
-var filter = require('underscore/cjs/filter');
+var filter = require('underscore/cjs/filter.js');
 
 module.exports = function exit_existing_row(
   params,

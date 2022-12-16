@@ -1,4 +1,4 @@
-var max = require('underscore/cjs/max');
+var max = require('underscore/cjs/max.js');
 
 module.exports = function calc_val_max(params) {
   var val_max = Math.abs(

@@ -1,4 +1,4 @@
-var max = require('underscore/cjs/max');
+var max = require('underscore/cjs/max.js');
 var min = require('underscore/cjs/min');
 
 module.exports = function make_colorbar(cgm) {

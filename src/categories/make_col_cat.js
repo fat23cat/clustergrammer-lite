@@ -4,7 +4,7 @@ var reset_cat_opacity = require('./reset_cat_opacity');
 var ini_cat_opacity = require('./ini_cat_opacity');
 // var click_filter_cats = require('./click_filter_cats');
 var get_cat_names = require('../categories/get_cat_names');
-var each = require('underscore/cjs/each');
+var each = require('underscore/cjs/each.js');
 var $ = require('jquery');
 
 module.exports = function make_col_cat(cgm) {

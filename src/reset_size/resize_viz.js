@@ -30,7 +30,7 @@ var position_filter_icon = require('../menus/position_filter_icon');
 var position_tree_menu = require('../menus/position_tree_menu');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
 var grid_lines_viz = require('../matrix/grid_lines_viz');
-var each = require('underscore/cjs/each');
+var each = require('underscore/cjs/each.js');
 
 module.exports = function resize_viz(cgm) {
   var params = cgm.params;

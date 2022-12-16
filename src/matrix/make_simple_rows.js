@@ -5,7 +5,7 @@ var draw_dn_tile = require('../enter/draw_dn_tile');
 var mouseover_tile = require('./mouseover_tile');
 var mouseout_tile = require('./mouseout_tile');
 var fine_position_tile = require('./fine_position_tile');
-var filter = require('underscore/cjs/filter');
+var filter = require('underscore/cjs/filter.js');
 var utils = require('../Utils_clust');
 
 module.exports = function make_simple_rows(

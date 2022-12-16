@@ -1,7 +1,7 @@
 var remove_node_cats = require('./remove_node_cats');
 var utils = require('../Utils_clust');
-var each = require('underscore/cjs/each');
-var contains = require('underscore/cjs/contains');
+var each = require('underscore/cjs/each.js');
+var contains = require('underscore/cjs/contains.js');
 
 module.exports = function modify_row_node_cats(
   cat_data,
