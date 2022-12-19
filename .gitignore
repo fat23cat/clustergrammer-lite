@@ -1,6 +1,7 @@
 /dist
 node_modules
 *.log
+/stats.html
 
 # OS generated files #
 ######################
