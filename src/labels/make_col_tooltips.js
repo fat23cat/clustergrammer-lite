@@ -5,14 +5,20 @@ module.exports = function make_col_tooltips(params) {
       .on('mouseover', function (d) {
         dispatchEvent(
           new CustomEvent('COL_MOUSEOVER', {
-            detail: d
+            detail: {
+              col: d,
+              text: this.childNodes[0].getBoundingClientRect(),
+              triangle: this.childNodes[1].getBoundingClientRect()
+            }
           })
         );
       })
       .on('mouseout', function (d) {
         dispatchEvent(
           new CustomEvent('COL_MOUSEOUT', {
-            detail: d
+            detail: {
+              col: d
+            }
           })
         );
       });

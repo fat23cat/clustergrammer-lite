@@ -30,8 +30,7 @@ module.exports = function (params, svg_elem) {
     .append('rect')
     .classed('background', true)
     .classed('grey_background', true)
-    .style('fill', '#eee')
-    .style('opacity', 0.25)
+    .style('fill', params.clust_group_background_color)
     .attr('width', params.viz.clust.dim.width)
     .attr('height', params.viz.clust.dim.height);
 
