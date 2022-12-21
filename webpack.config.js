@@ -49,7 +49,7 @@ module.exports = [
     target: 'web',
     output: {
       path: __dirname,
-      filename: 'clustergrammer.node.js',
+      filename: 'clustergrammer.cjs.js',
       libraryTarget: 'commonjs2',
       library: 'Clustergrammer'
     },
@@ -77,35 +77,6 @@ module.exports = [
       path: __dirname,
       filename: 'clustergrammer.min.js',
       libraryTarget: 'var',
-      library: 'Clustergrammer'
-    },
-    externals: {
-      jquery: 'jquery',
-      d3: 'd3'
-    },
-    plugins: [
-      new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } })
-    ],
-    module: {
-      loaders: [
-        {
-          test: /\.js$/,
-          loader: 'babel',
-          query: {
-            presets: ['es2015']
-          }
-        }
-      ]
-    }
-  },
-  {
-    entry: './src/main.js',
-    devtool: DEBUG ? 'cheap-module-source-map' : false,
-    target: 'web',
-    output: {
-      path: __dirname,
-      filename: 'clustergrammer.node.min.js',
-      libraryTarget: 'commonjs2',
       library: 'Clustergrammer'
     },
     externals: {

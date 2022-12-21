@@ -26028,4 +26028,4 @@ module.exports =
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=clustergrammer.node.js.map
+//# sourceMappingURL=clustergrammer.cjs.js.map
