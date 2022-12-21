@@ -13009,7 +13009,7 @@ module.exports =
 /* 110 */
 /***/ (function(module, exports) {
 
-	module.exports = require("$");
+	module.exports = require("jQuery");
 
 /***/ }),
 /* 111 */

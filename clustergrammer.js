@@ -12827,7 +12827,7 @@ var Clustergrammer =
 /* 110 */
 /***/ (function(module, exports) {
 
-	module.exports = $;
+	module.exports = jQuery;
 
 /***/ }),
 /* 111 */
