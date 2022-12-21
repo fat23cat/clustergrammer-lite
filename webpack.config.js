@@ -54,7 +54,7 @@ module.exports = [
       library: 'Clustergrammer'
     },
     externals: {
-      jquery: 'jQuery',
+      jquery: 'jquery',
       d3: 'd3'
     },
     module: {
@@ -80,7 +80,7 @@ module.exports = [
       library: 'Clustergrammer'
     },
     externals: {
-      jquery: 'jQuery',
+      jquery: 'jquery',
       d3: 'd3'
     },
     plugins: [
@@ -109,7 +109,7 @@ module.exports = [
       library: 'Clustergrammer'
     },
     externals: {
-      jquery: 'jQuery',
+      jquery: 'jquery',
       d3: 'd3'
     },
     plugins: [
