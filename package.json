@@ -1,6 +1,6 @@
 {
   "name": "clustergrammer",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "description": "This is a clustergram implemented in D3.js. I started from the example http://bost.ocks.org/mike/miserables/ and added the following features",
   "main": "clustergrammer.cjs.js",
   "scripts": {
@@ -29,7 +29,8 @@
     "lint-staged": "^13.0.3",
     "object-assign": "^4.1.0",
     "prettier": "^2.7.1",
-    "webpack": "^3.12.0"
+    "webpack": "^4.46.0",
+    "webpack-cli": "^4.10.0"
   },
   "dependencies": {
     "d3": "^3.5.15",

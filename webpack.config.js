@@ -1,13 +1,10 @@
-/* global __dirname:false */
-
-var DEBUG = process.argv.indexOf('-p') === -1;
 var webpack = require('webpack');
 var BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
 module.exports = [
   {
+    mode: 'development',
     entry: './src/main.js',
-    devtool: DEBUG ? 'cheap-module-source-map' : false,
     target: 'web',
     output: {
       path: __dirname,
@@ -20,7 +17,7 @@ module.exports = [
       d3: 'd3'
     },
     module: {
-      loaders: [
+      rules: [
         {
           test: /\.js$/,
           loader: 'babel-loader',
@@ -44,8 +41,8 @@ module.exports = [
     ]
   },
   {
+    mode: 'production',
     entry: './src/main.js',
-    devtool: DEBUG ? 'cheap-module-source-map' : false,
     target: 'web',
     output: {
       path: __dirname,
@@ -53,12 +50,18 @@ module.exports = [
       libraryTarget: 'commonjs2',
       library: 'Clustergrammer'
     },
+    performance: {
+      hints: false
+    },
     externals: {
       jquery: 'jquery',
       d3: 'd3'
     },
+    optimization: {
+      minimize: false
+    },
     module: {
-      loaders: [
+      rules: [
         {
           test: /\.js$/,
           loader: 'babel-loader',
@@ -70,8 +73,8 @@ module.exports = [
     }
   },
   {
+    mode: 'production',
     entry: './src/main.js',
-    devtool: DEBUG ? 'cheap-module-source-map' : false,
     target: 'web',
     output: {
       path: __dirname,
@@ -83,11 +86,8 @@ module.exports = [
       jquery: 'jquery',
       d3: 'd3'
     },
-    plugins: [
-      new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } })
-    ],
     module: {
-      loaders: [
+      rules: [
         {
           test: /\.js$/,
           loader: 'babel-loader',
@@ -96,6 +96,9 @@ module.exports = [
           }
         }
       ]
+    },
+    performance: {
+      hints: false
     }
   }
 ];
