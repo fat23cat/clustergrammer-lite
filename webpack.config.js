@@ -6,6 +6,7 @@ module.exports = [
     mode: 'development',
     entry: './src/main.js',
     target: 'web',
+    devtool: 'cheap-source-map',
     output: {
       path: __dirname,
       filename: 'clustergrammer.js',
@@ -21,8 +22,8 @@ module.exports = [
         {
           test: /\.js$/,
           loader: 'babel-loader',
-          query: {
-            // presets: ['es2015']
+          options: {
+            presets: ['@babel/preset-env']
           }
         }
       ]
@@ -44,6 +45,7 @@ module.exports = [
     mode: 'production',
     entry: './src/main.js',
     target: 'web',
+    devtool: 'cheap-source-map',
     output: {
       path: __dirname,
       filename: 'clustergrammer.cjs.js',
@@ -65,8 +67,8 @@ module.exports = [
         {
           test: /\.js$/,
           loader: 'babel-loader',
-          query: {
-            presets: ['es2015']
+          options: {
+            presets: ['@babel/preset-env']
           }
         }
       ]
@@ -76,6 +78,7 @@ module.exports = [
     mode: 'production',
     entry: './src/main.js',
     target: 'web',
+    devtool: 'cheap-source-map',
     output: {
       path: __dirname,
       filename: 'clustergrammer.min.js',
@@ -91,8 +94,8 @@ module.exports = [
         {
           test: /\.js$/,
           loader: 'babel-loader',
-          query: {
-            presets: ['es2015']
+          options: {
+            presets: ['@babel/preset-env']
           }
         }
       ]

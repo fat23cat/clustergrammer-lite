@@ -87,13 +87,9 @@ module.exports =
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 /* Utility functions
  * ----------------------------------------------------------------------- */
 module.exports = {
@@ -104,31 +100,26 @@ module.exports = {
   is_supported_order: function is_supported_order(order) {
     return order === 'ini' || order === 'clust' || order === 'rank_var' || order === 'rank' || order === 'class' || order == 'alpha';
   },
-
   /* Returns whether or not an object has a certain property.
    */
   has: function has(obj, key) {
     return obj && hasOwnProperty.call(obj, key);
   },
-
   property: function property(key) {
     return function (obj) {
       return obj == null ? void 0 : obj[key];
     };
   },
-
   // Convenience version of a common use case of `map`: fetching a property.
   pluck: function pluck(arr, key) {
     var self = this;
     return arr.map(self.property(key));
   },
-
   /* Returns true if the object is undefined.
    */
   is_undefined: function is_undefined(obj) {
     return obj === void 0;
   },
-
   /* Mixes two objects in together, overwriting a target with a source.
    */
   extend: function extend(target, source) {
@@ -147,9 +138,6 @@ module.exports = {
 /***/ }),
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var _optimizeCb = __webpack_require__(67);
 var _isArrayLike = __webpack_require__(18);
@@ -174,7 +162,6 @@ function each(obj, iteratee, context) {
   }
   return obj;
 }
-
 module.exports = each;
 
 /***/ }),
@@ -199,7 +186,6 @@ module.exports = require("jquery");
  * @param {*} value
  * @return {boolean} isNumber
  */
-
 exports.isNumber = function (value) {
   return typeof value === 'number';
 };
@@ -314,7 +300,6 @@ exports.format = function (value, options) {
   // default values for options
   var notation = 'auto';
   var precision = undefined;
-
   if (options) {
     // determine notation from options
     if (options.notation) {
@@ -333,13 +318,10 @@ exports.format = function (value, options) {
   switch (notation) {
     case 'fixed':
       return exports.toFixed(value, precision);
-
     case 'exponential':
       return exports.toExponential(value, precision);
-
     case 'engineering':
       return exports.toEngineering(value, precision);
-
     case 'auto':
       return exports.toPrecision(value, precision, options && options.exponential)
 
@@ -349,7 +331,6 @@ exports.format = function (value, options) {
         var e = arguments[4];
         return digits !== '.' ? digits + e : e;
       });
-
     default:
       throw new Error('Unknown notation "' + notation + '". ' + 'Choose "auto", "exponential", or "fixed".');
   }
@@ -367,14 +348,11 @@ exports.splitNumber = function (value) {
   if (!match) {
     throw new SyntaxError('Invalid number ' + value);
   }
-
   var sign = match[1];
   var digits = match[2];
   var exponent = parseFloat(match[4] || '0');
-
   var dot = digits.indexOf('.');
   exponent += dot !== -1 ? dot - 1 : digits.length - 1;
-
   var coefficients = digits.replace('.', '') // remove the dot (must be removed before removing leading zeros)
   .replace(/^0*/, function (zeros) {
     // remove leading zeros, add their count to the exponent
@@ -384,12 +362,10 @@ exports.splitNumber = function (value) {
   .split('').map(function (d) {
     return parseInt(d);
   });
-
   if (coefficients.length === 0) {
     coefficients.push(0);
     exponent++;
   }
-
   return {
     sign: sign,
     coefficients: coefficients,
@@ -407,9 +383,7 @@ exports.toEngineering = function (value, precision) {
   if (isNaN(value) || !isFinite(value)) {
     return String(value);
   }
-
   var rounded = exports.roundDigits(exports.splitNumber(value), precision);
-
   var e = rounded.exponent;
   var c = rounded.coefficients;
 
@@ -424,17 +398,17 @@ exports.toEngineering = function (value, precision) {
 
   // find difference in exponents
   var expDiff = Math.abs(e - newExp);
-
   var decimalIdx = 1;
 
   // push decimal index over by expDiff times
   while (--expDiff >= 0) {
     decimalIdx++;
-  } // if all coefficient values are zero after the decimal point, don't add a decimal value.
+  }
+
+  // if all coefficient values are zero after the decimal point, don't add a decimal value.
   // otherwise concat with the rest of the coefficients
   var decimals = c.slice(decimalIdx).join('');
   var decimalVal = decimals.match(/[1-9]/) ? '.' + decimals : '';
-
   var str = c.slice(0, decimalIdx).join('') + decimalVal + 'e' + (e >= 0 ? '+' : '') + newExp.toString();
   return rounded.sign + str;
 };
@@ -449,7 +423,6 @@ exports.toFixed = function (value, precision) {
   if (isNaN(value) || !isFinite(value)) {
     return String(value);
   }
-
   var splitValue = exports.splitNumber(value);
   var rounded = exports.roundDigits(splitValue, splitValue.exponent + 1 + (precision || 0));
   var c = rounded.coefficients;
@@ -471,7 +444,6 @@ exports.toFixed = function (value, precision) {
   if (precision) {
     c.splice(p, 0, p === 0 ? '0.' : '.');
   }
-
   return rounded.sign + c.join('');
 };
 
@@ -521,7 +493,6 @@ exports.toPrecision = function (value, precision, options) {
   // determine lower and upper bound for exponential notation.
   var lower = options && options.lower !== undefined ? options.lower : 1e-3;
   var upper = options && options.upper !== undefined ? options.upper : 1e+5;
-
   var split = exports.splitNumber(value);
   var abs = Math.abs(Math.pow(10, split.exponent));
   if (abs < lower || abs >= upper) {
@@ -543,12 +514,10 @@ exports.toPrecision = function (value, precision, options) {
 
     // prepend zeros
     c = zeros(-e).concat(c);
-
     var dot = e > 0 ? e : 0;
     if (dot < c.length - 1) {
       c.splice(dot + 1, 0, '.');
     }
-
     return rounded.sign + c.join('');
   }
 };
@@ -576,10 +545,8 @@ exports.roundDigits = function (split, precision) {
     rounded.exponent++;
     precision++;
   }
-
   if (c.length > precision) {
     var removed = c.splice(precision, c.length - precision);
-
     if (removed[0] >= 5) {
       var i = precision - 1;
       c[i]++;
@@ -595,7 +562,6 @@ exports.roundDigits = function (split, precision) {
       }
     }
   }
-
   return rounded;
 };
 
@@ -682,8 +648,7 @@ exports.nearlyEqual = function (x, y, epsilon) {
 "use strict";
 
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 var isBigNumber = __webpack_require__(44);
 
 /**
@@ -698,7 +663,7 @@ var isBigNumber = __webpack_require__(44);
  * @return {*} clone
  */
 exports.clone = function clone(x) {
-  var type = typeof x === 'undefined' ? 'undefined' : _typeof(x);
+  var type = _typeof(x);
 
   // immutable primitive types
   if (type === 'number' || type === 'string' || type === 'boolean' || x === null || x === undefined) {
@@ -716,7 +681,6 @@ exports.clone = function clone(x) {
       return clone(value);
     });
   }
-
   if (x instanceof Number) return new Number(x.valueOf());
   if (x instanceof String) return new String(x.valueOf());
   if (x instanceof Boolean) return new Boolean(x.valueOf());
@@ -736,13 +700,11 @@ exports.clone = function clone(x) {
  */
 exports.map = function (object, callback) {
   var clone = {};
-
   for (var key in object) {
     if (exports.hasOwnProperty(object, key)) {
       clone[key] = callback(object[key]);
     }
   }
-
   return clone;
 };
 
@@ -772,7 +734,6 @@ exports.deepExtend = function deepExtend(a, b) {
   if (Array.isArray(b)) {
     throw new TypeError('Arrays are not supported by deepExtend');
   }
-
   for (var prop in b) {
     if (exports.hasOwnProperty(b, prop)) {
       if (b[prop] && b[prop].constructor === Object) {
@@ -806,11 +767,9 @@ exports.deepEqual = function deepEqual(a, b) {
     if (!Array.isArray(b)) {
       return false;
     }
-
     if (a.length != b.length) {
       return false;
     }
-
     for (i = 0, len = a.length; i < len; i++) {
       if (!exports.deepEqual(a[i], b[i])) {
         return false;
@@ -821,7 +780,6 @@ exports.deepEqual = function deepEqual(a, b) {
     if (Array.isArray(b) || !(b instanceof Object)) {
       return false;
     }
-
     for (prop in a) {
       //noinspection JSUnfilteredForInLoop
       if (!exports.deepEqual(a[prop], b[prop])) {
@@ -836,7 +794,7 @@ exports.deepEqual = function deepEqual(a, b) {
     }
     return true;
   } else {
-    return (typeof a === 'undefined' ? 'undefined' : _typeof(a)) === (typeof b === 'undefined' ? 'undefined' : _typeof(b)) && a == b;
+    return _typeof(a) === _typeof(b) && a == b;
   }
 };
 
@@ -848,11 +806,12 @@ exports.canDefineProperty = function () {
   // test needed for broken IE8 implementation
   try {
     if (Object.defineProperty) {
-      Object.defineProperty({}, 'x', { get: function get() {} });
+      Object.defineProperty({}, 'x', {
+        get: function get() {}
+      });
       return true;
     }
   } catch (e) {}
-
   return false;
 };
 
@@ -878,12 +837,10 @@ exports.lazy = function (object, prop, fn) {
         }
         return _value;
       },
-
       set: function set(value) {
         _value = value;
         _uninitialized = false;
       },
-
       configurable: true,
       enumerable: true
     });
@@ -902,7 +859,6 @@ exports.lazy = function (object, prop, fn) {
  */
 exports.traverse = function (object, path) {
   var obj = object;
-
   if (path) {
     var names = path.split('.');
     for (var i = 0; i < names.length; i++) {
@@ -913,7 +869,6 @@ exports.traverse = function (object, path) {
       obj = obj[name];
     }
   }
-
   return obj;
 };
 
@@ -944,20 +899,14 @@ exports.isFactory = function (object) {
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function demo_text(params, text, read_duration) {
   var split_text = text.split('\n');
-
   if (split_text.length < 3) {
     split_text.push('');
   }
-
   d3.select(params.root + ' .demo_group').style('opacity', 0).transition().duration(250).style('opacity', 1).transition().duration(250).delay(read_duration).style('opacity', 0);
-
   for (var i = 0; i < split_text.length; i++) {
     var inst_text_num = i + 1;
 
@@ -965,12 +914,9 @@ module.exports = function demo_text(params, text, read_duration) {
     //////////////////
     var inst_text_obj = d3.select(params.root + ' .demo_group').select('#text_' + inst_text_num).text(split_text[i]);
     var bbox = inst_text_obj[0][0].getBBox();
-
     var box_opacity = 0.9;
-
     var tmp_fs = Number(d3.select('.demo_group').select('text').style('font-size').replace('px', ''));
     var shift_height = tmp_fs * 1.3;
-
     d3.select(params.root + ' .demo_group').select('.rect_' + inst_text_num).style('fill', 'white').attr('width', bbox.width + 20).attr('height', bbox.height).attr('x', -10).attr('y', bbox.y + i * shift_height).style('opacity', box_opacity);
   }
 };
@@ -979,12 +925,10 @@ module.exports = function demo_text(params, text, read_duration) {
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-Object.defineProperty(exports, '__esModule', { value: true });
+/* WEBPACK VAR INJECTION */(function(global) {function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
 // Current version.
 var VERSION = '1.13.6';
@@ -992,41 +936,42 @@ var VERSION = '1.13.6';
 // Establish the root object, `window` (`self`) in the browser, `global`
 // on the server, or `this` in some virtual machines. We use `self`
 // instead of `window` for `WebWorker` support.
-var root = (typeof self === 'undefined' ? 'undefined' : _typeof(self)) == 'object' && self.self === self && self || (typeof global === 'undefined' ? 'undefined' : _typeof(global)) == 'object' && global.global === global && global || Function('return this')() || {};
+var root = (typeof self === "undefined" ? "undefined" : _typeof(self)) == 'object' && self.self === self && self || (typeof global === "undefined" ? "undefined" : _typeof(global)) == 'object' && global.global === global && global || Function('return this')() || {};
 
 // Save bytes in the minified (but not gzipped) version:
 var ArrayProto = Array.prototype,
-    ObjProto = Object.prototype;
+  ObjProto = Object.prototype;
 var SymbolProto = typeof Symbol !== 'undefined' ? Symbol.prototype : null;
 
 // Create quick reference variables for speed access to core prototypes.
 var push = ArrayProto.push,
-    slice = ArrayProto.slice,
-    toString = ObjProto.toString,
-    hasOwnProperty = ObjProto.hasOwnProperty;
+  slice = ArrayProto.slice,
+  toString = ObjProto.toString,
+  hasOwnProperty = ObjProto.hasOwnProperty;
 
 // Modern feature detection.
 var supportsArrayBuffer = typeof ArrayBuffer !== 'undefined',
-    supportsDataView = typeof DataView !== 'undefined';
+  supportsDataView = typeof DataView !== 'undefined';
 
 // All **ECMAScript 5+** native function implementations that we hope to use
 // are declared here.
 var nativeIsArray = Array.isArray,
-    nativeKeys = Object.keys,
-    nativeCreate = Object.create,
-    nativeIsView = supportsArrayBuffer && ArrayBuffer.isView;
+  nativeKeys = Object.keys,
+  nativeCreate = Object.create,
+  nativeIsView = supportsArrayBuffer && ArrayBuffer.isView;
 
 // Create references to these builtin functions because we override them.
 var _isNaN = isNaN,
-    _isFinite = isFinite;
+  _isFinite = isFinite;
 
 // Keys in IE < 9 that won't be iterated by `for key in ...` and thus missed.
-var hasEnumBug = !{ toString: null }.propertyIsEnumerable('toString');
+var hasEnumBug = !{
+  toString: null
+}.propertyIsEnumerable('toString');
 var nonEnumerableProps = ['valueOf', 'isPrototypeOf', 'toString', 'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
 
 // The largest integer that can be represented exactly.
 var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
-
 exports.ArrayProto = ArrayProto;
 exports.MAX_ARRAY_INDEX = MAX_ARRAY_INDEX;
 exports.ObjProto = ObjProto;
@@ -1065,26 +1010,20 @@ exports.toString = toString;
  *                                          and expected size: '!=', '<', etc.
  * @extends RangeError
  */
-
 function DimensionError(actual, expected, relation) {
   if (!(this instanceof DimensionError)) {
     throw new SyntaxError('Constructor must be called with the new operator');
   }
-
   this.actual = actual;
   this.expected = expected;
   this.relation = relation;
-
   this.message = 'Dimension mismatch (' + (Array.isArray(actual) ? '[' + actual.join(', ') + ']' : actual) + ' ' + (this.relation || '!=') + ' ' + (Array.isArray(expected) ? '[' + expected.join(', ') + ']' : expected) + ')';
-
   this.stack = new Error().stack;
 }
-
 DimensionError.prototype = new RangeError();
 DimensionError.prototype.constructor = RangeError;
 DimensionError.prototype.name = 'DimensionError';
 DimensionError.prototype.isDimensionError = true;
-
 module.exports = DimensionError;
 
 /***/ }),
@@ -1131,34 +1070,26 @@ function factory(type, config, load, typed) {
     '': function _() {
       return _create([]);
     },
-
     'string': function string(format) {
       return _create([], format);
     },
-
     'string, string': function stringString(format, datatype) {
       return _create([], format, datatype);
     },
-
     'Array': function Array(data) {
       return _create(data);
     },
-
     'Matrix': function Matrix(data) {
       return _create(data, data.storage());
     },
-
     'Array | Matrix, string': _create,
-
     'Array | Matrix, string, string': _create
   });
-
   matrix.toTex = {
     0: '\\begin{bmatrix}\\end{bmatrix}',
     1: '\\left(${args[0]}\\right)',
     2: '\\left(${args[0]}\\right)'
   };
-
   return matrix;
 
   /**
@@ -1177,16 +1108,12 @@ function factory(type, config, load, typed) {
     return new M(data, datatype);
   }
 }
-
 exports.name = 'matrix';
 exports.factory = factory;
 
 /***/ }),
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var _cb = __webpack_require__(15);
 var each = __webpack_require__(1);
@@ -1200,15 +1127,11 @@ function filter(obj, predicate, context) {
   });
   return results;
 }
-
 module.exports = filter;
 
 /***/ }),
 /* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function d3_tip_custom() {
   /* eslint-disable */
@@ -1225,13 +1148,12 @@ module.exports = function d3_tip_custom() {
   // made syntax fixes
   //////////////////////////////////////////////
   var direction = d3_tip_direction,
-      offset = d3_tip_offset,
-      html = d3_tip_html,
-      node = initNode(),
-      svg = null,
-      point = null,
-      target = null;
-
+    offset = d3_tip_offset,
+    html = d3_tip_html,
+    node = initNode(),
+    svg = null,
+    point = null,
+    target = null;
   function tip(vis) {
     svg = getSVGNode(vis);
     point = svg.createSVGPoint();
@@ -1246,7 +1168,6 @@ module.exports = function d3_tip_custom() {
     if (args[args.length - 1] instanceof SVGElement) {
       target = args.pop();
     }
-
     var content = html.apply(this, args);
     var poffset = offset.apply(this, args);
     var dir = direction.apply(this, args);
@@ -1255,8 +1176,10 @@ module.exports = function d3_tip_custom() {
     var coords;
 
     // add z-index to make sure tooltips appear on top
-    nodel.html(content).style({ opacity: 1, 'pointer-events': 'all' }).style('z-index', 99);
-
+    nodel.html(content).style({
+      opacity: 1,
+      'pointer-events': 'all'
+    }).style('z-index', 99);
     while (i--) {
       nodel.classed(directions[i], false);
     }
@@ -1269,12 +1192,10 @@ module.exports = function d3_tip_custom() {
     // quick fix for fading tile tooltips
     if (isFunction(this) === false) {
       var inst_class = d3.select(this).attr('class');
-
       if (inst_class.indexOf('tile') >= 0) {
         setTimeout(fade_tips, 5000, this);
       }
     }
-
     return tip;
   };
 
@@ -1287,7 +1208,10 @@ module.exports = function d3_tip_custom() {
     //   .style('display', 'none');
 
     var nodel = d3.select(node);
-    nodel.style({ opacity: 0, 'pointer-events': 'none' });
+    nodel.style({
+      opacity: 0,
+      'pointer-events': 'none'
+    });
     return tip;
   };
 
@@ -1304,7 +1228,6 @@ module.exports = function d3_tip_custom() {
       var args = Array.prototype.slice.call(arguments);
       d3.selection.prototype.attr.apply(d3.select(node), args);
     }
-
     return tip;
   };
 
@@ -1321,7 +1244,6 @@ module.exports = function d3_tip_custom() {
       var args = Array.prototype.slice.call(arguments);
       d3.selection.prototype.style.apply(d3.select(node), args);
     }
-
     return tip;
   };
 
@@ -1336,7 +1258,6 @@ module.exports = function d3_tip_custom() {
       return direction;
     }
     direction = v == null ? v : d3.functor(v);
-
     return tip;
   };
 
@@ -1350,7 +1271,6 @@ module.exports = function d3_tip_custom() {
       return offset;
     }
     offset = v == null ? v : d3.functor(v);
-
     return tip;
   };
 
@@ -1364,10 +1284,8 @@ module.exports = function d3_tip_custom() {
       return html;
     }
     html = v == null ? v : d3.functor(v);
-
     return tip;
   };
-
   function d3_tip_direction() {
     return 'n';
   }
@@ -1377,29 +1295,25 @@ module.exports = function d3_tip_custom() {
   function d3_tip_html() {
     return ' ';
   }
-
   var direction_callbacks = d3.map({
-    n: direction_n,
-    s: direction_s,
-    e: direction_e,
-    w: direction_w,
-    nw: direction_nw,
-    ne: direction_ne,
-    sw: direction_sw,
-    se: direction_se,
-    south_custom: direction_south_custom
-  }),
-      directions = direction_callbacks.keys();
-
+      n: direction_n,
+      s: direction_s,
+      e: direction_e,
+      w: direction_w,
+      nw: direction_nw,
+      ne: direction_ne,
+      sw: direction_sw,
+      se: direction_se,
+      south_custom: direction_south_custom
+    }),
+    directions = direction_callbacks.keys();
   function direction_south_custom() {
     var bbox = getScreenBBox();
-
     return {
       top: bbox.s.y,
       left: bbox.s.x
     };
   }
-
   function direction_n() {
     var bbox = getScreenBBox();
     return {
@@ -1407,7 +1321,6 @@ module.exports = function d3_tip_custom() {
       left: bbox.n.x - node.offsetWidth / 2
     };
   }
-
   function direction_s() {
     var bbox = getScreenBBox();
     return {
@@ -1415,7 +1328,6 @@ module.exports = function d3_tip_custom() {
       left: bbox.s.x - node.offsetWidth / 2
     };
   }
-
   function direction_e() {
     var bbox = getScreenBBox();
     return {
@@ -1423,7 +1335,6 @@ module.exports = function d3_tip_custom() {
       left: bbox.e.x
     };
   }
-
   function direction_w() {
     var bbox = getScreenBBox();
     return {
@@ -1431,7 +1342,6 @@ module.exports = function d3_tip_custom() {
       left: bbox.w.x - node.offsetWidth
     };
   }
-
   function direction_nw() {
     var bbox = getScreenBBox();
     return {
@@ -1439,7 +1349,6 @@ module.exports = function d3_tip_custom() {
       left: bbox.nw.x - node.offsetWidth
     };
   }
-
   function direction_ne() {
     var bbox = getScreenBBox();
     return {
@@ -1447,7 +1356,6 @@ module.exports = function d3_tip_custom() {
       left: bbox.ne.x
     };
   }
-
   function direction_sw() {
     var bbox = getScreenBBox();
     return {
@@ -1455,7 +1363,6 @@ module.exports = function d3_tip_custom() {
       left: bbox.sw.x - node.offsetWidth
     };
   }
-
   function direction_se() {
     var bbox = getScreenBBox();
     return {
@@ -1463,7 +1370,6 @@ module.exports = function d3_tip_custom() {
       left: bbox.e.x
     };
   }
-
   function initNode() {
     var node = d3.select(document.createElement('div'));
     node.style({
@@ -1472,16 +1378,13 @@ module.exports = function d3_tip_custom() {
       pointerEvents: 'none',
       boxSizing: 'border-box'
     });
-
     return node.node();
   }
-
   function getSVGNode(el) {
     el = el.node();
     if (el.tagName.toLowerCase() == 'svg') {
       return el;
     }
-
     return el.ownerSVGElement;
   }
 
@@ -1537,33 +1440,26 @@ module.exports = function d3_tip_custom() {
     bbox.n = point.matrixTransform(matrix);
     point.y = point.y + height;
     bbox.s = point.matrixTransform(matrix);
-
     return bbox;
   }
 
   // only fade tips if you are still hovering on the current tip
   function fade_tips(inst_selection) {
     var is_hovering = d3.select(inst_selection).classed('hovering');
-
     if (is_hovering) {
       d3.selectAll('.d3-tip').transition().duration(250).style('opacity', 0).style('display', 'none');
     }
   }
-
   function isFunction(functionToCheck) {
     var getType = {};
     return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
   }
-
   return tip;
 };
 
 /***/ }),
 /* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function ini_zoom_info() {
   var zoom_info = {};
@@ -1571,16 +1467,12 @@ module.exports = function ini_zoom_info() {
   zoom_info.zoom_y = 1;
   zoom_info.trans_x = 0;
   zoom_info.trans_y = 0;
-
   return zoom_info;
 };
 
 /***/ }),
 /* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function fine_position_tile(params, d) {
   var offset_x;
@@ -1591,7 +1483,6 @@ module.exports = function fine_position_tile(params, d) {
   } else {
     offset_x = 0;
   }
-
   var x_pos = offset_x + 0.5 * params.viz.border_width.x;
   var y_pos = 0.5 * params.viz.border_width.y;
   return 'translate(' + x_pos + ',' + y_pos + ')';
@@ -1601,21 +1492,16 @@ module.exports = function fine_position_tile(params, d) {
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var find_viz_rows = __webpack_require__(227);
 var make_matrix_rows = __webpack_require__(89);
 var make_row_labels = __webpack_require__(91);
 var make_row_visual_aid_triangles = __webpack_require__(228);
 var contains = __webpack_require__(16);
 var difference = __webpack_require__(99);
-
 module.exports = function show_visible_area(cgm) {
   var zooming_stopped = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
   var zooming_out = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
   var make_all_rows = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-
   // console.log('show_visible_area stopped: ' + String(zooming_stopped));
 
   var params = cgm.params;
@@ -1631,7 +1517,6 @@ module.exports = function show_visible_area(cgm) {
     check_ds_level = -1;
   } else {
     check_ds_level = Math.floor(Math.log(zoom_info.zoom_y) / Math.log(params.viz.ds_zt));
-
     if (check_ds_level > params.viz.ds_num_levels - 1) {
       check_ds_level = -1;
     }
@@ -1641,7 +1526,6 @@ module.exports = function show_visible_area(cgm) {
   //////////////////////////////////////////////
   // force update of view if moving to more coarse view
   var override_ds = false;
-
   if (old_ds_level == -1) {
     // transitioning to more coarse downsampling view (from real data)
     if (check_ds_level >= 0) {
@@ -1656,33 +1540,27 @@ module.exports = function show_visible_area(cgm) {
 
   // update level if zooming has stopped or if transitioning to more coarse view
   var new_ds_level;
-
   if (zooming_stopped === true || override_ds === true) {
     // update new_ds_level if necessary (if decreasing detail, zooming out)
     new_ds_level = check_ds_level;
 
     // set zooming_stopped to true in case of override_ds
     zooming_stopped = true;
-
     params.viz.ds_level = new_ds_level;
   } else {
     // keep the old level (zooming is still occuring and not zooming out)
     new_ds_level = old_ds_level;
   }
-
   var viz_area = {};
   var buffer_size = 5;
   // get translation vector absolute values
   viz_area.min_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x - (buffer_size + 1) * params.viz.rect_width;
   viz_area.min_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y - (buffer_size + 1) * params.viz.rect_height;
-
   viz_area.max_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x + params.viz.clust.dim.width / zoom_info.zoom_x + buffer_size * params.viz.rect_width;
-
   viz_area.max_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y + params.viz.clust.dim.height / zoom_info.zoom_y + buffer_size * params.viz.rect_height;
 
   // generate lists of visible rows/cols
   find_viz_rows(params, viz_area);
-
   var missing_rows;
   if (make_all_rows === false) {
     missing_rows = difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
@@ -1693,7 +1571,6 @@ module.exports = function show_visible_area(cgm) {
     // remove downsampled rows
     d3.selectAll(params.root + ' .ds' + String(new_ds_level) + '_row').remove();
   }
-
   if (params.viz.ds != null) {
     var ds_row_class = '.ds' + String(params.viz.ds_level) + '_row';
     d3.selectAll(ds_row_class).style('display', 'block');
@@ -1710,7 +1587,6 @@ module.exports = function show_visible_area(cgm) {
 
   // default state for downsampling
   var inst_matrix;
-
   if (new_ds_level < 0) {
     // set matrix to default matrix
     inst_matrix = params.matrix.matrix;
@@ -1720,7 +1596,6 @@ module.exports = function show_visible_area(cgm) {
   } else {
     // set matrix to downsampled matrix
     inst_matrix = params.matrix.ds_matrix[new_ds_level];
-
     d3.selectAll(params.root + ' .row_cat_group path').remove();
   }
 
@@ -1811,35 +1686,67 @@ module.exports = function show_visible_area(cgm) {
 
 exports.symbols = {
   // GREEK LETTERS
-  Alpha: 'A', alpha: '\\alpha',
-  Beta: 'B', beta: '\\beta',
-  Gamma: '\\Gamma', gamma: '\\gamma',
-  Delta: '\\Delta', delta: '\\delta',
-  Epsilon: 'E', epsilon: '\\epsilon', varepsilon: '\\varepsilon',
-  Zeta: 'Z', zeta: '\\zeta',
-  Eta: 'H', eta: '\\eta',
-  Theta: '\\Theta', theta: '\\theta', vartheta: '\\vartheta',
-  Iota: 'I', iota: '\\iota',
-  Kappa: 'K', kappa: '\\kappa', varkappa: '\\varkappa',
-  Lambda: '\\Lambda', lambda: '\\lambda',
-  Mu: 'M', mu: '\\mu',
-  Nu: 'N', nu: '\\nu',
-  Xi: '\\Xi', xi: '\\xi',
-  Omicron: 'O', omicron: 'o',
-  Pi: '\\Pi', pi: '\\pi', varpi: '\\varpi',
-  Rho: 'P', rho: '\\rho', varrho: '\\varrho',
-  Sigma: '\\Sigma', sigma: '\\sigma', varsigma: '\\varsigma',
-  Tau: 'T', tau: '\\tau',
-  Upsilon: '\\Upsilon', upsilon: '\\upsilon',
-  Phi: '\\Phi', phi: '\\phi', varphi: '\\varphi',
-  Chi: 'X', chi: '\\chi',
-  Psi: '\\Psi', psi: '\\psi',
-  Omega: '\\Omega', omega: '\\omega',
+  Alpha: 'A',
+  alpha: '\\alpha',
+  Beta: 'B',
+  beta: '\\beta',
+  Gamma: '\\Gamma',
+  gamma: '\\gamma',
+  Delta: '\\Delta',
+  delta: '\\delta',
+  Epsilon: 'E',
+  epsilon: '\\epsilon',
+  varepsilon: '\\varepsilon',
+  Zeta: 'Z',
+  zeta: '\\zeta',
+  Eta: 'H',
+  eta: '\\eta',
+  Theta: '\\Theta',
+  theta: '\\theta',
+  vartheta: '\\vartheta',
+  Iota: 'I',
+  iota: '\\iota',
+  Kappa: 'K',
+  kappa: '\\kappa',
+  varkappa: '\\varkappa',
+  Lambda: '\\Lambda',
+  lambda: '\\lambda',
+  Mu: 'M',
+  mu: '\\mu',
+  Nu: 'N',
+  nu: '\\nu',
+  Xi: '\\Xi',
+  xi: '\\xi',
+  Omicron: 'O',
+  omicron: 'o',
+  Pi: '\\Pi',
+  pi: '\\pi',
+  varpi: '\\varpi',
+  Rho: 'P',
+  rho: '\\rho',
+  varrho: '\\varrho',
+  Sigma: '\\Sigma',
+  sigma: '\\sigma',
+  varsigma: '\\varsigma',
+  Tau: 'T',
+  tau: '\\tau',
+  Upsilon: "\\Upsilon",
+  upsilon: "\\upsilon",
+  Phi: '\\Phi',
+  phi: '\\phi',
+  varphi: '\\varphi',
+  Chi: 'X',
+  chi: '\\chi',
+  Psi: '\\Psi',
+  psi: '\\psi',
+  Omega: '\\Omega',
+  omega: '\\omega',
   //logic
   'true': '\\mathrm{True}',
   'false': '\\mathrm{False}',
   //other
-  i: 'i', //TODO use \i ??
+  i: 'i',
+  //TODO use \i ??
   inf: '\\infty',
   Inf: '\\infty',
   infinity: '\\infty',
@@ -1848,20 +1755,24 @@ exports.symbols = {
   lim: '\\lim',
   'undefined': '\\mathbf{?}'
 };
-
 exports.operators = {
   'transpose': '^\\top',
   'factorial': '!',
   'pow': '^',
-  'dotPow': '.^\\wedge', //TODO find ideal solution
+  'dotPow': '.^\\wedge',
+  //TODO find ideal solution
   'unaryPlus': '+',
   'unaryMinus': '-',
-  'bitNot': '~', //TODO find ideal solution
+  'bitNot': '~',
+  //TODO find ideal solution
   'not': '\\neg',
   'multiply': '\\cdot',
-  'divide': '\\frac', //TODO how to handle that properly?
-  'dotMultiply': '.\\cdot', //TODO find ideal solution
-  'dotDivide': '.:', //TODO find ideal solution
+  'divide': '\\frac',
+  //TODO how to handle that properly?
+  'dotMultiply': '.\\cdot',
+  //TODO find ideal solution
+  'dotDivide': '.:',
+  //TODO find ideal solution
   'mod': '\\mod',
   'add': '+',
   'subtract': '-',
@@ -1876,15 +1787,13 @@ exports.operators = {
   'smallerEq': '\\leq',
   'largerEq': '\\geq',
   'bitAnd': '\\&',
-  'bitXor': '\\underline{|}',
+  'bitXor': "\\underline{|}",
   'bitOr': '|',
   'and': '\\wedge',
   'xor': '\\veebar',
   'or': '\\vee'
 };
-
 exports.defaultTemplate = '\\mathrm{${name}}\\left(${args}\\right)';
-
 var units = {
   deg: '^\\circ'
 };
@@ -1899,7 +1808,6 @@ exports.toSymbol = function (name, isUnit) {
     }
     return '\\mathrm{' + name + '}';
   }
-
   if (exports.symbols.hasOwnProperty(name)) {
     return exports.symbols[name];
   } else if (name.indexOf('_') !== -1) {
@@ -1914,9 +1822,6 @@ exports.toSymbol = function (name, isUnit) {
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var underscore = __webpack_require__(31);
 var _baseIteratee = __webpack_require__(83);
 var iteratee = __webpack_require__(180);
@@ -1927,15 +1832,11 @@ function cb(value, context, argCount) {
   if (underscore.iteratee !== iteratee) return underscore.iteratee(value, context);
   return _baseIteratee(value, context, argCount);
 }
-
 module.exports = cb;
 
 /***/ }),
 /* 16 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var _isArrayLike = __webpack_require__(18);
 var values = __webpack_require__(84);
@@ -1947,31 +1848,23 @@ function contains(obj, item, fromIndex, guard) {
   if (typeof fromIndex != 'number' || guard) fromIndex = 0;
   return indexOf(obj, item, fromIndex) >= 0;
 }
-
 module.exports = contains;
 
 /***/ }),
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var utils = __webpack_require__(0);
 var label_constrain_and_trim = __webpack_require__(58);
 var show_visible_area = __webpack_require__(13);
 var ini_zoom_info = __webpack_require__(11);
 var toggle_grid_lines = __webpack_require__(103);
-
 module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
   // console.log('pan_dy: ' + String(pan_dy))
 
   var params = cgm.params;
-
   d3.selectAll(params.viz.root_tips).style('display', 'none');
-
   params.zoom_info = ini_zoom_info();
-
   show_visible_area(cgm);
 
   // do not allow while transitioning, e.g. reordering
@@ -2022,7 +1915,6 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
     // when zooming into genes at the bottom of the clustergram
     if (pan_dy < -(half_height - y_pan_room)) {
       shift_top_viz = half_height + pan_dy;
-
       shift_up_viz = half_height / fin_zoom - shift_top_viz; //- move_up_one_row;
 
       // reduce pan_dy so that the visualization does not get panned to far down
@@ -2052,7 +1944,6 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
     // transform row_cat_container
     // use the offset saved in params, only zoom in the y direction
     d3.select(params.root + ' .row_cat_container').transition().duration(search_duration).attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' + 1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
-
     d3.select(params.root + ' .row_dendro_container').transition().duration(search_duration).attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [params.viz.uni_margin / 2, pan_dy] + ')');
 
     // toggle crop buttons
@@ -2068,7 +1959,6 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
 
     // transform col_class
     d3.select(params.root + ' .col_cat_container').transition().duration(search_duration).attr('transform', ' scale(' + zoom_x + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
-
     d3.select(params.root + ' .col_dendro_container').transition().duration(search_duration).attr('transform', ' scale(' + zoom_x + ',' + 1 + ')' + 'translate(' + [pan_dx, params.viz.uni_margin / 2] + ')');
 
     // set y translate: center_y is positive, positive moves the visualization down
@@ -2079,7 +1969,6 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
 
     // reset the zoom and translate
     params.zoom_behavior.scale(zoom_y).translate([net_x_offset, net_y_offset]);
-
     label_constrain_and_trim(params);
 
     // re-size of the highlighting rects
@@ -2096,7 +1985,6 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
 
     // reset crop button zooming
     d3.select(params.root + ' .row_dendro_icons_group').attr('transform', 'translate(' + [0, 0 + center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx, pan_dy] + ')');
-
     d3.select(params.root + ' .row_dendro_icons_group').selectAll('path').attr('transform', function (d) {
       var inst_x = params.viz.uni_margin;
       var inst_y = d.pos_mid;
@@ -2115,7 +2003,6 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
       // + 'translate(' + [pan_dx, pan_dy ] + ')';
       return inst_trans;
     });
-
     d3.select(params.root + ' .col_dendro_icons_group').selectAll('path').attr('transform', function (d) {
       var inst_x = d.pos_mid;
       var inst_y = params.viz.uni_margin;
@@ -2137,7 +2024,6 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
         return inst_value;
       });
     }
-
     if (utils.has(params.network_data.row_nodes[0], 'value')) {
       d3.selectAll(params.root + ' .row_bars').transition().duration(search_duration).attr('width', function (d) {
         var inst_value = 0;
@@ -2149,10 +2035,8 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
         return inst_value;
       });
     }
-
     toggle_grid_lines(params);
   }
-
   function show_crop_buttons(inst_rc, inst_button_opacity) {
     d3.selectAll(params.root + ' .' + inst_rc + '_dendro_crop_buttons').transition().duration(search_duration).style('opacity', inst_button_opacity);
   }
@@ -2162,9 +2046,6 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var _createSizePropertyCheck = __webpack_require__(136);
 var _getLength = __webpack_require__(19);
 
@@ -2173,29 +2054,21 @@ var _getLength = __webpack_require__(19);
 // Related: https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength
 // Avoids a very nasty iOS 8 JIT bug on ARM-64. #2094
 var isArrayLike = _createSizePropertyCheck(_getLength);
-
 module.exports = isArrayLike;
 
 /***/ }),
 /* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var _shallowProperty = __webpack_require__(138);
 
 // Internal helper to obtain the `length` property of an object.
 var getLength = _shallowProperty('length');
-
 module.exports = getLength;
 
 /***/ }),
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var isObject = __webpack_require__(68);
 var _setup = __webpack_require__(6);
@@ -2210,11 +2083,11 @@ function keys(obj) {
   var keys = [];
   for (var key in obj) {
     if (_has(obj, key)) keys.push(key);
-  } // Ahem, IE < 9.
+  }
+  // Ahem, IE < 9.
   if (_setup.hasEnumBug) _collectNonEnumProps(obj, keys);
   return keys;
 }
-
 module.exports = keys;
 
 /***/ }),
@@ -2244,7 +2117,6 @@ var number = __webpack_require__(3);
 var string = __webpack_require__(74);
 var object = __webpack_require__(4);
 var types = __webpack_require__(75);
-
 var DimensionError = __webpack_require__(7);
 var IndexError = __webpack_require__(153);
 
@@ -2257,12 +2129,10 @@ var IndexError = __webpack_require__(153);
  */
 exports.size = function (x) {
   var s = [];
-
   while (Array.isArray(x)) {
     s.push(x.length);
     x = x[0];
   }
-
   return s;
 };
 
@@ -2278,11 +2148,9 @@ exports.size = function (x) {
 function _validate(array, size, dim) {
   var i;
   var len = array.length;
-
   if (len != size[dim]) {
     throw new DimensionError(len, size[dim]);
   }
-
   if (dim < size.length - 1) {
     // recursively validate each child array
     var dimNext = dim + 1;
@@ -2371,7 +2239,6 @@ exports.resize = function (array, size, defaultValue) {
   // recursively resize the array
   var _defaultValue = defaultValue !== undefined ? defaultValue : 0;
   _resize(array, size, 0, _defaultValue);
-
   return array;
 };
 
@@ -2393,7 +2260,6 @@ function _resize(array, size, dim, defaultValue) {
 
   // apply new length
   array.length = newLen;
-
   if (dim < size.length - 1) {
     // non-last dimension
     var dimNext = dim + 1;
@@ -2427,7 +2293,6 @@ function _resize(array, size, dim, defaultValue) {
         array[i] = array[i][0];
       }
     }
-
     if (defaultValue !== exports.UNINITIALIZED) {
       // fill new elements with the default value
       for (i = minLen; i < newLen; i++) {
@@ -2450,21 +2315,17 @@ function _resize(array, size, dim, defaultValue) {
 exports.reshape = function (array, sizes) {
   var flatArray = exports.flatten(array);
   var newArray;
-
   var product = function product(arr) {
     return arr.reduce(function (prev, curr) {
       return prev * curr;
     });
   };
-
   if (!Array.isArray(array) || !Array.isArray(sizes)) {
     throw new TypeError('Array expected');
   }
-
   if (sizes.length === 0) {
     throw new DimensionError(0, product(exports.size(array)), '!=');
   }
-
   try {
     newArray = _reshape(flatArray, sizes);
   } catch (e) {
@@ -2473,11 +2334,9 @@ exports.reshape = function (array, sizes) {
     }
     throw e;
   }
-
   if (flatArray.length > 0) {
     throw new DimensionError(product(sizes), product(exports.size(array)), '!=');
   }
-
   return newArray;
 };
 
@@ -2494,7 +2353,6 @@ exports.reshape = function (array, sizes) {
 function _reshape(array, sizes) {
   var accumulator = [];
   var i;
-
   if (sizes.length === 0) {
     if (array.length === 0) {
       throw new DimensionError(null, null, '!=');
@@ -2533,7 +2391,6 @@ exports.squeeze = function (array, size) {
     array = _squeeze(array, dims, 0);
     s.length = dims;
   }
-
   return array;
 };
 
@@ -2547,7 +2404,6 @@ exports.squeeze = function (array, size) {
  */
 function _squeeze(array, dims, dim) {
   var i, ii;
-
   if (dim < dims) {
     var next = dim + 1;
     for (i = 0, ii = array.length; i < ii; i++) {
@@ -2558,7 +2414,6 @@ function _squeeze(array, dims, dim) {
       array = array[0];
     }
   }
-
   return array;
 }
 
@@ -2590,7 +2445,6 @@ exports.unsqueeze = function (array, dims, outer, size) {
   while (s.length < dims) {
     s.push(1);
   }
-
   return array;
 };
 
@@ -2604,7 +2458,6 @@ exports.unsqueeze = function (array, dims, outer, size) {
  */
 function _unsqueeze(array, dims, dim) {
   var i, ii;
-
   if (Array.isArray(array)) {
     var next = dim + 1;
     for (i = 0, ii = array.length; i < ii; i++) {
@@ -2615,7 +2468,6 @@ function _unsqueeze(array, dims, dim) {
       array = [array];
     }
   }
-
   return array;
 }
 /**
@@ -2630,7 +2482,6 @@ exports.flatten = function (array) {
     return array;
   }
   var flat = [];
-
   array.forEach(function callback(value) {
     if (Array.isArray(value)) {
       value.forEach(callback); //traverse through sub-arrays recursively
@@ -2638,7 +2489,6 @@ exports.flatten = function (array) {
       flat.push(value);
     }
   });
-
   return flat;
 };
 
@@ -2669,7 +2519,6 @@ exports.filter = function (array, callback) {
   if (exports.size(array).length !== 1) {
     throw new Error('Only one dimensional matrices supported');
   }
-
   return Array.prototype.filter.call(array, callback);
 };
 
@@ -2684,7 +2533,6 @@ exports.filterRegExp = function (array, regexp) {
   if (exports.size(array).length !== 1) {
     throw new Error('Only one dimensional matrices supported');
   }
-
   return Array.prototype.filter.call(array, function (entry) {
     return regexp.test(entry);
   });
@@ -2708,21 +2556,25 @@ exports.identify = function (a) {
   if (!Array.isArray(a)) {
     throw new TypeError('Array input expected');
   }
-
   if (a.length === 0) {
     return a;
   }
-
   var b = [];
   var count = 0;
-  b[0] = { value: a[0], identifier: 0 };
+  b[0] = {
+    value: a[0],
+    identifier: 0
+  };
   for (var i = 1; i < a.length; i++) {
     if (a[i] === a[i - 1]) {
       count++;
     } else {
       count = 0;
     }
-    b.push({ value: a[i], identifier: count });
+    b.push({
+      value: a[i],
+      identifier: count
+    });
   }
   return b;
 };
@@ -2736,11 +2588,9 @@ exports.generalize = function (a) {
   if (!Array.isArray(a)) {
     throw new TypeError('Array input expected');
   }
-
   if (a.length === 0) {
     return a;
   }
-
   var b = [];
   for (var i = 0; i < a.length; i++) {
     b.push(a[i].value);
@@ -2764,9 +2614,7 @@ exports.isArray = Array.isArray;
 
 var nearlyEqual = __webpack_require__(3).nearlyEqual;
 var bigNearlyEqual = __webpack_require__(46);
-
 function factory(type, config, load, typed) {
-
   /**
    * Test whether two values are equal.
    *
@@ -2776,50 +2624,38 @@ function factory(type, config, load, typed) {
    * @private
    */
   var equalScalar = typed('equalScalar', {
-
     'boolean, boolean': function booleanBoolean(x, y) {
       return x === y;
     },
-
     'number, number': function numberNumber(x, y) {
       return x === y || nearlyEqual(x, y, config.epsilon);
     },
-
     'BigNumber, BigNumber': function BigNumberBigNumber(x, y) {
       return x.eq(y) || bigNearlyEqual(x, y, config.epsilon);
     },
-
     'Fraction, Fraction': function FractionFraction(x, y) {
       return x.equals(y);
     },
-
     'Complex, Complex': function ComplexComplex(x, y) {
       return x.equals(y);
     },
-
     'Unit, Unit': function UnitUnit(x, y) {
       if (!x.equalBase(y)) {
         throw new Error('Cannot compare units with different base');
       }
       return equalScalar(x.value, y.value);
     },
-
     'string, string': function stringString(x, y) {
       return x === y;
     }
   });
-
   return equalScalar;
 }
-
 exports.factory = factory;
 
 /***/ }),
 /* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function mouseover_tile(params, inst_selection, tip, inst_arguments) {
   var inst_data = inst_arguments[0];
@@ -2846,10 +2682,7 @@ module.exports = function mouseover_tile(params, inst_selection, tip, inst_argum
 
 /***/ }),
 /* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function mouseout_tile(params, inst_selection, tip) {
   d3.select(inst_selection).classed('hovering', false);
@@ -2866,9 +2699,6 @@ module.exports = function mouseout_tile(params, inst_selection, tip) {
 /* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var calc_row_dendro_triangles = __webpack_require__(94);
 var calc_col_dendro_triangles = __webpack_require__(95);
 var dendro_group_highlight = __webpack_require__(96);
@@ -2876,17 +2706,14 @@ var d3_tip_custom = __webpack_require__(10);
 var make_dendro_crop_buttons = __webpack_require__(55);
 var make_cat_breakdown_graph = __webpack_require__(210);
 var $ = __webpack_require__(2);
-
 module.exports = function make_dendro_triangles(cgm, inst_rc) {
   var is_change_group = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
   var params = cgm.params;
 
   // in case sim_mat
   if (inst_rc === 'both') {
     inst_rc = 'row';
   }
-
   var other_rc;
   if (inst_rc === 'row') {
     other_rc = 'col';
@@ -2898,16 +2725,13 @@ module.exports = function make_dendro_triangles(cgm, inst_rc) {
   if (params.viz.inst_order[other_rc] === 'clust') {
     d3.select(params.root + ' .' + inst_rc + '_slider_group').style('opacity', 1);
   }
-
   var dendro_info;
-
   if (params.viz.show_dendrogram) {
     if (inst_rc === 'row') {
       dendro_info = calc_row_dendro_triangles(params);
     } else {
       dendro_info = calc_col_dendro_triangles(params);
     }
-
     if (d3.select(cgm.params.root + ' .' + inst_rc + '_dendro_crop_buttons').empty() === false) {
       make_dendro_crop_buttons(cgm, inst_rc);
     }
@@ -2915,7 +2739,6 @@ module.exports = function make_dendro_triangles(cgm, inst_rc) {
 
   // constant dendrogram opacity
   var inst_dendro_opacity = params.viz.dendro_opacity;
-
   function still_hovering(inst_selection, inst_data, i) {
     if (d3.select(inst_selection).classed('hovering')) {
       // define where graph should be built
@@ -2927,11 +2750,9 @@ module.exports = function make_dendro_triangles(cgm, inst_rc) {
           make_cat_breakdown_graph(params, inst_rc, inst_data, dendro_info[i], inst_selector, true);
         }
       }
-
       d3.selectAll(params.viz.root_tips + '_' + inst_rc + '_dendro_tip').style('opacity', 1);
     }
   }
-
   var wait_before_tooltip = 500;
 
   // remove any old dendro tooltips from this visualization
@@ -2954,19 +2775,15 @@ module.exports = function make_dendro_triangles(cgm, inst_rc) {
     // add root element to class
     var root_tip_selector = params.viz.root_tips.replace('.', '');
     var class_string = root_tip_selector + ' d3-tip ' + root_tip_selector + '_' + inst_rc + '_dendro_tip';
-
     return class_string;
   }).direction('nw').offset([tmp_y_offset, tmp_x_offset]).style('display', 'none').style('opacity', 0);
-
   dendro_tip.html(function () {
     var full_string = '<div class="cluster_info_container"></div>Click for cluster information <br>' + 'and additional options.';
     return full_string;
   });
-
   if (is_change_group) {
     run_transition = false;
   }
-
   var dendro_traps = d3.select(params.root + ' .' + inst_rc + '_dendro_container').selectAll('path').data(dendro_info, function (d) {
     return d.name;
   }).enter().append('path').style('opacity', 0).attr('class', inst_rc + '_dendro_group').style('fill', 'black');
@@ -2999,11 +2816,9 @@ module.exports = function make_dendro_triangles(cgm, inst_rc) {
       final_x = d.pos_bot;
       final_y = 0;
     }
-
     var output_string = 'M' + start_x + ',' + start_y + ' L' + mid_x + ', ' + mid_y + ' L' + final_x + ',' + final_y + ' Z';
     return output_string;
   });
-
   dendro_traps.on('mouseover', function (d, i) {
     // if (params.sim_mat){
     //   inst_rc = 'both';
@@ -3011,7 +2826,6 @@ module.exports = function make_dendro_triangles(cgm, inst_rc) {
 
     // run instantly on mouseover
     d3.select(this).classed('hovering', true);
-
     if (cgm.params.dendro_callback != null) {
       cgm.params.dendro_callback(this);
     }
@@ -3020,7 +2834,6 @@ module.exports = function make_dendro_triangles(cgm, inst_rc) {
     // this is needed for it to show in the right place and the opacity
     // will be toggled to delay the tooltip for the user
     d3.select(params.viz.root_tips + '_' + inst_rc + '_dendro_tip').style('display', 'block');
-
     dendro_group_highlight(params, this, d, inst_rc);
 
     // show the tip (make sure it is displaying before it is shown)
@@ -3035,38 +2848,30 @@ module.exports = function make_dendro_triangles(cgm, inst_rc) {
     if (params.viz.inst_order[other_rc] === 'clust') {
       d3.select(this).style('opacity', inst_dendro_opacity);
     }
-
     d3.selectAll(params.root + ' .dendro_shadow').remove();
-
     d3.select(this).classed('hovering', false);
     dendro_tip.hide(this);
   }).on('click', function (d, i) {
     $(params.root + ' .dendro_info').modal('toggle');
-
     var group_string = d.all_names.join(', ');
     d3.select(params.root + ' .dendro_info input').attr('value', group_string);
-
     var inst_selector = params.root + ' .dendro_info';
 
     // remove old graphs (modals are not within params.root)
     d3.selectAll('.dendro_info .cluster_info_container .cat_graph').remove();
-
     if (params.viz.cat_info[inst_rc] !== null) {
       make_cat_breakdown_graph(params, inst_rc, d, dendro_info[i], inst_selector);
     }
-
     if (cgm.params.dendro_click_callback != null) {
       cgm.params.dendro_click_callback(this);
     }
   }).call(dendro_tip);
-
   var triangle_opacity;
   if (params.viz.inst_order[other_rc] === 'clust') {
     triangle_opacity = inst_dendro_opacity;
   } else {
     triangle_opacity = 0;
   }
-
   if (run_transition) {
     d3.select(params.root + ' .' + inst_rc + '_dendro_container').selectAll('path').transition().delay(1000).duration(1000).style('opacity', triangle_opacity);
   } else {
@@ -3076,16 +2881,11 @@ module.exports = function make_dendro_triangles(cgm, inst_rc) {
 
 /***/ }),
 /* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function sim_click(params, single_double, pos_x, pos_y) {
   var click_duration = 200;
-
   var click_circle = d3.select(params.root + ' .viz_svg').append('circle').attr('cx', pos_x).attr('cy', pos_y).attr('r', 25).style('stroke', 'black').style('stroke-width', '3px').style('fill', '#007f00').style('opacity', 0.5);
-
   if (single_double === 'double') {
     click_circle.transition().duration(click_duration).style('opacity', 0.0).transition().duration(50).style('opacity', 0.5).transition().duration(click_duration).style('opacity', 0.0).remove();
   } else {
@@ -3097,24 +2897,17 @@ module.exports = function sim_click(params, single_double, pos_x, pos_y) {
 /* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var _setup = __webpack_require__(6);
 
 // Internal function to check whether `key` is an own property name of `obj`.
 function has(obj, key) {
   return obj != null && _setup.hasOwnProperty.call(obj, key);
 }
-
 module.exports = has;
 
 /***/ }),
 /* 29 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var _setup = __webpack_require__(6);
 
@@ -3125,7 +2918,6 @@ function tagTester(name) {
     return _setup.toString.call(obj) === tag;
   };
 }
-
 module.exports = tagTester;
 
 /***/ }),
@@ -3136,9 +2928,7 @@ module.exports = tagTester;
 
 
 var clone = __webpack_require__(4).clone;
-
 function factory(type, config, load, typed) {
-
   var DenseMatrix = type.DenseMatrix;
 
   /**
@@ -3208,19 +2998,14 @@ function factory(type, config, load, typed) {
     }
     return cv;
   };
-
   return algorithm14;
 }
-
 exports.name = 'algorithm14';
 exports.factory = factory;
 
 /***/ }),
 /* 31 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var _setup = __webpack_require__(6);
 
@@ -3232,7 +3017,6 @@ function _(obj) {
   if (!(this instanceof _)) return new _(obj);
   this._wrapped = obj;
 }
-
 _.VERSION = _setup.VERSION;
 
 // Extracts the result from a wrapped and chained object.
@@ -3243,22 +3027,16 @@ _.prototype.value = function () {
 // Provide unwrapping proxies for some methods used in engine operations
 // such as arithmetic and JSON stringification.
 _.prototype.valueOf = _.prototype.toJSON = _.prototype.value;
-
 _.prototype.toString = function () {
   return String(this._wrapped);
 };
-
 module.exports = _;
 
 /***/ }),
 /* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 var _isArrayLike = __webpack_require__(18);
 var values = __webpack_require__(84);
 var _cb = __webpack_require__(15);
@@ -3267,9 +3045,9 @@ var each = __webpack_require__(1);
 // Return the maximum element (or element-based computation).
 function max(obj, iteratee, context) {
   var result = -Infinity,
-      lastComputed = -Infinity,
-      value,
-      computed;
+    lastComputed = -Infinity,
+    value,
+    computed;
   if (iteratee == null || typeof iteratee == 'number' && _typeof(obj[0]) != 'object' && obj != null) {
     obj = _isArrayLike(obj) ? obj : values(obj);
     for (var i = 0, length = obj.length; i < length; i++) {
@@ -3290,45 +3068,34 @@ function max(obj, iteratee, context) {
   }
   return result;
 }
-
 module.exports = max;
 
 /***/ }),
 /* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var calc_downsampled_matrix = __webpack_require__(189);
 var $ = __webpack_require__(2);
-
 module.exports = function calc_downsampled_levels(params) {
   // console.log('---- before ---------')
   // console.log(params.matrix.matrix[0].row_data[0].value)
 
   // height of downsampled rectangles
   var ds_height = 3;
-
   var min_rect_height = 2;
-
   var total_zoom = ds_height / params.viz.rect_height;
 
   // amount of zooming that is tolerated for the downsampled rows
   var inst_zt = 2;
   params.viz.ds_zt = inst_zt;
-
   var num_levels = Math.floor(Math.log(total_zoom) / Math.log(inst_zt));
-
   if (params.viz.rect_height < min_rect_height && num_levels > 0) {
     // increase ds opacity, as more rows are compressed into a single downsampled
     // row, increase the opacity of the downsampled row. Max increase will be 2x
     // when 100 or more rows are compressed
     var max_opacity_scale = 2;
     params.viz.ds_opacity_scale = d3.scale.linear().domain([1, 100]).range([1, max_opacity_scale]).clamp(true);
-
     var ds;
-
     params.viz.ds_num_levels = num_levels;
 
     // array of downsampled parameters
@@ -3336,7 +3103,6 @@ module.exports = function calc_downsampled_levels(params) {
 
     // array of downsampled matrices at varying levels
     params.matrix.ds_matrix = [];
-
     var inst_order = params.viz.inst_order.row;
 
     // cloning
@@ -3346,14 +3112,10 @@ module.exports = function calc_downsampled_levels(params) {
     for (var i = 0; i < num_levels; i++) {
       // instantaneous ds_level (-1 means no downsampling)
       params.viz.ds_level = 0;
-
       ds = {};
-
       ds.height = ds_height;
       ds.num_levels = num_levels;
-
       var inst_zoom_tolerance = Math.pow(inst_zt, i);
-
       ds.zt = inst_zoom_tolerance;
 
       // the number of downsampled rows is given by the height of the clustergram
@@ -3367,18 +3129,14 @@ module.exports = function calc_downsampled_levels(params) {
       // x_scale
       /////////////////////////
       ds.x_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.width]);
-
       ds.x_scale.domain(params.matrix.orders[inst_order + '_row']);
 
       // y_scale
       /////////////////////////
       ds.y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
       ds.y_scale.domain(d3.range(ds.num_rows + 1));
-
       ds.rect_height = ds.y_scale.rangeBand() - params.viz.border_width.y;
-
       params.viz.ds.push(ds);
-
       var matrix = calc_downsampled_matrix(params, mat, i);
       params.matrix.ds_matrix.push(matrix);
     }
@@ -3399,37 +3157,27 @@ module.exports = function calc_downsampled_levels(params) {
 
 /***/ }),
 /* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function draw_up_tile(params) {
   var start_x = 0;
   var final_x = params.viz.x_scale.rangeBand() - params.viz.border_width.x;
   var start_y = 0;
   var final_y = params.viz.y_scale.rangeBand() - params.viz.border_width.y;
-
   var output_string = 'M' + start_x + ',' + start_y + ' L' + start_x + ', ' + final_y + ' L' + final_x + ',0 Z';
-
   return output_string;
 };
 
 /***/ }),
 /* 35 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function draw_dn_tile(params) {
   var start_x = 0;
   var final_x = params.viz.x_scale.rangeBand() - params.viz.border_width.x;
   var start_y = params.viz.y_scale.rangeBand() - params.viz.border_width.y;
   var final_y = params.viz.y_scale.rangeBand() - params.viz.border_width.y;
-
   var output_string = 'M' + start_x + ', ' + start_y + '   L' + final_x + ', ' + final_y + ' L' + final_x + ',0 Z';
-
   return output_string;
 };
 
@@ -3437,14 +3185,9 @@ module.exports = function draw_dn_tile(params) {
 /* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var make_dendro_triangles = __webpack_require__(26);
-
 module.exports = function toggle_dendro_view(cgm, inst_rc) {
   var wait_time = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1500;
-
   var params = cgm.params;
 
   // row and col are reversed
@@ -3455,25 +3198,20 @@ module.exports = function toggle_dendro_view(cgm, inst_rc) {
       setTimeout(make_dendro_triangles, wait_time, cgm, 'row', true);
     }
   }
-
   if (inst_rc === 'col') {
     if (params.viz.inst_order.row === 'clust') {
       setTimeout(make_dendro_triangles, wait_time, cgm, 'col', true);
     }
   }
-
   if (params.viz.inst_order.row != 'clust' && params.viz.dendro_filter.col === false) {
     d3.selectAll(params.root + ' .col_dendro_group').style('opacity', 0).on('mouseover', null).on('mouseout', null);
-
     d3.select(params.root + ' .col_slider_group').style('opacity', 0);
 
     // toggle crop buttons
     d3.selectAll(params.root + ' .col_dendro_crop_buttons').style('opacity', 0).on('mouseover', null).on('mouseout', null);
   }
-
   if (params.viz.inst_order.col != 'clust' && params.viz.dendro_filter.row === false) {
     d3.selectAll(params.root + ' .row_dendro_group').style('opacity', 0).on('mouseover', null).on('mouseout', null).on('click', null);
-
     d3.select(params.root + ' .row_slider_group').style('opacity', 0);
 
     // toggle crop buttons
@@ -3500,7 +3238,6 @@ module.exports = function toggle_dendro_view(cgm, inst_rc) {
  *
  * @return {Array | Matrix} res
  */
-
 module.exports = function deepMap(array, callback, skipZeros) {
   if (array && typeof array.map === 'function') {
     // TODO: replace array.map with a for loop to improve performance
@@ -3514,21 +3251,15 @@ module.exports = function deepMap(array, callback, skipZeros) {
 
 /***/ }),
 /* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function get_previous_zoom(params) {
   var prev_zoom = {};
-
   var inst_trans = d3.select(params.root + ' .clust_group').attr('transform');
-
   if (inst_trans != null) {
     // prevent from crashing if no scaling was done
     if (inst_trans.indexOf('scale') > 0) {
       prev_zoom.zoom_x = parseFloat(inst_trans.split('scale')[1].replace('(', '').replace(')', '').split(',')[0]);
-
       prev_zoom.zoom_y = parseFloat(inst_trans.split('scale')[1].replace('(', '').replace(')', '').split(',')[1]);
     } else {
       prev_zoom.zoom_x = 1;
@@ -3538,16 +3269,12 @@ module.exports = function get_previous_zoom(params) {
     prev_zoom.zoom_x = 1;
     prev_zoom.zoom_y = 1;
   }
-
   return prev_zoom;
 };
 
 /***/ }),
 /* 39 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var cat_tooltip_text = __webpack_require__(106);
 var d3_tip_custom = __webpack_require__(10);
@@ -3557,10 +3284,8 @@ var ini_cat_opacity = __webpack_require__(108);
 var get_cat_names = __webpack_require__(109);
 var each = __webpack_require__(1);
 var $ = __webpack_require__(2);
-
 module.exports = function make_row_cat(cgm) {
   var updating = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
   var params = cgm.params;
 
   // make or reuse outer container
@@ -3602,28 +3327,21 @@ module.exports = function make_row_cat(cgm) {
     var inst_index = (params.network_data.row_nodes_names || []).indexOf(d.name);
     return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
   });
-
   d3.select(params.root + ' .row_cat_container').selectAll('.row_cat_group').call(cat_tip);
-
   var cat_rect;
   var inst_selection;
-
   d3.selectAll(params.root + ' .row_cat_group rect').remove();
-
   if (params.viz.show_categories.row) {
     d3.selectAll(params.root + ' .row_cat_group').each(function () {
       inst_selection = this;
-
       each(params.viz.all_cats.row, function (inst_cat) {
         var inst_num = parseInt(inst_cat.split('-')[1], 10);
         var cat_rect_class = 'row_cat_rect_' + String(inst_num);
-
         if (d3.select(inst_selection).select('.' + cat_rect_class).empty()) {
           cat_rect = d3.select(inst_selection).append('rect').attr('class', cat_rect_class).attr('cat', inst_cat);
         } else {
           cat_rect = d3.select(inst_selection).select('.' + cat_rect_class);
         }
-
         cat_rect.attr('width', params.viz.cat_room.symbol_width).attr('height', params.viz.y_scale.rangeBand()).style('fill', function (d) {
           var cat_name = d[inst_cat];
 
@@ -3647,7 +3365,6 @@ module.exports = function make_row_cat(cgm) {
         }).on('click', function (d) {
           if (d3.select(this).classed('cat_strings')) {
             var found_names = get_cat_names(params, d, this, 'row');
-
             $(params.root + ' .dendro_info').modal('toggle');
             var group_string = found_names.join(', ');
             d3.select(params.root + ' .dendro_info input').attr('value', group_string);
@@ -3656,10 +3373,8 @@ module.exports = function make_row_cat(cgm) {
           cat_tip.hide(this);
           reset_cat_opacity(params);
           d3.select(this).classed('hovering', false);
-
           d3.selectAll('.d3-tip').style('display', 'none');
         });
-
         ini_cat_opacity(params.viz, 'row', cat_rect, inst_cat, updating);
       });
     });
@@ -3668,14 +3383,10 @@ module.exports = function make_row_cat(cgm) {
 
 /***/ }),
 /* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function highlight_sidebar_element(params, highlight_class) {
   var duration = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 4000;
-
   if (highlight_class.indexOf('slider') < 0) {
     d3.select(params.root + ' .' + highlight_class).style('background', '#007f00').style('box-shadow', '0px 0px 10px 5px #007f00').transition().duration(1).delay(duration).style('background', '#FFFFFF').style('box-shadow', 'none');
   } else {
@@ -3687,19 +3398,13 @@ module.exports = function highlight_sidebar_element(params, highlight_class) {
 /* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var each = __webpack_require__(1);
 var utils = __webpack_require__(0);
-
 module.exports = function get_available_filters(views) {
   var possible_filters = {};
   var filter_data = {};
-
   each(views, function (inst_view) {
     var inst_keys = Object.keys(inst_view || {});
-
     inst_keys.forEach(function (inst_key) {
       if (inst_key != 'nodes') {
         if (!utils.has(filter_data, inst_key)) {
@@ -3710,46 +3415,35 @@ module.exports = function get_available_filters(views) {
       }
     });
   });
-
   var tmp_filters = Object.keys(filter_data);
-
   tmp_filters.forEach(function (inst_filter) {
     var options = filter_data[inst_filter];
     var num_options = options.length;
-
     var filter_type = 'categorical';
     each(options, function (inst_option) {
       if (typeof inst_option === 'number') {
         filter_type = 'numerical';
       }
     });
-
     if (num_options > 1) {
       possible_filters[inst_filter] = filter_type;
     }
   });
-
   var filters = {};
   filters.possible_filters = possible_filters;
   filters.filter_data = filter_data;
-
   return filters;
 };
 
 /***/ }),
 /* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function get_filter_default_state(filter_data, filter_type) {
   var default_state = filter_data[filter_type].sort(function (a, b) {
     return b - a;
   })[0];
-
   default_state = String(default_state);
-
   return default_state;
 };
 
@@ -3757,15 +3451,11 @@ module.exports = function get_filter_default_state(filter_data, filter_type) {
 /* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var utils = __webpack_require__(0);
 var core = __webpack_require__(72);
 var math = core.create();
-math.import(__webpack_require__(151));
-math.import(__webpack_require__(169));
-
+math["import"](__webpack_require__(151));
+math["import"](__webpack_require__(169));
 module.exports = function filter_network_using_new_nodes(config, new_nodes) {
   var links = config.network_data.links;
 
@@ -3775,14 +3465,11 @@ module.exports = function filter_network_using_new_nodes(config, new_nodes) {
   // get new names of rows and cols
   var row_names = utils.pluck(new_nodes.row_nodes, 'name') || [];
   var col_names = utils.pluck(new_nodes.col_nodes, 'name') || [];
-
   var new_mat = math.matrix(math.zeros([new_nodes.row_nodes.length, new_nodes.col_nodes.length]));
   new_mat = new_mat.toArray();
-
   var new_links = _.filter(links, function (inst_link) {
     var inst_row = inst_link.name.split('_')[0];
     var inst_col = inst_link.name.split('_')[1];
-
     var row_index = row_names.indexOf(inst_row);
     var col_index = col_names.indexOf(inst_col);
 
@@ -3791,9 +3478,7 @@ module.exports = function filter_network_using_new_nodes(config, new_nodes) {
       // redefine source and target
       inst_link.source = row_index;
       inst_link.target = col_index;
-
       new_mat[row_index][col_index] = inst_link.value;
-
       return inst_link;
     }
   });
@@ -3823,16 +3508,12 @@ module.exports = function filter_network_using_new_nodes(config, new_nodes) {
   if (utils.has(config.network_data, 'cat_colors')) {
     new_network_data.cat_colors = config.network_data.cat_colors;
   }
-
   return new_network_data;
 };
 
 /***/ }),
 /* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 /**
  * Test whether a value is a BigNumber
@@ -3851,11 +3532,8 @@ module.exports = function isBigNumber(x) {
 
 
 var util = __webpack_require__(21);
-
 var string = util.string;
-
 var isString = string.isString;
-
 function factory(type, config, load, typed) {
   /**
    * @constructor Matrix
@@ -4110,7 +3788,6 @@ function factory(type, config, load, typed) {
   // exports
   return Matrix;
 }
-
 exports.name = 'Matrix';
 exports.path = 'type';
 exports.factory = factory;
@@ -4131,7 +3808,6 @@ exports.factory = factory;
  *                            test whether x and y are exactly equal.
  * @return {boolean} whether the two numbers are nearly equal
  */
-
 module.exports = function nearlyEqual(x, y, epsilon) {
   // if epsilon is null or undefined, test whether x and y are exactly equal
   if (epsilon == null) {
@@ -4174,12 +3850,9 @@ module.exports = function nearlyEqual(x, y, epsilon) {
 
 var util = __webpack_require__(21);
 var DimensionError = __webpack_require__(7);
-
 var string = util.string,
-    isString = string.isString;
-
+  isString = string.isString;
 function factory(type, config, load, typed) {
-
   var DenseMatrix = type.DenseMatrix;
 
   /**
@@ -4265,10 +3938,8 @@ function factory(type, config, load, typed) {
     }
     return cv;
   };
-
   return algorithm13;
 }
-
 exports.name = 'algorithm13';
 exports.factory = factory;
 
@@ -4276,24 +3947,17 @@ exports.factory = factory;
 /* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var _setup = __webpack_require__(6);
 var _tagTester = __webpack_require__(29);
 
 // Is a given value an array?
 // Delegates to ECMA5's native `Array.isArray`.
 var isArray = _setup.nativeIsArray || _tagTester('Array');
-
 module.exports = isArray;
 
 /***/ }),
 /* 49 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var ini_label_params = __webpack_require__(182);
 var set_viz_wrapper_size = __webpack_require__(183);
@@ -4308,20 +3972,15 @@ var calc_default_fs = __webpack_require__(54);
 var utils = __webpack_require__(0);
 var get_available_filters = __webpack_require__(41);
 var make_cat_params = __webpack_require__(87);
-
 module.exports = function calc_viz_params(params) {
   var predefined_cat_colors = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-
   params.labels = ini_label_params(params);
   params.viz = ini_viz_params(params, predefined_cat_colors);
-
   set_viz_wrapper_size(params);
-
   params = get_svg_dim(params);
   params.viz = calc_label_params(params.viz);
   params.viz = calc_clust_width(params.viz);
   params.viz = calc_clust_height(params.viz);
-
   if (params.sim_mat) {
     if (params.viz.clust.dim.width <= params.viz.clust.dim.height) {
       params.viz.clust.dim.height = params.viz.clust.dim.width;
@@ -4329,21 +3988,15 @@ module.exports = function calc_viz_params(params) {
       params.viz.clust.dim.width = params.viz.clust.dim.height;
     }
   }
-
   params = calc_val_max(params);
   params = calc_matrix_params(params);
   params = set_zoom_params(params);
   params = calc_default_fs(params);
-
   function ini_viz_params(params) {
     var predefined_cat_colors = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-
     var viz = {};
-
     viz.root = params.root;
-
     viz.root_tips = params.root.replace('#', '.') + '_' + 'd3-tip';
-
     viz.viz_wrapper = params.root + ' .viz_wrapper';
     viz.do_zoom = params.do_zoom;
     viz.background_color = params.background_color;
@@ -4359,31 +4012,23 @@ module.exports = function calc_viz_params(params) {
     viz.dendro_filter = params.dendro_filter;
     viz.cat_filter = params.cat_filter;
     viz.cat_value_colors = params.cat_value_colors;
-
     viz.cat_bar_width = 180;
     viz.cat_bar_height = 20;
-
     viz.tree_menu_width = 400;
     viz.tree_menu_height = 237;
     viz.tree_menu_x_offset = 20;
-
     viz.filter_menu_width = 500;
     viz.filter_menu_height = 237;
     viz.filter_menu_x_offset = 20;
-
     viz.update_button_width = 100;
-
     viz.viz_svg = viz.viz_wrapper + ' .viz_svg';
-
     viz.zoom_element = viz.viz_wrapper + ' .viz_svg';
-
     viz.uni_duration = 1000;
     // extra space below the clustergram (was 5)
     // will increase this to accomidate dendro slider
     viz.bottom_space = 10;
     viz.run_trans = false;
     viz.duration = 1000;
-
     viz.resize = params.resize;
     if (utils.has(params, 'size')) {
       viz.fixed_size = params.size;
@@ -4394,7 +4039,6 @@ module.exports = function calc_viz_params(params) {
     // width is 1 over this value
     viz.border_fraction = 65;
     viz.uni_margin = 5;
-
     viz.super_labels = {};
     viz.super_labels.margin = {};
     viz.super_labels.dim = {};
@@ -4404,19 +4048,15 @@ module.exports = function calc_viz_params(params) {
     if (params.labels.super_labels) {
       viz.super_labels.dim.width = 15 * params.labels.super_label_scale;
     }
-
     viz.triangle_opacity = 0.6;
-
     viz.norm_labels = {};
     viz.norm_labels.width = {};
-
     viz.dendro_room = {};
     if (viz.show_dendrogram) {
       viz.dendro_room.symbol_width = 10;
     } else {
       viz.dendro_room.symbol_width = 0;
     }
-
     viz.cat_colors = params.cat_colors;
 
     // console.log('ini_viz_params -> make_cat_params')
@@ -4437,20 +4077,14 @@ module.exports = function calc_viz_params(params) {
       if (!utils.has(params, 'group_level')) {
         params.group_level = {};
       }
-
       params.group_level.row = 5;
       params.group_level.col = 5;
     }
-
     viz.dendro_opacity = 0.35;
-
     viz.spillover_col_slant = viz.norm_labels.width.col;
-
     var filters = get_available_filters(params.network_data.views);
-
     viz.possible_filters = filters.possible_filters;
     viz.filter_data = filters.filter_data;
-
     viz.viz_nodes = {};
 
     // nodes that should be visible based on visible area
@@ -4463,26 +4097,19 @@ module.exports = function calc_viz_params(params) {
 
     // correct panning in x direction
     viz.x_offset = 0;
-
     return viz;
   }
-
   return params;
 };
 
 /***/ }),
 /* 50 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function get_svg_dim(params) {
   params.viz.svg_dim = {};
   params.viz.svg_dim.width = Number(d3.select(params.viz.viz_wrapper).style('width').replace('px', ''));
-
   params.viz.svg_dim.height = Number(d3.select(params.viz.viz_wrapper).style('height').replace('px', ''));
-
   return params;
 };
 
@@ -4490,11 +4117,7 @@ module.exports = function get_svg_dim(params) {
 /* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var range = __webpack_require__(185);
-
 module.exports = function calc_clust_width(viz) {
   viz.clust = {};
   viz.clust.margin = {};
@@ -4503,7 +4126,6 @@ module.exports = function calc_clust_width(viz) {
   // 1) norm_label margin and width
   // 2) cat_room and uni_margin
   viz.clust.margin.left = viz.norm_labels.margin.left + viz.norm_labels.width.row + viz.cat_room.row + viz.uni_margin;
-
   viz.clust.margin.top = viz.norm_labels.margin.top + viz.norm_labels.width.col + viz.cat_room.col + viz.uni_margin;
 
   // the clustergram/matrix width is the svg width minus:
@@ -4514,7 +4136,6 @@ module.exports = function calc_clust_width(viz) {
 
   // make tmp scale to calc height of triangle col labels
   var tmp_x_scale = d3.scale.ordinal().rangeBands([0, ini_clust_width]).domain(range(viz.num_col_nodes));
-
   var triangle_height = tmp_x_scale.rangeBand() / 2;
 
   // prevent the visualization from being unnecessarily wide
@@ -4522,19 +4143,14 @@ module.exports = function calc_clust_width(viz) {
     var reduce_width = viz.norm_labels.width.col / triangle_height;
     ini_clust_width = ini_clust_width * reduce_width;
   }
-
   viz.clust.dim = {};
   viz.clust.dim.width = ini_clust_width;
-
   return viz;
 };
 
 /***/ }),
 /* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function calc_clust_height(viz) {
   // the clustergram/matrix height is the svg width minus:
@@ -4542,54 +4158,40 @@ module.exports = function calc_clust_height(viz) {
   // the dendrogram
   // the bottom_space
   var ini_clust_height = viz.svg_dim.height - viz.clust.margin.top - viz.dendro_room.col - viz.bottom_space;
-
   viz.clust.dim.height = ini_clust_height;
-
   return viz;
 };
 
 /***/ }),
 /* 53 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function calc_zoom_switching(viz) {
   var width_by_col = viz.clust.dim.width / viz.num_col_nodes;
   var height_by_row = viz.clust.dim.height / viz.num_row_nodes;
-
   viz.zoom_ratio = {};
   viz.zoom_ratio.x = width_by_col / height_by_row;
   viz.zoom_ratio.y = 1;
-
   if (viz.zoom_ratio.x < 1) {
     viz.zoom_ratio.y = 1 / viz.zoom_ratio.x;
     viz.zoom_ratio.x = 1;
   }
-
   return viz;
 };
 
 /***/ }),
 /* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function calc_default_fs(params) {
   params.labels.default_fs_row = params.viz.y_scale.rangeBand() * 1.01;
   params.labels.default_fs_col = params.viz.x_scale.rangeBand() * 0.87;
-
   if (params.labels.default_fs_row > params.labels.max_allow_fs) {
     params.labels.default_fs_row = params.labels.max_allow_fs;
   }
-
   if (params.labels.default_fs_col > params.labels.max_allow_fs) {
     params.labels.default_fs_col = params.labels.max_allow_fs;
   }
-
   return params;
 };
 
@@ -4597,19 +4199,14 @@ module.exports = function calc_default_fs(params) {
 /* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var calc_row_dendro_triangles = __webpack_require__(94);
 var calc_col_dendro_triangles = __webpack_require__(95);
 var d3_tip_custom = __webpack_require__(10);
 var dendro_group_highlight = __webpack_require__(96);
 var run_dendro_filter = __webpack_require__(209);
 var zoom_crop_triangles = __webpack_require__(97);
-
 module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
   var params = cgm.params;
-
   var button_opacity = params.viz.dendro_opacity * 0.6;
 
   // information needed to make dendro
@@ -4631,15 +4228,11 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
   var dendro_crop_tip = d3_tip_custom().attr('class', function () {
     var root_tip_selector = params.viz.root_tips.replace('.', '');
     var class_string = root_tip_selector + ' d3-tip ' + root_tip_selector + '_' + inst_rc + '_dendro_crop_tip';
-
     return class_string;
   }).direction('nw').style('display', 'none').offset([tmp_y_offset, tmp_x_offset]);
-
   var wait_before_tooltip = 500;
-
   d3.selectAll(params.viz.root_tips + '_' + inst_rc + '_dendro_crop_tip').remove();
   d3.selectAll(params.root + ' .' + inst_rc + '_dendro_crop_buttons').remove();
-
   var icons;
   // position triangles
   var start_x;
@@ -4667,7 +4260,6 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
       // redefine
       tri_height = 10;
       tri_width = 10;
-
       var tmp_height = d.pos_bot - d.pos_top;
 
       // Row Dendrogram Crop Triangle
@@ -4683,7 +4275,6 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
         mid_y = 0;
         final_x = tri_width;
         final_y = tri_height;
-
         tri_dim = tri_height;
 
         // Column Dendrogram Crop Triangle
@@ -4699,7 +4290,6 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
         mid_y = 0;
         final_x = tri_width;
         final_y = tri_height;
-
         tri_dim = tri_width;
       }
 
@@ -4707,12 +4297,9 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
       // d3.select(this)[0][0].__data__.tri_dim = tri_dim;
       var data_key = '__data__';
       d3.select(this)[0][0][data_key].tri_dim = tri_dim;
-
       var output_string = 'M' + start_x + ',' + start_y + ' L' + mid_x + ', ' + mid_y + ' L' + final_x + ',' + final_y + ' Z';
-
       return output_string;
     });
-
     dendro_crop_tip.html(function () {
       var full_string = 'Click to crop cluster';
       return full_string;
@@ -4726,9 +4313,7 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
       // redefine
       tri_height = 10;
       tri_width = 12;
-
       var tmp_height = d.pos_bot - d.pos_top;
-
       if (inst_rc === 'row') {
         if (tmp_height < min_tri_height) {
           tri_height = tmp_height * scale_down_tri;
@@ -4758,18 +4343,14 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
       // save triangle height
       var data_key = '__data__';
       d3.select(this)[0][0][data_key].tri_dim = 10;
-
       var output_string = 'M' + start_x + ',' + start_y + ' L' + mid_x + ', ' + mid_y + ' L' + final_x + ',' + final_y + ' Z';
-
       return output_string;
     });
-
     dendro_crop_tip.html(function () {
       var full_string = 'Click to undo crop';
       return full_string;
     });
   }
-
   icons.style('cursor', 'pointer').style('opacity', function () {
     var inst_opacity;
 
@@ -4783,10 +4364,8 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
     return inst_opacity;
   }).attr('transform', function (d) {
     var inst_translate;
-
     var inst_x;
     var inst_y;
-
     if (inst_rc === 'row') {
       inst_x = params.viz.uni_margin;
       inst_y = d.pos_mid;
@@ -4794,14 +4373,11 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
       inst_x = d.pos_mid;
       inst_y = params.viz.uni_margin;
     }
-
     inst_translate = 'translate(' + inst_x + ',' + inst_y + ')';
     return inst_translate;
   }).on('mouseover', function (d) {
     d3.select(this).classed('hovering', true);
-
     dendro_crop_tip.show(d);
-
     dendro_group_highlight(params, this, d, inst_rc);
 
     // display with zero opacity
@@ -4811,11 +4387,8 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
     setTimeout(still_hovering, wait_before_tooltip, this);
   }).on('mouseout', function () {
     d3.select(this).classed('hovering', false);
-
     d3.selectAll(params.root + ' .dendro_shadow').remove();
-
     d3.select(this).style('opacity', button_opacity);
-
     dendro_crop_tip.hide(this);
   }).on('click', function (d) {
     // give user visual cue
@@ -4831,7 +4404,6 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
 
       // use class as 'global' variable
       d3.select(cgm.params.root + ' .' + inst_rc + '_dendro_icons_group').attr('transform', 'translate(0,0), scale(1,1)').classed('ran_filter', true);
-
       d3.select(cgm.params.root + ' .' + other_rc + '_dendro_icons_group').attr('transform', 'translate(0,0), scale(1,1)');
 
       // do not display dendrogram slider if filtering has been run
@@ -4847,9 +4419,7 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
       ///////////////////
       // use class as 'global' variable
       d3.select(cgm.params.root + ' .' + inst_rc + '_dendro_icons_group').attr('transform', 'translate(0,0), scale(1,1)').classed('ran_filter', false);
-
       d3.select(cgm.params.root + ' .' + other_rc + '_dendro_icons_group').attr('transform', 'translate(0,0), scale(1,1)');
-
       if (params.viz.inst_order[other_rc] === 'clust') {
         // display slider when cropping has not been done
         d3.select(cgm.params.root + ' .' + inst_rc + '_slider_group').style('display', 'block');
@@ -4861,7 +4431,6 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
       // display brush-crop button if not performing dendro crop
       d3.select(cgm.params.root + ' .crop_button').style('opacity', 1);
     }
-
     run_dendro_filter(cgm, d, inst_rc);
   }).call(dendro_crop_tip);
 
@@ -4870,14 +4439,12 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
     // do not display if not in cluster order
     d3.select(params.root + ' .' + inst_rc + '_dendro_icons_group').selectAll('path').style('display', 'none');
   }
-
   function still_hovering(inst_selection) {
     if (d3.select(inst_selection).classed('hovering')) {
       // increase opacity
       d3.selectAll(params.viz.root_tips + '_' + inst_rc + '_dendro_crop_tip').style('opacity', 1).style('display', 'block');
     }
   }
-
   zoom_crop_triangles(params, params.zoom_info, inst_rc);
 };
 
@@ -4885,22 +4452,16 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
 /* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var utils = __webpack_require__(0);
 var add_col_click_hlight = __webpack_require__(225);
 var col_reorder = __webpack_require__(226);
 var row_reorder = __webpack_require__(92);
 var make_col_tooltips = __webpack_require__(232);
 var col_viz_aid_triangle = __webpack_require__(100);
-
 module.exports = function make_col_label_container(cgm) {
   var text_delay = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-
   var params = cgm.params;
   var col_container;
-
   var col_nodes = params.network_data.col_nodes;
 
   // offset click group column label
@@ -4976,7 +4537,6 @@ module.exports = function make_col_label_container(cgm) {
   })
   // .attr('pointer-events','none')
   .style('opacity', 0).transition().delay(text_delay).duration(text_delay).style('opacity', 1);
-
   make_col_tooltips(params);
 
   // add triangle under rotated labels
@@ -4997,19 +4557,15 @@ module.exports = function make_col_label_container(cgm) {
   }).on('dblclick', function (d) {
     var data_attr = '__data__';
     var col_name = this[data_attr].name;
-
     if (params.sim_mat) {
       col_reorder(cgm, this, col_name);
-
       var row_selection = d3.selectAll(params.root + ' .row_label_group').filter(function (d) {
         return d.name == col_name;
       })[0][0];
-
       row_reorder(cgm, row_selection, col_name);
     } else {
       col_reorder(cgm, this, col_name);
     }
-
     if (params.tile_click_hlight) {
       add_col_click_hlight(params, this, d.ini);
     }
@@ -5018,10 +4574,7 @@ module.exports = function make_col_label_container(cgm) {
 
 /***/ }),
 /* 57 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function get_cat_title(viz, inst_cat, inst_rc) {
   var cat_title;
@@ -5035,7 +4588,6 @@ module.exports = function get_cat_title(viz, inst_cat, inst_rc) {
     // make real title
     cat_title = viz.cat_names[inst_rc][inst_cat];
   }
-
   return cat_title;
 };
 
@@ -5043,13 +4595,9 @@ module.exports = function get_cat_title(viz, inst_cat, inst_rc) {
 /* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var utils = __webpack_require__(0);
 var trim_text = __webpack_require__(59);
 var constrain_font_size = __webpack_require__(60);
-
 module.exports = function label_constrain_and_trim(params) {
   // console.log('label_constrain_and_trim');
 
@@ -5057,17 +4605,13 @@ module.exports = function label_constrain_and_trim(params) {
   d3.selectAll(params.root + ' .row_label_group').select('text').text(function (d) {
     return utils.normal_name(d);
   });
-
   d3.selectAll(params.root + ' .col_label_text').select('text').text(function (d) {
     return utils.normal_name(d);
   });
-
   constrain_font_size(params);
-
   d3.selectAll(params.root + ' .row_label_group').each(function () {
     trim_text(params, this, 'row');
   });
-
   d3.selectAll(params.root + ' .col_label_group').each(function () {
     trim_text(params, this, 'col');
   });
@@ -5075,10 +4619,7 @@ module.exports = function label_constrain_and_trim(params) {
 
 /***/ }),
 /* 59 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function (params, inst_selection, inst_rc) {
   if (d3.select(inst_selection).style('display') != 'none') {
@@ -5091,9 +4632,7 @@ module.exports = function (params, inst_selection, inst_rc) {
     var original_text;
     var keep_num_char;
     var i;
-
     var max_width = params.viz.norm_labels.width[inst_rc];
-
     if (inst_rc === 'row') {
       if (params.viz.zoom_ratio.y) {
         inst_zoom = params.zoom_behavior.scale() / params.viz.zoom_ratio.y;
@@ -5114,18 +4653,13 @@ module.exports = function (params, inst_selection, inst_rc) {
     d3.select(inst_selection).select('text').each(function (d) {
       num_trims = d.name.length;
     });
-
     var tmp_width = d3.select(inst_selection).select('text').node().getBBox().width;
-
     inst_width = calc_width(tmp_width, inst_zoom);
-
     if (inst_width > max_width) {
       for (i = 1; i < num_trims; i++) {
         if (inst_width > max_width) {
           d3.select(inst_selection).select('text').text(trim);
-
           tmp_width = d3.select(inst_selection).select('text').node().getBBox().width;
-
           inst_width = calc_width(tmp_width, inst_zoom);
         }
       }
@@ -5133,15 +4667,12 @@ module.exports = function (params, inst_selection, inst_rc) {
       for (i = 1; i < num_trims; i++) {
         if (inst_width < max_width * 0.75) {
           d3.select(inst_selection).select('text').text(add_back);
-
           tmp_width = d3.select(inst_selection).select('text').node().getBBox().width;
-
           inst_width = calc_width(tmp_width, inst_zoom);
         }
       }
     }
   }
-
   function trim() {
     inst_text = d3.select(this).text();
     current_num_char = inst_text.length;
@@ -5149,7 +4680,6 @@ module.exports = function (params, inst_selection, inst_rc) {
     trimmed_text = inst_text.substring(0, keep_num_char) + '..';
     return trimmed_text;
   }
-
   function add_back(d) {
     inst_text = d3.select(this).text();
     if (inst_text.slice(-2) === '..') {
@@ -5157,7 +4687,6 @@ module.exports = function (params, inst_selection, inst_rc) {
     } else {
       current_num_char = inst_text.length;
     }
-
     original_text = d.name;
     keep_num_char = current_num_char + 2;
     trimmed_text = original_text.substring(0, keep_num_char) + '..';
@@ -5166,17 +4695,14 @@ module.exports = function (params, inst_selection, inst_rc) {
     if (trimmed_text.length > original_text.length) {
       trimmed_text = original_text;
     }
-
     return trimmed_text;
   }
-
   function calc_width(tmp_width, inst_zoom) {
     if (inst_zoom < 1) {
       inst_width = tmp_width;
     } else {
       inst_width = tmp_width * inst_zoom;
     }
-
     return inst_width;
   }
 };
@@ -5185,16 +4711,11 @@ module.exports = function (params, inst_selection, inst_rc) {
 /* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var calc_real_font_size = __webpack_require__(235);
-
 module.exports = function constrain_font_size(params) {
   var tmp_font_size = params.labels.default_fs_row;
   var inst_zoom;
   var min_font_size = 3;
-
   var real_font_size = calc_real_font_size(params);
 
   // rows
@@ -5206,13 +4727,10 @@ module.exports = function constrain_font_size(params) {
       } else {
         inst_zoom = params.zoom_behavior.scale();
       }
-
       if (inst_zoom < 1) {
         inst_zoom = 1;
       }
-
       tmp_font_size = params.labels.max_allow_fs / inst_zoom;
-
       d3.selectAll(params.root + ' .row_label_group').select('text').style('font-size', tmp_font_size + 'px').attr('y', params.viz.rect_height * 0.5 + tmp_font_size * 0.35);
     } else {
       d3.selectAll(params.root + ' .row_label_group').select('text').style('font-size', params.labels.default_fs_row + 'px').attr('y', params.viz.rect_height * 0.5 + params.labels.default_fs_row * 0.35);
@@ -5228,17 +4746,13 @@ module.exports = function constrain_font_size(params) {
       } else {
         inst_zoom = params.zoom_behavior.scale();
       }
-
       if (inst_zoom < 1) {
         inst_zoom = 1;
       }
-
       tmp_font_size = params.labels.max_allow_fs / inst_zoom;
-
       if (tmp_font_size > 0.7 * params.viz.rect_width) {
         tmp_font_size = 0.7 * params.viz.rect_width;
       }
-
       d3.selectAll(params.root + ' .col_label_text').select('text').style('font-size', tmp_font_size + 'px');
     } else {
       d3.selectAll(params.root + ' .col_label_text').select('text').style('font-size', params.labels.default_fs_col + 'px');
@@ -5250,32 +4764,24 @@ module.exports = function constrain_font_size(params) {
 /* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var get_cat_title = __webpack_require__(57);
 var d3_tip_custom = __webpack_require__(10);
 var utils = __webpack_require__(0);
-
 module.exports = function make_row_cat_super_labels(cgm) {
   var params = cgm.params;
-
   var viz = params.viz;
   var extra_x_room = 2.75;
-
   if (d3.select(params.root + ' .row_cat_label_container').empty()) {
     d3.select(cgm.params.viz.viz_svg).append('g').classed('row_cat_label_container', true);
 
     // append background section for optional value-bars (e.g. enrichment pvals)
     d3.select(cgm.params.viz.viz_svg + ' .row_cat_label_container').append('g').classed('row_cat_label_bar_container', true);
   }
-
   var x_offset = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin;
   var y_offset = viz.norm_labels.margin.top + viz.norm_labels.width.col + 2.5 * viz.uni_margin;
   var cat_text_size = 1.15 * viz.cat_room.symbol_width;
   var cat_super_opacity = 0.65;
   var extra_y_room = 1.25;
-
   d3.select(params.root + ' .row_cat_label_container').attr('transform', function () {
     x_offset = viz.norm_labels.margin.left + viz.norm_labels.width.row + viz.cat_room.symbol_width + extra_x_room * viz.uni_margin;
     y_offset = viz.clust.margin.top - viz.uni_margin;
@@ -5299,21 +4805,16 @@ module.exports = function make_row_cat_super_labels(cgm) {
     return class_string;
   }).direction('south_custom').offset([tmp_y_offset, tmp_x_offset]).style('display', 'none').style('opacity', 0).html(function (d) {
     var full_string;
-
     var tmp_string = params.network_data.row_nodes[0][d];
-
     if (tmp_string.indexOf('<p>') > -1) {
       var start_string = tmp_string.split(': ')[0];
       var end_string = tmp_string.split('<p>')[1];
-
       full_string = start_string + '<p>' + end_string;
     } else {
       full_string = get_cat_title(viz, d, 'row');
     }
-
     return full_string;
   });
-
   var unit_length = extra_y_room * viz.cat_room.symbol_width;
   var bar_width = unit_length * 0.9;
 
@@ -5333,13 +4834,11 @@ module.exports = function make_row_cat_super_labels(cgm) {
     return 'translate(0,' + inst_y + ')';
   }).on('mouseover', function (d) {
     d3.selectAll(params.viz.root_tips + '_row_cat_super').style('display', 'block').style('opacity', 1);
-
     cat_tip.show(d);
   }).on('mouseout', function () {
     cat_tip.hide(this);
     // might not need
     d3.selectAll('.d3-tip').style('display', 'none');
-
     d3.selectAll(params.viz.root_tips + '_row_cat_super').style('display', 'none').style('opacity', 0);
   });
 
@@ -5348,33 +4847,25 @@ module.exports = function make_row_cat_super_labels(cgm) {
   if (d3.select(params.root + ' .row_cat_selection_bar').empty() === false) {
     d3.selectAll(params.root + ' .row_cat_selection_bar').call(cat_tip);
   }
-
   if (utils.has(params.network_data, 'row_cat_bars')) {
     // Enrichrgram title
     /////////////////////
     d3.select(params.root + ' .enr_title').remove();
-
     var enr_title = d3.select(params.root + ' .viz_svg').append('g').classed('enr_title', true).attr('transform', function () {
       var trans = d3.select(params.root + ' .row_cat_label_container').attr('transform').split('(')[1].split(')')[0];
       var x_offset = Number(trans.split(',')[0]) - 10;
-
       return 'translate(' + String(x_offset) + ', 0)';
     });
-
     enr_title.append('rect').attr('width', params.viz.cat_room.row).attr('height', 25).attr('fill', 'white');
-
     var library_string = params.network_data.enrichrgram_lib.substring(0, 40);
-
     enr_title.append('text').attr('transform', 'translate(0, 17)').text(library_string.replace(/_/g, ' ')).style('font-size', '15px').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif');
 
     // Enrichr bars
     ////////////////////
     d3.selectAll(params.root + ' .enrichr_bars').remove();
-
     var bar_height = params.viz.clust.margin.top - 35;
     var max_score = params.network_data.row_cat_bars[0];
     var bar_scale = d3.scale.linear().domain([0, max_score]).range([0, bar_height]);
-
     d3.select(params.root + ' .row_cat_label_bar_container').selectAll().data(params.network_data.row_cat_bars).enter().append('rect').classed('enrichr_bars', true).attr('height', bar_width + 'px').attr('fill', 'red').attr('width', function (d) {
       var bar_length = bar_scale(d);
       return bar_length + 'px';
@@ -5389,16 +4880,11 @@ module.exports = function make_row_cat_super_labels(cgm) {
 /* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var two_translate_zoom = __webpack_require__(17);
-
 module.exports = function ini_doubleclick(cgm) {
   var params = cgm.params;
   // disable double-click zoom
   d3.selectAll(params.viz.zoom_element).on('dblclick.zoom', null);
-
   d3.select(params.viz.zoom_element).on('dblclick', function () {
     two_translate_zoom(cgm, 0, 0, 1);
   });
@@ -5407,9 +4893,6 @@ module.exports = function ini_doubleclick(cgm) {
 /***/ }),
 /* 63 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var utils = __webpack_require__(0);
 var run_zoom = __webpack_require__(64);
@@ -5444,27 +4927,19 @@ var position_tree_menu = __webpack_require__(251);
 var ini_zoom_info = __webpack_require__(11);
 var grid_lines_viz = __webpack_require__(252);
 var each = __webpack_require__(1);
-
 module.exports = function resize_viz(cgm) {
   var params = cgm.params;
-
   var cont_dim = calc_viz_dimensions(params);
-
   d3.select(params.root + ' .play_button');
   // .style('opacity', 0.2);
 
   d3.select(params.root + ' .sidebar_wrapper').style('height', cont_dim.height + 'px');
-
   d3.select(params.viz.viz_wrapper)
   // .style('float', 'left')
   .style('margin-top', cont_dim.top + 'px').style('width', cont_dim.width + 'px').style('height', cont_dim.height + 'px');
-
   params = recalc_params_for_resize(params);
-
   params.zoom_info = ini_zoom_info();
-
   reset_zoom(params);
-
   var svg_group = d3.select(params.viz.viz_svg);
 
   // redefine x and y positions
@@ -5475,7 +4950,6 @@ module.exports = function resize_viz(cgm) {
 
   // disable zoom while transitioning
   svg_group.on('.zoom', null);
-
   params.zoom_behavior.scaleExtent([1, params.viz.square_zoom * params.viz.zoom_ratio.x]).on('zoom', function () {
     run_zoom(cgm);
   });
@@ -5487,22 +4961,14 @@ module.exports = function resize_viz(cgm) {
 
   // prevent normal double click zoom etc
   ini_doubleclick(cgm);
-
   svg_group.attr('width', params.viz.svg_dim.width).attr('height', params.viz.svg_dim.height);
-
   svg_group.select('.super_background').style('width', params.viz.svg_dim.width).style('height', params.viz.svg_dim.height);
-
   svg_group.select('.grey_background').attr('width', params.viz.clust.dim.width).attr('height', params.viz.clust.dim.height);
-
   setTimeout(position_play_button, 100, params);
-
   var row_nodes = params.network_data.row_nodes;
   var row_nodes_names = utils.pluck(row_nodes, 'name') || [];
-
   resize_row_tiles(params, svg_group);
-
   svg_group.selectAll('.highlighting_rect').attr('width', params.viz.x_scale.rangeBand() * 0.8).attr('height', params.viz.y_scale.rangeBand() * 0.8);
-
   resize_highlights(params);
 
   // resize row labels
@@ -5526,16 +4992,13 @@ module.exports = function resize_viz(cgm) {
 
   // necessary to properly position row labels vertically
   svg_group.selectAll('.row_label_group').select('text').attr('y', params.viz.rect_height * 0.5 + params.labels.default_fs_row * 0.35);
-
   if (utils.has(params.network_data.row_nodes[0], 'value')) {
     resize_label_bars(cgm, svg_group);
   }
-
   svg_group.selectAll('.row_cat_group').attr('transform', function (d) {
     var inst_index = row_nodes_names.indexOf(d.name);
     return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
   });
-
   svg_group.selectAll('.row_cat_group').select('path').attr('d', function () {
     var origin_x = params.viz.cat_room.symbol_width - 1;
     var origin_y = 0;
@@ -5546,34 +5009,27 @@ module.exports = function resize_viz(cgm) {
     var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' + mid_x + ',' + mid_y + ' L ' + final_x + ',' + final_y + ' Z';
     return output_string;
   });
-
   var is_resize = true;
   if (params.viz.show_dendrogram) {
     make_dendro_triangles(cgm, 'row', is_resize);
     make_dendro_triangles(cgm, 'col', is_resize);
     resize_dendro(params, svg_group);
-
     toggle_dendro_view(cgm, 'row', 0);
     toggle_dendro_view(cgm, 'col', 0);
   } else {
     resize_dendro(params, svg_group);
   }
-
   resize_col_labels(params, svg_group);
   resize_col_text(params, svg_group);
   resize_col_triangle(params, svg_group);
   resize_col_hlight(params, svg_group);
-
   resize_super_labels(params, svg_group);
   resize_spillover(params.viz, svg_group);
-
   grid_lines_viz(params);
-
   resize_borders(params, svg_group);
 
   // reset zoom and translate
   params.zoom_behavior.scale(1).translate([params.viz.clust.margin.left, params.viz.clust.margin.top]);
-
   label_constrain_and_trim(params);
 
   // reposition matrix
@@ -5583,16 +5039,11 @@ module.exports = function resize_viz(cgm) {
   if (cgm.params.viz.ds_level === -1) {
     show_visible_area(cgm);
   }
-
   make_row_cat_super_labels(cgm);
-
   d3.select(params.viz.viz_svg).style('opacity', 1);
-
   ini_cat_reorder(cgm);
-
   d3.select(cgm.params.root + ' .row_slider_group').style('opacity', 0);
   d3.select(cgm.params.root + ' .col_slider_group').style('opacity', 0);
-
   setTimeout(position_dendro_slider, 500, cgm, 'row');
   setTimeout(position_dendro_slider, 500, cgm, 'col');
   setTimeout(position_tree_icon, 500, cgm);
@@ -5604,16 +5055,11 @@ module.exports = function resize_viz(cgm) {
 /* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var run_transformation = __webpack_require__(239);
 var zoom_rules_y = __webpack_require__(243);
 var zoom_rules_x = __webpack_require__(244);
-
 module.exports = function zoomed(cgm) {
   var params = cgm.params;
-
   var zoom_info = {};
   zoom_info.zoom_x = d3.event.scale;
   zoom_info.zoom_y = d3.event.scale;
@@ -5621,7 +5067,6 @@ module.exports = function zoomed(cgm) {
   // subtract away the margin to easily calculate pan_room etc.
   zoom_info.trans_x = params.zoom_behavior.translate()[0] - params.viz.clust.margin.left;
   zoom_info.trans_y = params.zoom_behavior.translate()[1] - params.viz.clust.margin.top;
-
   d3.selectAll(params.viz.root_tips).style('display', 'none');
 
   // transfer zoom_info to params
@@ -5633,22 +5078,16 @@ module.exports = function zoomed(cgm) {
     // reset translate vector - add back margins to trans_x and trans_y
     var new_x = params.zoom_info.trans_x + params.viz.clust.margin.left;
     var new_y = params.zoom_info.trans_y + params.viz.clust.margin.top;
-
     params.zoom_behavior.translate([new_x, new_y]);
     cgm.params = params;
-
     run_transformation(cgm);
   }
-
   dispatchEvent(new CustomEvent('ON_VIZ_RESIZE'));
 };
 
 /***/ }),
 /* 65 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var make_params = __webpack_require__(70);
 var define_enter_exit_delays = __webpack_require__(263);
@@ -5668,7 +5107,6 @@ var run_zoom = __webpack_require__(64);
 var ds_enter_exit_update = __webpack_require__(277);
 var make_cat_params = __webpack_require__(87);
 var $ = __webpack_require__(2);
-
 module.exports = function update_viz_with_network(cgm, new_network_data) {
   // set runnning_update class, prevents multiple update from running at once
   d3.select(cgm.params.viz.viz_svg).classed('running_update', true);
@@ -5686,13 +5124,11 @@ module.exports = function update_viz_with_network(cgm, new_network_data) {
   var inst_linkage_type = cgm.params.matrix.linkage_type;
   var inst_filter_state = cgm.params.matrix.filter_state;
   var inst_normalization_state = cgm.params.matrix.normalization_state;
-
   var inst_group_level = cgm.params.group_level;
   var inst_crop_fitler = cgm.params.crop_filter_nodes;
 
   // make tmp config to make new params
   var tmp_config = $.extend(true, {}, cgm.config);
-
   var new_row_cats = null;
 
   // bring in 'new' category data
@@ -5704,11 +5140,9 @@ module.exports = function update_viz_with_network(cgm, new_network_data) {
     var predefined_cat_colors = true;
     cgm.params.viz = make_cat_params(cgm.params, cgm.params.viz, predefined_cat_colors);
   }
-
   tmp_config.network_data = new_network_data;
   tmp_config.inst_order = cgm.params.viz.inst_order;
   tmp_config.input_domain = cgm.params.matrix.opacity_scale.domain()[1];
-
   update_reorder_buttons(tmp_config, cgm.params);
 
   // tmp_config.ini_expand = false;
@@ -5718,7 +5152,6 @@ module.exports = function update_viz_with_network(cgm, new_network_data) {
   // disabled, causing problems when cropping
   // always preserve category colors when updating
   tmp_config.cat_colors = cgm.params.viz.cat_colors;
-
   var new_params = make_params(tmp_config);
 
   // this function is sensitive to further updates, so run here
@@ -5755,21 +5188,15 @@ module.exports = function update_viz_with_network(cgm, new_network_data) {
 
   // reduce opacity during update
   d3.select(cgm.params.viz.viz_svg).style('opacity', 0.7);
-
   make_row_cat(cgm);
   make_row_cat_super_labels(cgm);
-
   if (cgm.params.viz.show_categories.col) {
     make_col_cat(cgm);
   }
-
   make_row_dendro(cgm);
   make_col_dendro(cgm);
-
   initialize_resizing(cgm);
-
   d3.select(cgm.params.viz.viz_svg).call(cgm.params.zoom_behavior);
-
   ini_doubleclick(cgm);
 
   // customization
@@ -5788,19 +5215,14 @@ module.exports = function update_viz_with_network(cgm, new_network_data) {
   setTimeout(remove_shadows, 500);
   setTimeout(remove_shadows, 1000);
   setTimeout(remove_shadows, 1500);
-
   function remove_shadows() {
     d3.selectAll('.dendro_shadow').remove();
   }
-
   function finish_update() {
     d3.select(cgm.params.viz.viz_svg).transition().duration(250).style('opacity', 1.0);
-
     setTimeout(finish_update_class, 1000);
   }
-
   setTimeout(finish_update, delays.enter);
-
   function finish_update_class() {
     d3.select(cgm.params.viz.viz_svg).classed('running_update', false);
   }
@@ -5810,17 +5232,12 @@ module.exports = function update_viz_with_network(cgm, new_network_data) {
 /* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var remove_node_cats = __webpack_require__(276);
 var utils = __webpack_require__(0);
 var each = __webpack_require__(1);
 var contains = __webpack_require__(16);
-
 module.exports = function modify_row_node_cats(cat_data, inst_nodes) {
   var strip_names = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
   // console.log('MODIFY ROW NODE CATS')
   // console.log('CAT_DATA')
   // console.log(cat_data)
@@ -5854,9 +5271,7 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes) {
         inst_name = inst_name.split('_')[0];
       }
     }
-
     cat_type_num = 0;
-
     remove_node_cats(inst_node);
 
     // loop through each category type
@@ -5867,7 +5282,6 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes) {
       // initialize with no category
       inst_category = 'false';
       inst_index = -1;
-
       inst_cat_num = 0;
 
       // loop through each category in the category-type
@@ -5880,10 +5294,8 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes) {
           inst_category = inst_cat_name;
           inst_index = inst_cat_num;
         }
-
         inst_cat_num = inst_cat_num + 1;
       });
-
       if (utils.has(inst_cat_data, 'pval')) {
         var inst_pval = inst_cat_data.pval.toExponential();
         inst_full_cat = inst_cat_title + ': ' + inst_category + '<p> Pval ' + String(inst_pval) + '</p>';
@@ -5894,10 +5306,8 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes) {
           inst_full_cat = inst_category;
         }
       }
-
       inst_node['cat-' + String(cat_type_num)] = inst_full_cat;
       inst_node['cat_' + String(cat_type_num) + '_index'] = inst_index;
-
       cat_type_num = cat_type_num + 1;
     });
   });
@@ -5905,10 +5315,7 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes) {
 
 /***/ }),
 /* 67 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 // Internal function that returns an efficient (for current engines) version
 // of the passed-in callback, to be repeatedly applied in other Underscore
@@ -5934,59 +5341,43 @@ function optimizeCb(func, context, argCount) {
     return func.apply(context, arguments);
   };
 }
-
 module.exports = optimizeCb;
 
 /***/ }),
 /* 68 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 // Is a given variable an object?
 function isObject(obj) {
-  var type = typeof obj === 'undefined' ? 'undefined' : _typeof(obj);
+  var type = _typeof(obj);
   return type === 'function' || type === 'object' && !!obj;
 }
-
 module.exports = isObject;
 
 /***/ }),
 /* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 var _tagTester = __webpack_require__(29);
 var _setup = __webpack_require__(6);
-
 var isFunction = _tagTester('Function');
 
 // Optimize `isFunction` if appropriate. Work around some `typeof` bugs in old
 // v8, IE 11 (#1621), Safari 8 (#1929), and PhantomJS (#2236).
 var nodelist = _setup.root.document && _setup.root.document.childNodes;
-if ( true && (typeof Int8Array === 'undefined' ? 'undefined' : _typeof(Int8Array)) != 'object' && typeof nodelist != 'function') {
+if ( true && (typeof Int8Array === "undefined" ? "undefined" : _typeof(Int8Array)) != 'object' && typeof nodelist != 'function') {
   isFunction = function isFunction(obj) {
     return typeof obj == 'function' || false;
   };
 }
-
 var isFunction$1 = isFunction;
-
 module.exports = isFunction$1;
 
 /***/ }),
 /* 70 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var make_network_using_view = __webpack_require__(71);
 // var ini_sidebar_params = require('./ini_sidebar_params');
@@ -6013,20 +5404,16 @@ module.exports = function make_params(input_config) {
   // when pre-loading the visualization using a view
   if (params.ini_view !== null) {
     var requested_view = params.ini_view;
-
     var filters = get_available_filters(params.network_data.views);
-
     params.viz = {};
     params.viz.possible_filters = filters.possible_filters;
     params.viz.filter_data = filters.filter_data;
-
     requested_view = make_requested_view(params, requested_view);
     params.network_data = make_network_using_view(config, params, requested_view);
 
     // save ini_view as requested_view
     params.requested_view = requested_view;
   }
-
   params = calc_viz_params(params);
 
   // customization
@@ -6035,7 +5422,6 @@ module.exports = function make_params(input_config) {
   // }
 
   params.zoom_info = ini_zoom_info();
-
   return params;
 };
 
@@ -6043,33 +5429,28 @@ module.exports = function make_params(input_config) {
 /* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var filter_network_using_new_nodes = __webpack_require__(43);
 var get_subset_views = __webpack_require__(170);
 var utils = __webpack_require__(0);
-
 module.exports = function make_network_using_view(config, params, requested_view) {
   var orig_views = config.network_data.views;
-
   var is_enr = false;
   if (utils.has(orig_views[0], 'enr_score_type')) {
     is_enr = true;
   }
-
   var sub_views = get_subset_views(params, orig_views, requested_view);
 
   //////////////////////////////
   // Enrichr specific rules
   //////////////////////////////
   if (is_enr && sub_views.length == 0) {
-    requested_view = { N_row_sum: 'all', N_col_sum: '10' };
+    requested_view = {
+      N_row_sum: 'all',
+      N_col_sum: '10'
+    };
     sub_views = get_subset_views(params, orig_views, requested_view);
   }
-
   var inst_view = sub_views[0];
-
   var new_network_data;
 
   // get new_network_data or default back to old_network_data
@@ -6079,7 +5460,6 @@ module.exports = function make_network_using_view(config, params, requested_view
   } else {
     new_network_data = config.network_data;
   }
-
   return new_network_data;
 };
 
@@ -6087,17 +5467,11 @@ module.exports = function make_network_using_view(config, params, requested_view
 /* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 module.exports = __webpack_require__(143);
 
 /***/ }),
 /* 73 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var Emitter = __webpack_require__(147);
 
@@ -6115,7 +5489,6 @@ exports.mixin = function (obj) {
   obj.off = emitter.off.bind(emitter);
   obj.once = emitter.once.bind(emitter);
   obj.emit = emitter.emit.bind(emitter);
-
   return obj;
 };
 
@@ -6126,8 +5499,7 @@ exports.mixin = function (obj) {
 "use strict";
 
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 var formatNumber = __webpack_require__(3).format;
 var formatBigNumber = __webpack_require__(152).format;
 var isBigNumber = __webpack_require__(44);
@@ -6191,7 +5563,6 @@ exports.format = function (value, options) {
   if (typeof value === 'number') {
     return formatNumber(value, options);
   }
-
   if (isBigNumber(value)) {
     return formatBigNumber(value, options);
   }
@@ -6207,20 +5578,16 @@ exports.format = function (value, options) {
       return value.toString();
     }
   }
-
   if (Array.isArray(value)) {
     return formatArray(value, options);
   }
-
   if (exports.isString(value)) {
     return '"' + value + '"';
   }
-
   if (typeof value === 'function') {
     return value.syntax ? String(value.syntax) : 'function';
   }
-
-  if (value && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object') {
+  if (value && _typeof(value) === 'object') {
     if (typeof value.format === 'function') {
       return value.format(options);
     } else if (value && value.toString() !== {}.toString()) {
@@ -6228,17 +5595,14 @@ exports.format = function (value, options) {
       return value.toString();
     } else {
       var entries = [];
-
       for (var key in value) {
         if (value.hasOwnProperty(key)) {
           entries.push('"' + key + '": ' + exports.format(value[key], options));
         }
       }
-
       return '{' + entries.join(', ') + '}';
     }
   }
-
   return String(value);
 };
 
@@ -6254,15 +5618,14 @@ exports.stringify = function (value) {
   var i = 0;
   while (i < text.length) {
     var c = text.charAt(i);
-
     if (c === '\\') {
       escaped += c;
       i++;
-
       c = text.charAt(i);
       if (c === '' || '"\\/bfnrtu'.indexOf(c) === -1) {
         escaped += '\\'; // no valid escape character -> escape it
       }
+
       escaped += c;
     } else if (c === '"') {
       escaped += '\\"';
@@ -6271,7 +5634,6 @@ exports.stringify = function (value) {
     }
     i++;
   }
-
   return '"' + escaped + '"';
 };
 
@@ -6283,7 +5645,6 @@ exports.stringify = function (value) {
 exports.escape = function (value) {
   var text = String(value);
   text = text.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
   return text;
 };
 
@@ -6320,7 +5681,7 @@ function formatArray(array, options) {
  * @return {boolean}
  */
 function looksLikeFraction(value) {
-  return value && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' && typeof value.s === 'number' && typeof value.n === 'number' && typeof value.d === 'number' || false;
+  return value && _typeof(value) === 'object' && typeof value.s === 'number' && typeof value.n === 'number' && typeof value.d === 'number' || false;
 }
 
 /***/ }),
@@ -6353,12 +5714,9 @@ function looksLikeFraction(value) {
  *                  non-primitive types are upper-camel-case.
  *                  For example 'number', 'string', 'Array', 'Date'.
  */
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 exports.type = function (x) {
-  var type = typeof x === 'undefined' ? 'undefined' : _typeof(x);
-
+  var type = _typeof(x);
   if (type === 'object') {
     if (x === null) return 'null';
     if (Array.isArray(x)) return 'Array';
@@ -6367,12 +5725,9 @@ exports.type = function (x) {
     if (x instanceof Boolean) return 'boolean';
     if (x instanceof Number) return 'number';
     if (x instanceof String) return 'string';
-
     return 'Object';
   }
-
   if (type === 'function') return 'Function';
-
   return type;
 };
 
@@ -6387,19 +5742,15 @@ var util = __webpack_require__(21);
 var DimensionError = __webpack_require__(7);
 var getSafeProperty = __webpack_require__(77).getSafeProperty;
 var setSafeProperty = __webpack_require__(77).setSafeProperty;
-
 var string = util.string;
 var array = util.array;
 var object = util.object;
 var number = util.number;
-
 var isArray = Array.isArray;
 var isNumber = number.isNumber;
 var isInteger = number.isInteger;
 var isString = string.isString;
-
 var validateIndex = array.validateIndex;
-
 function factory(type, config, load, typed) {
   var Matrix = load(__webpack_require__(45)); // force loading Matrix (do not use via type.Matrix)
 
@@ -6410,7 +5761,6 @@ function factory(type, config, load, typed) {
   function DenseMatrix(data, datatype) {
     if (!(this instanceof DenseMatrix)) throw new SyntaxError('Constructor must be called with the new operator');
     if (datatype && !isString(datatype)) throw new Error('Invalid datatype: ' + datatype);
-
     if (type.isMatrix(data)) {
       // check data is a DenseMatrix
       if (data.type === 'DenseMatrix') {
@@ -6448,7 +5798,6 @@ function factory(type, config, load, typed) {
       this._datatype = datatype;
     }
   }
-
   DenseMatrix.prototype = new Matrix();
 
   /**
@@ -6516,7 +5865,6 @@ function factory(type, config, load, typed) {
       case 2:
       case 3:
         return _set(this, index, replacement, defaultValue);
-
       default:
         throw new SyntaxError('Wrong number of arguments');
     }
@@ -6535,13 +5883,13 @@ function factory(type, config, load, typed) {
     // check index
     for (var x = 0; x < index.length; x++) {
       validateIndex(index[x], this._size[x]);
-    }var data = this._data;
+    }
+    var data = this._data;
     for (var i = 0, ii = index.length; i < ii; i++) {
       var index_i = index[i];
       validateIndex(index_i, data.length);
       data = data[index_i];
     }
-
     return data;
   };
 
@@ -6558,7 +5906,6 @@ function factory(type, config, load, typed) {
   DenseMatrix.prototype.set = function (index, value, defaultValue) {
     if (!isArray(index)) throw new TypeError('Array expected');
     if (index.length < this._size.length) throw new DimensionError(index.length, this._size.length, '<');
-
     var i, ii, index_i;
 
     // enlarge matrix when needed
@@ -6579,7 +5926,6 @@ function factory(type, config, load, typed) {
     index_i = index[index.length - 1];
     validateIndex(index_i, data.length);
     data[index_i] = value;
-
     return this;
   };
 
@@ -6594,7 +5940,6 @@ function factory(type, config, load, typed) {
     if (!type.isIndex(index)) {
       throw new TypeError('Invalid index');
     }
-
     var isScalar = index.isScalar();
     if (isScalar) {
       // return a scalar
@@ -6634,7 +5979,6 @@ function factory(type, config, load, typed) {
   function _getSubmatrix(data, index, dims, dim) {
     var last = dim === dims - 1;
     var range = index.dimension(dim);
-
     if (last) {
       return range.map(function (i) {
         validateIndex(i, data.length);
@@ -6668,7 +6012,7 @@ function factory(type, config, load, typed) {
 
     // get index size and check whether the index contains a single value
     var iSize = index.size(),
-        isScalar = index.isScalar();
+      isScalar = index.isScalar();
 
     // calculate the size of the submatrix, and convert it into an Array if needed
     var sSize;
@@ -6678,7 +6022,6 @@ function factory(type, config, load, typed) {
     } else {
       sSize = array.size(submatrix);
     }
-
     if (isScalar) {
       // set a scalar
 
@@ -6686,7 +6029,6 @@ function factory(type, config, load, typed) {
       if (sSize.length !== 0) {
         throw new TypeError('Scalar expected');
       }
-
       matrix.set(index.min(), submatrix, defaultValue);
     } else {
       // set a submatrix
@@ -6695,7 +6037,6 @@ function factory(type, config, load, typed) {
       if (iSize.length < matrix._size.length) {
         throw new DimensionError(iSize.length, matrix._size.length, '<');
       }
-
       if (sSize.length < iSize.length) {
         // calculate number of missing outer dimensions
         var i = 0;
@@ -6725,10 +6066,9 @@ function factory(type, config, load, typed) {
 
       // insert the sub matrix
       var dims = iSize.length,
-          dim = 0;
+        dim = 0;
       _setSubmatrix(matrix._data, index, submatrix, dims, dim);
     }
-
     return matrix;
   }
 
@@ -6744,8 +6084,7 @@ function factory(type, config, load, typed) {
    */
   function _setSubmatrix(data, index, submatrix, dims, dim) {
     var last = dim === dims - 1,
-        range = index.dimension(dim);
-
+      range = index.dimension(dim);
     if (last) {
       range.forEach(function (dataIndex, subIndex) {
         validateIndex(dataIndex);
@@ -6781,7 +6120,6 @@ function factory(type, config, load, typed) {
     // resize matrix
     return _resize(m, size, defaultValue);
   };
-
   var _resize = function _resize(matrix, size, defaultValue) {
     // check size
     if (size.length === 0) {
@@ -6816,7 +6154,6 @@ function factory(type, config, load, typed) {
    */
   DenseMatrix.prototype.reshape = function (size, copy) {
     var m = copy ? this.clone() : this;
-
     m._data = array.reshape(m._data, size);
     m._size = size.slice(0);
     return m;
@@ -6833,8 +6170,8 @@ function factory(type, config, load, typed) {
    */
   function _fit(matrix, size, defaultValue) {
     var newSize = matrix._size.slice(0),
-        // copy the array
-    changed = false;
+      // copy the array
+      changed = false;
 
     // add dimensions when needed
     while (newSize.length < size.length) {
@@ -6849,7 +6186,6 @@ function factory(type, config, load, typed) {
         changed = true;
       }
     }
-
     if (changed) {
       // resize only when size is changed
       _resize(matrix, newSize, defaultValue);
@@ -7006,7 +6342,6 @@ function factory(type, config, load, typed) {
       // default value
       k = 0;
     }
-
     var kSuper = k > 0 ? k : 0;
     var kSub = k < 0 ? -k : 0;
 
@@ -7074,12 +6409,10 @@ function factory(type, config, load, typed) {
       // default value
       k = 0;
     }
-
     if (defaultValue && isString(datatype)) {
       // convert defaultValue to the same datatype
       defaultValue = typed.convert(defaultValue, datatype);
     }
-
     var kSuper = k > 0 ? k : 0;
     var kSub = k < 0 ? -k : 0;
 
@@ -7221,7 +6554,6 @@ function factory(type, config, load, typed) {
         data[i] = preprocess(elem.valueOf());
       }
     }
-
     return data;
   }
 
@@ -7232,7 +6564,6 @@ function factory(type, config, load, typed) {
   // exports
   return DenseMatrix;
 }
-
 exports.name = 'DenseMatrix';
 exports.path = 'type';
 exports.factory = factory;
@@ -7245,8 +6576,7 @@ exports.lazy = false; // no lazy loading, as we alter type.Matrix._storage
 "use strict";
 
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 var hasOwnProperty = __webpack_require__(4).hasOwnProperty;
 
 /**
@@ -7262,11 +6592,9 @@ function getSafeProperty(object, prop) {
   if (isPlainObject(object) && isSafeProperty(object, prop)) {
     return object[prop];
   }
-
   if (typeof object[prop] === 'function' && isSafeMethod(object, prop)) {
     throw new Error('Cannot access method "' + prop + '" as a property');
   }
-
   throw new Error('No access to property "' + prop + '"');
 }
 
@@ -7285,7 +6613,6 @@ function setSafeProperty(object, prop, value) {
   if (isPlainObject(object) && isSafeProperty(object, prop)) {
     return object[prop] = value;
   }
-
   throw new Error('No access to property "' + prop + '"');
 }
 
@@ -7296,7 +6623,7 @@ function setSafeProperty(object, prop, value) {
  * @return {boolean} Returns true when safe
  */
 function isSafeProperty(object, prop) {
-  if (!object || (typeof object === 'undefined' ? 'undefined' : _typeof(object)) !== 'object') {
+  if (!object || _typeof(object) !== 'object') {
     return false;
   }
   // SAFE: whitelisted
@@ -7376,22 +6703,18 @@ function isSafeMethod(object, method) {
   }
   return true;
 }
-
 function isPlainObject(object) {
-  return (typeof object === 'undefined' ? 'undefined' : _typeof(object)) === 'object' && object && object.constructor === Object;
+  return _typeof(object) === 'object' && object && object.constructor === Object;
 }
-
 var safeNativeProperties = {
   length: true,
   name: true
 };
-
 var safeNativeMethods = {
   toString: true,
   valueOf: true,
   toLocaleString: true
 };
-
 exports.getSafeProperty = getSafeProperty;
 exports.setSafeProperty = setSafeProperty;
 exports.isSafeProperty = isSafeProperty;
@@ -7407,7 +6730,6 @@ exports.isPlainObject = isPlainObject;
 
 
 function factory(type, config, load, typed) {
-
   /**
    * Add two scalar values, `x + y`.
    * This function is meant for internal use: it is used by the public function
@@ -7422,38 +6744,30 @@ function factory(type, config, load, typed) {
    * @private
    */
   var add = typed('add', {
-
     'number, number': function numberNumber(x, y) {
       return x + y;
     },
-
     'Complex, Complex': function ComplexComplex(x, y) {
       return x.add(y);
     },
-
     'BigNumber, BigNumber': function BigNumberBigNumber(x, y) {
       return x.plus(y);
     },
-
     'Fraction, Fraction': function FractionFraction(x, y) {
       return x.add(y);
     },
-
     'Unit, Unit': function UnitUnit(x, y) {
       if (x.value == null) throw new Error('Parameter x contains a unit with undefined value');
       if (y.value == null) throw new Error('Parameter y contains a unit with undefined value');
       if (!x.equalBase(y)) throw new Error('Units do not match');
-
       var res = x.clone();
       res.value = add(res.value, y.value);
       res.fixPrefix = false;
       return res;
     }
   });
-
   return add;
 }
-
 exports.factory = factory;
 
 /***/ }),
@@ -7465,17 +6779,13 @@ exports.factory = factory;
 
 var nearlyEqual = __webpack_require__(3).nearlyEqual;
 var bigNearlyEqual = __webpack_require__(46);
-
 function factory(type, config, load, typed) {
-
   var matrix = load(__webpack_require__(8));
-
   var algorithm03 = load(__webpack_require__(80));
   var algorithm07 = load(__webpack_require__(81));
   var algorithm12 = load(__webpack_require__(82));
   var algorithm13 = load(__webpack_require__(47));
   var algorithm14 = load(__webpack_require__(30));
-
   var latex = __webpack_require__(14);
 
   /**
@@ -7509,38 +6819,30 @@ function factory(type, config, load, typed) {
    * @return {boolean | Array | Matrix} Returns true when the x is smaller than y, else returns false
    */
   var smaller = typed('smaller', {
-
     'boolean, boolean': function booleanBoolean(x, y) {
       return x < y;
     },
-
     'number, number': function numberNumber(x, y) {
       return x < y && !nearlyEqual(x, y, config.epsilon);
     },
-
     'BigNumber, BigNumber': function BigNumberBigNumber(x, y) {
       return x.lt(y) && !bigNearlyEqual(x, y, config.epsilon);
     },
-
     'Fraction, Fraction': function FractionFraction(x, y) {
       return x.compare(y) === -1;
     },
-
     'Complex, Complex': function ComplexComplex(x, y) {
       throw new TypeError('No ordering relation is defined for complex numbers');
     },
-
     'Unit, Unit': function UnitUnit(x, y) {
       if (!x.equalBase(y)) {
         throw new Error('Cannot compare units with different base');
       }
       return smaller(x.value, y.value);
     },
-
     'string, string': function stringString(x, y) {
       return x < y;
     },
-
     'Matrix, Matrix': function MatrixMatrix(x, y) {
       // result
       var c;
@@ -7574,22 +6876,18 @@ function factory(type, config, load, typed) {
       }
       return c;
     },
-
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
       return smaller(matrix(x), matrix(y)).valueOf();
     },
-
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
       return smaller(matrix(x), y);
     },
-
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
       return smaller(x, matrix(y));
     },
-
     'Matrix, any': function MatrixAny(x, y) {
       // result
       var c;
@@ -7604,7 +6902,6 @@ function factory(type, config, load, typed) {
       }
       return c;
     },
-
     'any, Matrix': function anyMatrix(x, y) {
       // result
       var c;
@@ -7619,25 +6916,20 @@ function factory(type, config, load, typed) {
       }
       return c;
     },
-
     'Array, any': function ArrayAny(x, y) {
       // use matrix implementation
       return algorithm14(matrix(x), y, smaller, false).valueOf();
     },
-
     'any, Array': function anyArray(x, y) {
       // use matrix implementation
       return algorithm14(matrix(y), x, smaller, true).valueOf();
     }
   });
-
   smaller.toTex = {
     2: '\\left(${args[0]}' + latex.operators['smaller'] + '${args[1]}\\right)'
   };
-
   return smaller;
 }
-
 exports.name = 'smaller';
 exports.factory = factory;
 
@@ -7649,9 +6941,7 @@ exports.factory = factory;
 
 
 var DimensionError = __webpack_require__(7);
-
 function factory(type, config, load, typed) {
-
   var DenseMatrix = type.DenseMatrix;
 
   /**
@@ -7761,10 +7051,8 @@ function factory(type, config, load, typed) {
       datatype: dt
     });
   };
-
   return algorithm03;
 }
-
 exports.name = 'algorithm03';
 exports.factory = factory;
 
@@ -7776,9 +7064,7 @@ exports.factory = factory;
 
 
 var DimensionError = __webpack_require__(7);
-
 function factory(type, config, load, typed) {
-
   var DenseMatrix = type.DenseMatrix;
 
   /**
@@ -7838,7 +7124,9 @@ function factory(type, config, load, typed) {
     // initialize c
     for (i = 0; i < rows; i++) {
       cdata[i] = [];
-    } // matrix
+    }
+
+    // matrix
     var c = new DenseMatrix({
       data: cdata,
       size: [rows, columns],
@@ -7873,7 +7161,6 @@ function factory(type, config, load, typed) {
     // return sparse matrix
     return c;
   };
-
   var _scatter = function _scatter(m, j, w, x, mark) {
     // a arrays
     var values = m._values;
@@ -7888,10 +7175,8 @@ function factory(type, config, load, typed) {
       x[i] = values[k];
     }
   };
-
   return algorithm07;
 }
-
 exports.name = 'algorithm07';
 exports.factory = factory;
 
@@ -7903,7 +7188,6 @@ exports.factory = factory;
 
 
 function factory(type, config, load, typed) {
-
   var DenseMatrix = type.DenseMatrix;
 
   /**
@@ -8002,19 +7286,14 @@ function factory(type, config, load, typed) {
     // return sparse matrix
     return c;
   };
-
   return algorithm12;
 }
-
 exports.name = 'algorithm12';
 exports.factory = factory;
 
 /***/ }),
 /* 83 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var identity = __webpack_require__(171);
 var isFunction = __webpack_require__(69);
@@ -8033,15 +7312,11 @@ function baseIteratee(value, context, argCount) {
   if (isObject(value) && !isArray(value)) return matcher(value);
   return property(value);
 }
-
 module.exports = baseIteratee;
 
 /***/ }),
 /* 84 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var keys = __webpack_require__(20);
 
@@ -8055,15 +7330,11 @@ function values(obj) {
   }
   return values;
 }
-
 module.exports = values;
 
 /***/ }),
 /* 85 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function calc_viz_dimensions(params) {
   var cont_dim = {};
@@ -8089,10 +7360,8 @@ module.exports = function calc_viz_dimensions(params) {
     outer_margins = params.viz.outer_margins;
     cont_dim.width = container_width - extra_space;
   }
-
   cont_dim.top = outer_margins.top;
   cont_dim.left = outer_margins.left;
-
   if (params.viz.resize) {
     cont_dim.height = container_height;
   } else {
@@ -8101,10 +7370,8 @@ module.exports = function calc_viz_dimensions(params) {
     } else {
       cont_dim.width = params.viz.fixed_size.width - params.sidebar_width;
     }
-
     cont_dim.height = params.viz.fixed_size.height;
   }
-
   return cont_dim;
 };
 
@@ -8112,24 +7379,16 @@ module.exports = function calc_viz_dimensions(params) {
 /* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var max = __webpack_require__(32);
-
 module.exports = function calc_val_max(params) {
   var val_max = Math.abs(max(params.network_data.col_nodes, function (d) {
     return Math.abs(d.value);
   }).value);
-
   params.labels.bar_scale_col = d3.scale.linear().domain([0, val_max]).range([0, 0.75 * params.viz.norm_labels.width.col]);
-
   val_max = Math.abs(max(params.network_data.row_nodes, function (d) {
     return Math.abs(d.value);
   }).value);
-
   params.labels.bar_scale_row = d3.scale.linear().domain([0, val_max]).range([0, params.viz.norm_labels.width.row]);
-
   return params;
 };
 
@@ -8137,24 +7396,18 @@ module.exports = function calc_val_max(params) {
 /* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var calc_cat_params = __webpack_require__(191);
 var utils = __webpack_require__(0);
 var colors = __webpack_require__(192);
 var check_if_value_cats = __webpack_require__(193);
 var each = __webpack_require__(1);
 var countBy = __webpack_require__(194);
-
 module.exports = function make_cat_params(params, viz) {
   var predefined_cat_colors = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-
   var super_string = ': ';
   var tmp_super;
   var inst_info;
   var inst_color;
-
   viz.show_categories = {};
   viz.all_cats = {};
   viz.cat_names = {};
@@ -8165,33 +7418,25 @@ module.exports = function make_cat_params(params, viz) {
   var ini_val_opacity = {};
   ini_val_opacity.row = null;
   ini_val_opacity.col = null;
-
   viz.cat_colors = {};
   viz.cat_colors.value_opacity = ini_val_opacity;
-
   var num_colors = 0;
   ['row', 'col'].forEach(function (inst_rc) {
     viz.show_categories[inst_rc] = false;
-
     viz.all_cats[inst_rc] = [];
     var tmp_keys = Object.keys(params.network_data[inst_rc + '_nodes'][0] || {});
-
     tmp_keys = tmp_keys.sort();
-
     tmp_keys.forEach(function (d) {
       if (d.indexOf('cat-') >= 0) {
         viz.show_categories[inst_rc] = true;
         viz.all_cats[inst_rc].push(d);
       }
     });
-
     viz.cat_info[inst_rc] = null;
-
     if (viz.show_categories[inst_rc]) {
       viz.cat_colors[inst_rc] = {};
       viz.cat_info[inst_rc] = {};
       viz.cat_names[inst_rc] = {};
-
       each(viz.all_cats[inst_rc], function (cat_title) {
         var inst_node = params.network_data[inst_rc + '_nodes'][0];
 
@@ -8206,10 +7451,8 @@ module.exports = function make_cat_params(params, viz) {
         } else {
           viz.cat_names[inst_rc][cat_title] = cat_title;
         }
-
         var cat_instances_titles = utils.pluck(params.network_data[inst_rc + '_nodes'], cat_title) || [];
         var cat_instances = [];
-
         cat_instances_titles.forEach(function (inst_cat) {
           var new_cat;
           if (inst_cat.indexOf(': ') > 0) {
@@ -8217,10 +7460,8 @@ module.exports = function make_cat_params(params, viz) {
           } else {
             new_cat = inst_cat;
           }
-
           cat_instances.push(new_cat);
         });
-
         var cat_states = Array.from(new Set(cat_instances_titles)).sort();
 
         // check whether all the categories are of value type
@@ -8237,12 +7478,9 @@ module.exports = function make_cat_params(params, viz) {
 
         // pass info_info object
         viz.cat_info[inst_rc][cat_title] = inst_info;
-
         viz.cat_colors[inst_rc][cat_title] = {};
-
         cat_states.forEach(function (cat_tmp, inst_index) {
           inst_color = colors.get_random_color(inst_index + num_colors);
-
           viz.cat_colors[inst_rc][cat_title][cat_tmp] = inst_color;
 
           // hack to get 'Not' categories to not be dark colored
@@ -8252,38 +7490,28 @@ module.exports = function make_cat_params(params, viz) {
               viz.cat_colors[inst_rc][cat_title][cat_tmp] = '#eee';
             }
           }
-
           num_colors = num_colors + 1;
         });
       });
     }
-
     if (utils.has(params.network_data, 'cat_colors') && predefined_cat_colors === true) {
       viz.cat_colors[inst_rc] = params.network_data.cat_colors[inst_rc];
     }
-
     if (params.sim_mat) {
       // sending row color info to columns since row color info can be updated
       viz.cat_colors.col = viz.cat_colors.row;
     }
   });
-
   viz.cat_colors = viz.cat_colors;
-
   viz.cat_colors.opacity = 0.6;
   viz.cat_colors.active_opacity = 0.9;
-
   viz = calc_cat_params(params, viz);
-
   return viz;
 };
 
 /***/ }),
 /* 88 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 // var grid_lines_viz = require('./grid_lines_viz');
 // var toggle_grid_lines = require('./toggle_grid_lines');
@@ -8327,9 +7555,6 @@ module.exports = function draw_gridlines(params, delays, duration) {
 /* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var make_simple_rows = __webpack_require__(199);
 var d3_tip_custom = __webpack_require__(10);
 var each = __webpack_require__(1);
@@ -8339,12 +7564,10 @@ var contains = __webpack_require__(16);
 module.exports = function make_matrix_rows(params, current_matrix) {
   var row_names = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'all';
   var ds_level = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : -1;
-
   // defaults
   var y_scale = params.viz.y_scale;
   var make_tip = true;
   var row_class = 'row';
-
   if (ds_level >= 0) {
     y_scale = params.viz.ds[ds_level].y_scale;
 
@@ -8352,7 +7575,6 @@ module.exports = function make_matrix_rows(params, current_matrix) {
     make_tip = false;
     row_class = 'ds' + String(ds_level) + '_row';
   }
-
   if (make_tip) {
     // do not remove tile_tip here
     /////////////////////////////////
@@ -8367,14 +7589,12 @@ module.exports = function make_matrix_rows(params, current_matrix) {
     }).style('display', 'none').direction('nw').offset([0, 0]).html(function (d) {
       var inst_value = String(d.value.toFixed(3));
       var tooltip_string;
-
       if (params.keep_orig) {
         var orig_value = String(d.value_orig.toFixed(3));
         tooltip_string = '<p>' + d.row_name + ' and ' + d.col_name + '</p>' + '<p> normalized value: ' + inst_value + '</p>' + '<div> original value: ' + orig_value + '</div>';
       } else {
         tooltip_string = '<p>' + d.row_name + ' and ' + d.col_name + '</p>' + '<div> value: ' + inst_value + '</div>';
       }
-
       return tooltip_string;
     });
   } else {
@@ -8392,7 +7612,6 @@ module.exports = function make_matrix_rows(params, current_matrix) {
       }
     });
   }
-
   d3.select(params.root + ' .clust_group').selectAll('.row').data(matrix_subset, function (d) {
     return d.name;
   }).enter().append('g').classed(row_class, true).attr('transform', function (d) {
@@ -8400,7 +7619,6 @@ module.exports = function make_matrix_rows(params, current_matrix) {
   }).each(function (d) {
     make_simple_rows(params, d, tip, this, ds_level);
   });
-
   if (params.viz.ds_level === -1 && tip != null) {
     d3.selectAll(params.root + ' .row').call(tip);
   }
@@ -8410,14 +7628,9 @@ module.exports = function make_matrix_rows(params, current_matrix) {
 /* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var make_row_labels = __webpack_require__(91);
-
 module.exports = function make_row_label_container(cgm, text_delay) {
   var params = cgm.params;
-
   var row_container;
 
   // row container holds all row text and row visualizations (triangles rects)
@@ -8427,7 +7640,6 @@ module.exports = function make_row_label_container(cgm, text_delay) {
   } else {
     row_container = d3.select(params.viz.viz_svg).select('.row_container').attr('transform', 'translate(' + params.viz.norm_labels.margin.left + ',' + params.viz.clust.margin.top + ')');
   }
-
   if (d3.select(params.root + ' .row_white_background').empty()) {
     row_container.append('rect').classed('row_white_background', true).classed('white_bars', true).attr('fill', params.viz.background_color).attr('width', params.viz.label_background.row).attr('height', 30 * params.viz.clust.dim.height + 'px');
   }
@@ -8450,26 +7662,20 @@ module.exports = function make_row_label_container(cgm, text_delay) {
 /* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var utils = __webpack_require__(0);
 var add_row_click_hlight = __webpack_require__(207);
 var row_reorder = __webpack_require__(92);
 var make_row_tooltips = __webpack_require__(224);
 var each = __webpack_require__(1);
 var contains = __webpack_require__(16);
-
 module.exports = function make_row_labels(cgm) {
   var row_names = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'all';
   var text_delay = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-
   // console.log('make_row_labels')
   // console.log(row_names)
 
   var params = cgm.params;
   var row_nodes = [];
-
   if (row_names === 'all') {
     row_nodes = params.network_data.row_nodes;
   } else {
@@ -8484,14 +7690,12 @@ module.exports = function make_row_labels(cgm) {
   var row_labels = d3.select(params.root + ' .row_label_zoom_container').selectAll('g').data(row_nodes, function (d) {
     return d.name;
   }).enter().append('g').classed('row_label_group', true);
-
   var row_nodes_names = params.network_data.row_nodes_names || [];
   row_labels.attr('transform', function (d) {
     // var inst_index = d.row_index;
     var inst_index = row_nodes_names.indexOf(d.name);
     return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
   });
-
   row_labels.on('dblclick', function (d) {
     var data_attr = '__data__';
     var row_name = this[data_attr].name;
@@ -8513,12 +7717,10 @@ module.exports = function make_row_labels(cgm) {
     // }
 
     row_reorder(cgm, this, row_name);
-
     if (params.tile_click_hlight) {
       add_row_click_hlight(this, d.ini);
     }
   });
-
   make_row_tooltips(params);
 
   // append rectangle behind text
@@ -8566,28 +7768,20 @@ module.exports = function make_row_labels(cgm) {
 /* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var reposition_tile_highlight = __webpack_require__(93);
 var toggle_dendro_view = __webpack_require__(36);
 var ini_zoom_info = __webpack_require__(11);
 var get_previous_zoom = __webpack_require__(38);
 var calc_downsampled_levels = __webpack_require__(33);
 var $ = __webpack_require__(2);
-
 module.exports = function row_reorder(cgm, row_selection, inst_row) {
   var params = cgm.params;
   var prev_zoom = get_previous_zoom(params);
-
   if (prev_zoom.zoom_y === 1 && prev_zoom.zoom_x === 1) {
     params.viz.inst_order.row = 'custom';
     toggle_dendro_view(cgm, 'col');
-
     d3.selectAll(params.root + ' .toggle_col_order .btn').classed('active', false);
-
     params.viz.run_trans = true;
-
     var mat = $.extend(true, {}, params.matrix.matrix);
     var row_nodes = params.network_data.row_nodes;
     var col_nodes = params.network_data.col_nodes;
@@ -8626,7 +7820,6 @@ module.exports = function row_reorder(cgm, row_selection, inst_row) {
     } else {
       t = d3.select(params.root + ' .viz_svg').transition().duration(2500);
     }
-
     var col_nodes_names = params.network_data.col_nodes_names || [];
 
     // Move Col Labels
@@ -8646,11 +7839,9 @@ module.exports = function row_reorder(cgm, row_selection, inst_row) {
       t.selectAll('.tile').attr('transform', function (d) {
         return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
       });
-
       t.selectAll('.tile_up').attr('transform', function (d) {
         return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
       });
-
       t.selectAll('.tile_dn').attr('transform', function (d) {
         return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
       });
@@ -8662,7 +7853,6 @@ module.exports = function row_reorder(cgm, row_selection, inst_row) {
     d3.selectAll(params.root + ' .row_label_group').select('rect').style('opacity', 0);
     // highlight column name
     d3.select(row_selection).select('rect').style('opacity', 1);
-
     reposition_tile_highlight(params);
 
     // redefine x and y positions
@@ -8670,9 +7860,7 @@ module.exports = function row_reorder(cgm, row_selection, inst_row) {
       d.x = params.viz.x_scale(d.target);
       d.y = params.viz.y_scale(d.source);
     });
-
     params.zoom_info = ini_zoom_info();
-
     setTimeout(function () {
       params.viz.run_trans = false;
     }, 2500);
@@ -8694,10 +7882,7 @@ module.exports = function row_reorder(cgm, row_selection, inst_row) {
 
 /***/ }),
 /* 93 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function (params) {
   // resize click hlight
@@ -8739,24 +7924,18 @@ module.exports = function (params) {
 /* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var each = __webpack_require__(1);
 var utils = __webpack_require__(0);
-
 module.exports = function calc_row_dendro_triangles(params) {
   var triangle_info = {};
   var inst_level = params.group_level.row;
   var row_nodes = params.network_data.row_nodes || [];
   var row_nodes_names = params.network_data.row_nodes_names || [];
-
   each(row_nodes, function (d) {
     var tmp_group = d.group[inst_level];
     var inst_index = row_nodes_names.indexOf(d.name);
     var inst_top = params.viz.y_scale(inst_index);
     var inst_bot = inst_top + params.viz.y_scale.rangeBand();
-
     if (!utils.has(triangle_info, tmp_group)) {
       triangle_info[tmp_group] = {};
       triangle_info[tmp_group].name_top = d.name;
@@ -8768,28 +7947,22 @@ module.exports = function calc_row_dendro_triangles(params) {
       triangle_info[tmp_group].all_names = [];
       triangle_info[tmp_group].inst_rc = 'row';
     }
-
     triangle_info[tmp_group].all_names.push(d.name);
-
     if (inst_top < triangle_info[tmp_group].pos_top) {
       triangle_info[tmp_group].name_top = d.name;
       triangle_info[tmp_group].pos_top = inst_top;
       triangle_info[tmp_group].pos_mid = (inst_top + triangle_info[tmp_group].pos_bot) / 2;
     }
-
     if (inst_bot > triangle_info[tmp_group].pos_bot) {
       triangle_info[tmp_group].name_bot = d.name;
       triangle_info[tmp_group].pos_bot = inst_bot;
       triangle_info[tmp_group].pos_mid = (triangle_info[tmp_group].pos_top + inst_bot) / 2;
     }
   });
-
   var group_info = [];
-
   each(triangle_info, function (d) {
     group_info.push(d);
   });
-
   return group_info;
 };
 
@@ -8797,24 +7970,18 @@ module.exports = function calc_row_dendro_triangles(params) {
 /* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var each = __webpack_require__(1);
 var utils = __webpack_require__(0);
-
 module.exports = function calc_col_dendro_triangles(params) {
   var triangle_info = {};
   var inst_level = params.group_level.col;
   var col_nodes = params.network_data.col_nodes || [];
   var col_nodes_names = params.network_data.col_nodes_names || [];
-
   each(col_nodes, function (d) {
     var tmp_group = d.group[inst_level];
     var inst_index = col_nodes_names.indexOf(d.name);
     var inst_top = params.viz.x_scale(inst_index);
     var inst_bot = inst_top + params.viz.x_scale.rangeBand();
-
     if (!utils.has(triangle_info, tmp_group)) {
       triangle_info[tmp_group] = {};
       triangle_info[tmp_group].name_top = d.name;
@@ -8826,28 +7993,22 @@ module.exports = function calc_col_dendro_triangles(params) {
       triangle_info[tmp_group].all_names = [];
       triangle_info[tmp_group].inst_rc = 'col';
     }
-
     triangle_info[tmp_group].all_names.push(d.name);
-
     if (inst_top < triangle_info[tmp_group].pos_top) {
       triangle_info[tmp_group].name_top = d.name;
       triangle_info[tmp_group].pos_top = inst_top;
       triangle_info[tmp_group].pos_mid = (inst_top + triangle_info[tmp_group].pos_bot) / 2;
     }
-
     if (inst_bot > triangle_info[tmp_group].pos_bot) {
       triangle_info[tmp_group].name_bot = d.name;
       triangle_info[tmp_group].pos_bot = inst_bot;
       triangle_info[tmp_group].pos_mid = (triangle_info[tmp_group].pos_top + inst_bot) / 2;
     }
   });
-
   var group_info = [];
-
   each(triangle_info, function (d) {
     group_info.push(d);
   });
-
   return group_info;
 };
 
@@ -8855,11 +8016,7 @@ module.exports = function calc_col_dendro_triangles(params) {
 /* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var dendro_shade_bars = __webpack_require__(208);
-
 module.exports = function dendro_group_highlight(params, inst_selection, inst_data, inst_rc) {
   // only make shadows if there is more than one crop button
   if (d3.selectAll(params.root + ' .' + inst_rc + '_dendro_crop_buttons')[0].length > 1) {
@@ -8867,21 +8024,18 @@ module.exports = function dendro_group_highlight(params, inst_selection, inst_da
   } else {
     d3.selectAll(params.root + ' .dendro_shadow').remove();
   }
-
   function still_hovering() {
     // check that user is still hovering over dendrogram group
     if (d3.select(inst_selection).classed('hovering')) {
       // check that user is not using dendrogram slider
       if (params.is_slider_drag === false) {
         d3.select(inst_selection).style('opacity', 0.7);
-
         if (d3.select(params.viz.viz_svg).classed('running_update') === false) {
           make_shadow_bars();
         }
       }
     }
   }
-
   function make_shadow_bars() {
     if (inst_rc === 'row') {
       // row and col labling are reversed
@@ -8906,10 +8060,7 @@ module.exports = function dendro_group_highlight(params, inst_selection, inst_da
 
 /***/ }),
 /* 97 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function zoom_crop_triangles(params, zoom_info, inst_rc) {
   if (inst_rc === 'row') {
@@ -8933,7 +8084,6 @@ module.exports = function zoom_crop_triangles(params, zoom_info, inst_rc) {
       return 'translate(' + inst_x + ',' + inst_y + ') ' + 'scale(' + 1 / inst_zoom + ', 1)';
     });
   }
-
   function constrain_zoom(curr_zoom, tri_height) {
     var inst_zoom;
     var default_tri_height = 10;
@@ -8956,18 +8106,14 @@ module.exports = function zoom_crop_triangles(params, zoom_info, inst_rc) {
 
 var extend = __webpack_require__(4).extend;
 var array = __webpack_require__(22);
-
 function factory(type, config, load, typed) {
   var latex = __webpack_require__(14);
-
   var matrix = load(__webpack_require__(8));
   var addScalar = load(__webpack_require__(78));
   var multiplyScalar = load(__webpack_require__(216));
   var equalScalar = load(__webpack_require__(23));
-
   var algorithm11 = load(__webpack_require__(217));
   var algorithm14 = load(__webpack_require__(30));
-
   var DenseMatrix = type.DenseMatrix;
   var SparseMatrix = type.SparseMatrix;
 
@@ -9016,7 +8162,6 @@ function factory(type, config, load, typed) {
       // return array or scalar
       return type.isMatrix(m) ? m.valueOf() : m;
     },
-
     'Matrix, Matrix': function MatrixMatrix(x, y) {
       // dimensions
       var xsize = x.size();
@@ -9043,17 +8188,14 @@ function factory(type, config, load, typed) {
       // Matrix * Matrix
       return _multiplyMatrixMatrix(x, y);
     },
-
     'Matrix, Array': function MatrixArray(x, y) {
       // use Matrix * Matrix implementation
       return multiply(x, matrix(y));
     },
-
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use Matrix * Matrix implementation
       return multiply(matrix(x, y.storage()), y);
     },
-
     'Matrix, any': function MatrixAny(x, y) {
       // result
       var c;
@@ -9069,7 +8211,6 @@ function factory(type, config, load, typed) {
       }
       return c;
     },
-
     'any, Matrix': function anyMatrix(x, y) {
       // result
       var c;
@@ -9084,30 +8225,23 @@ function factory(type, config, load, typed) {
       }
       return c;
     },
-
     'Array, any': function ArrayAny(x, y) {
       // use matrix implementation
       return algorithm14(matrix(x), y, multiplyScalar, false).valueOf();
     },
-
     'any, Array': function anyArray(x, y) {
       // use matrix implementation
       return algorithm14(matrix(y), x, multiplyScalar, true).valueOf();
     },
-
     'any, any': multiplyScalar,
-
     'Array | Matrix | any, Array | Matrix | any, ...any': function ArrayMatrixAnyArrayMatrixAnyAny(x, y, rest) {
       var result = multiply(x, y);
-
       for (var i = 0; i < rest.length; i++) {
         result = multiply(result, rest[i]);
       }
-
       return result;
     }
   }, multiplyScalar.signatures));
-
   var _validateMatrixDimensions = function _validateMatrixDimensions(size1, size2) {
     // check left operand dimensions
     switch (size1.length) {
@@ -9903,23 +9037,17 @@ function factory(type, config, load, typed) {
     // return sparse matrix
     return c;
   };
-
   multiply.toTex = {
     2: '\\left(${args[0]}' + latex.operators['multiply'] + '${args[1]}\\right)'
   };
-
   return multiply;
 }
-
 exports.name = 'multiply';
 exports.factory = factory;
 
 /***/ }),
 /* 99 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var restArguments = __webpack_require__(229);
 var _flatten = __webpack_require__(230);
@@ -9934,15 +9062,11 @@ var difference = restArguments(function (array, rest) {
     return !contains(rest, value);
   });
 });
-
 module.exports = difference;
 
 /***/ }),
 /* 100 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function col_viz_aid_triangle(params) {
   // x and y are flipped since its rotated
@@ -9960,25 +9084,18 @@ module.exports = function col_viz_aid_triangle(params) {
 /* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var all_reorder = __webpack_require__(102);
-
 module.exports = function ini_cat_reorder(cgm) {
   /* eslint-disable */
 
   var params = cgm.params;
-
   ['row', 'col'].forEach(function (inst_rc) {
     if (params.viz.show_categories[inst_rc]) {
       d3.selectAll(params.root + ' .' + inst_rc + '_cat_super').on('dblclick', function () {
         if (params.sim_mat) {
           inst_rc = 'both';
         }
-
         d3.selectAll(params.root + ' .toggle_' + inst_rc + '_order .btn').classed('active', false);
-
         var order_id = this.__data__.replace('-', '_') + '_index';
         if (params.viz.sim_mat) {
           all_reorder(cgm, order_id, 'row');
@@ -9995,21 +9112,15 @@ module.exports = function ini_cat_reorder(cgm) {
 /* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var toggle_dendro_view = __webpack_require__(36);
 var show_visible_area = __webpack_require__(13);
 var ini_zoom_info = __webpack_require__(11);
 var calc_downsampled_levels = __webpack_require__(33);
 var two_translate_zoom = __webpack_require__(17);
 var get_previous_zoom = __webpack_require__(38);
-
 module.exports = function (cgm, inst_order, inst_rc) {
   var params = cgm.params;
-
   var prev_zoom = get_previous_zoom(params);
-
   var delay_reorder = 0;
   if (prev_zoom.zoom_y != 1 || prev_zoom.zoom_x != 1) {
     // reset zoom before reordering
@@ -10024,7 +9135,6 @@ module.exports = function (cgm, inst_order, inst_rc) {
   } else if (inst_rc === 'col') {
     other_rc = 'row';
   }
-
   params.viz.run_trans = true;
 
   // save order state
@@ -10033,11 +9143,9 @@ module.exports = function (cgm, inst_order, inst_rc) {
   } else if (other_rc === 'col') {
     params.viz.inst_order.col = inst_order;
   }
-
   if (params.viz.show_dendrogram) {
     toggle_dendro_view(cgm, inst_rc);
   }
-
   if (other_rc === 'row') {
     params.viz.x_scale.domain(params.matrix.orders[params.viz.inst_order.row + '_row']);
   } else if (other_rc == 'col') {
@@ -10051,7 +9159,6 @@ module.exports = function (cgm, inst_order, inst_rc) {
   } else {
     t = d3.select(params.root + ' .viz_svg');
   }
-
   var row_nodes_names = params.network_data.row_nodes_names || [];
   var col_nodes_names = params.network_data.col_nodes_names || [];
 
@@ -10063,11 +9170,9 @@ module.exports = function (cgm, inst_order, inst_rc) {
     }).selectAll('.tile').attr('transform', function (d) {
       return 'translate(' + params.viz.x_scale(d.pos_x) + ' , 0)';
     });
-
     t.selectAll('.tile_up').attr('transform', function (d) {
       return 'translate(' + params.viz.x_scale(d.pos_x) + ' , 0)';
     });
-
     t.selectAll('.tile_dn').attr('transform', function (d) {
       return 'translate(' + params.viz.x_scale(d.pos_x) + ' , 0)';
     });
@@ -10102,7 +9207,6 @@ module.exports = function (cgm, inst_order, inst_rc) {
     d.x = params.viz.x_scale(d.target);
     d.y = params.viz.y_scale(d.source);
   });
-
   params.zoom_info = ini_zoom_info();
 
   // calculate downsmapling if necessary
@@ -10117,7 +9221,6 @@ module.exports = function (cgm, inst_order, inst_rc) {
     // if needed to reset zoom
     show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);
   }
-
   setTimeout(function () {
     params.viz.run_trans = false;
   }, 2500);
@@ -10125,10 +9228,7 @@ module.exports = function (cgm, inst_order, inst_rc) {
 
 /***/ }),
 /* 103 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function toggle_grid_lines(params) {
   if (params.zoom_info.zoom_x * params.viz.border_width.x > 1) {
@@ -10136,7 +9236,6 @@ module.exports = function toggle_grid_lines(params) {
   } else {
     d3.selectAll(params.root + ' .vert_lines').select('line').style('display', 'none');
   }
-
   if (params.zoom_info.zoom_y * params.viz.border_width.y > 1) {
     d3.selectAll(params.root + ' .horz_lines').select('line').style('display', 'block').style('opacity', 0).transition().style('opacity', 1);
   } else {
@@ -10146,10 +9245,7 @@ module.exports = function toggle_grid_lines(params) {
 
 /***/ }),
 /* 104 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 // var resize_viz = require('./reset_size/resize_viz');
 
@@ -10243,9 +9339,6 @@ module.exports = function initialize_resizing(cgm) {
 /* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var cat_tooltip_text = __webpack_require__(106);
 var d3_tip_custom = __webpack_require__(10);
 var reset_cat_opacity = __webpack_require__(107);
@@ -10254,7 +9347,6 @@ var ini_cat_opacity = __webpack_require__(108);
 var get_cat_names = __webpack_require__(109);
 var each = __webpack_require__(1);
 var $ = __webpack_require__(2);
-
 module.exports = function make_col_cat(cgm) {
   var params = cgm.params;
 
@@ -10291,18 +9383,15 @@ module.exports = function make_col_cat(cgm) {
     // return 'translate(' + params.viz.x_scale(d.col_index) + ',0)';
     return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
   });
-
   d3.select(params.root + ' .col_cat_container').selectAll('.col_cat_group').call(cat_tip);
 
   // add category rects
   d3.selectAll(params.root + ' .col_cat_group').each(function () {
     var inst_selection = this;
     var cat_rect;
-
     each(params.viz.all_cats.col, function (inst_cat) {
       var inst_num = parseInt(inst_cat.split('-')[1], 10);
       var cat_rect_class = 'col_cat_rect_' + String(inst_num);
-
       if (d3.select(inst_selection).select('.' + cat_rect_class).empty()) {
         cat_rect = d3.select(inst_selection).append('rect').attr('class', cat_rect_class).attr('cat', inst_cat).attr('transform', function () {
           var cat_room = params.viz.cat_room.symbol_width + params.viz.cat_room.separation;
@@ -10311,7 +9400,6 @@ module.exports = function make_col_cat(cgm) {
         }).on('click', function (d) {
           if (d3.select(this).classed('cat_strings')) {
             var found_names = get_cat_names(params, d, this, 'col');
-
             $(params.root + ' .dendro_info').modal('toggle');
             var group_string = found_names.join(', ');
             d3.select(params.root + ' .dendro_info input').attr('value', group_string);
@@ -10320,7 +9408,6 @@ module.exports = function make_col_cat(cgm) {
       } else {
         cat_rect = d3.select(inst_selection).select('.' + cat_rect_class);
       }
-
       cat_rect.attr('width', params.viz.x_scale.rangeBand()).attr('height', params.viz.cat_room.symbol_width).style('fill', function (d) {
         var cat_name = d[inst_cat];
         var inst_color = params.viz.cat_colors.col[inst_cat][cat_name];
@@ -10329,10 +9416,8 @@ module.exports = function make_col_cat(cgm) {
         cat_tip.hide(this);
         reset_cat_opacity(params);
         d3.select(this).classed('hovering', false);
-
         d3.selectAll('.d3-tip').style('display', 'none');
       });
-
       ini_cat_opacity(params.viz, 'col', cat_rect, inst_cat);
     });
   });
@@ -10342,21 +9427,15 @@ module.exports = function make_col_cat(cgm) {
 /* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var get_cat_title = __webpack_require__(57);
-
 module.exports = function cat_tooltip_text(params, inst_data, inst_selection, inst_rc) {
   d3.selectAll(params.viz.root_tips + '_col_cat_tip').style('display', 'block');
-
   d3.selectAll(params.viz.root_tips + '_row_cat_tip').style('display', 'block');
 
   // category index
   var inst_cat = d3.select(inst_selection).attr('cat');
   var cat_title = get_cat_title(params.viz, inst_cat, inst_rc);
   var cat_name = inst_data[inst_cat];
-
   if (typeof cat_name === 'string') {
     if (cat_name.indexOf(': ') >= 0) {
       cat_name = cat_name.split(': ')[1];
@@ -10368,23 +9447,16 @@ module.exports = function cat_tooltip_text(params, inst_data, inst_selection, in
 
   /* new string with click instructions */
   var cat_string = '<div>' + cat_title + ': ' + cat_name + '</div> <div> <br>Click for Category Menu </div>';
-
   d3.select(inst_selection).classed('hovering', true);
-
   setTimeout(highlight_categories, 500);
-
   return cat_string;
-
   function highlight_categories() {
     var run_highlighting = false;
-
     if (d3.select(inst_selection).classed('hovering')) {
       var node_types = [inst_rc];
-
       if (params.viz.sim_mat) {
         node_types = ['row', 'col'];
       }
-
       node_types.forEach(function (tmp_rc) {
         // only highlight string categories that are not 'false' categories
         if (typeof cat_name === 'string') {
@@ -10392,28 +9464,23 @@ module.exports = function cat_tooltip_text(params, inst_data, inst_selection, in
             run_highlighting = true;
           }
         }
-
         if (run_highlighting) {
           d3.selectAll(params.root + ' .' + tmp_rc + '_cat_group').selectAll('rect').style('opacity', function (d) {
             var inst_opacity = d3.select(this).style('opacity');
-
             if (d3.select(this).classed('cat_strings') && d3.select(this).classed('filtered_cat') === false) {
               var tmp_name;
               var tmp_cat = d3.select(this).attr('cat');
-
               if (d[tmp_cat].indexOf(': ') >= 0) {
                 tmp_name = d[tmp_cat].split(': ')[1];
               } else {
                 tmp_name = d[tmp_cat];
               }
-
               if (tmp_cat === inst_cat && tmp_name === cat_name) {
                 inst_opacity = params.viz.cat_colors.active_opacity;
               } else {
                 inst_opacity = params.viz.cat_colors.opacity / 4;
               }
             }
-
             return inst_opacity;
           });
         }
@@ -10424,20 +9491,15 @@ module.exports = function cat_tooltip_text(params, inst_data, inst_selection, in
 
 /***/ }),
 /* 107 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function reset_cat_opacity(params) {
   ['row', 'col'].forEach(function (inst_rc) {
     d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').selectAll('rect').style('opacity', function () {
       var inst_opacity = d3.select(this).style('opacity');
-
       if (d3.select(this).classed('cat_strings') && d3.select(this).classed('filtered_cat') === false) {
         inst_opacity = params.viz.cat_colors.opacity;
       }
-
       return inst_opacity;
     });
   });
@@ -10445,14 +9507,10 @@ module.exports = function reset_cat_opacity(params) {
 
 /***/ }),
 /* 108 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function ini_cat_opacity(viz, inst_rc, cat_rect, inst_cat) {
   var updating = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
-
   // debugger;
 
   var super_string = ': ';
@@ -10471,13 +9529,10 @@ module.exports = function ini_cat_opacity(viz, inst_rc, cat_rect, inst_cat) {
     // opacity varies based on value
     cat_rect.classed('cat_values', true).style('opacity', function (d) {
       var unprocessed_val = d[inst_cat];
-
       var cat_value = get_cat_value(unprocessed_val);
-
       return viz.cat_info[inst_rc][inst_cat].cat_scale(Math.abs(cat_value));
     }).style('fill', function (d) {
       var inst_color;
-
       var cat_value = get_cat_value(d[inst_cat]);
 
       // get positive and negative colors
@@ -10486,20 +9541,16 @@ module.exports = function ini_cat_opacity(viz, inst_rc, cat_rect, inst_cat) {
       } else {
         inst_color = viz.cat_value_colors[1];
       }
-
       return inst_color;
     });
   }
-
   function get_cat_value(unprocessed_value) {
     if (typeof unprocessed_value === 'string') {
       if (unprocessed_value.indexOf(super_string) > -1) {
         unprocessed_value = unprocessed_value.split(super_string)[1];
       }
     }
-
     var cat_value = parseFloat(unprocessed_value);
-
     return cat_value;
   }
 };
@@ -10508,24 +9559,17 @@ module.exports = function ini_cat_opacity(viz, inst_rc, cat_rect, inst_cat) {
 /* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var utils = __webpack_require__(0);
 var filter = __webpack_require__(1);
-
 module.exports = function get_cat_names(params, inst_data, inst_selection, inst_rc) {
   // category index
   var inst_cat = d3.select(inst_selection).attr('cat');
   var cat_name = inst_data[inst_cat];
   var tmp_nodes = params.network_data[inst_rc + '_nodes'];
-
   var found_nodes = filter(tmp_nodes, function (d) {
     return d[inst_cat] == cat_name;
   });
-
   var found_names = utils.pluck(found_nodes, 'name');
-
   return found_names;
 };
 
@@ -10533,14 +9577,9 @@ module.exports = function get_cat_names(params, inst_data, inst_selection, inst_
 /* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var make_dendro_triangles = __webpack_require__(26);
-
 module.exports = function make_row_dendro(cgm) {
   var params = cgm.params;
-
   var spillover_width = params.viz.dendro_room.row + params.viz.uni_margin;
 
   // position row_dendro_outer_container
@@ -10550,20 +9589,15 @@ module.exports = function make_row_dendro(cgm) {
   // make or reuse outer container
   if (d3.select(params.root + ' .row_dendro_outer_container').empty()) {
     d3.select(params.root + ' .viz_svg').append('g').attr('class', 'row_dendro_outer_container').attr('transform', 'translate(' + x_offset + ',' + y_offset + ')');
-
     d3.select(params.root + ' .row_dendro_outer_container').append('rect').classed('row_dendro_spillover', true).attr('fill', params.viz.background_color).attr('width', spillover_width + 'px').attr('height', params.viz.svg_dim.height);
-
     d3.select(params.root + ' .row_dendro_outer_container').append('g').attr('class', 'row_dendro_container').attr('transform', 'translate(' + params.viz.uni_margin / 2 + ',0)');
   } else {
     d3.select(params.root + ' .viz_svg').select('row_dendro_outer_container').attr('transform', 'translate(' + x_offset + ',' + y_offset + ')');
-
     d3.select(params.root + ' .row_dendro_outer_container').select('.row_dendro_spillover').attr('width', spillover_width + 'px').attr('height', params.viz.svg_dim.height);
   }
-
   if (cgm.config.show_dendrogram) {
     make_dendro_triangles(cgm, 'row', false);
   }
-
   if (params.viz.inst_order.col != 'clust') {
     d3.selectAll(params.root + ' .row_dendro_group').remove();
   }
@@ -10573,11 +9607,7 @@ module.exports = function make_row_dendro(cgm) {
 /* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var make_dendro_triangles = __webpack_require__(26);
-
 module.exports = function make_col_dendro(cgm) {
   var params = cgm.params;
 
@@ -10589,22 +9619,16 @@ module.exports = function make_col_dendro(cgm) {
   // make or reuse outer container
   if (d3.select(params.root + ' .col_dendro_outer_container').empty()) {
     d3.select(params.root + ' .viz_svg').append('g').attr('class', 'col_dendro_outer_container').attr('transform', 'translate(' + x_offset + ',' + y_offset + ')');
-
     d3.select(params.root + ' .col_dendro_outer_container').append('rect').classed('col_dendro_spillover', true).attr('fill', params.viz.background_color).attr('width', params.viz.svg_dim.width).attr('height', spillover_height + 'px');
-
     d3.select(params.root + ' .col_dendro_outer_container').append('g').attr('class', 'col_dendro_container').attr('transform', 'translate(0,' + params.viz.uni_margin / 2 + ')');
-
     d3.select(params.root + ' .col_dendro_outer_container').append('rect').classed('col_dendro_spillover_top', true).attr('fill', params.viz.background_color).attr('width', params.viz.svg_dim.width).attr('height', params.viz.svg_dim.height).attr('transform', 'translate(0,' + params.viz.dendro_room.col + ')');
   } else {
     d3.select(params.root + ' .viz_svg').select('col_dendro_outer_container').attr('transform', 'translate(' + x_offset + ',' + y_offset + ')');
-
     d3.select(params.root + ' .col_dendro_outer_container').select('.col_dendro_spillover').attr('width', params.viz.svg_dim.width).attr('height', spillover_height + 'px');
   }
-
   if (cgm.config.show_dendrogram) {
     make_dendro_triangles(cgm, 'col', false);
   }
-
   if (params.viz.inst_order.row != 'clust') {
     d3.selectAll(params.root + ' .col_dendro_group').remove();
   }
@@ -10614,37 +9638,27 @@ module.exports = function make_col_dendro(cgm) {
 /* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var make_dendro_triangles = __webpack_require__(26);
 
 /* Changes the groupings (x- and y-axis color bars).
  */
 module.exports = function (cgm, inst_rc, inst_index) {
   var params = cgm.params;
-
   if (inst_rc === 'row') {
     params.group_level.row = inst_index;
   } else if (inst_rc === 'col') {
     params.group_level.col = inst_index;
   }
-
   var is_change_group = true;
-
   make_dendro_triangles(cgm, inst_rc, is_change_group);
 };
 
 /***/ }),
 /* 113 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function position_dendro_slider(cgm) {
   var inst_rc = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'row';
-
   var viz = cgm.params.viz;
   var tmp_left;
   var tmp_top;
@@ -10657,7 +9671,6 @@ module.exports = function position_dendro_slider(cgm) {
 
     // position close to row dendrogram trapezoids
     tmp_left = viz.clust.margin.left + viz.clust.dim.width + 5.25 * viz.dendro_room.row + 2;
-
     if (tmp_left > max_room) {
       tmp_left = max_room;
     }
@@ -10689,30 +9702,21 @@ module.exports = function position_dendro_slider(cgm) {
 
 /***/ }),
 /* 114 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function check_zoom_stop_status(params) {
   var inst_zoom = Number(d3.select(params.root + ' .viz_svg').attr('is_zoom'));
-
   var check_stop = Number(d3.select(params.root + ' .viz_svg').attr('stopped_zoom'));
-
   var stop_attributes = false;
   if (inst_zoom === 0 && check_stop != 0) {
     stop_attributes = true;
   }
-
   return stop_attributes;
 };
 
 /***/ }),
 /* 115 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function (params) {
   // reset zoom
@@ -10721,29 +9725,20 @@ module.exports = function (params) {
   // var zoom_x = 1;
   var pan_dx = 0;
   var pan_dy = 0;
-
   var half_height = params.viz.clust.dim.height / 2;
   var center_y = -(zoom_y - 1) * half_height;
-
   d3.select(params.root + ' .clust_group').attr('transform', 'translate(' + [0, 0 + center_y] + ')' + ' scale(' + 1 + ',' + zoom_y + ')' + 'translate(' + [pan_dx, pan_dy] + ')');
-
   d3.select(params.root + ' .row_label_zoom_container').attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' + zoom_y + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
-
   d3.select(params.root + ' .row_cat_container').attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' + 1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
-
   d3.select(params.root + ' .row_dendro_container').attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' + zoom_y + ',' + zoom_y + ')' + 'translate(' + [params.viz.uni_margin / 2, pan_dy] + ')');
-
   d3.select(params.root + ' .col_zoom_container').attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
-
   d3.select(params.root + ' .col_cat_container').attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
-
   d3.select(params.root + ' .col_dendro_container').attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, params.viz.uni_margin / 2] + ')');
 
   // reset crop button zooming
   d3.select(params.root + ' .row_dendro_icons_group').attr('transform', function () {
     return 'translate(0,0) scale(1)';
   });
-
   d3.select(params.root + ' .row_dendro_icons_group').selectAll('path').attr('transform', function (d) {
     var inst_x = 7;
     var inst_y = d.pos_mid;
@@ -10753,33 +9748,25 @@ module.exports = function (params) {
 
 /***/ }),
 /* 116 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function resize_dendro(params, svg_group) {
   var delay_info = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
   // resize dendrogram
   ///////////////////
 
   var delays = {};
-
   if (delay_info === false) {
     delays.run_transition = false;
   } else {
     delays = delay_info;
   }
-
   var duration = params.viz.duration;
   var col_nodes = params.network_data.col_nodes;
   var col_nodes_names = params.network_data.col_nodes_names || [];
-
   var dendro_group;
   if (delays.run_transition) {
     dendro_group = svg_group.transition().delay(delays.update).duration(duration);
-
     svg_group.selectAll('.col_cat_group')
     // data binding needed for loss/gain of columns
     .data(col_nodes, function (d) {
@@ -10788,7 +9775,6 @@ module.exports = function resize_dendro(params, svg_group) {
       var inst_index = col_nodes_names.indexOf(d.name);
       return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
     });
-
     svg_group.selectAll('.col_dendro_group')
     // data binding needed for loss/gain of columns
     .data(col_nodes, function (d) {
@@ -10799,7 +9785,6 @@ module.exports = function resize_dendro(params, svg_group) {
     });
   } else {
     dendro_group = svg_group;
-
     svg_group.selectAll('.col_cat_group')
     // data binding needed for loss/gain of columns
     .data(col_nodes, function (d) {
@@ -10808,7 +9793,6 @@ module.exports = function resize_dendro(params, svg_group) {
       var inst_index = col_nodes_names.indexOf(d.name);
       return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
     });
-
     d3.select(params.root).selectAll('.col_dendro_group')
     // data binding needed for loss/gain of columns
     .data(col_nodes, function (d) {
@@ -10818,16 +9802,12 @@ module.exports = function resize_dendro(params, svg_group) {
       return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
     });
   }
-
   var i;
   var inst_class;
-
   ['row', 'col'].forEach(function (inst_rc) {
     var num_cats = params.viz.all_cats[inst_rc].length;
-
     for (i = 0; i < num_cats; i++) {
       inst_class = '.' + inst_rc + '_cat_rect_' + String(i);
-
       if (inst_rc === 'row') {
         dendro_group.selectAll(inst_class).attr('height', params.viz.y_scale.rangeBand());
       } else {
@@ -10840,19 +9820,13 @@ module.exports = function resize_dendro(params, svg_group) {
   var x_offset = params.viz.clust.margin.left + params.viz.clust.dim.width;
   var y_offset = params.viz.clust.margin.top;
   var spillover_width = params.viz.dendro_room.row + params.viz.uni_margin;
-
   d3.select(params.root + ' .viz_svg').select('row_dendro_outer_container').attr('transform', 'translate(' + x_offset + ',' + y_offset + ')');
-
   d3.select(params.root + ' .row_dendro_outer_container').select('.row_dendro_spillover').attr('width', spillover_width + 'px').attr('height', params.viz.svg_dim.height);
-
   x_offset = params.viz.clust.margin.left;
   y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height;
   var spillover_height = params.viz.dendro_room.col + params.viz.uni_margin;
-
   d3.select(params.root + ' .col_dendro_outer_container').select('.col_dendro_spillover').attr('width', params.viz.svg_dim.width).attr('height', spillover_height + 'px');
-
   d3.select(params.root + ' .col_dendro_outer_container').select('.col_dendro_spillover_top').attr('width', params.viz.svg_dim.width).attr('height', params.viz.svg_dim.height).attr('transform', 'translate(0,' + params.viz.dendro_room.col + ')');
-
   x_offset = params.viz.clust.margin.left;
   y_offset = 0;
   d3.select(params.root + ' .col_dendro_icons_container').attr('transform', 'translate(' + x_offset + ',' + y_offset + ')');
@@ -10860,30 +9834,23 @@ module.exports = function resize_dendro(params, svg_group) {
 
 /***/ }),
 /* 117 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function resize_super_labels(params, ini_svg_group) {
   var delay_info = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
   var delays = {};
   var duration = params.viz.duration;
   var svg_group;
-
   if (delay_info === false) {
     delays.run_transition = false;
   } else {
     delays = delay_info;
   }
-
   if (delays.run_transition) {
     svg_group = ini_svg_group.transition().delay(delays.update).duration(duration);
   } else {
     svg_group = ini_svg_group;
   }
-
   svg_group.select('.super_col_bkg').attr('height', params.viz.super_labels.dim.width + 'px').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.grey_border_width + ')');
 
   // super col title
@@ -10892,9 +9859,7 @@ module.exports = function resize_super_labels(params, ini_svg_group) {
     var inst_y = params.viz.super_labels.dim.width;
     return 'translate(' + inst_x + ',' + inst_y + ')';
   });
-
   svg_group.select('.super_row_bkg').attr('width', params.viz.super_labels.dim.width + 'px').attr('transform', 'translate(' + params.viz.grey_border_width + ',0)');
-
   svg_group.select('.super_row').attr('transform', function () {
     var inst_x = params.viz.super_labels.dim.width;
     var inst_y = params.viz.clust.dim.height / 2 + params.viz.norm_labels.width.col;
@@ -10904,50 +9869,36 @@ module.exports = function resize_super_labels(params, ini_svg_group) {
 
 /***/ }),
 /* 118 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function resize_spillover(viz, ini_svg_group) {
   var delay_info = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
   var delays = {};
   var duration = viz.duration;
   var svg_group;
-
   if (delay_info === false) {
     delays.run_transition = false;
   } else {
     delays = delay_info;
   }
-
   if (delays.run_transition) {
     svg_group = ini_svg_group.transition().delay(delays.update).duration(duration);
   } else {
     svg_group = ini_svg_group;
   }
-
   svg_group.select(viz.root + ' .right_slant_triangle').attr('transform', 'translate(' + viz.clust.dim.width + ',' + viz.norm_labels.width.col + ')');
-
   svg_group.select(viz.root + ' .left_slant_triangle').attr('transform', 'translate(-1,' + viz.norm_labels.width.col + ')');
-
   var rect_height = viz.clust.margin.top + viz.uni_margin / 5;
   svg_group.select(viz.root + ' .top_left_white').attr('width', viz.clust.margin.left).attr('height', rect_height);
-
   var tmp_left = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin + viz.dendro_room.row;
   var tmp_top = viz.norm_labels.margin.top + viz.norm_labels.width.col;
-
   svg_group.select(viz.root + ' .right_spillover_container').attr('transform', function () {
     return 'translate(' + tmp_left + ', 0)';
   });
-
   tmp_top = viz.norm_labels.margin.top + viz.norm_labels.width.col;
-
   svg_group.select(viz.root + ' .right_spillover_container rect').attr('transform', function () {
     return 'translate( 0,' + tmp_top + ')';
   });
-
   svg_group.select(viz.root + ' .right_spillover').attr('height', viz.svg_dim.height + 'px');
 
   // resize dendro spillovers
@@ -10964,20 +9915,16 @@ module.exports = function resize_spillover(viz, ini_svg_group) {
   y_offset = viz.clust.margin.top + viz.clust.dim.height;
   tmp_width = viz.clust.margin.left;
   tmp_height = viz.clust.dim.height * 10;
-
   svg_group.select('.dendro_col_spillover').attr('width', tmp_width).attr('height', tmp_height).attr('transform', function () {
     return 'translate(' + x_offset + ',' + y_offset + ')';
   });
-
   x_offset = viz.clust.margin.left + viz.clust.dim.width;
   y_offset = viz.clust.margin.top + viz.clust.dim.height;
   tmp_width = viz.cat_room.col + viz.clust.dim.width;
   tmp_height = viz.cat_room.row + viz.uni_margin;
-
   svg_group.select('.dendro_corner_spillover').attr('width', tmp_width).attr('height', tmp_height).attr('transform', function () {
     return 'translate(' + x_offset + ',' + y_offset + ')';
   });
-
   x_offset = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin;
   y_offset = viz.norm_labels.margin.top + viz.norm_labels.width.col + 2.5 * viz.uni_margin;
   var extra_x_room = 2.75;
@@ -10991,7 +9938,6 @@ module.exports = function resize_spillover(viz, ini_svg_group) {
       return 'translate(' + x_offset + ',' + inst_y + ')';
     });
   }
-
   if (viz.show_categories.row) {
     d3.select(viz.root + ' .row_cat_label_container').attr('transform', function () {
       x_offset = viz.norm_labels.margin.left + viz.norm_labels.width.row + viz.cat_room.symbol_width + extra_x_room * viz.uni_margin;
@@ -11006,14 +9952,11 @@ module.exports = function resize_spillover(viz, ini_svg_group) {
   } else {
     y_offset = viz.clust.margin.top + viz.clust.dim.height;
   }
-
   d3.select(viz.root + ' .bottom_spillover_container').attr('transform', function () {
     // shift up enough to show the entire border width
     return 'translate(0,' + y_offset + ')';
   });
-
   svg_group.select(viz.root + ' .bottom_spillover').attr('width', viz.svg_dim.width).attr('height', 2 * viz.svg_dim.height);
-
   var inst_height = viz.cat_room.col + 1.5 * viz.uni_margin;
   // white rect to cover excess labels
   d3.select(viz.viz_svg + ' .top_right_white').attr('fill', viz.background_color).attr('width', 2 * viz.clust.dim.width).attr('height', inst_height).attr('transform', function () {
@@ -11025,27 +9968,20 @@ module.exports = function resize_spillover(viz, ini_svg_group) {
 
 /***/ }),
 /* 119 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function resize_row_labels(params, ini_svg_group) {
   var delay_info = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
   var delays = {};
   var duration = params.viz.duration;
   var svg_group;
-
   var row_nodes = params.network_data.row_nodes;
   var row_nodes_names = params.network_data.row_nodes_names || [];
-
   if (delay_info === false) {
     delays.run_transition = false;
   } else {
     delays = delay_info;
   }
-
   if (delays.run_transition) {
     ini_svg_group.selectAll('.row_label_group')
     // data bind necessary for loss/gain of rows
@@ -11055,7 +9991,6 @@ module.exports = function resize_row_labels(params, ini_svg_group) {
       var inst_index = row_nodes_names.indexOf(d.name);
       return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
     }).attr('y', params.viz.rect_height * 0.5 + params.labels.default_fs_row * 0.35);
-
     svg_group = ini_svg_group.transition().delay(delays.update).duration(duration);
   } else {
     ini_svg_group.selectAll('.row_label_group')
@@ -11066,48 +10001,36 @@ module.exports = function resize_row_labels(params, ini_svg_group) {
       var inst_index = row_nodes_names.indexOf(d.name);
       return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
     }).attr('y', params.viz.rect_height * 0.5 + params.labels.default_fs_row * 0.35);
-
     svg_group = ini_svg_group;
   }
-
   svg_group.select(params.root + ' .row_container').attr('transform', 'translate(' + params.viz.norm_labels.margin.left + ',' + params.viz.clust.margin.top + ')');
-
   svg_group.select(params.root + ' .row_container').select('.white_bars').attr('width', params.viz.label_background.row).attr('height', 30 * params.viz.clust.dim.height + 'px');
-
   svg_group.select(params.root + ' .row_container').select('.row_label_container').attr('transform', 'translate(' + params.viz.norm_labels.width.row + ',0)');
 };
 
 /***/ }),
 /* 120 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function resize_row_viz(params, ini_svg_group) {
   var delay_info = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
   var delays = {};
   var duration = params.viz.duration;
   var svg_group;
-
   if (delay_info === false) {
     delays.run_transition = false;
   } else {
     delays = delay_info;
   }
-
   if (delays.run_transition) {
     svg_group = ini_svg_group.transition().delay(delays.update).duration(duration);
   } else {
     svg_group = ini_svg_group;
   }
-
   svg_group.select('.row_cat_outer_container').attr('transform', 'translate(' + params.viz.norm_labels.width.row + ',0)').select('white_bars').attr('width', params.viz.cat_room.row + 'px').attr('height', function () {
     var inst_height = params.viz.clust.dim.height;
     return inst_height;
   });
-
   var x_offset = params.viz.clust.margin.left + params.viz.clust.dim.width;
   var y_offset = params.viz.clust.margin.top;
   svg_group.select('.row_dendro_outer_container').attr('transform', 'translate(' + x_offset + ',' + y_offset + ')');
@@ -11115,7 +10038,6 @@ module.exports = function resize_row_viz(params, ini_svg_group) {
   // !! tmp resize col dendro
   x_offset = params.viz.clust.margin.left;
   y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height;
-
   svg_group.select(' .col_dendro_outer_container').attr('transform', function () {
     return 'translate(' + x_offset + ',' + y_offset + ')';
   });
@@ -11123,30 +10045,22 @@ module.exports = function resize_row_viz(params, ini_svg_group) {
 
 /***/ }),
 /* 121 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function (params, ini_svg_group) {
   var delay_info = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
   var delays = {};
   var duration = params.viz.duration;
   var svg_group;
-
   var col_nodes = params.network_data.col_nodes;
   var col_nodes_names = params.network_data.col_nodes_names || [];
-
   if (delay_info === false) {
     delays.run_transition = false;
   } else {
     delays = delay_info;
   }
-
   if (delays.run_transition) {
     svg_group = ini_svg_group.transition().delay(delays.update).duration(duration);
-
     ini_svg_group.selectAll('.col_label_text').data(col_nodes, function (d) {
       return d.name;
     }).transition().delay(delays.update).duration(duration).attr('transform', function (d) {
@@ -11155,7 +10069,6 @@ module.exports = function (params, ini_svg_group) {
     });
   } else {
     svg_group = ini_svg_group;
-
     ini_svg_group.selectAll('.col_label_text').data(col_nodes, function (d) {
       return d.name;
     }).attr('transform', function (d) {
@@ -11166,15 +10079,10 @@ module.exports = function (params, ini_svg_group) {
 
   // offset click group column label
   var x_offset_click = params.viz.x_scale.rangeBand() / 2 + params.viz.border_width.x;
-
   svg_group.select(params.root + ' .col_container').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.norm_labels.margin.top + ')');
-
   svg_group.select(params.root + ' .col_container').select('.white_bars').attr('width', 30 * params.viz.clust.dim.width + 'px').attr('height', params.viz.label_background.col);
-
   svg_group.select(params.root + ' .col_container').select('.col_label_outer_container').attr('transform', 'translate(0,' + params.viz.norm_labels.width.col + ')');
-
   svg_group.selectAll('.col_label_group').attr('transform', 'translate(' + params.viz.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)');
-
   svg_group.selectAll('.col_label_group').select('text').attr('y', params.viz.x_scale.rangeBand() * 0.6).attr('dx', 2 * params.viz.border_width.x);
 };
 
@@ -11182,16 +10090,11 @@ module.exports = function (params, ini_svg_group) {
 /* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var utils = __webpack_require__(0);
-
 module.exports = function resize_col_text(params, svg_group) {
   svg_group.selectAll('.col_label_group').select('text').style('font-size', params.labels.default_fs_col + 'px').text(function (d) {
     return utils.normal_name(d);
   });
-
   svg_group.selectAll('.col_label_group').each(function () {
     d3.select(this).select('text')[0][0].getBBox();
   });
@@ -11201,33 +10104,24 @@ module.exports = function resize_col_text(params, svg_group) {
 /* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var col_viz_aid_triangle = __webpack_require__(100);
-
 module.exports = function resize_col_triangle(params, ini_svg_group) {
   var delay_info = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
   // resize column triangle
   var ini_triangle_group = ini_svg_group.selectAll('.col_label_group').select('path');
-
   var delays = {};
   var duration = params.viz.duration;
-
   if (delay_info === false) {
     delays.run_transition = false;
   } else {
     delays = delay_info;
   }
-
   var triangle_group;
   if (delays.run_transition) {
     triangle_group = ini_triangle_group.transition().delay(delays.update).duration(duration);
   } else {
     triangle_group = ini_triangle_group;
   }
-
   triangle_group.attr('d', function () {
     return col_viz_aid_triangle(params);
   }).attr('fill', '#eee');
@@ -11237,14 +10131,9 @@ module.exports = function resize_col_triangle(params, ini_svg_group) {
 /* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var utils = __webpack_require__(0);
-
 module.exports = function resize_col_hlight(params, svg_group) {
   var delay_info = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
   var delays = {};
   // var duration = params.viz.duration;
 
@@ -11253,13 +10142,11 @@ module.exports = function resize_col_hlight(params, svg_group) {
   } else {
     delays = delay_info;
   }
-
   if (utils.has(params.network_data.col_nodes[0], 'value')) {
     svg_group.selectAll('.col_bars').data(params.network_data.col_nodes, function (d) {
       return d.name;
     }).attr('width', function (d) {
       var inst_value = 0;
-
       if (d.value > 0) {
         inst_value = params.labels.bar_scale_col(d.value);
       }
@@ -11274,16 +10161,10 @@ module.exports = function resize_col_hlight(params, svg_group) {
 /* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var calc_val_max = __webpack_require__(86);
-
 module.exports = function resize_label_bars(cgm, svg_group) {
   var params = cgm.params;
-
   params = calc_val_max(params);
-
   svg_group.selectAll('.row_bars')
   // .transition().delay(delays.update).duration(duration)
   .attr('width', function (d) {
@@ -11299,19 +10180,14 @@ module.exports = function resize_label_bars(cgm, svg_group) {
 
 /***/ }),
 /* 126 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function position_play_button(params) {
   var clust_transform = d3.select(params.root + ' .clust_container').attr('transform');
-
   var clust_x = Number(clust_transform.split('(')[1].split(',')[0]);
   var clust_y = Number(clust_transform.split(',')[1].replace(')', ''));
   var trans_x = clust_x + params.viz.clust.dim.width / 2;
   var trans_y = clust_y + params.viz.clust.dim.height / 2;
-
   d3.select(params.root + ' .play_button').attr('transform', function () {
     return 'translate(' + trans_x + ',' + trans_y + ')';
   });
@@ -11321,13 +10197,9 @@ module.exports = function position_play_button(params) {
 /* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var make_network_using_view = __webpack_require__(71);
 var disable_sidebar = __webpack_require__(262);
 var update_viz_with_network = __webpack_require__(65);
-
 module.exports = function update_viz_with_view(cgm, requested_view) {
   disable_sidebar(cgm.params);
 
@@ -11346,16 +10218,12 @@ module.exports = function update_viz_with_view(cgm, requested_view) {
     // display all crop buttons when cropping has not been done
     d3.select(cgm.params.root + ' .' + inst_rc + '_dendro_icons_container').style('display', 'block');
   });
-
   update_viz_with_network(cgm, new_network_data);
 };
 
 /***/ }),
 /* 128 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var utils = __webpack_require__(0);
 var calc_clust_height = __webpack_require__(52);
@@ -11376,22 +10244,17 @@ var calc_default_fs = __webpack_require__(54);
 var calc_zoom_switching = __webpack_require__(53);
 // var show_visible_area = require('../zoom/show_visible_area');
 var ini_zoom_info = __webpack_require__(11);
-
 module.exports = function reset_size_after_update(cgm) {
   var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
   var delays = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-
   if (delays === null) {
     delays = {};
     delays.enter = 0;
     delays.update = 0;
     delays.run_transition = false;
   }
-
   var params = cgm.params;
-
   var row_nodes = cgm.params.network_data.row_nodes;
-
   params.zoom_info = ini_zoom_info();
 
   // // not sure if this is necessary
@@ -11401,14 +10264,12 @@ module.exports = function reset_size_after_update(cgm) {
   // setTimeout(show_visible_area, 2200, cgm);
 
   var row_nodes_names = params.network_data.row_nodes_names || [];
-
   reset_zoom(params);
 
   // Resetting some visualization parameters
   params = get_svg_dim(params);
   params.viz = calc_clust_width(params.viz);
   params.viz = calc_clust_height(params.viz);
-
   if (params.sim_mat) {
     if (params.viz.clust.dim.width <= params.viz.clust.dim.height) {
       params.viz.clust.dim.height = params.viz.clust.dim.width;
@@ -11416,7 +10277,6 @@ module.exports = function reset_size_after_update(cgm) {
       params.viz.clust.dim.width = params.viz.clust.dim.height;
     }
   }
-
   params.viz = calc_zoom_switching(params.viz);
 
   // redefine x_scale and y_scale rangeBands
@@ -11430,15 +10290,12 @@ module.exports = function reset_size_after_update(cgm) {
   // redefine border width
   params.viz.border_width.x = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
   params.viz.border_width.y = params.viz.y_scale.rangeBand() / params.viz.border_fraction;
-
   params = calc_default_fs(params);
 
   // resize the svg
   ///////////////////////
   var svg_group = d3.select(params.viz.viz_wrapper).select('svg');
-
   svg_group.select(params.root + ' .grey_background').transition().delay(delays.update).duration(duration).attr('width', params.viz.clust.dim.width).attr('height', params.viz.clust.dim.height);
-
   resize_row_labels(params, svg_group, delays);
 
   // do not delay the font size change since this will break the bounding box calc
@@ -11458,20 +10315,16 @@ module.exports = function reset_size_after_update(cgm) {
       return inst_opacity;
     });
   });
-
   resize_row_viz(params, svg_group, delays);
-
   if (delays.run_transition) {
     // positioning row text after row text size may have been reduced
     svg_group.selectAll('.row_label_group').select('text').transition().delay(delays.update).duration(duration).attr('y', params.viz.rect_height * 0.5 + params.labels.default_fs_row * 0.35);
-
     svg_group.selectAll('.row_cat_group').data(row_nodes, function (d) {
       return d.name;
     }).transition().delay(delays.update).duration(duration).attr('transform', function (d) {
       var inst_index = row_nodes_names.indexOf(d.name);
       return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
     });
-
     svg_group.selectAll('.row_cat_group').select('path').transition().delay(delays.update).duration(duration).attr('d', function () {
       var origin_x = params.viz.cat_room.symbol_width - 1;
       var origin_y = 0;
@@ -11482,7 +10335,6 @@ module.exports = function reset_size_after_update(cgm) {
       var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' + mid_x + ',' + mid_y + ' L ' + final_x + ',' + final_y + ' Z';
       return output_string;
     });
-
     svg_group.selectAll('.row_dendro_group').data(row_nodes, function (d) {
       return d.name;
     }).transition().delay(delays.update).duration(duration).attr('transform', function (d) {
@@ -11492,14 +10344,12 @@ module.exports = function reset_size_after_update(cgm) {
   } else {
     // positioning row text after row text size may have been reduced
     svg_group.selectAll('.row_label_group').select('text').attr('y', params.viz.rect_height * 0.5 + params.labels.default_fs_row * 0.35);
-
     svg_group.selectAll('.row_cat_group').data(row_nodes, function (d) {
       return d.name;
     }).attr('transform', function (d) {
       var inst_index = row_nodes_names.indexOf(d.name);
       return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
     });
-
     svg_group.selectAll('.row_cat_group').select('path').attr('d', function () {
       var origin_x = params.viz.cat_room.symbol_width - 1;
       var origin_y = 0;
@@ -11510,7 +10360,6 @@ module.exports = function reset_size_after_update(cgm) {
       var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' + mid_x + ',' + mid_y + ' L ' + final_x + ',' + final_y + ' Z';
       return output_string;
     });
-
     svg_group.selectAll('.row_dendro_group').data(row_nodes, function (d) {
       return d.name;
     }).attr('transform', function (d) {
@@ -11518,7 +10367,6 @@ module.exports = function reset_size_after_update(cgm) {
       return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
     });
   }
-
   if (utils.has(params.network_data.row_nodes[0], 'value')) {
     resize_label_bars(cgm, svg_group);
   }
@@ -11530,9 +10378,7 @@ module.exports = function reset_size_after_update(cgm) {
   resize_col_labels(params, svg_group, delays);
   resize_col_text(params, svg_group);
   resize_col_triangle(params, svg_group, delays);
-
   resize_col_hlight(params, svg_group, delays);
-
   resize_dendro(params, svg_group, delays);
   resize_super_labels(params, svg_group, delays);
   resize_spillover(params.viz, svg_group, delays);
@@ -11543,10 +10389,7 @@ module.exports = function reset_size_after_update(cgm) {
 
 /***/ }),
 /* 129 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function resize_containers(params) {
   // reposition matrix
@@ -11566,17 +10409,12 @@ module.exports = function resize_containers(params) {
 /* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var $ = __webpack_require__(2);
-
 module.exports = function toggle_play_button(params, show) {
   if (show === false) {
     d3.select(params.root + ' .play_button').transition().duration(500).style('opacity', 0);
   } else {
     d3.select(params.root + ' .play_button').transition().duration(500).style('opacity', 1);
-
     $.unblockUI();
   }
 };
@@ -11585,12 +10423,8 @@ module.exports = function toggle_play_button(params, show) {
 /* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var make_full_name = __webpack_require__(296);
 var each = __webpack_require__(1);
-
 module.exports = function make_matrix_string(params) {
   var inst_matrix = params.matrix;
 
@@ -11612,7 +10446,6 @@ module.exports = function make_matrix_string(params) {
     // use tmp_rc
     order_indexes[inst_rc] = inst_matrix.orders[inst_name + '_' + tmp_rc];
   });
-
   var matrix_string = '\t';
   var row_nodes = params.network_data.row_nodes;
   var col_nodes = params.network_data.col_nodes;
@@ -11620,20 +10453,16 @@ module.exports = function make_matrix_string(params) {
   // alternate column entry
   for (var c_i = 0; c_i < order_indexes.col.length; c_i++) {
     var inst_index = order_indexes.col[c_i];
-
     var inst_col = col_nodes[inst_index];
     var col_name = make_full_name(params, inst_col, 'col');
-
     if (c_i < order_indexes.col.length - 1) {
       matrix_string = matrix_string + col_name + '\t';
     } else {
       matrix_string = matrix_string + col_name;
     }
   }
-
   var row_data;
   matrix_string = matrix_string + '\n';
-
   each(order_indexes.row, function (inst_index) {
     // row names
     row_data = inst_matrix.matrix[inst_index].row_data;
@@ -11643,24 +10472,20 @@ module.exports = function make_matrix_string(params) {
 
     // var row_name = inst_row.name;
     var row_name = make_full_name(params, inst_row, 'row');
-
     matrix_string = matrix_string + row_name + '\t';
 
     // alternate data entry
     for (var r_i = 0; r_i < order_indexes.col.length; r_i++) {
       // get the order
       var col_index = order_indexes.col[r_i];
-
       if (r_i < order_indexes.col.length - 1) {
         matrix_string = matrix_string + String(row_data[col_index].value) + '\t';
       } else {
         matrix_string = matrix_string + String(row_data[col_index].value);
       }
     }
-
     matrix_string = matrix_string + '\n';
   });
-
   return matrix_string;
 };
 
@@ -11673,9 +10498,6 @@ module.exports = require("d3");
 /***/ }),
 /* 133 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var make_config = __webpack_require__(134);
 var make_params = __webpack_require__(70);
@@ -11717,7 +10539,6 @@ function Clustergrammer(args) {
 
   // consume and validate user arguments, produce configuration object
   var config = make_config(args);
-
   var cgm = {};
 
   // make visualization parameters using configuration object
@@ -11728,7 +10549,6 @@ function Clustergrammer(args) {
   cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, cgm.params.viz.square_zoom * cgm.params.viz.zoom_ratio.x]).on('zoom', function () {
     run_zoom(cgm);
   });
-
   cgm.params.zoom_behavior.translate([cgm.params.viz.clust.margin.left, cgm.params.viz.clust.margin.top]);
 
   // customization
@@ -11739,35 +10559,27 @@ function Clustergrammer(args) {
 
   // make visualization using parameters
   make_viz(cgm);
-
   function external_resize() {
     d3.select(cgm.params.viz.viz_svg).style('opacity', 0.5);
-
     var wait_time = 500;
     if (this.params.viz.run_trans === true) {
       wait_time = 2500;
     }
-
     setTimeout(resize_fun, wait_time, this);
   }
-
   function resize_fun(cgm) {
     resize_viz(cgm);
   }
-
   function run_update_cats(cat_data) {
     update_cats(this, cat_data);
   }
-
   function zoom_api(pan_dx, pan_dy, fin_zoom) {
     two_translate_zoom(this, pan_dx, pan_dy, fin_zoom);
   }
-
   function expose_d3_tip_custom() {
     // this allows external modules to have access to d3_tip
     return d3_tip_custom;
   }
-
   function api_reorder(inst_rc, inst_order) {
     if (inst_order === 'sum') {
       inst_order = 'rank';
@@ -11777,11 +10589,9 @@ function Clustergrammer(args) {
     }
     all_reorder(this, inst_order, inst_rc);
   }
-
   function export_matrix_string() {
     return make_matrix_string(this.params);
   }
-
   function external_update_view(filter_type, inst_state) {
     update_view(this, filter_type, inst_state);
   }
@@ -11802,18 +10612,13 @@ function Clustergrammer(args) {
   cgm.reorder = api_reorder;
   cgm.export_matrix_string = export_matrix_string;
   cgm.update_view = external_update_view;
-
   return cgm;
 }
-
 module.exports = Clustergrammer;
 
 /***/ }),
 /* 134 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var utils = __webpack_require__(0);
 var transpose_network = __webpack_require__(135);
@@ -11822,50 +10627,37 @@ var get_filter_default_state = __webpack_require__(42);
 var set_defaults = __webpack_require__(140);
 var check_sim_mat = __webpack_require__(141);
 var check_nodes_for_categories = __webpack_require__(142);
-
 module.exports = function make_config(args) {
   var defaults = set_defaults();
 
   // Mixin defaults with user-defined arguments.
   var config = utils.extend(defaults, args);
-
   config.network_data = args.network_data;
-
   var super_string = ': ';
 
   // replace undersores with space in row/col names
   ['row', 'col'].forEach(function (inst_rc) {
     var inst_nodes = config.network_data[inst_rc + '_nodes'] || [];
-
     var has_cats = check_nodes_for_categories(inst_nodes);
-
     inst_nodes.forEach(function (d, i) {
       // add index to row_nodes and col_nodes
       d[inst_rc + '_index'] = i;
-
       if (has_cats) {
         config.super_labels = true;
-        config.super[inst_rc] = d.name.split(super_string)[0];
+        config["super"][inst_rc] = d.name.split(super_string)[0];
         d.name = d.name.split(super_string)[1];
       }
-
       d.name = String(d.name);
-
       d.name = d.name.replace(/_/g, ' ');
     });
   });
-
   config.network_data.row_nodes_names = utils.pluck(config.network_data.row_nodes, 'name');
   config.network_data.col_nodes_names = utils.pluck(config.network_data.col_nodes, 'name');
-
   config.sim_mat = check_sim_mat(config);
-
   var filters = get_available_filters(config.network_data.views);
-
   var default_states = {};
   Object.keys(filters.possible_filters || {}).forEach(function (inst_filter) {
     var tmp_state = get_filter_default_state(filters.filter_data, inst_filter);
-
     default_states[inst_filter] = tmp_state;
   });
 
@@ -11877,28 +10669,23 @@ module.exports = function make_config(args) {
           inst_view[inst_filter] = default_states[inst_filter];
         }
       });
-
       var inst_nodes = inst_view.nodes;
 
       // proc row/col nodes names in views
       ['row', 'col'].forEach(function (inst_rc) {
         var has_cats = check_nodes_for_categories(inst_nodes[inst_rc + '_nodes']);
-
         inst_nodes[inst_rc + '_nodes'].forEach(function (d, i) {
           // add index to row_nodes and col_nodes
           d[inst_rc + '_index'] = i;
-
           if (has_cats) {
             d.name = d.name.split(super_string)[1];
           }
-
           d.name = String(d.name);
           d.name = d.name.replace(/_/g, ' ');
         });
       });
     });
   }
-
   var col_nodes = config.network_data.col_nodes;
   var row_nodes = config.network_data.row_nodes;
 
@@ -11947,9 +10734,9 @@ module.exports = function make_config(args) {
   // super-row/col labels
   if (!utils.is_undefined(args.row_label) && !utils.is_undefined(args.col_label)) {
     config.super_labels = true;
-    config.super = {};
-    config.super.row = args.row_label;
-    config.super.col = args.col_label;
+    config["super"] = {};
+    config["super"].row = args.row_label;
+    config["super"].col = args.col_label;
   }
 
   // initialize cluster ordering - both rows and columns
@@ -11968,23 +10755,18 @@ module.exports = function make_config(args) {
     // !! row and col orderings are swapped, need to fix
     config.inst_order.col = args.row_order;
   }
-
   if (!utils.is_undefined(args.col_order) && utils.is_supported_order(args.col_order)) {
     // !! row and col orderings are swapped, need to fix
     config.inst_order.row = args.col_order;
   }
-
   var row_has_group = utils.has(config.network_data.row_nodes[0], 'group');
   var col_has_group = utils.has(config.network_data.col_nodes[0], 'group');
-
   config.show_dendrogram = row_has_group || col_has_group;
-
   if (utils.has(config.network_data.links[0], 'value_orig')) {
     config.keep_orig = true;
   } else {
     config.keep_orig = false;
   }
-
   return config;
 };
 
@@ -11992,21 +10774,16 @@ module.exports = function make_config(args) {
 /* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var utils = __webpack_require__(0);
 /* Transpose network.
  */
 module.exports = function (net) {
   var tnet = {},
-      inst_link,
-      i;
-
+    inst_link,
+    i;
   tnet.row_nodes = net.col_nodes;
   tnet.col_nodes = net.row_nodes;
   tnet.links = [];
-
   for (i = 0; i < net.links.length; i++) {
     inst_link = {};
     inst_link.source = net.links[i].target;
@@ -12028,16 +10805,12 @@ module.exports = function (net) {
     }
     tnet.links.push(inst_link);
   }
-
   return tnet;
 };
 
 /***/ }),
 /* 136 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var _setup = __webpack_require__(6);
 
@@ -12048,31 +10821,25 @@ function createSizePropertyCheck(getSizeProperty) {
     return typeof sizeProperty == 'number' && sizeProperty >= 0 && sizeProperty <= _setup.MAX_ARRAY_INDEX;
   };
 }
-
 module.exports = createSizePropertyCheck;
 
 /***/ }),
 /* 137 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 var g;
 
 // This works in non-strict mode
 g = function () {
-	return this;
+  return this;
 }();
-
 try {
-	// This works if eval is allowed (see CSP)
-	g = g || new Function("return this")();
+  // This works if eval is allowed (see CSP)
+  g = g || new Function("return this")();
 } catch (e) {
-	// This works if the window reference is available
-	if ((typeof window === "undefined" ? "undefined" : _typeof(window)) === "object") g = window;
+  // This works if the window reference is available
+  if ((typeof window === "undefined" ? "undefined" : _typeof(window)) === "object") g = window;
 }
 
 // g can still be undefined, but nothing to do about it...
@@ -12083,10 +10850,7 @@ module.exports = g;
 
 /***/ }),
 /* 138 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 // Internal helper to generate a function to obtain property `key` from `obj`.
 function shallowProperty(key) {
@@ -12094,15 +10858,11 @@ function shallowProperty(key) {
     return obj == null ? void 0 : obj[key];
   };
 }
-
 module.exports = shallowProperty;
 
 /***/ }),
 /* 139 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var _setup = __webpack_require__(6);
 var isFunction = __webpack_require__(69);
@@ -12116,7 +10876,8 @@ function emulatedSet(keys) {
   var hash = {};
   for (var l = keys.length, i = 0; i < l; ++i) {
     hash[keys[i]] = true;
-  }return {
+  }
+  return {
     contains: function contains(key) {
       return hash[key] === true;
     },
@@ -12139,7 +10900,6 @@ function collectNonEnumProps(obj, keys) {
   // Constructor is a special case.
   var prop = 'constructor';
   if (_has(obj, prop) && !keys.contains(prop)) keys.push(prop);
-
   while (nonEnumIdx--) {
     prop = _setup.nonEnumerableProps[nonEnumIdx];
     if (prop in obj && obj[prop] !== proto[prop] && !keys.contains(prop)) {
@@ -12147,15 +10907,11 @@ function collectNonEnumProps(obj, keys) {
     }
   }
 }
-
 module.exports = collectNonEnumProps;
 
 /***/ }),
 /* 140 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function set_defaults() {
   var defaults = {
@@ -12163,7 +10919,7 @@ module.exports = function set_defaults() {
     row_label_scale: 1,
     col_label_scale: 1,
     super_labels: false,
-    super: {},
+    "super": {},
     show_label_tooltips: true,
     show_tile_tooltips: true,
     // matrix options
@@ -12216,9 +10972,18 @@ module.exports = function set_defaults() {
     clamp_opacity: 0.85,
     expand_button: true,
     max_allow_fs: 20,
-    dendro_filter: { row: false, col: false },
-    cat_filter: { row: false, col: false },
-    crop_filter_nodes: { row: false, col: false },
+    dendro_filter: {
+      row: false,
+      col: false
+    },
+    cat_filter: {
+      row: false,
+      col: false
+    },
+    crop_filter_nodes: {
+      row: false,
+      col: false
+    },
     row_tip_callback: null,
     col_tip_callback: null,
     tile_tip_callback: null,
@@ -12230,7 +10995,6 @@ module.exports = function set_defaults() {
     make_modals: true,
     show_viz_border: false
   };
-
   return defaults;
 };
 
@@ -12238,23 +11002,16 @@ module.exports = function set_defaults() {
 /* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var each = __webpack_require__(1);
-
 module.exports = function check_sim_mat(config) {
   var sim_mat = false;
-
   var num_rows = config.network_data.row_nodes_names.length;
   var num_cols = config.network_data.col_nodes_names.length;
-
   if (num_rows == num_cols) {
     // the sort here was causing errors
     var rows = config.network_data.row_nodes_names;
     var cols = config.network_data.col_nodes_names;
     sim_mat = true;
-
     each(rows, function (inst_row) {
       var inst_index = rows.indexOf(inst_row);
       if (inst_row !== cols[inst_index]) {
@@ -12262,11 +11019,9 @@ module.exports = function check_sim_mat(config) {
       }
     });
   }
-
   if (sim_mat) {
     config.expand_button = false;
   }
-
   return sim_mat;
 };
 
@@ -12274,22 +11029,16 @@ module.exports = function check_sim_mat(config) {
 /* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var each = __webpack_require__(1);
-
 module.exports = function check_nodes_for_categories(nodes) {
   var super_string = ': ';
   var has_cat = true;
-
   each(nodes, function (inst_node) {
     var inst_name = String(inst_node.name);
     if (inst_name.indexOf(super_string) < 0) {
       has_cat = false;
     }
   });
-
   return has_cat;
 };
 
@@ -12297,13 +11046,9 @@ module.exports = function check_nodes_for_categories(nodes) {
 /* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var isFactory = __webpack_require__(4).isFactory;
 var typedFactory = __webpack_require__(144);
 var emitter = __webpack_require__(73);
-
 var importFactory = __webpack_require__(148);
 var configFactory = __webpack_require__(150);
 
@@ -12362,22 +11107,17 @@ exports.create = function create(options) {
     // minimum relative difference between two compared values,
     // used by all comparison functions
     epsilon: 1e-12,
-
     // type of default matrix output. Choose 'matrix' (default) or 'array'
     matrix: 'Matrix',
-
     // type of default number output. Choose 'number' (default) 'BigNumber', or 'Fraction
     number: 'number',
-
     // number of significant digits in BigNumbers
     precision: 64,
-
     // predictable output type of functions. When true, output type depends only
     // on the input types. When false (default), output type can vary depending
     // on input values. For example `math.sqrt(-4)` returns `complex('2i')` when
     // predictable is false, and returns `NaN` when true.
     predictable: false,
-
     // random seed for seeded pseudo random number generation
     // null = randomly seed
     randomSeed: null
@@ -12394,7 +11134,6 @@ exports.create = function create(options) {
     if (!isFactory(factory)) {
       throw new Error('Factory object with properties `type`, `name`, and `factory` expected');
     }
-
     var index = factories.indexOf(factory);
     var instance;
     if (index === -1) {
@@ -12413,7 +11152,6 @@ exports.create = function create(options) {
       // already existing function, return the cached instance
       instance = instances[index];
     }
-
     return instance;
   }
 
@@ -12426,7 +11164,6 @@ exports.create = function create(options) {
   if (options) {
     math.config(options);
   }
-
   return math;
 };
 
@@ -12434,11 +11171,7 @@ exports.create = function create(options) {
 /* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 var typedFunction = __webpack_require__(145);
 var digits = __webpack_require__(3).digits;
 var isBigNumber = __webpack_require__(44);
@@ -12522,7 +11255,7 @@ exports.create = function create(type) {
     return x instanceof RegExp;
   };
   type.isObject = function (x) {
-    return (typeof x === 'undefined' ? 'undefined' : _typeof(x)) === 'object';
+    return _typeof(x) === 'object';
   };
   type.isNull = function (x) {
     return x === null;
@@ -12530,7 +11263,6 @@ exports.create = function create(type) {
   type.isUndefined = function (x) {
     return x === undefined;
   };
-
   type.isAccessorNode = function (x) {
     return x && x.isAccessorNode && x.constructor.prototype.isNode || false;
   };
@@ -12576,7 +11308,6 @@ exports.create = function create(type) {
   type.isSymbolNode = function (x) {
     return x && x.isSymbolNode && x.constructor.prototype.isNode || false;
   };
-
   type.isChain = function (x) {
     return x && x.constructor.prototype.isChain || false;
   };
@@ -12587,7 +11318,109 @@ exports.create = function create(type) {
   // define all types. The order of the types determines in which order function
   // arguments are type-checked (so for performance it's important to put the
   // most used types first).
-  typed.types = [{ name: 'number', test: type.isNumber }, { name: 'Complex', test: type.isComplex }, { name: 'BigNumber', test: type.isBigNumber }, { name: 'Fraction', test: type.isFraction }, { name: 'Unit', test: type.isUnit }, { name: 'string', test: type.isString }, { name: 'Array', test: type.isArray }, { name: 'Matrix', test: type.isMatrix }, { name: 'DenseMatrix', test: type.isDenseMatrix }, { name: 'SparseMatrix', test: type.isSparseMatrix }, { name: 'Range', test: type.isRange }, { name: 'Index', test: type.isIndex }, { name: 'boolean', test: type.isBoolean }, { name: 'ResultSet', test: type.isResultSet }, { name: 'Help', test: type.isHelp }, { name: 'function', test: type.isFunction }, { name: 'Date', test: type.isDate }, { name: 'RegExp', test: type.isRegExp }, { name: 'Object', test: type.isObject }, { name: 'null', test: type.isNull }, { name: 'undefined', test: type.isUndefined }, { name: 'OperatorNode', test: type.isOperatorNode }, { name: 'ConstantNode', test: type.isConstantNode }, { name: 'SymbolNode', test: type.isSymbolNode }, { name: 'ParenthesisNode', test: type.isParenthesisNode }, { name: 'FunctionNode', test: type.isFunctionNode }, { name: 'FunctionAssignmentNode', test: type.isFunctionAssignmentNode }, { name: 'ArrayNode', test: type.isArrayNode }, { name: 'AssignmentNode', test: type.isAssignmentNode }, { name: 'BlockNode', test: type.isBlockNode }, { name: 'ConditionalNode', test: type.isConditionalNode }, { name: 'IndexNode', test: type.isIndexNode }, { name: 'RangeNode', test: type.isRangeNode }, { name: 'Node', test: type.isNode }];
+  typed.types = [{
+    name: 'number',
+    test: type.isNumber
+  }, {
+    name: 'Complex',
+    test: type.isComplex
+  }, {
+    name: 'BigNumber',
+    test: type.isBigNumber
+  }, {
+    name: 'Fraction',
+    test: type.isFraction
+  }, {
+    name: 'Unit',
+    test: type.isUnit
+  }, {
+    name: 'string',
+    test: type.isString
+  }, {
+    name: 'Array',
+    test: type.isArray
+  }, {
+    name: 'Matrix',
+    test: type.isMatrix
+  }, {
+    name: 'DenseMatrix',
+    test: type.isDenseMatrix
+  }, {
+    name: 'SparseMatrix',
+    test: type.isSparseMatrix
+  }, {
+    name: 'Range',
+    test: type.isRange
+  }, {
+    name: 'Index',
+    test: type.isIndex
+  }, {
+    name: 'boolean',
+    test: type.isBoolean
+  }, {
+    name: 'ResultSet',
+    test: type.isResultSet
+  }, {
+    name: 'Help',
+    test: type.isHelp
+  }, {
+    name: 'function',
+    test: type.isFunction
+  }, {
+    name: 'Date',
+    test: type.isDate
+  }, {
+    name: 'RegExp',
+    test: type.isRegExp
+  }, {
+    name: 'Object',
+    test: type.isObject
+  }, {
+    name: 'null',
+    test: type.isNull
+  }, {
+    name: 'undefined',
+    test: type.isUndefined
+  }, {
+    name: 'OperatorNode',
+    test: type.isOperatorNode
+  }, {
+    name: 'ConstantNode',
+    test: type.isConstantNode
+  }, {
+    name: 'SymbolNode',
+    test: type.isSymbolNode
+  }, {
+    name: 'ParenthesisNode',
+    test: type.isParenthesisNode
+  }, {
+    name: 'FunctionNode',
+    test: type.isFunctionNode
+  }, {
+    name: 'FunctionAssignmentNode',
+    test: type.isFunctionAssignmentNode
+  }, {
+    name: 'ArrayNode',
+    test: type.isArrayNode
+  }, {
+    name: 'AssignmentNode',
+    test: type.isAssignmentNode
+  }, {
+    name: 'BlockNode',
+    test: type.isBlockNode
+  }, {
+    name: 'ConditionalNode',
+    test: type.isConditionalNode
+  }, {
+    name: 'IndexNode',
+    test: type.isIndexNode
+  }, {
+    name: 'RangeNode',
+    test: type.isRangeNode
+  }, {
+    name: 'Node',
+    test: type.isNode
+  }];
 
   // TODO: add conversion from BigNumber to number?
   typed.conversions = [{
@@ -12749,7 +11582,6 @@ exports.create = function create(type) {
       return matrix.valueOf();
     }
   }];
-
   return typed;
 };
 
@@ -12767,8 +11599,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
  */
 
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 (function (root, factory) {
   if (true) {
     // AMD. Register as an anonymous module.
@@ -12777,7 +11608,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else {}
-})(undefined, function () {
+})(this, function () {
   // factory function to create a new instance of typed-function
   // TODO: allow passing configuration, types, tests via the factory function
   function create() {
@@ -12796,7 +11627,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           break;
         }
       }
-
       if (!test) {
         var hint;
         for (i = 0; i < typed.types.length; i++) {
@@ -12806,7 +11636,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             break;
           }
         }
-
         throw new Error('Unknown type "' + name + '"' + (hint ? '. Did you mean "' + hint + '"?' : ''));
       }
       return test;
@@ -12819,7 +11648,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      */
     function getName(fns) {
       var name = '';
-
       for (var i = 0; i < fns.length; i++) {
         var fn = fns[i];
 
@@ -12837,7 +11665,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           }
         }
       }
-
       return name;
     }
 
@@ -12868,7 +11695,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         actual: actual,
         expected: _expected
       };
-
       if (_expected) {
         if (argCount > index && !anyType) {
           // unexpected type
@@ -12881,7 +11707,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         // too many arguments
         message = 'Too many arguments in function ' + _fn + ' (expected: ' + index + ', actual: ' + argCount + ')';
       }
-
       var err = new TypeError(message);
       err.data = data;
       return err;
@@ -12907,13 +11732,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     Refs.prototype.add = function (fn, category) {
       var cat = category || 'fn';
       if (!this.categories[cat]) this.categories[cat] = [];
-
       var index = this.categories[cat].indexOf(fn);
       if (index == -1) {
         index = this.categories[cat].length;
         this.categories[cat].push(fn);
       }
-
       return cat + index;
     };
 
@@ -12925,17 +11748,14 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       var code = [];
       var path = this.name + '.categories';
       var categories = this.categories;
-
       for (var cat in categories) {
         if (categories.hasOwnProperty(cat)) {
           var category = categories[cat];
-
           for (var i = 0; i < category.length; i++) {
             code.push('var ' + cat + i + ' = ' + path + '[\'' + cat + '\'][' + i + '];');
           }
         }
       }
-
       return code.join('\n');
     };
 
@@ -12995,28 +11815,23 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       // TODO: simplify parameter comparison, it's a mess
       if (a.anyType) return 1;
       if (b.anyType) return -1;
-
       if (contains(a.types, 'Object')) return 1;
       if (contains(b.types, 'Object')) return -1;
-
       if (a.hasConversions()) {
         if (b.hasConversions()) {
           var i, ac, bc;
-
           for (i = 0; i < a.conversions.length; i++) {
             if (a.conversions[i] !== undefined) {
               ac = a.conversions[i];
               break;
             }
           }
-
           for (i = 0; i < b.conversions.length; i++) {
             if (b.conversions[i] !== undefined) {
               bc = b.conversions[i];
               break;
             }
           }
-
           return typed.conversions.indexOf(ac) - typed.conversions.indexOf(bc);
         } else {
           return 1;
@@ -13027,21 +11842,18 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         } else {
           // both params have no conversions
           var ai, bi;
-
           for (i = 0; i < typed.types.length; i++) {
             if (typed.types[i].name === a.types[0]) {
               ai = i;
               break;
             }
           }
-
           for (i = 0; i < typed.types.length; i++) {
             if (typed.types[i].name === b.types[0]) {
               bi = i;
               break;
             }
           }
-
           return ai - bi;
         }
       }
@@ -13118,7 +11930,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     Param.prototype.toString = function (toConversion) {
       var types = [];
       var keys = {};
-
       for (var i = 0; i < this.types.length; i++) {
         var conversion = this.conversions[i];
         var type = toConversion && conversion ? conversion.to : this.types[i];
@@ -13127,7 +11938,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           types.push(type);
         }
       }
-
       return (this.varArgs ? '...' : '') + types.join('|');
     };
 
@@ -13148,7 +11958,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       } else {
         throw new Error('string or Array expected');
       }
-
       this.params = new Array(_params.length);
       this.anyType = false;
       this.varArgs = false;
@@ -13168,7 +11977,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           }
         }
       }
-
       this.fn = fn;
     }
 
@@ -13187,11 +11995,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      */
     Signature.prototype.expand = function () {
       var signatures = [];
-
       function recurse(signature, path) {
         if (path.length < signature.params.length) {
           var i, newParam, conversion;
-
           var param = signature.params[path.length];
           if (param.varArgs) {
             // a variable argument. do not split the types in the parameter
@@ -13207,7 +12013,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                 newParam.conversions[j] = conversion;
               }
             }
-
             recurse(signature, path.concat(newParam));
           } else {
             // split each type in the parameter
@@ -13229,9 +12034,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           signatures.push(new Signature(path, signature.fn));
         }
       }
-
       recurse(this, []);
-
       return signatures;
     };
 
@@ -13258,7 +12061,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         if (a.params[i].hasConversions()) ac++;
         if (b.params[i].hasConversions()) bc++;
       }
-
       if (ac > bc) return 1;
       if (ac < bc) return -1;
 
@@ -13269,7 +12071,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           return cmp;
         }
       }
-
       return 0;
     };
 
@@ -13306,7 +12107,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           return true;
         }
       }
-
       return false;
     };
 
@@ -13318,19 +12118,15 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       if (params.length === 0) {
         return true;
       }
-
       var aLast = last(this.params);
       var bLast = last(params);
-
       for (var i = 0; i < params.length; i++) {
         var a = this.params[i] || (aLast.varArgs ? aLast : null);
         var b = params[i] || (bLast.varArgs ? bLast : null);
-
         if (!a || !b || !a.matches(b)) {
           return false;
         }
       }
-
       return true;
     };
 
@@ -13342,7 +12138,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      */
     Signature.prototype.toCode = function (refs, prefix) {
       var code = [];
-
       var args = new Array(this.params.length);
       for (var i = 0; i < this.params.length; i++) {
         var param = this.params[i];
@@ -13355,12 +12150,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           args[i] = 'arg' + i;
         }
       }
-
       var ref = this.fn ? refs.add(this.fn, 'signature') : undefined;
       if (ref) {
         return prefix + 'return ' + ref + '(' + args.join(', ') + '); // signature: ' + this.params.join(', ');
       }
-
       return code.join('\n');
     };
 
@@ -13397,7 +12190,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     Node.prototype.toCode = function (refs, prefix) {
       // TODO: split this function in multiple functions, it's too large
       var code = [];
-
       if (this.param) {
         var index = this.path.length - 1;
         var conversion = this.param.conversions[0];
@@ -13423,7 +12215,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
               }
               return tests.join(' || ');
             }.bind(this);
-
             var allTypes = this.param.types;
             var exactTypes = [];
             for (var i = 0; i < allTypes.length; i++) {
@@ -13431,13 +12222,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                 exactTypes.push(allTypes[i]);
               }
             }
-
             code.push(prefix + 'if (' + getTests(allTypes, 'arg' + index) + ') { ' + comment);
             code.push(prefix + '  var varArgs = [arg' + index + '];');
             code.push(prefix + '  for (var i = ' + (index + 1) + '; i < arguments.length; i++) {');
             code.push(prefix + '    if (' + getTests(exactTypes, 'arguments[i]') + ') {');
             code.push(prefix + '      varArgs.push(arguments[i]);');
-
             for (var i = 0; i < allTypes.length; i++) {
               var conversion_i = this.param.conversions[i];
               if (conversion_i) {
@@ -13464,7 +12253,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             // regular type
             var type = this.param.types[0];
             var test = type !== 'any' ? refs.add(getTypeTest(type), 'test') : null;
-
             code.push(prefix + 'if (' + test + '(arg' + index + ')) { ' + comment);
             code.push(this._innerCode(refs, prefix + '  '));
             code.push(prefix + '}');
@@ -13474,7 +12262,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         // root node (path is empty)
         code.push(this._innerCode(refs, prefix));
       }
-
       return code.join('\n');
     };
 
@@ -13489,13 +12276,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     Node.prototype._innerCode = function (refs, prefix) {
       var code = [];
       var i;
-
       if (this.signature) {
         code.push(prefix + 'if (arguments.length === ' + this.path.length + ') {');
         code.push(this.signature.toCode(refs, prefix + '  '));
         code.push(prefix + '}');
       }
-
       for (i = 0; i < this.childs.length; i++) {
         code.push(this.childs[i].toCode(refs, prefix));
       }
@@ -13507,7 +12292,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           code.push(exceptions);
         }
       }
-
       return code.join('\n');
     };
 
@@ -13520,14 +12304,12 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      */
     Node.prototype._exceptions = function (refs, prefix) {
       var index = this.path.length;
-
       if (this.childs.length === 0) {
         // TODO: can this condition be simplified? (we have a fall-through here)
         return [prefix + 'if (arguments.length > ' + index + ') {', prefix + '  throw createError(name, arguments.length, ' + index + ', arguments[' + index + ']);', prefix + '}'].join('\n');
       } else {
         var keys = {};
         var types = [];
-
         for (var i = 0; i < this.childs.length; i++) {
           var node = this.childs[i];
           if (node.param) {
@@ -13540,7 +12322,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             }
           }
         }
-
         return prefix + 'throw createError(name, arguments.length, ' + index + ', arguments[' + index + '], \'' + types.join(',') + '\');';
       }
     };
@@ -13556,18 +12337,14 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       var keys = {};
       var signatures = [];
       var i;
-
       for (var types in rawSignatures) {
         if (rawSignatures.hasOwnProperty(types)) {
           var fn = rawSignatures[types];
           signature = new Signature(types, fn);
-
           if (signature.ignore()) {
             continue;
           }
-
           var expanded = signature.expand();
-
           for (i = 0; i < expanded.length; i++) {
             var signature_i = expanded[i];
             var key = signature_i.toString();
@@ -13604,20 +12381,16 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       // TODO: simplify this loop or move it to a separate function
       for (i = 0; i < signatures.length; i++) {
         signature = signatures[i];
-
         if (signature.varArgs) {
           var index = signature.params.length - 1;
           var param = signature.params[index];
-
           var t = 0;
           while (t < param.types.length) {
             if (param.conversions[t]) {
               var type = param.types[t];
-
               for (var j = 0; j < signatures.length; j++) {
                 var other = signatures[j];
                 var p = other.params[index];
-
                 if (other !== signature && p && contains(p.types, type) && !p.conversions[index]) {
                   // this (conversion) type already exists, remove it
                   param.types.splice(t, 1);
@@ -13631,7 +12404,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           }
         }
       }
-
       return signatures;
     }
 
@@ -13642,13 +12414,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      */
     function filterAnyTypeSignatures(signatures) {
       var filtered = [];
-
       for (var i = 0; i < signatures.length; i++) {
         if (signatures[i].anyType) {
           filtered.push(signatures[i]);
         }
       }
-
       return filtered;
     }
 
@@ -13661,7 +12431,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      */
     function mapSignatures(signatures) {
       var normalized = {};
-
       for (var i = 0; i < signatures.length; i++) {
         var signature = signatures[i];
         if (signature.fn && !signature.hasConversions()) {
@@ -13669,7 +12438,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           normalized[params] = signature.fn;
         }
       }
-
       return normalized;
     }
 
@@ -13684,7 +12452,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       var i, signature;
       var index = path.length;
       var nodeSignature;
-
       var filtered = [];
       for (i = 0; i < signatures.length; i++) {
         signature = signatures[i];
@@ -13693,7 +12460,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         if (signature.params.length === index && !nodeSignature) {
           nodeSignature = signature;
         }
-
         if (signature.params[index] != undefined) {
           filtered.push(signature);
         }
@@ -13763,7 +12529,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         var entry = entries[i];
         childs[i] = parseTree(entry.signatures, path.concat(entry.param), matchingAnys);
       }
-
       return new Node(path, nodeSignature, childs, fallThrough);
     }
 
@@ -13778,7 +12543,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       for (var i = 0; i < count; i++) {
         args[i] = 'arg' + i;
       }
-
       return args;
     }
 
@@ -13838,7 +12602,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
       // attach the signatures with sub-functions to the constructed function
       fn.signatures = mapSignatures(_signatures);
-
       return fn;
     }
 
@@ -13849,14 +12612,12 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      */
     function maxParams(signatures) {
       var max = 0;
-
       for (var i = 0; i < signatures.length; i++) {
         var len = signatures[i].params.length;
         if (len > max) {
           max = len;
         }
       }
-
       return max;
     }
 
@@ -13867,10 +12628,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      */
     function getTypeOf(x) {
       var obj;
-
       for (var i = 0; i < typed.types.length; i++) {
         var entry = typed.types[i];
-
         if (entry.name === 'Object') {
           // Array and Date are also Object, so test for Object afterwards
           obj = entry;
@@ -13881,7 +12640,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
       // at last, test whether an object
       if (obj && obj.test(x)) return obj.name;
-
       return 'unknown';
     }
 
@@ -13905,25 +12663,55 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 
     // data type tests
-    var types = [{ name: 'number', test: function test(x) {
+    var types = [{
+      name: 'number',
+      test: function test(x) {
         return typeof x === 'number';
-      } }, { name: 'string', test: function test(x) {
+      }
+    }, {
+      name: 'string',
+      test: function test(x) {
         return typeof x === 'string';
-      } }, { name: 'boolean', test: function test(x) {
+      }
+    }, {
+      name: 'boolean',
+      test: function test(x) {
         return typeof x === 'boolean';
-      } }, { name: 'Function', test: function test(x) {
+      }
+    }, {
+      name: 'Function',
+      test: function test(x) {
         return typeof x === 'function';
-      } }, { name: 'Array', test: Array.isArray }, { name: 'Date', test: function test(x) {
+      }
+    }, {
+      name: 'Array',
+      test: Array.isArray
+    }, {
+      name: 'Date',
+      test: function test(x) {
         return x instanceof Date;
-      } }, { name: 'RegExp', test: function test(x) {
+      }
+    }, {
+      name: 'RegExp',
+      test: function test(x) {
         return x instanceof RegExp;
-      } }, { name: 'Object', test: function test(x) {
-        return (typeof x === 'undefined' ? 'undefined' : _typeof(x)) === 'object';
-      } }, { name: 'null', test: function test(x) {
+      }
+    }, {
+      name: 'Object',
+      test: function test(x) {
+        return _typeof(x) === 'object';
+      }
+    }, {
+      name: 'null',
+      test: function test(x) {
         return x === null;
-      } }, { name: 'undefined', test: function test(x) {
+      }
+    }, {
+      name: 'undefined',
+      test: function test(x) {
         return x === undefined;
-      } }];
+      }
+    }];
 
     // configuration
     var config = {};
@@ -13961,7 +12749,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           }
         }
         var name = getName(fns);
-
         return _typed(name, signatures);
       },
       'string, Object': _typed,
@@ -13970,14 +12757,15 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         var err;
         var name = getName(fns);
         var signatures = {};
-
         for (var i = 0; i < fns.length; i++) {
           var fn = fns[i];
 
           // test whether this is a typed-function
           if (!(_typeof(fn.signatures) === 'object')) {
             err = new TypeError('Function is no typed-function (index: ' + i + ')');
-            err.data = { index: i };
+            err.data = {
+              index: i
+            };
             throw err;
           }
 
@@ -13987,7 +12775,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
               if (signatures.hasOwnProperty(signature)) {
                 if (fn.signatures[signature] !== signatures[signature]) {
                   err = new Error('Signature "' + signature + '" is defined twice');
-                  err.data = { signature: signature };
+                  err.data = {
+                    signature: signature
+                  };
                   throw err;
                 }
                 // else: both signatures point to the same function, that's fine
@@ -13997,7 +12787,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             }
           }
         }
-
         return _typed(name, signatures);
       }
     });
@@ -14035,7 +12824,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       } else {
         throw new TypeError('String array or a comma separated string expected');
       }
-
       var str = arr.join(',');
 
       // find an exact match
@@ -14061,14 +12849,12 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       if (type === from) {
         return value;
       }
-
       for (var i = 0; i < typed.conversions.length; i++) {
         var conversion = typed.conversions[i];
         if (conversion.from === from && conversion.to === type) {
           return conversion.convert(value);
         }
       }
-
       throw new Error('Cannot convert from ' + from + ' to ' + type);
     }
 
@@ -14086,7 +12872,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       if (!type || typeof type.name !== 'string' || typeof type.test !== 'function') {
         throw new TypeError('Object with properties {name: string, test: function} expected');
       }
-
       typed.types.push(type);
     };
 
@@ -14095,13 +12880,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       if (!conversion || typeof conversion.from !== 'string' || typeof conversion.to !== 'string' || typeof conversion.convert !== 'function') {
         throw new TypeError('Object with properties {from: string, to: string, convert: function} expected');
       }
-
       typed.conversions.push(conversion);
     };
-
     return typed;
   }
-
   return create();
 });
 
@@ -14118,64 +12900,51 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
  * @returns {boolean} returns true with input is a Matrix
  *                    (like a DenseMatrix or SparseMatrix)
  */
-
 module.exports = function isMatrix(x) {
   return x && x.constructor.prototype.isMatrix || false;
 };
 
 /***/ }),
 /* 147 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 function E() {
   // Keep this empty so it's easier to inherit from
   // (via https://github.com/lipsmack from https://github.com/scottcorgan/tiny-emitter/issues/3)
 }
-
 E.prototype = {
   on: function on(name, callback, ctx) {
     var e = this.e || (this.e = {});
-
     (e[name] || (e[name] = [])).push({
       fn: callback,
       ctx: ctx
     });
-
     return this;
   },
-
   once: function once(name, callback, ctx) {
     var self = this;
     function listener() {
       self.off(name, listener);
       callback.apply(ctx, arguments);
-    };
-
+    }
+    ;
     listener._ = callback;
     return this.on(name, listener, ctx);
   },
-
   emit: function emit(name) {
     var data = [].slice.call(arguments, 1);
     var evtArr = ((this.e || (this.e = {}))[name] || []).slice();
     var i = 0;
     var len = evtArr.length;
-
     for (i; i < len; i++) {
       evtArr[i].fn.apply(evtArr[i].ctx, data);
     }
-
     return this;
   },
-
   off: function off(name, callback) {
     var e = this.e || (this.e = {});
     var evts = e[name];
     var liveEvents = [];
-
     if (evts && callback) {
       for (var i = 0, len = evts.length; i < len; i++) {
         if (evts[i].fn !== callback && evts[i].fn._ !== callback) liveEvents.push(evts[i]);
@@ -14187,11 +12956,9 @@ E.prototype = {
     // Ref: https://github.com/scottcorgan/tiny-emitter/commit/c6ebfaa9bc973b33d110a84a307742b7cf94c953#commitcomment-5024910
 
     liveEvents.length ? e[name] = liveEvents : delete e[name];
-
     return this;
   }
 };
-
 module.exports = E;
 
 /***/ }),
@@ -14201,13 +12968,11 @@ module.exports = E;
 "use strict";
 
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 var lazy = __webpack_require__(4).lazy;
 var isFactory = __webpack_require__(4).isFactory;
 var traverse = __webpack_require__(4).traverse;
 var ArgumentsError = __webpack_require__(149);
-
 function factory(type, config, load, typed, math) {
   /**
    * Import functions from an object or a module
@@ -14261,38 +13026,36 @@ function factory(type, config, load, typed, math) {
     if (num !== 1 && num !== 2) {
       throw new ArgumentsError('import', num, 1, 2);
     }
-
     if (!options) {
       options = {};
     }
-
     if (isFactory(object)) {
       _importFactory(object, options);
     }
     // TODO: allow a typed-function with name too
     else if (Array.isArray(object)) {
-        object.forEach(function (entry) {
-          math_import(entry, options);
-        });
-      } else if ((typeof object === 'undefined' ? 'undefined' : _typeof(object)) === 'object') {
-        // a map with functions
-        for (var name in object) {
-          if (object.hasOwnProperty(name)) {
-            var value = object[name];
-            if (isSupportedType(value)) {
-              _import(name, value, options);
-            } else if (isFactory(object)) {
-              _importFactory(object, options);
-            } else {
-              math_import(value, options);
-            }
+      object.forEach(function (entry) {
+        math_import(entry, options);
+      });
+    } else if (_typeof(object) === 'object') {
+      // a map with functions
+      for (var name in object) {
+        if (object.hasOwnProperty(name)) {
+          var value = object[name];
+          if (isSupportedType(value)) {
+            _import(name, value, options);
+          } else if (isFactory(object)) {
+            _importFactory(object, options);
+          } else {
+            math_import(value, options);
           }
         }
-      } else {
-        if (!options.silent) {
-          throw new TypeError('Factory, Object, or Array expected');
-        }
       }
+    } else {
+      if (!options.silent) {
+        throw new TypeError('Factory, Object, or Array expected');
+      }
+    }
   }
 
   /**
@@ -14308,7 +13071,6 @@ function factory(type, config, load, typed, math) {
       // create a wrapper around the function
       value = _wrap(value);
     }
-
     if (isTypedFunction(math[name]) && isTypedFunction(value)) {
       if (options.override) {
         // give the typed function the right name
@@ -14317,7 +13079,6 @@ function factory(type, config, load, typed, math) {
         // merge the existing and typed function
         value = typed(math[name], value);
       }
-
       math[name] = value;
       _importTransform(name, value);
       math.emit('import', name, function resolver() {
@@ -14325,7 +13086,6 @@ function factory(type, config, load, typed, math) {
       });
       return;
     }
-
     if (math[name] === undefined || options.override) {
       math[name] = value;
       _importTransform(name, value);
@@ -14334,12 +13094,10 @@ function factory(type, config, load, typed, math) {
       });
       return;
     }
-
     if (!options.silent) {
       throw new Error('Cannot import "' + name + '": already exists');
     }
   }
-
   function _importTransform(name, value) {
     if (value && typeof value.transform === 'function') {
       math.expression.transform[name] = value.transform;
@@ -14371,11 +13129,9 @@ function factory(type, config, load, typed, math) {
       }
       return fn.apply(math, args);
     };
-
     if (fn.transform) {
       wrapper.transform = fn.transform;
     }
-
     return wrapper;
   }
 
@@ -14388,16 +13144,14 @@ function factory(type, config, load, typed, math) {
   function _importFactory(factory, options) {
     if (typeof factory.name === 'string') {
       var name = factory.name;
-      var existingTransform = name in math.expression.transform;
+      var existingTransform = (name in math.expression.transform);
       var namespace = factory.path ? traverse(math, factory.path) : math;
       var existing = namespace.hasOwnProperty(name) ? namespace[name] : undefined;
-
       var resolver = function resolver() {
         var instance = load(factory);
         if (instance && typeof instance.transform === 'function') {
           throw new Error('Transforms cannot be attached to factory functions. ' + 'Please create a separate function for it with exports.path="expression.transform"');
         }
-
         if (isTypedFunction(existing) && isTypedFunction(instance)) {
           if (options.override) {
             // replace the existing typed function (nothing to do)
@@ -14405,22 +13159,17 @@ function factory(type, config, load, typed, math) {
             // merge the existing and new typed function
             instance = typed(existing, instance);
           }
-
           return instance;
         }
-
         if (existing === undefined || options.override) {
           return instance;
         }
-
         if (!options.silent) {
           throw new Error('Cannot import "' + name + '": already exists');
         }
       };
-
       if (factory.lazy !== false) {
         lazy(namespace, name, resolver);
-
         if (!existingTransform) {
           if (factory.path === 'expression.transform' || factoryAllowedInExpressions(factory)) {
             lazy(math.expression.mathWithTransform, name, resolver);
@@ -14428,14 +13177,12 @@ function factory(type, config, load, typed, math) {
         }
       } else {
         namespace[name] = resolver();
-
         if (!existingTransform) {
           if (factory.path === 'expression.transform' || factoryAllowedInExpressions(factory)) {
             math.expression.mathWithTransform[name] = resolver();
           }
         }
       }
-
       math.emit('import', name, resolver, factory.path);
     } else {
       // unnamed factory.
@@ -14462,11 +13209,9 @@ function factory(type, config, load, typed, math) {
   function isTypedFunction(fn) {
     return typeof fn === 'function' && _typeof(fn.signatures) === 'object';
   }
-
   function allowedInExpressions(name) {
     return !unsafe.hasOwnProperty(name);
   }
-
   function factoryAllowedInExpressions(factory) {
     return factory.path === undefined && !unsafe.hasOwnProperty(factory.name);
   }
@@ -14483,7 +13228,6 @@ function factory(type, config, load, typed, math) {
 
   return math_import;
 }
-
 exports.math = true; // request access to the math namespace as 5th argument of the factory function
 exports.name = 'import';
 exports.factory = factory;
@@ -14505,27 +13249,21 @@ exports.lazy = true;
  * @param {number} [max]  Maximum required argument count
  * @extends Error
  */
-
 function ArgumentsError(fn, count, min, max) {
   if (!(this instanceof ArgumentsError)) {
     throw new SyntaxError('Constructor must be called with the new operator');
   }
-
   this.fn = fn;
   this.count = count;
   this.min = min;
   this.max = max;
-
   this.message = 'Wrong number of arguments in function ' + fn + ' (' + count + ' provided, ' + min + (max != undefined ? '-' + max : '') + ' expected)';
-
   this.stack = new Error().stack;
 }
-
 ArgumentsError.prototype = new Error();
 ArgumentsError.prototype.constructor = Error;
 ArgumentsError.prototype.name = 'ArgumentsError';
 ArgumentsError.prototype.isArgumentsError = true;
-
 module.exports = ArgumentsError;
 
 /***/ }),
@@ -14536,7 +13274,6 @@ module.exports = ArgumentsError;
 
 
 var object = __webpack_require__(4);
-
 function factory(type, config, load, typed, math) {
   var MATRIX = ['Matrix', 'Array']; // valid values for option matrix
   var NUMBER = ['number', 'BigNumber', 'Fraction']; // valid values for option number
@@ -14585,14 +13322,11 @@ function factory(type, config, load, typed, math) {
 
       // merge options
       object.deepExtend(config, options);
-
       var curr = object.map(config, object.clone);
-
       var changes = object.map(options, object.clone);
 
       // emit 'config' event
       math.emit('config', curr, prev, changes);
-
       return curr;
     } else {
       return object.map(config, object.clone);
@@ -14602,7 +13336,6 @@ function factory(type, config, load, typed, math) {
   // attach the valid options to the function so they can be extended
   _config.MATRIX = MATRIX;
   _config.NUMBER = NUMBER;
-
   return _config;
 }
 
@@ -14641,7 +13374,6 @@ function validateOption(options, name, values) {
       // right value, wrong casing
       // TODO: lower case values are deprecated since v3, remove this warning some day.
       console.warn('Warning: Wrong casing for configuration option "' + name + '", should be "' + values[index] + '" instead of "' + options[name] + '".');
-
       options[name] = values[index]; // change the option to the right casing
     } else {
       // unknown value
@@ -14649,7 +13381,6 @@ function validateOption(options, name, values) {
     }
   }
 }
-
 exports.name = 'config';
 exports.math = true; // request the math namespace as fifth argument
 exports.factory = factory;
@@ -14658,22 +13389,15 @@ exports.factory = factory;
 /* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 module.exports = [
 // types
 __webpack_require__(45), __webpack_require__(76), __webpack_require__(156), __webpack_require__(157), __webpack_require__(162), __webpack_require__(164), __webpack_require__(165), __webpack_require__(166),
-
 // construction functions
 __webpack_require__(167), __webpack_require__(8), __webpack_require__(168)];
 
 /***/ }),
 /* 152 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 /**
  * Convert a BigNumber to a formatted string representation.
@@ -14753,7 +13477,6 @@ exports.format = function (value, options) {
   // default values for options
   var notation = 'auto';
   var precision = undefined;
-
   if (options !== undefined) {
     // determine notation from options
     if (options.notation) {
@@ -14772,10 +13495,8 @@ exports.format = function (value, options) {
   switch (notation) {
     case 'fixed':
       return exports.toFixed(value, precision);
-
     case 'exponential':
       return exports.toExponential(value, precision);
-
     case 'auto':
       // determine lower and upper bound for exponential notation.
       // TODO: implement support for upper and lower to be BigNumbers themselves
@@ -14795,7 +13516,6 @@ exports.format = function (value, options) {
         toExpNeg: value.constructor.toExpNeg,
         toExpPos: value.constructor.toExpPos
       };
-
       value.constructor.config({
         toExpNeg: Math.round(Math.log(lower) / Math.LN10),
         toExpPos: Math.round(Math.log(upper) / Math.LN10)
@@ -14821,7 +13541,6 @@ exports.format = function (value, options) {
         var e = arguments[4];
         return digits !== '.' ? digits + e : e;
       });
-
     default:
       throw new Error('Unknown notation "' + notation + '". ' + 'Choose "auto", "exponential", or "fixed".');
   }
@@ -14872,12 +13591,10 @@ exports.toFixed = function (value, precision) {
  * @param {number} [max]     Maximum index (excluded)
  * @extends RangeError
  */
-
 function IndexError(index, min, max) {
   if (!(this instanceof IndexError)) {
     throw new SyntaxError('Constructor must be called with the new operator');
   }
-
   this.index = index;
   if (arguments.length < 3) {
     this.min = 0;
@@ -14886,7 +13603,6 @@ function IndexError(index, min, max) {
     this.min = min;
     this.max = max;
   }
-
   if (this.min !== undefined && this.index < this.min) {
     this.message = 'Index out of range (' + this.index + ' < ' + this.min + ')';
   } else if (this.max !== undefined && this.index >= this.max) {
@@ -14894,15 +13610,12 @@ function IndexError(index, min, max) {
   } else {
     this.message = 'Index out of range (' + this.index + ')';
   }
-
   this.stack = new Error().stack;
 }
-
 IndexError.prototype = new RangeError();
 IndexError.prototype.constructor = RangeError;
 IndexError.prototype.name = 'IndexError';
 IndexError.prototype.isIndexError = true;
-
 module.exports = IndexError;
 
 /***/ }),
@@ -14917,20 +13630,15 @@ module.exports = IndexError;
  * @param {*} value
  * @return {boolean} isBoolean
  */
-
 exports.isBoolean = function (value) {
   return typeof value == 'boolean';
 };
 
 /***/ }),
 /* 155 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 // function utils
 
 /**
@@ -14949,12 +13657,10 @@ exports.memoize = function (fn, hasher) {
     if (_typeof(memoize.cache) !== 'object') {
       memoize.cache = {};
     }
-
     var args = [];
     for (var i = 0; i < arguments.length; i++) {
       args[i] = arguments[i];
     }
-
     var hash = hasher ? hasher(args) : JSON.stringify(args);
     if (!(hash in memoize.cache)) {
       return memoize.cache[hash] = fn.apply(fn, args);
@@ -14998,19 +13704,15 @@ exports.callWithRightArgumentCount = function (fn, args, argCount) {
 
 var util = __webpack_require__(21);
 var DimensionError = __webpack_require__(7);
-
 var array = util.array;
 var object = util.object;
 var string = util.string;
 var number = util.number;
-
 var isArray = Array.isArray;
 var isNumber = number.isNumber;
 var isInteger = number.isInteger;
 var isString = string.isString;
-
 var validateIndex = array.validateIndex;
-
 function factory(type, config, load, typed) {
   var Matrix = load(__webpack_require__(45)); // force loading Matrix (do not use via type.Matrix)
   var equalScalar = load(__webpack_require__(23));
@@ -15023,7 +13725,6 @@ function factory(type, config, load, typed) {
   function SparseMatrix(data, datatype) {
     if (!(this instanceof SparseMatrix)) throw new SyntaxError('Constructor must be called with the new operator');
     if (datatype && !isString(datatype)) throw new Error('Invalid datatype: ' + datatype);
-
     if (type.isMatrix(data)) {
       // create from matrix
       _createFromMatrix(this, data, datatype);
@@ -15049,7 +13750,6 @@ function factory(type, config, load, typed) {
       this._datatype = datatype;
     }
   }
-
   var _createFromMatrix = function _createFromMatrix(matrix, source, datatype) {
     // check matrix type
     if (source.type === 'SparseMatrix') {
@@ -15064,7 +13764,6 @@ function factory(type, config, load, typed) {
       _createFromArray(matrix, source.valueOf(), datatype || source._datatype);
     }
   };
-
   var _createFromArray = function _createFromArray(matrix, data, datatype) {
     // initialize fields
     matrix._values = [];
@@ -15079,7 +13778,6 @@ function factory(type, config, load, typed) {
     var eq = equalScalar;
     // zero value
     var zero = 0;
-
     if (isString(datatype)) {
       // find signature that matches (datatype, datatype)
       eq = typed.find(equalScalar, [datatype, datatype]) || equalScalar;
@@ -15135,7 +13833,6 @@ function factory(type, config, load, typed) {
     // size
     matrix._size = [rows, columns];
   };
-
   SparseMatrix.prototype = new Matrix();
 
   /**
@@ -15224,18 +13921,15 @@ function factory(type, config, load, typed) {
       case 2:
       case 3:
         return _setsubset(this, index, replacement, defaultValue);
-
       default:
         throw new SyntaxError('Wrong number of arguments');
     }
   };
-
   var _getsubset = function _getsubset(matrix, idx) {
     // check idx
     if (!type.isIndex(idx)) {
       throw new TypeError('Invalid index');
     }
-
     var isScalar = idx.isScalar();
     if (isScalar) {
       // return a scalar
@@ -15313,7 +14007,6 @@ function factory(type, config, load, typed) {
       datatype: matrix._datatype
     });
   };
-
   var _setsubset = function _setsubset(matrix, index, submatrix, defaultValue) {
     // check index
     if (!index || index.isIndex !== true) {
@@ -15322,7 +14015,7 @@ function factory(type, config, load, typed) {
 
     // get index size and check whether the index contains a single value
     var iSize = index.size(),
-        isScalar = index.isScalar();
+      isScalar = index.isScalar();
 
     // calculate the size of the submatrix, and convert it into an Array if needed
     var sSize;
@@ -15418,7 +14111,6 @@ function factory(type, config, load, typed) {
     var k = _getValueIndex(i, this._ptr[j], this._ptr[j + 1], this._index);
     // check k is prior to next column k and it is in the correct row
     if (k < this._ptr[j + 1] && this._index[k] === i) return this._values[k];
-
     return 0;
   };
 
@@ -15451,7 +14143,6 @@ function factory(type, config, load, typed) {
     var eq = equalScalar;
     // zero value
     var zero = 0;
-
     if (isString(this._datatype)) {
       // find signature that matches (datatype, datatype)
       eq = typed.find(equalScalar, [this._datatype, this._datatype]) || equalScalar;
@@ -15488,10 +14179,8 @@ function factory(type, config, load, typed) {
       // insert value @ (i, j)
       _insert(k, i, j, v, this._values, this._index, this._ptr);
     }
-
     return this;
   };
-
   var _getValueIndex = function _getValueIndex(i, top, bottom, index) {
     // check row is on the bottom side
     if (bottom - top === 0) return bottom;
@@ -15503,7 +14192,6 @@ function factory(type, config, load, typed) {
     // we did not find row
     return top;
   };
-
   var _remove = function _remove(k, j, values, index, ptr) {
     // remove value @ k
     values.splice(k, 1);
@@ -15513,7 +14201,6 @@ function factory(type, config, load, typed) {
       ptr[x]--;
     }
   };
-
   var _insert = function _insert(k, i, j, v, values, index, ptr) {
     // insert value
     values.splice(k, 0, v);
@@ -15555,7 +14242,6 @@ function factory(type, config, load, typed) {
     // resize matrix
     return _resize(m, size[0], size[1], defaultValue);
   };
-
   var _resize = function _resize(matrix, rows, columns, defaultValue) {
     // value to insert at the time of growing matrix
     var value = defaultValue || 0;
@@ -15564,7 +14250,6 @@ function factory(type, config, load, typed) {
     var eq = equalScalar;
     // zero value
     var zero = 0;
-
     if (isString(matrix._datatype)) {
       // find signature that matches (datatype, datatype)
       eq = typed.find(equalScalar, [matrix._datatype, matrix._datatype]) || equalScalar;
@@ -15580,7 +14265,6 @@ function factory(type, config, load, typed) {
     // old columns and rows
     var r = matrix._size[0];
     var c = matrix._size[1];
-
     var i, j, k;
 
     // check we need to increase columns
@@ -15689,7 +14373,6 @@ function factory(type, config, load, typed) {
    * @return {Matrix}                 The reshaped matrix
    */
   SparseMatrix.prototype.reshape = function (size, copy) {
-
     // validate arguments
     if (!isArray(size)) throw new TypeError('Array expected');
     if (size.length !== 2) throw new Error('Sparse matrices can only be reshaped in two dimensions');
@@ -15834,7 +14517,6 @@ function factory(type, config, load, typed) {
     var eq = equalScalar;
     // zero value
     var zero = 0;
-
     if (isString(matrix._datatype)) {
       // find signature that matches (datatype, datatype)
       eq = typed.find(equalScalar, [matrix._datatype, matrix._datatype]) || equalScalar;
@@ -15965,7 +14647,6 @@ function factory(type, config, load, typed) {
   SparseMatrix.prototype.valueOf = function () {
     return _toArray(this._values, this._index, this._ptr, this._size, false);
   };
-
   var _toArray = function _toArray(values, index, ptr, size, copy) {
     // rows and columns
     var rows = size[0];
@@ -16077,7 +14758,6 @@ function factory(type, config, load, typed) {
       // default value
       k = 0;
     }
-
     var kSuper = k > 0 ? k : 0;
     var kSub = k < 0 ? -k : 0;
 
@@ -16183,14 +14863,12 @@ function factory(type, config, load, typed) {
     var eq = equalScalar;
     // zero value
     var zero = 0;
-
     if (isString(datatype)) {
       // find signature that matches (datatype, datatype)
       eq = typed.find(equalScalar, [datatype, datatype]) || equalScalar;
       // convert 0 to the same datatype
       zero = typed.convert(0, datatype);
     }
-
     var kSuper = k > 0 ? k : 0;
     var kSub = k < 0 ? -k : 0;
 
@@ -16380,10 +15058,8 @@ function factory(type, config, load, typed) {
 
   // register this type in the base class Matrix
   type.Matrix._storage.sparse = SparseMatrix;
-
   return SparseMatrix;
 }
-
 exports.name = 'SparseMatrix';
 exports.path = 'type';
 exports.factory = factory;
@@ -16397,7 +15073,6 @@ exports.lazy = false; // no lazy loading, as we alter type.Matrix._storage
 
 
 function factory(type, config, load) {
-
   var add = load(__webpack_require__(158));
   var equalScalar = load(__webpack_require__(23));
 
@@ -16437,13 +15112,11 @@ function factory(type, config, load) {
       this._values[i].value = v;
     }
   };
-
   Spa.prototype.get = function (i) {
     var node = this._values[i];
     if (node) return node.value;
     return 0;
   };
-
   Spa.prototype.accumulate = function (i, v) {
     // node @ i
     var node = this._values[i];
@@ -16457,7 +15130,6 @@ function factory(type, config, load) {
       node.value = add(node.value, v);
     }
   };
-
   Spa.prototype.forEach = function (from, to, callback) {
     // references
     var heap = this._heap;
@@ -16491,7 +15163,6 @@ function factory(type, config, load) {
       values[node.key] = node;
     }
   };
-
   Spa.prototype.swap = function (i, j) {
     // node @ i and j
     var nodei = this._values[i];
@@ -16520,10 +15191,8 @@ function factory(type, config, load) {
       nodej.value = v;
     }
   };
-
   return Spa;
 }
-
 exports.name = 'Spa';
 exports.path = 'type';
 exports.factory = factory;
@@ -16536,13 +15205,10 @@ exports.factory = factory;
 
 
 var extend = __webpack_require__(4).extend;
-
 function factory(type, config, load, typed) {
-
   var matrix = load(__webpack_require__(8));
   var addScalar = load(__webpack_require__(78));
   var latex = __webpack_require__(14);
-
   var algorithm01 = load(__webpack_require__(159));
   var algorithm04 = load(__webpack_require__(160));
   var algorithm10 = load(__webpack_require__(161));
@@ -16619,22 +15285,18 @@ function factory(type, config, load, typed) {
       }
       return c;
     },
-
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
       return add(matrix(x), matrix(y)).valueOf();
     },
-
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
       return add(matrix(x), y);
     },
-
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
       return add(x, matrix(y));
     },
-
     'Matrix, any': function MatrixAny(x, y) {
       // result
       var c;
@@ -16649,7 +15311,6 @@ function factory(type, config, load, typed) {
       }
       return c;
     },
-
     'any, Matrix': function anyMatrix(x, y) {
       // result
       var c;
@@ -16664,37 +15325,28 @@ function factory(type, config, load, typed) {
       }
       return c;
     },
-
     'Array, any': function ArrayAny(x, y) {
       // use matrix implementation
       return algorithm14(matrix(x), y, addScalar, false).valueOf();
     },
-
     'any, Array': function anyArray(x, y) {
       // use matrix implementation
       return algorithm14(matrix(y), x, addScalar, true).valueOf();
     },
-
     'any, any': addScalar,
-
     'Array | Matrix | any, Array | Matrix | any, ...any': function ArrayMatrixAnyArrayMatrixAnyAny(x, y, rest) {
       var result = add(x, y);
-
       for (var i = 0; i < rest.length; i++) {
         result = add(result, rest[i]);
       }
-
       return result;
     }
   }, addScalar.signatures));
-
   add.toTex = {
     2: '\\left(${args[0]}' + latex.operators['add'] + '${args[1]}\\right)'
   };
-
   return add;
 }
-
 exports.name = 'add';
 exports.factory = factory;
 
@@ -16706,9 +15358,7 @@ exports.factory = factory;
 
 
 var DimensionError = __webpack_require__(7);
-
 function factory(type, config, load, typed) {
-
   var DenseMatrix = type.DenseMatrix;
 
   /**
@@ -16768,7 +15418,9 @@ function factory(type, config, load, typed) {
     // initialize c
     for (i = 0; i < rows; i++) {
       cdata[i] = [];
-    } // workspace
+    }
+
+    // workspace
     var x = [];
     // marks indicating we have a value in x for a given column
     var w = [];
@@ -16806,10 +15458,8 @@ function factory(type, config, load, typed) {
       datatype: dt
     });
   };
-
   return algorithm01;
 }
-
 exports.name = 'algorithm01';
 exports.factory = factory;
 
@@ -16821,11 +15471,8 @@ exports.factory = factory;
 
 
 var DimensionError = __webpack_require__(7);
-
 function factory(type, config, load, typed) {
-
   var equalScalar = load(__webpack_require__(23));
-
   var SparseMatrix = type.SparseMatrix;
 
   /**
@@ -16991,10 +15638,8 @@ function factory(type, config, load, typed) {
     // return sparse matrix
     return c;
   };
-
   return algorithm04;
 }
-
 exports.name = 'algorithm04';
 exports.factory = factory;
 
@@ -17006,7 +15651,6 @@ exports.factory = factory;
 
 
 function factory(type, config, load, typed) {
-
   var DenseMatrix = type.DenseMatrix;
 
   /**
@@ -17105,10 +15749,8 @@ function factory(type, config, load, typed) {
     // return sparse matrix
     return c;
   };
-
   return algorithm10;
 }
-
 exports.name = 'algorithm10';
 exports.factory = factory;
 
@@ -17120,10 +15762,8 @@ exports.factory = factory;
 
 
 function factory(type, config, load, typed) {
-
   var smaller = load(__webpack_require__(79));
   var larger = load(__webpack_require__(163));
-
   var oneOverLogPhi = 1.0 / Math.log((1.0 + Math.sqrt(5.0)) / 2.0);
 
   /**
@@ -17373,7 +16013,6 @@ function factory(type, config, load, typed) {
     // set mark[node] false
     node.mark = false;
   };
-
   var _findMinimumNode = function _findMinimumNode(minimum, size) {
     // to find trees of the same degree efficiently we use an array of length O(log n) in which we keep a pointer to one root of each degree
     var arraySize = Math.floor(Math.log(size) * oneOverLogPhi) + 1;
@@ -17444,10 +16083,8 @@ function factory(type, config, load, typed) {
     }
     return minimum;
   };
-
   return FibonacciHeap;
 }
-
 exports.name = 'FibonacciHeap';
 exports.path = 'type';
 exports.factory = factory;
@@ -17461,17 +16098,13 @@ exports.factory = factory;
 
 var nearlyEqual = __webpack_require__(3).nearlyEqual;
 var bigNearlyEqual = __webpack_require__(46);
-
 function factory(type, config, load, typed) {
-
   var matrix = load(__webpack_require__(8));
-
   var algorithm03 = load(__webpack_require__(80));
   var algorithm07 = load(__webpack_require__(81));
   var algorithm12 = load(__webpack_require__(82));
   var algorithm13 = load(__webpack_require__(47));
   var algorithm14 = load(__webpack_require__(30));
-
   var latex = __webpack_require__(14);
 
   /**
@@ -17505,38 +16138,30 @@ function factory(type, config, load, typed) {
    * @return {boolean | Array | Matrix} Returns true when the x is larger than y, else returns false
    */
   var larger = typed('larger', {
-
     'boolean, boolean': function booleanBoolean(x, y) {
       return x > y;
     },
-
     'number, number': function numberNumber(x, y) {
       return x > y && !nearlyEqual(x, y, config.epsilon);
     },
-
     'BigNumber, BigNumber': function BigNumberBigNumber(x, y) {
       return x.gt(y) && !bigNearlyEqual(x, y, config.epsilon);
     },
-
     'Fraction, Fraction': function FractionFraction(x, y) {
       return x.compare(y) === 1;
     },
-
     'Complex, Complex': function ComplexComplex() {
       throw new TypeError('No ordering relation is defined for complex numbers');
     },
-
     'Unit, Unit': function UnitUnit(x, y) {
       if (!x.equalBase(y)) {
         throw new Error('Cannot compare units with different base');
       }
       return larger(x.value, y.value);
     },
-
     'string, string': function stringString(x, y) {
       return x > y;
     },
-
     'Matrix, Matrix': function MatrixMatrix(x, y) {
       // result
       var c;
@@ -17570,22 +16195,18 @@ function factory(type, config, load, typed) {
       }
       return c;
     },
-
     'Array, Array': function ArrayArray(x, y) {
       // use matrix implementation
       return larger(matrix(x), matrix(y)).valueOf();
     },
-
     'Array, Matrix': function ArrayMatrix(x, y) {
       // use matrix implementation
       return larger(matrix(x), y);
     },
-
     'Matrix, Array': function MatrixArray(x, y) {
       // use matrix implementation
       return larger(x, matrix(y));
     },
-
     'Matrix, any': function MatrixAny(x, y) {
       // result
       var c;
@@ -17600,7 +16221,6 @@ function factory(type, config, load, typed) {
       }
       return c;
     },
-
     'any, Matrix': function anyMatrix(x, y) {
       // result
       var c;
@@ -17615,25 +16235,20 @@ function factory(type, config, load, typed) {
       }
       return c;
     },
-
     'Array, any': function ArrayAny(x, y) {
       // use matrix implementation
       return algorithm14(matrix(x), y, larger, false).valueOf();
     },
-
     'any, Array': function anyArray(x, y) {
       // use matrix implementation
       return algorithm14(matrix(y), x, larger, true).valueOf();
     }
   });
-
   larger.toTex = {
     2: '\\left(${args[0]}' + latex.operators['larger'] + '${args[1]}\\right)'
   };
-
   return larger;
 }
-
 exports.name = 'larger';
 exports.factory = factory;
 
@@ -17645,23 +16260,16 @@ exports.factory = factory;
 
 
 var util = __webpack_require__(21);
-
 var string = util.string;
 var object = util.object;
-
 var isArray = Array.isArray;
 var isString = string.isString;
-
 function factory(type, config, load) {
-
   var DenseMatrix = load(__webpack_require__(76));
-
   var smaller = load(__webpack_require__(79));
-
   function ImmutableDenseMatrix(data, datatype) {
     if (!(this instanceof ImmutableDenseMatrix)) throw new SyntaxError('Constructor must be called with the new operator');
     if (datatype && !isString(datatype)) throw new Error('Invalid datatype: ' + datatype);
-
     if (type.isMatrix(data) || isArray(data)) {
       // use DenseMatrix implementation
       var matrix = new DenseMatrix(data, datatype);
@@ -17690,7 +16298,6 @@ function factory(type, config, load) {
       this._max = null;
     }
   }
-
   ImmutableDenseMatrix.prototype = new DenseMatrix();
 
   /**
@@ -17732,7 +16339,6 @@ function factory(type, config, load) {
       case 2:
       case 3:
         throw new Error('Cannot invoke set subset on an Immutable Matrix instance');
-
       default:
         throw new SyntaxError('Wrong number of arguments');
     }
@@ -17864,7 +16470,6 @@ function factory(type, config, load) {
   // exports
   return ImmutableDenseMatrix;
 }
-
 exports.name = 'ImmutableDenseMatrix';
 exports.path = 'type';
 exports.factory = factory;
@@ -17878,9 +16483,7 @@ exports.factory = factory;
 
 var clone = __webpack_require__(4).clone;
 var isInteger = __webpack_require__(3).isInteger;
-
 function factory(type) {
-
   /**
    * Create an index. An Index can store ranges and sets for multiple dimensions.
    * Matrix.get, Matrix.set, and math.subset accept an Index as input.
@@ -17905,13 +16508,10 @@ function factory(type) {
     if (!(this instanceof Index)) {
       throw new SyntaxError('Constructor must be called with the new operator');
     }
-
     this._dimensions = [];
     this._isScalar = true;
-
     for (var i = 0, ii = arguments.length; i < ii; i++) {
       var arg = arguments[i];
-
       if (type.isRange(arg)) {
         this._dimensions.push(arg);
         this._isScalar = false;
@@ -17933,8 +16533,8 @@ function factory(type) {
       }
       // TODO: implement support for wildcard '*'
       else {
-          throw new TypeError('Dimension must be an Array, Matrix, number, string, or Range');
-        }
+        throw new TypeError('Dimension must be an Array, Matrix, number, string, or Range');
+      }
     }
   }
 
@@ -17943,7 +16543,6 @@ function factory(type) {
    */
   Index.prototype.type = 'Index';
   Index.prototype.isIndex = true;
-
   function _createImmutableMatrix(arg) {
     // loop array elements
     for (var i = 0, l = arg.length; i < l; i++) {
@@ -17987,12 +16586,10 @@ function factory(type) {
    */
   Index.prototype.size = function () {
     var size = [];
-
     for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
       var d = this._dimensions[i];
       size[i] = typeof d === 'string' ? 1 : d.size()[0];
     }
-
     return size;
   };
 
@@ -18003,12 +16600,10 @@ function factory(type) {
    */
   Index.prototype.max = function () {
     var values = [];
-
     for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
       var range = this._dimensions[i];
       values[i] = typeof range === 'string' ? range : range.max();
     }
-
     return values;
   };
 
@@ -18019,12 +16614,10 @@ function factory(type) {
    */
   Index.prototype.min = function () {
     var values = [];
-
     for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
       var range = this._dimensions[i];
       values[i] = typeof range === 'string' ? range : range.min();
     }
-
     return values;
   };
 
@@ -18110,7 +16703,6 @@ function factory(type) {
    */
   Index.prototype.toString = function () {
     var strings = [];
-
     for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
       var dimension = this._dimensions[i];
       if (typeof dimension === 'string') {
@@ -18119,7 +16711,6 @@ function factory(type) {
         strings.push(dimension.toString());
       }
     }
-
     return '[' + strings.join(', ') + ']';
   };
 
@@ -18146,10 +16737,8 @@ function factory(type) {
   Index.fromJSON = function (json) {
     return Index.create(json.dimensions);
   };
-
   return Index;
 }
-
 exports.name = 'Index';
 exports.path = 'type';
 exports.factory = factory;
@@ -18162,7 +16751,6 @@ exports.factory = factory;
 
 
 var number = __webpack_require__(3);
-
 function factory(type, config, load, typed) {
   /**
    * Create a range. A range has a start, step, and end, and contains functions
@@ -18197,7 +16785,6 @@ function factory(type, config, load, typed) {
     if (!(this instanceof Range)) {
       throw new SyntaxError('Constructor must be called with the new operator');
     }
-
     if (start != null) {
       if (type.isBigNumber(start)) start = start.toNumber();else if (typeof start !== 'number') throw new TypeError('Parameter start must be a number');
     }
@@ -18207,7 +16794,6 @@ function factory(type, config, load, typed) {
     if (step != null) {
       if (type.isBigNumber(step)) step = step.toNumber();else if (typeof step !== 'number') throw new TypeError('Parameter step must be a number');
     }
-
     this.start = start != null ? parseFloat(start) : 0;
     this.end = end != null ? parseFloat(end) : 0;
     this.step = step != null ? parseFloat(step) : 1;
@@ -18232,19 +16818,16 @@ function factory(type, config, load, typed) {
     if (typeof str !== 'string') {
       return null;
     }
-
     var args = str.split(':');
     var nums = args.map(function (arg) {
       return parseFloat(arg);
     });
-
     var invalid = nums.some(function (num) {
       return isNaN(num);
     });
     if (invalid) {
       return null;
     }
-
     switch (nums.length) {
       case 2:
         return new Range(nums[0], nums[1]);
@@ -18271,17 +16854,15 @@ function factory(type, config, load, typed) {
    */
   Range.prototype.size = function () {
     var len = 0,
-        start = this.start,
-        step = this.step,
-        end = this.end,
-        diff = end - start;
-
+      start = this.start,
+      step = this.step,
+      end = this.end,
+      diff = end - start;
     if (number.sign(step) == number.sign(diff)) {
       len = Math.ceil(diff / step);
     } else if (diff == 0) {
       len = 0;
     }
-
     if (isNaN(len)) {
       len = 0;
     }
@@ -18295,7 +16876,6 @@ function factory(type, config, load, typed) {
    */
   Range.prototype.min = function () {
     var size = this.size()[0];
-
     if (size > 0) {
       if (this.step > 0) {
         // positive step
@@ -18316,7 +16896,6 @@ function factory(type, config, load, typed) {
    */
   Range.prototype.max = function () {
     var size = this.size()[0];
-
     if (size > 0) {
       if (this.step > 0) {
         // positive step
@@ -18342,7 +16921,6 @@ function factory(type, config, load, typed) {
     var step = this.step;
     var end = this.end;
     var i = 0;
-
     if (step > 0) {
       while (x < end) {
         callback(x, [i], this);
@@ -18410,7 +16988,6 @@ function factory(type, config, load, typed) {
    */
   Range.prototype.format = function (options) {
     var str = number.format(this.start, options);
-
     if (this.step != 1) {
       str += ':' + number.format(this.step, options);
     }
@@ -18452,10 +17029,8 @@ function factory(type, config, load, typed) {
   Range.fromJSON = function (json) {
     return new Range(json.start, json.end, json.step);
   };
-
   return Range;
 }
-
 exports.name = 'Range';
 exports.path = 'type';
 exports.factory = factory;
@@ -18517,14 +17092,12 @@ function factory(type, config, load, typed) {
           return arg;
         }
       });
-
       var res = new type.Index();
       type.Index.apply(res, ranges);
       return res;
     }
   });
 }
-
 exports.name = 'index';
 exports.factory = factory;
 
@@ -18536,7 +17109,6 @@ exports.factory = factory;
 
 
 function factory(type, config, load, typed) {
-
   var SparseMatrix = type.SparseMatrix;
 
   /**
@@ -18570,28 +17142,22 @@ function factory(type, config, load, typed) {
     '': function _() {
       return new SparseMatrix([]);
     },
-
     'string': function string(datatype) {
       return new SparseMatrix([], datatype);
     },
-
     'Array | Matrix': function ArrayMatrix(data) {
       return new SparseMatrix(data);
     },
-
     'Array | Matrix, string': function ArrayMatrixString(data, datatype) {
       return new SparseMatrix(data, datatype);
     }
   });
-
   sparse.toTex = {
     0: '\\begin{bsparse}\\end{bsparse}',
     1: '\\left(${args[0]}\\right)'
   };
-
   return sparse;
 }
-
 exports.name = 'sparse';
 exports.factory = factory;
 
@@ -18604,7 +17170,6 @@ exports.factory = factory;
 
 var isInteger = __webpack_require__(3).isInteger;
 var resize = __webpack_require__(22).resize;
-
 function factory(type, config, load, typed) {
   var matrix = load(__webpack_require__(8));
 
@@ -18643,7 +17208,6 @@ function factory(type, config, load, typed) {
     '': function _() {
       return config.matrix === 'Array' ? _zeros([]) : _zeros([], 'default');
     },
-
     // math.zeros(m, n, p, ..., format)
     // TODO: more accurate signature '...number | BigNumber, string' as soon as typed-function supports this
     '...number | BigNumber | string': function numberBigNumberString(size) {
@@ -18657,19 +17221,15 @@ function factory(type, config, load, typed) {
         return _zeros(size, 'default');
       }
     },
-
     'Array': _zeros,
-
     'Matrix': function Matrix(size) {
       var format = size.storage();
       return _zeros(size.valueOf(), format);
     },
-
     'Array | Matrix, string': function ArrayMatrixString(size, format) {
       return _zeros(size.valueOf(), format);
     }
   });
-
   zeros.toTex = undefined; // use default template
 
   return zeros;
@@ -18685,7 +17245,6 @@ function factory(type, config, load, typed) {
     var hasBigNumbers = _normalize(size);
     var defaultValue = hasBigNumbers ? new type.BigNumber(0) : 0;
     _validate(size);
-
     if (format) {
       // return a matrix
       var m = matrix(format);
@@ -18734,18 +17293,13 @@ exports.factory = factory;
 /* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var utils = __webpack_require__(0);
 var get_filter_default_state = __webpack_require__(42);
 var filter = __webpack_require__(9);
 var each = __webpack_require__(1);
-
 module.exports = function get_subset_views(params, views, requested_view) {
   var inst_value;
   var found_filter;
-
   var request_filters = Object.keys(requested_view || {});
 
   // find a view that matches all of the requested view/filter-attributes
@@ -18764,7 +17318,6 @@ module.exports = function get_subset_views(params, views, requested_view) {
         found_filter = true;
       }
     });
-
     if (found_filter) {
       views = filter(views, function (d) {
         return d[inst_filter] == inst_value;
@@ -18786,7 +17339,6 @@ module.exports = function get_subset_views(params, views, requested_view) {
     // check each filter in a view to see if it is in the default state
     Object.keys(params.viz.possible_filters || {}).forEach(function (inst_filter) {
       inst_default_state = get_filter_default_state(params.viz.filter_data, inst_filter);
-
       if (inst_view[inst_filter] != inst_default_state) {
         check_default = false;
       }
@@ -18802,30 +17354,22 @@ module.exports = function get_subset_views(params, views, requested_view) {
       export_views.push(inst_view);
     }
   });
-
   return export_views;
 };
 
 /***/ }),
 /* 171 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 // Keep the identity function around for default iteratees.
 function identity(value) {
   return value;
 }
-
 module.exports = identity;
 
 /***/ }),
 /* 172 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var extendOwn = __webpack_require__(173);
 var isMatch = __webpack_require__(175);
@@ -18838,15 +17382,11 @@ function matcher(attrs) {
     return isMatch(obj, attrs);
   };
 }
-
 module.exports = matcher;
 
 /***/ }),
 /* 173 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var _createAssigner = __webpack_require__(174);
 var keys = __webpack_require__(20);
@@ -18855,15 +17395,11 @@ var keys = __webpack_require__(20);
 // object(s).
 // (https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
 var extendOwn = _createAssigner(keys);
-
 module.exports = extendOwn;
 
 /***/ }),
 /* 174 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 // An internal function for creating assigner functions.
 function createAssigner(keysFunc, defaults) {
@@ -18873,8 +17409,8 @@ function createAssigner(keysFunc, defaults) {
     if (length < 2 || obj == null) return obj;
     for (var index = 1; index < length; index++) {
       var source = arguments[index],
-          keys = keysFunc(source),
-          l = keys.length;
+        keys = keysFunc(source),
+        l = keys.length;
       for (var i = 0; i < l; i++) {
         var key = keys[i];
         if (!defaults || obj[key] === void 0) obj[key] = source[key];
@@ -18883,22 +17419,18 @@ function createAssigner(keysFunc, defaults) {
     return obj;
   };
 }
-
 module.exports = createAssigner;
 
 /***/ }),
 /* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var keys = __webpack_require__(20);
 
 // Returns whether an object has a given set of `key:value` pairs.
 function isMatch(object, attrs) {
   var _keys = keys(attrs),
-      length = _keys.length;
+    length = _keys.length;
   if (object == null) return !length;
   var obj = Object(object);
   for (var i = 0; i < length; i++) {
@@ -18907,15 +17439,11 @@ function isMatch(object, attrs) {
   }
   return true;
 }
-
 module.exports = isMatch;
 
 /***/ }),
 /* 176 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var _deepGet = __webpack_require__(177);
 var _toPath = __webpack_require__(178);
@@ -18928,15 +17456,11 @@ function property(path) {
     return _deepGet(obj, path);
   };
 }
-
 module.exports = property;
 
 /***/ }),
 /* 177 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 // Internal function to obtain a nested property in `obj` along `path`.
 function deepGet(obj, path) {
@@ -18947,15 +17471,11 @@ function deepGet(obj, path) {
   }
   return length ? obj : void 0;
 }
-
 module.exports = deepGet;
 
 /***/ }),
 /* 178 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var underscore = __webpack_require__(31);
 __webpack_require__(179);
@@ -18965,15 +17485,11 @@ __webpack_require__(179);
 function toPath(path) {
   return underscore.toPath(path);
 }
-
 module.exports = toPath;
 
 /***/ }),
 /* 179 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var underscore = __webpack_require__(31);
 var isArray = __webpack_require__(48);
@@ -18984,15 +17500,11 @@ function toPath(path) {
   return isArray(path) ? path : [path];
 }
 underscore.toPath = toPath;
-
 module.exports = toPath;
 
 /***/ }),
 /* 180 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var underscore = __webpack_require__(31);
 var _baseIteratee = __webpack_require__(83);
@@ -19004,15 +17516,11 @@ function iteratee(value, context) {
   return _baseIteratee(value, context, Infinity);
 }
 underscore.iteratee = iteratee;
-
 module.exports = iteratee;
 
 /***/ }),
 /* 181 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function make_view_request(params, requested_view) {
   // this will add all necessary information to a view request
@@ -19026,12 +17534,10 @@ module.exports = function make_view_request(params, requested_view) {
     if (inst_filter != changed_component) {
       if (!d3.select(params.root + ' .slider_' + inst_filter).empty()) {
         var inst_state = d3.select(params.root + ' .slider_' + inst_filter).attr('current_state');
-
         requested_view[inst_filter] = inst_state;
       }
     }
   });
-
   return requested_view;
 };
 
@@ -19039,35 +17545,25 @@ module.exports = function make_view_request(params, requested_view) {
 /* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var max = __webpack_require__(32);
-
 module.exports = function ini_label_params(params) {
   var labels = {};
   labels.super_label_scale = params.super_label_scale;
   labels.super_labels = params.super_labels;
   labels.super_label_fs = 13.8;
-
   if (labels.super_labels) {
-    labels.super = {};
-    labels.super.row = params.super.row;
-    labels.super.col = params.super.col;
+    labels["super"] = {};
+    labels["super"].row = params["super"].row;
+    labels["super"].col = params["super"].col;
   }
-
   labels.show_label_tooltips = params.show_label_tooltips;
-
   labels.row_max_char = max(params.network_data.row_nodes, function (inst) {
     return inst.name.length;
   }).name.length;
-
   labels.col_max_char = max(params.network_data.col_nodes, function (inst) {
     return inst.name.length;
   }).name.length;
-
   labels.max_allow_fs = params.max_allow_fs;
-
   return labels;
 };
 
@@ -19075,11 +17571,7 @@ module.exports = function ini_label_params(params) {
 /* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var calc_viz_dimensions = __webpack_require__(85);
-
 module.exports = function set_viz_wrapper_size(params) {
   // Create wrapper around SVG visualization
   if (d3.select(params.root + ' .viz_wrapper').empty()) {
@@ -19092,7 +17584,9 @@ module.exports = function set_viz_wrapper_size(params) {
   }
 
   // customization
-  var cont_dim = calc_viz_dimensions(Object.assign(params, { sidebar_width: 0 }));
+  var cont_dim = calc_viz_dimensions(Object.assign(params, {
+    sidebar_width: 0
+  }));
 
   // customization
   // d3.select(params.root + " .sidebar_wrapper")
@@ -19106,33 +17600,21 @@ module.exports = function set_viz_wrapper_size(params) {
 
 /***/ }),
 /* 184 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function calc_label_params(viz) {
   viz.norm_labels.margin = {};
-
   viz.norm_labels.margin.left = viz.super_labels.margin.left + viz.super_labels.dim.width;
-
   viz.norm_labels.margin.top = viz.super_labels.margin.top + viz.super_labels.dim.width;
-
   viz.label_background = {};
-
   viz.label_background.row = viz.norm_labels.width.row + viz.cat_room.row + viz.uni_margin;
-
   viz.label_background.col = viz.norm_labels.width.col + viz.cat_room.col + viz.uni_margin;
-
   return viz;
 };
 
 /***/ }),
 /* 185 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 // Generate an integer Array containing an arithmetic progression. A port of
 // the native Python `range()` function. See
@@ -19145,47 +17627,34 @@ function range(start, stop, step) {
   if (!step) {
     step = stop < start ? -1 : 1;
   }
-
   var length = Math.max(Math.ceil((stop - start) / step), 0);
   var range = Array(length);
-
   for (var idx = 0; idx < length; idx++, start += step) {
     range[idx] = start;
   }
-
   return range;
 }
-
 module.exports = range;
 
 /***/ }),
 /* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var ini_matrix_params = __webpack_require__(187);
 var calc_downsampled_levels = __webpack_require__(33);
-
 module.exports = function calc_matrix_params(params) {
   params.matrix = ini_matrix_params(params);
 
   // X and Y scales: set domains and ranges
   //////////////////////////////////////////////
   params.viz.x_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.width]);
-
   params.viz.y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
-
   var inst_order;
-
   ['row', 'col'].forEach(function (inst_rc) {
     inst_order = params.viz.inst_order[inst_rc];
-
     if (inst_order === 'custom') {
       inst_order = 'clust';
     }
-
     if (inst_rc === 'row') {
       params.viz.x_scale.domain(params.matrix.orders[inst_order + '_' + inst_rc]);
     } else {
@@ -19203,9 +17672,7 @@ module.exports = function calc_matrix_params(params) {
 
   // moved calculateion to calc_matrix_params
   params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width.y;
-
   calc_downsampled_levels(params);
-
   return params;
 };
 
@@ -19213,18 +17680,12 @@ module.exports = function calc_matrix_params(params) {
 /* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var utils = __webpack_require__(0);
 var initialize_matrix = __webpack_require__(188);
 var max = __webpack_require__(32);
-
 module.exports = function ini_matrix_params(params) {
   var matrix = {};
-
   var network_data = params.network_data;
-
   matrix.tile_colors = params.tile_colors;
   matrix.bar_colors = params.bar_colors;
   matrix.outline_colors = params.outline_colors;
@@ -19232,7 +17693,6 @@ module.exports = function ini_matrix_params(params) {
   matrix.tile_title = params.tile_title;
   matrix.show_tile_tooltips = params.show_tile_tooltips;
   matrix.make_tile_tooltip = params.make_tile_tooltip;
-
   matrix.distance_metric = 'cosine';
   matrix.linkage_type = 'average';
   matrix.filter_state = 'no-filter';
@@ -19247,9 +17707,7 @@ module.exports = function ini_matrix_params(params) {
   // definition of a large matrix (num links) determines if transition is run
   matrix.def_large_matrix = 2e4;
   matrix.opacity_function = params.opacity_scale;
-
   matrix.orders = {};
-
   ['row', 'col'].forEach(function (inst_rc) {
     // row ordering is based on col info and vice versa
     var other_rc;
@@ -19262,22 +17720,16 @@ module.exports = function ini_matrix_params(params) {
     // the nodes are defined using other_rc
     var inst_nodes = network_data[other_rc + '_nodes'] || [];
     var num_nodes = inst_nodes.length;
-
     var nodes_names = utils.pluck(inst_nodes, 'name');
     var tmp = nodes_names.sort();
-
     var alpha_index = tmp.map(function (d) {
       return network_data[other_rc + '_nodes_names'].indexOf(d);
     });
-
     matrix.orders['alpha_' + inst_rc] = alpha_index;
-
     var possible_orders = ['clust', 'rank'];
-
     if (utils.has(inst_nodes[0], 'rankvar')) {
       possible_orders.push('rankvar');
     }
-
     if (params.viz.all_cats[other_rc].length > 0) {
       params.viz.all_cats[other_rc].forEach(function (inst_cat) {
         // the index of the category has replaced - with _
@@ -19285,16 +17737,13 @@ module.exports = function ini_matrix_params(params) {
         possible_orders.push(inst_cat + '_index');
       });
     }
-
     possible_orders.forEach(function (inst_order) {
       var tmp_order_index = d3.range(num_nodes).sort(function (a, b) {
         return inst_nodes[b][inst_order] - inst_nodes[a][inst_order];
       });
-
       matrix.orders[inst_order + '_' + inst_rc] = tmp_order_index;
     });
   });
-
   if (utils.has(network_data, 'all_links')) {
     matrix.max_link = max(network_data.all_links, function (d) {
       return Math.abs(d.value);
@@ -19304,9 +17753,7 @@ module.exports = function ini_matrix_params(params) {
       return Math.abs(d.value);
     }).value;
   }
-
   matrix.abs_max_val = Math.abs(matrix.max_link) * params.clamp_opacity;
-
   if (params.input_domain === 0) {
     if (matrix.opacity_function === 'linear') {
       matrix.opacity_scale = d3.scale.linear().domain([0, matrix.abs_max_val]).clamp(true).range([0.0, 1.0]);
@@ -19320,26 +17767,20 @@ module.exports = function ini_matrix_params(params) {
       matrix.opacity_scale = d3.scale.log().domain([0.001, params.input_domain]).clamp(true).range([0.0, 1.0]);
     }
   }
-
   var has_val_up = utils.has(network_data.links[0], 'value_up');
   var has_val_dn = utils.has(network_data.links[0], 'value_dn');
-
   if (has_val_up || has_val_dn) {
     matrix.tile_type = 'updn';
   } else {
     matrix.tile_type = 'simple';
   }
-
   if (utils.has(network_data.links[0], 'highlight')) {
     matrix.highlight = 1;
   } else {
     matrix.highlight = 0;
   }
-
   matrix.matrix = initialize_matrix(network_data);
-
   matrix.wait_tooltip = 0;
-
   return matrix;
 };
 
@@ -19347,27 +17788,20 @@ module.exports = function ini_matrix_params(params) {
 /* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var utils = __webpack_require__(0);
-
 module.exports = function (network_data) {
   var matrix = [];
   var ini_object;
-
   var keep_orig;
   if (utils.has(network_data.links[0], 'value_orig')) {
     keep_orig = true;
   } else {
     keep_orig = false;
   }
-
   network_data.row_nodes.forEach(function (tmp, row_index) {
     matrix[row_index] = {};
     matrix[row_index].name = network_data.row_nodes[row_index].name;
     matrix[row_index].row_index = row_index;
-
     matrix[row_index].row_data = d3.range(network_data.col_nodes.length).map(function (col_index) {
       if (utils.has(network_data.links[0], 'value_up') || utils.has(network_data.links[0], 'value_dn')) {
         ini_object = {
@@ -19386,30 +17820,24 @@ module.exports = function (network_data) {
           highlight: 0
         };
       }
-
       if (keep_orig) {
         ini_object.value_orig = 0;
       }
-
       return ini_object;
     });
   });
-
   network_data.links.forEach(function (link) {
     // transfer additional link information is necessary
     matrix[link.source].row_data[link.target].value = link.value;
     matrix[link.source].row_data[link.target].row_name = link.row_name;
     matrix[link.source].row_data[link.target].col_name = link.col_name;
-
     if (utils.has(link, 'value_up') || utils.has(link, 'value_dn')) {
       matrix[link.source].row_data[link.target].value_up = link.value_up;
       matrix[link.source].row_data[link.target].value_dn = link.value_dn;
     }
-
     if (keep_orig) {
       matrix[link.source].row_data[link.target].value_orig = link.value_orig;
     }
-
     if (link.highlight) {
       matrix[link.source].row_data[link.target].highlight = link.highlight;
     }
@@ -19417,7 +17845,6 @@ module.exports = function (network_data) {
       matrix[link.source].row_data[link.target].info = link.info;
     }
   });
-
   return matrix;
 };
 
@@ -19425,28 +17852,19 @@ module.exports = function (network_data) {
 /* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var each = __webpack_require__(1);
 var utils = __webpack_require__(0);
-
 module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
   var inst_num_rows = params.viz.ds[ds_level].num_rows;
-
   var num_compressed_rows = params.network_data.row_nodes.length / inst_num_rows;
 
   // increase ds opacity, as more rows are compressed into a single downsampled
   // row, increase the opacity of the downsampled row.
   var opacity_factor = params.viz.ds_opacity_scale(num_compressed_rows);
-
   var mod_val = params.viz.clust.dim.height / inst_num_rows;
-
   var ds_mat = [];
   var inst_obj;
-
   var len_ds_array = inst_num_rows + 1;
-
   var i;
   var x;
 
@@ -19456,16 +17874,12 @@ module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
     inst_obj.row_index = i;
     inst_obj.name = String(i);
     inst_obj.all_names = [];
-
     ds_mat.push(inst_obj);
   }
-
   each(mat, function (inst_row) {
     // row ordering information is contained in y_scale
     var inst_y = params.viz.y_scale(inst_row.row_index);
-
     var ds_index = Math.round(inst_y / mod_val);
-
     var inst_row_data = inst_row.row_data;
 
     // gather names
@@ -19481,7 +17895,6 @@ module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
       for (x = 0; x < inst_row_data.length; x++) {
         new_data[x] = inst_row_data[x];
       }
-
       ds_mat[ds_index].row_data = new_data;
     }
   });
@@ -19489,9 +17902,7 @@ module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
   // average the values
   ds_mat.forEach(function (tmp_ds) {
     var tmp_row_data = tmp_ds.row_data;
-
     var num_names = tmp_ds.all_names.length;
-
     each(tmp_row_data, function (tmp_obj) {
       tmp_obj.value = tmp_obj.value / num_names * opacity_factor;
     });
@@ -19499,11 +17910,9 @@ module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
 
   // all names were found
   var all_names = [];
-
   ds_mat.forEach(function (inst_row) {
     all_names = all_names.concat(inst_row.all_names);
   });
-
   return ds_mat;
 };
 
@@ -19511,65 +17920,47 @@ module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
 /* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var calc_zoom_switching = __webpack_require__(53);
-
 module.exports = function set_zoom_params(params) {
   params.viz.zoom_scale_font = {};
   params.viz.zoom_scale_font.row = 1;
   params.viz.zoom_scale_font.col = 1;
-
   var max_zoom_limit = 0.75;
   var half_col_height = params.viz.x_scale.rangeBand() / 2;
   params.viz.square_zoom = params.viz.norm_labels.width.col / half_col_height * max_zoom_limit;
-
   params.viz = calc_zoom_switching(params.viz);
-
   return params;
 };
 
 /***/ }),
 /* 191 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function calc_cat_params(params, viz) {
   var separtion_room;
 
   // increase the width of the label container based on the label length
   var label_scale = d3.scale.linear().domain([5, 15]).range([85, 120]).clamp('true');
-
   viz.cat_room = {};
   viz.cat_room.symbol_width = 12;
   viz.cat_room.separation = 3;
-
   ['row', 'col'].forEach(function (inst_rc) {
     viz.norm_labels.width[inst_rc] = label_scale(params.labels[inst_rc + '_max_char']) * params[inst_rc + '_label_scale'];
-
     viz['num_' + inst_rc + '_nodes'] = params.network_data[inst_rc + '_nodes'].length;
-
     if (inst_rc === 'row') {
       viz.dendro_room[inst_rc] = viz.dendro_room.symbol_width;
     } else {
       viz.dendro_room[inst_rc] = viz.dendro_room.symbol_width + 3 * viz.uni_margin;
     }
-
     var num_cats = viz.all_cats[inst_rc].length;
-
     if (viz.show_categories[inst_rc]) {
       separtion_room = (num_cats - 1) * viz.cat_room.separation;
-
       var adjusted_cats;
       if (inst_rc === 'row') {
         adjusted_cats = num_cats + 1;
       } else {
         adjusted_cats = num_cats;
       }
-
       viz.cat_room[inst_rc] = adjusted_cats * viz.cat_room.symbol_width + separtion_room;
     } else {
       // no categories
@@ -19580,20 +17971,15 @@ module.exports = function calc_cat_params(params, viz) {
       }
     }
   });
-
   return viz;
 };
 
 /***/ }),
 /* 192 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 // colors from http://graphicdesign.stackexchange.com/revisions/3815/8
 var all_colors;
-
 all_colors = ['#393b79', '#aec7e8', '#ff7f0e', '#ffbb78', '#98df8a', '#bcbd22', '#404040', '#ff9896', '#c5b0d5', '#8c564b', '#1f77b4', '#5254a3', '#FFDB58', '#c49c94', '#e377c2', '#7f7f7f', '#2ca02c', '#9467bd', '#dbdb8d', '#17becf', '#637939', '#6b6ecf', '#9c9ede', '#d62728', '#8ca252', '#8c6d31', '#bd9e39', '#e7cb94', '#843c39', '#ad494a', '#d6616b', '#7b4173', '#a55194', '#ce6dbd', '#de9ed6'];
 
 // too light colors
@@ -19606,15 +17992,12 @@ all_colors = ['#393b79', '#aec7e8', '#ff7f0e', '#ffbb78', '#98df8a', '#bcbd22', 
 function get_default_color() {
   return '#EEE';
 }
-
 function get_random_color(i) {
   return all_colors[i % get_num_colors()];
 }
-
 function get_num_colors() {
   return all_colors.length;
 }
-
 module.exports = {
   get_default_color: get_default_color,
   get_random_color: get_random_color,
@@ -19625,30 +18008,22 @@ module.exports = {
 /* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var max = __webpack_require__(32);
-
 module.exports = function check_if_value_cats(cat_states) {
   var tmp_cat = cat_states[0];
-
   var has_title = false;
   var might_have_values = false;
   var cat_types = 'cat_strings';
   var max_abs_val = NaN;
   var all_values = [];
   var cat_scale = null;
-
   var super_string = ': ';
-
   if (typeof tmp_cat === 'string') {
     if (tmp_cat.indexOf(super_string) > -1) {
       has_title = true;
       tmp_cat = tmp_cat.split(super_string)[1];
     }
   }
-
   if (isNaN(tmp_cat) == false) {
     might_have_values = true;
   }
@@ -19657,7 +18032,6 @@ module.exports = function check_if_value_cats(cat_states) {
   if (might_have_values) {
     // the default state is that all are now values, check each one
     cat_types = 'cat_values';
-
     cat_states.forEach(function (inst_cat) {
       if (has_title) {
         inst_cat = inst_cat.split(super_string)[1];
@@ -19672,32 +18046,24 @@ module.exports = function check_if_value_cats(cat_states) {
       }
     });
   }
-
   if (cat_types === 'cat_values') {
     // get absolute value
     var max_value = max(all_values, function (d) {
       return Math.abs(d);
     });
-
     max_abs_val = Math.abs(max_value);
-
     cat_scale = d3.scale.linear().domain([0, max_abs_val]).range([0, 1]);
   }
-
   var inst_info = {};
   inst_info.type = cat_types;
   inst_info.max_abs_val = max_abs_val;
   inst_info.cat_scale = cat_scale;
-
   return inst_info;
 };
 
 /***/ }),
 /* 194 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var _group = __webpack_require__(195);
 var _has = __webpack_require__(28);
@@ -19708,15 +18074,11 @@ var _has = __webpack_require__(28);
 var countBy = _group(function (result, value, key) {
   if (_has(result, key)) result[key]++;else result[key] = 1;
 });
-
 module.exports = countBy;
 
 /***/ }),
 /* 195 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var _cb = __webpack_require__(15);
 var each = __webpack_require__(1);
@@ -19733,15 +18095,11 @@ function group(behavior, partition) {
     return result;
   };
 }
-
 module.exports = group;
 
 /***/ }),
 /* 196 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var generate_matrix = __webpack_require__(197);
 var make_row_label_container = __webpack_require__(90);
@@ -19759,31 +18117,22 @@ var build_dendro_sliders = __webpack_require__(236);
 // var build_tree_icon = require('./menus/build_tree_icon');
 // var build_filter_icon = require('./menus/build_filter_icon');
 var make_row_dendro_spillover = __webpack_require__(238);
-
 module.exports = function make_viz(cgm) {
   var params = cgm.params;
-
   d3.select(params.viz.viz_wrapper + ' svg').remove();
-
   var svg_group = d3.select(params.viz.viz_wrapper).append('svg').attr('class', 'viz_svg').attr('id', 'svg_' + params.root.replace('#', '')).attr('width', params.viz.svg_dim.width).attr('height', params.viz.svg_dim.height).attr('is_zoom', 0).attr('stopped_zoom', 1);
-
   svg_group.append('rect').attr('class', 'super_background').style('width', params.viz.svg_dim.width).style('height', params.viz.svg_dim.height).style('fill', 'white');
-
   generate_matrix(params, svg_group);
-
   make_row_label_container(cgm);
-
   make_row_dendro(cgm);
   make_col_dendro(cgm);
   make_row_dendro_spillover(cgm);
-
   make_col_label_container(cgm);
 
   // initial trim text
   if (params.viz.ds_level === -1) {
     ['row', 'col'].forEach(function (inst_rc) {
       var inst_fs = Number(d3.select('.' + inst_rc + '_label_group').select('text').style('font-size').replace('px', ''));
-
       var min_trim_fs = 8;
       if (inst_fs > min_trim_fs) {
         d3.selectAll(params.root + ' .' + inst_rc + '_label_group').each(function () {
@@ -19798,9 +18147,7 @@ module.exports = function make_viz(cgm) {
   if (params.viz.show_categories.col) {
     make_col_cat(cgm);
   }
-
   spillover(cgm);
-
   if (params.labels.super_labels) {
     generate_super_labels(params);
   }
@@ -19817,7 +18164,6 @@ module.exports = function make_viz(cgm) {
   if (cgm.config.show_dendrogram) {
     build_dendro_sliders(cgm);
   }
-
   function border_colors() {
     var inst_color = params.viz.super_border_color;
     if (params.viz.is_expand || params.show_viz_border == false) {
@@ -19846,15 +18192,11 @@ module.exports = function make_viz(cgm) {
     var inst_offset = params.viz.svg_dim.height - params.viz.grey_border_width;
     return 'translate(0,' + inst_offset + ')';
   });
-
   initialize_resizing(cgm);
-
   ini_doubleclick(cgm);
-
   if (params.viz.do_zoom) {
     d3.select(params.viz.zoom_element).call(params.zoom_behavior);
   }
-
   d3.select(params.viz.zoom_element).on('dblclick.zoom', null);
 };
 
@@ -19862,17 +18204,12 @@ module.exports = function make_viz(cgm) {
 /* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var utils = __webpack_require__(0);
 var draw_gridlines = __webpack_require__(88);
 var add_click_hlight = __webpack_require__(198);
 var make_matrix_rows = __webpack_require__(89);
-
 module.exports = function (params, svg_elem) {
   var network_data = params.network_data;
-
   var matrix = [];
   var clust_group;
 
@@ -19903,7 +18240,6 @@ module.exports = function (params, svg_elem) {
       tile_info.row = params.network_data.row_nodes[d.pos_y].name;
       tile_info.col = params.network_data.col_nodes[d.pos_x].name;
       tile_info.value = d.value;
-
       if (utils.has(d, 'value_up')) {
         tile_info.value_up = d.value_up;
       }
@@ -19951,19 +18287,14 @@ module.exports = function (params, svg_elem) {
 
 /***/ }),
 /* 198 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function (params, clicked_rect) {
   // get x position of rectangle
   d3.select(clicked_rect).each(function (d) {
     var pos_x = d.pos_x;
     var pos_y = d.pos_y;
-
     d3.selectAll(params.root + ' .click_hlight').remove();
-
     if (pos_x != params.matrix.click_hlight_x || pos_y != params.matrix.click_hlight_y) {
       // save pos_x to params.viz.click_hlight_x
       params.matrix.click_hlight_x = pos_x;
@@ -19975,7 +18306,6 @@ module.exports = function (params, clicked_rect) {
 
       var rel_width_hlight = 6;
       var opacity_hlight = 0.85;
-
       var hlight_width = rel_width_hlight * params.viz.border_width.x;
       var hlight_height = rel_width_hlight * params.viz.border_width.y;
 
@@ -20014,9 +18344,6 @@ module.exports = function (params, clicked_rect) {
 /* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 /* eslint-disable */
 
 var draw_up_tile = __webpack_require__(34);
@@ -20026,26 +18353,21 @@ var mouseout_tile = __webpack_require__(25);
 var fine_position_tile = __webpack_require__(12);
 var filter = __webpack_require__(9);
 var utils = __webpack_require__(0);
-
 module.exports = function make_simple_rows(params, inst_data, tip, row_selection) {
   var ds_level = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : -1;
-
   var inp_row_data = inst_data.row_data;
-
   var make_tip = true;
   var rect_height = params.viz.rect_height;
   if (ds_level >= 0) {
     // make_tip = false;
     rect_height = params.viz.ds[ds_level].rect_height;
   }
-
   var keep_orig;
   if (utils.has(params.network_data.links[0], 'value_orig')) {
     keep_orig = true;
   } else {
     keep_orig = false;
   }
-
   var row_values;
   if (keep_orig === false) {
     // value: remove zero values to make visualization faster
@@ -20081,7 +18403,6 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
   }).attr('transform', function (d) {
     return fine_position_tile(params, d);
   });
-
   if (make_tip) {
     tile.on('mouseover', function () {
       for (var inst_len = arguments.length, args = Array(inst_len), inst_key = 0; inst_key < inst_len; inst_key++) {
@@ -20156,10 +18477,9 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
       }
       return inst_opacity;
     }).on('mouseover', function () {
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
         args[_key] = arguments[_key];
       }
-
       mouseover_tile(params, this, tip, args);
     }).on('mouseout', function () {
       mouseout_tile(params, this, tip);
@@ -20181,10 +18501,9 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
       }
       return inst_opacity;
     }).on('mouseover', function () {
-      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
         args[_key2] = arguments[_key2];
       }
-
       mouseover_tile(params, this, tip, args);
     }).on('mouseout', function () {
       mouseout_tile(params, this, tip);
@@ -20211,9 +18530,6 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
 /* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var sortedIndex = __webpack_require__(201);
 var findIndex = __webpack_require__(202);
 var _createIndexFinder = __webpack_require__(204);
@@ -20223,15 +18539,11 @@ var _createIndexFinder = __webpack_require__(204);
 // If the array is large and already in sort order, pass `true`
 // for **isSorted** to use binary search.
 var indexOf = _createIndexFinder(1, findIndex, sortedIndex);
-
 module.exports = indexOf;
 
 /***/ }),
 /* 201 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var _cb = __webpack_require__(15);
 var _getLength = __webpack_require__(19);
@@ -20242,36 +18554,28 @@ function sortedIndex(array, obj, iteratee, context) {
   iteratee = _cb(iteratee, context, 1);
   var value = iteratee(obj);
   var low = 0,
-      high = _getLength(array);
+    high = _getLength(array);
   while (low < high) {
     var mid = Math.floor((low + high) / 2);
     if (iteratee(array[mid]) < value) low = mid + 1;else high = mid;
   }
   return low;
 }
-
 module.exports = sortedIndex;
 
 /***/ }),
 /* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var _createPredicateIndexFinder = __webpack_require__(203);
 
 // Returns the first index on an array-like that passes a truth test.
 var findIndex = _createPredicateIndexFinder(1);
-
 module.exports = findIndex;
 
 /***/ }),
 /* 203 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var _cb = __webpack_require__(15);
 var _getLength = __webpack_require__(19);
@@ -20288,15 +18592,11 @@ function createPredicateIndexFinder(dir) {
     return -1;
   };
 }
-
 module.exports = createPredicateIndexFinder;
 
 /***/ }),
 /* 204 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var _getLength = __webpack_require__(19);
 var _setup = __webpack_require__(6);
@@ -20306,7 +18606,7 @@ var _isNaN = __webpack_require__(205);
 function createIndexFinder(dir, predicateFind, sortedIndex) {
   return function (array, item, idx) {
     var i = 0,
-        length = _getLength(array);
+      length = _getLength(array);
     if (typeof idx == 'number') {
       if (dir > 0) {
         i = idx >= 0 ? idx : Math.max(idx + length, i);
@@ -20327,15 +18627,11 @@ function createIndexFinder(dir, predicateFind, sortedIndex) {
     return -1;
   };
 }
-
 module.exports = createIndexFinder;
 
 /***/ }),
 /* 205 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var _setup = __webpack_require__(6);
 var isNumber = __webpack_require__(206);
@@ -20344,35 +18640,25 @@ var isNumber = __webpack_require__(206);
 function isNaN(obj) {
   return isNumber(obj) && _setup._isNaN(obj);
 }
-
 module.exports = isNaN;
 
 /***/ }),
 /* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var _tagTester = __webpack_require__(29);
-
 var isNumber = _tagTester('Number');
-
 module.exports = isNumber;
 
 /***/ }),
 /* 207 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function (params, clicked_row, id_clicked_row) {
   if (id_clicked_row != params.click_hlight_row) {
     var rel_width_hlight = 6;
     var opacity_hlight = 0.85;
     var hlight_height = rel_width_hlight * params.viz.border_width.x;
-
     d3.selectAll(params.root + ' .click_hlight').remove();
 
     // // highlight selected row
@@ -20383,7 +18669,6 @@ module.exports = function (params, clicked_row, id_clicked_row) {
     //   .style('opacity', 1);
 
     d3.select(clicked_row).append('rect').classed('click_hlight', true).classed('row_top_hlight', true).attr('width', params.viz.svg_dim.width).attr('height', hlight_height).attr('fill', params.matrix.hlight_color).attr('opacity', opacity_hlight);
-
     d3.select(clicked_row).append('rect').classed('click_hlight', true).classed('row_bottom_hlight', true).attr('width', params.viz.svg_dim.width).attr('height', hlight_height).attr('fill', params.matrix.hlight_color).attr('opacity', opacity_hlight).attr('transform', function () {
       var tmp_translate_y = params.viz.y_scale.rangeBand() - hlight_height;
       return 'translate(0,' + tmp_translate_y + ')';
@@ -20396,21 +18681,15 @@ module.exports = function (params, clicked_row, id_clicked_row) {
 
 /***/ }),
 /* 208 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function dendro_shade_bars(params, inst_selection, inst_rc, inst_data) {
   var inst_opacity = 0.2;
   var bot_height;
-
   d3.selectAll(params.root + ' .dendro_shadow').remove();
-
   if (inst_rc == 'row') {
     // top shade
     d3.select(params.root + ' .clust_group').append('rect').attr('width', params.viz.clust.dim.width + 'px').attr('height', inst_data.pos_top + 'px').attr('fill', 'black').classed('dendro_shadow', true).attr('opacity', inst_opacity);
-
     bot_height = params.viz.clust.dim.height - inst_data.pos_bot;
     // bottom shade
     d3.select(params.root + ' .clust_group').append('rect').attr('width', params.viz.clust.dim.width + 'px').attr('height', bot_height + 'px').attr('transform', 'translate(0,' + inst_data.pos_bot + ')').attr('fill', 'black').classed('dendro_shadow', true).attr('opacity', inst_opacity);
@@ -20426,31 +18705,23 @@ module.exports = function dendro_shade_bars(params, inst_selection, inst_rc, ins
 
 /***/ }),
 /* 209 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function run_dendro_filter(cgm, d, inst_rc) {
   var names = {};
-
   if (cgm.params.dendro_filter.row === false && cgm.params.dendro_filter.col === false && cgm.params.cat_filter.row === false && cgm.params.cat_filter.col === false) {
     d3.select(cgm.params.root + ' .' + inst_rc + '_slider_group').style('opacity', 0.35).style('pointer-events', 'none');
-
     names[inst_rc] = d.all_names;
-
     var tmp_names = cgm.params.network_data[inst_rc + '_nodes_names'];
 
     // keep a backup of the inst_view
     var inst_row_nodes = cgm.params.network_data.row_nodes;
     var inst_col_nodes = cgm.params.network_data.col_nodes;
-
     cgm.filter_viz_using_names(names);
 
     // overwrite with backup of original nodes
     cgm.params.inst_nodes.row_nodes = inst_row_nodes;
     cgm.params.inst_nodes.col_nodes = inst_col_nodes;
-
     d3.selectAll(cgm.params.root + ' .dendro_shadow').transition().duration(1000).style('opacity', 0).remove();
 
     // keep the names of all the nodes
@@ -20459,7 +18730,6 @@ module.exports = function run_dendro_filter(cgm, d, inst_rc) {
     /* reset filter */
   } else {
     names[inst_rc] = cgm.params.dendro_filter[inst_rc];
-
     cgm.filter_viz_using_names(names);
     cgm.params.dendro_filter[inst_rc] = false;
   }
@@ -20469,17 +18739,12 @@ module.exports = function run_dendro_filter(cgm, d, inst_rc) {
 /* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var calc_cat_cluster_breakdown = __webpack_require__(211);
 var each = __webpack_require__(1);
 var cat_breakdown_bars = __webpack_require__(222);
 var cat_breakdown_values = __webpack_require__(223);
-
 module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, dendro_info, selector) {
   var tooltip = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;
-
   /*
   This function is used to make the category breakdown graphs for tooltips on
   dendrogram mousover and on dendrogram click modal popup.
@@ -20489,9 +18754,7 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
   if (inst_rc === 'both') {
     inst_rc = 'row';
   }
-
   var cat_breakdown = calc_cat_cluster_breakdown(params, inst_data, inst_rc);
-
   if (cat_breakdown.length > 0) {
     // put cluster information in dendro_tip
     ///////////////////////////////////////////
@@ -20508,7 +18771,6 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
     var num_nodes_index = 4;
     var num_nodes_ds_index = 5;
     var offset_ds_count = 150;
-
     var is_downsampled = false;
     if (cat_breakdown[0].bar_data[0][num_nodes_ds_index] != null) {
       width = width + 100;
@@ -20550,9 +18812,7 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
     if (tooltip) {
       cluster_info_container.append('text').text('Cluster Information');
     }
-
     var main_dendro_svg = cluster_info_container.append('div').style('margin-top', '5px').classed('cat_graph', true).append('svg').style('height', svg_height + 'px').style('width', width + 'px');
-
     cluster_info_container.style('margin-bottom', '5px');
 
     // make background
@@ -20567,14 +18827,10 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
 
     // the total amout to shift down the next category
     var shift_down = title_height;
-
     cat_breakdown.forEach(function (cat_data) {
       var max_bar_value = cat_data.bar_data[0][bars_index];
-
       var count_offset = digit_offset_scale(max_bar_value);
-
       var cat_graph_group = main_dendro_svg.append('g').classed('cat_graph_group', true).attr('transform', 'translate(10, ' + shift_down + ')');
-
       var cat_bar_container = cat_graph_group.append('g').classed('cat_bar_container', true).attr('transform', 'translate(0, 10)');
 
       // make bar groups (hold bar and text)
@@ -20582,9 +18838,7 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
         var inst_y = i * bar_offset;
         return 'translate(0,' + inst_y + ')';
       });
-
       cat_breakdown_bars(params, cat_data, cat_graph_group, title_height, bars_index, max_bars, cat_bar_groups);
-
       cat_breakdown_values(params, cat_graph_group, cat_bar_groups, num_nodes_index, is_downsampled, count_offset, bars_index, cluster_total);
 
       // shift down based on number of bars
@@ -20618,7 +18872,6 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
         shift_top = svg_height + 32;
         shift_left = 30;
       }
-
       dendro_tip.style('top', function () {
         var new_top = String(parseInt(old_top, 10) - shift_top) + 'px';
         return new_top;
@@ -20634,13 +18887,9 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
 /* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var binom_test = __webpack_require__(212);
 var each = __webpack_require__(1);
 var utils = __webpack_require__(0);
-
 module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc) {
   // Category-breakdown of dendrogram-clusters
   /////////////////////////////////////////////
@@ -20665,11 +18914,9 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
   var all_nodes = params.network_data[inst_rc + '_nodes'];
   var num_in_clust_index = null;
   var is_downsampled = false;
-
   var inst_name;
   each(all_nodes, function (inst_node) {
     inst_name = inst_node.name;
-
     if (clust_names.indexOf(inst_name) >= 0) {
       clust_nodes.push(inst_node);
     }
@@ -20679,7 +18926,6 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
   ///////////////////////////////////////////////
 
   var cat_breakdown = [];
-
   if (params.viz.cat_info[inst_rc] !== null) {
     var inst_cat_info = params.viz.cat_info[inst_rc];
 
@@ -20695,7 +18941,6 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
     var cat_index;
     for (var i = 0; i < tmp_types_index.length; i++) {
       cat_index = 'cat-' + String(i);
-
       if (params.viz.cat_info[inst_rc][cat_index].type === 'cat_strings') {
         type_name = params.viz.cat_names[inst_rc][cat_index];
         cat_types_names.push(type_name);
@@ -20708,7 +18953,6 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
         }
       }
     }
-
     var tmp_run_count = {};
     var inst_breakdown = {};
     var bar_data;
@@ -20719,14 +18963,12 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
     if (is_downsampled) {
       sorting_index = 5;
     }
-
     var no_title_given;
     if (type_name === cat_index) {
       no_title_given = true;
     } else {
       no_title_given = false;
     }
-
     if (cat_types_names.length > 0) {
       // 3: count instances of each category name for each category-type
       var cat_name;
@@ -20739,7 +18981,6 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
       each(cat_types_index, function (cat_index) {
         inst_index = cat_index.split('-')[1];
         type_name = cat_types_names[inst_index];
-
         if (no_title_given) {
           if (cat_index.indexOf('-') >= 0) {
             var tmp_num = parseInt(cat_index.split('-')[1], radix_param) + 1;
@@ -20749,20 +18990,16 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
             type_name = 'Category';
           }
         }
-
         tmp_run_count[type_name] = {};
 
         // loop through the nodes and keep a running count of categories
         each(clust_nodes, function (tmp_node) {
           cat_name = tmp_node[cat_index];
-
           if (cat_name.indexOf(': ') >= 0) {
             cat_name = cat_name.split(': ')[1];
           }
-
           if (cat_name in tmp_run_count[type_name]) {
             tmp_run_count[type_name][cat_name].num_nodes = tmp_run_count[type_name][cat_name].num_nodes + 1;
-
             if (num_in_clust_index != null) {
               tmp_run_count[type_name][cat_name].num_nodes_ds = tmp_run_count[type_name][cat_name].num_nodes_ds + parseInt(tmp_node[num_in_clust_index].split(': ')[1], radix_param);
             }
@@ -20774,7 +19011,6 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
             }
           }
         });
-
         inst_breakdown = {};
         inst_breakdown.type_name = type_name;
         inst_breakdown.num_in_clust = num_in_clust;
@@ -20784,7 +19020,6 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
         var bar_color;
         var cat_title_and_name;
         var inst_run_count = tmp_run_count[type_name];
-
         for (var inst_cat in inst_run_count) {
           var tot_num_cat = params.viz.cat_info[inst_rc][cat_index].cat_hist[inst_cat];
           var total_nodes = params.network_data[inst_rc + '_nodes'].length;
@@ -20799,7 +19034,6 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
 
           // num_nodes: number of cat-nodes drawn in cluster
           var num_nodes = inst_run_count[inst_cat].num_nodes;
-
           var actual_k = num_nodes;
           var pval = binom_test(actual_k, num_in_clust, expect_prob);
 
@@ -20810,32 +19044,23 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
           } else {
             num_nodes_ds = null;
           }
-
           bar_color = params.viz.cat_colors[inst_rc][cat_index][cat_title_and_name];
-
           bar_data.push([cat_index, cat_title_and_name, inst_run_count[inst_cat], bar_color, num_nodes, num_nodes_ds, pval]);
         }
-
         bar_data.sort(function (a, b) {
           return b[sorting_index] - a[sorting_index];
         });
-
         inst_breakdown.bar_data = bar_data;
-
         cat_breakdown.push(inst_breakdown);
       });
     }
   }
-
   return cat_breakdown;
 };
 
 /***/ }),
 /* 212 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 // Load the math.js core
 // Create a new, empty math.js instance
@@ -20844,19 +19069,15 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
 var p_dict = __webpack_require__(213);
 var core = __webpack_require__(72);
 var math = core.create();
-
-math.import(__webpack_require__(214));
-
+math["import"](__webpack_require__(214));
 module.exports = function binom_test(actual_k, n, p) {
   var fact = math.factorial;
   var pval;
-
   function binom_dist(k, n, p) {
     var bin_coeff = fact(n) / (fact(k) * fact(n - k));
     p = bin_coeff * (Math.pow(p, k) * Math.pow(1 - p, n - k));
     return p;
   }
-
   function my_binom_test_2(actual_k, n, p) {
     var cp = 0;
     var k;
@@ -20866,7 +19087,6 @@ module.exports = function binom_test(actual_k, n, p) {
       dp = binom_dist(k, n, p);
       cp = cp + dp;
     }
-
     return cp;
   }
 
@@ -20881,13 +19101,10 @@ module.exports = function binom_test(actual_k, n, p) {
     // how many standard deviations is the actual_k away
     // from the expected value
     var z = (actual_k - mu) / sigma;
-
     var z_vals = p_dict.z;
     var p_vals = p_dict.p;
-
     var found_index = -1;
     var found = false;
-
     for (var index = 0; index < z_vals.length; index++) {
       var inst_z = z_vals[index];
 
@@ -20904,7 +19121,6 @@ module.exports = function binom_test(actual_k, n, p) {
       found_index = z_vals.length - 1;
     }
     pval = p_vals[found_index];
-
     return pval;
   }
 
@@ -20913,16 +19129,12 @@ module.exports = function binom_test(actual_k, n, p) {
   if (isNaN(pval)) {
     pval = binom_prop_table(actual_k, n, p);
   }
-
   return pval;
 };
 
 /***/ }),
 /* 213 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = {
   p: [0.5, 0.48006119416162751, 0.46017216272297101, 0.4403823076297575, 0.42074029056089696, 0.4012936743170763, 0.38208857781104733, 0.3631693488243809, 0.34457825838967582, 0.32635522028791997, 0.30853753872598688, 0.29115968678834636, 0.27425311775007355, 0.25784611080586473, 0.24196365222307303, 0.22662735237686821, 0.21185539858339669, 0.19766254312269238, 0.18406012534675947, 0.17105612630848183, 0.15865525393145707, 0.14685905637589591, 0.13566606094638267, 0.12507193563715024, 0.11506967022170828, 0.10564977366685535, 0.096800484585610358, 0.088507991437401956, 0.080756659233771066, 0.073529259609648304, 0.066807201268858071, 0.060570758002059008, 0.054799291699557974, 0.049471468033648075, 0.044565462758543006, 0.040059156863817086, 0.035930319112925789, 0.032156774795613713, 0.028716559816001783, 0.025588059521638611, 0.022750131948179195, 0.020182215405704383, 0.017864420562816542, 0.015777607391090499, 0.013903447513498595, 0.012224472655044696, 0.010724110021675795, 0.0093867055348385662, 0.0081975359245961138, 0.0071428107352714152, 0.0062096653257761323, 0.0053861459540666843, 0.0046611880237187467, 0.0040245885427583027, 0.0034669738030406647, 0.0029797632350545551, 0.002555130330427929, 0.0021859614549132405, 0.0018658133003840339, 0.0015888696473648667, 0.0013498980316300933, 0.0011442068310226977, 0.00096760321321835631, 0.00081635231282856037, 0.00068713793791584708, 0.00057702504239076592, 0.00048342414238377663, 0.0004040578018640207, 0.00033692926567687988, 0.00028029327681617744, 0.00023262907903552502, 0.00019261557563563279, 0.00015910859015753364, 0.00013112015442048433, 0.00010779973347738823, 8.8417285200803773e-5, 7.2348043925119787e-5, 5.9058912418922374e-5, 4.8096344017602614e-5, 3.9075596597787456e-5, 3.1671241833119863e-5, 2.5608816474041489e-5, 2.0657506912546683e-5, 1.6623763729652213e-5, 1.334574901590631e-5, 1.0688525774934402e-5, 8.5399054709917942e-6, 6.8068765993340312e-6, 5.4125439077038407e-6, 4.293514469971858e-6, 3.3976731247300535e-6, 2.6822957796388472e-6, 2.1124547025028419e-6, 1.6596751443714555e-6, 1.3008074539172771e-6, 1.0170832425687032e-6, 7.9332815197558919e-7, 6.1730737200919249e-7, 4.7918327659031855e-7, 3.7106740796333271e-7, 2.8665157187919333e-7, 2.2090503226954194e-7, 1.6982674071475937e-7, 1.3024322953320117e-7, 9.9644263169334701e-8, 7.6049605164887e-8, 5.7901340399645569e-8, 4.3977115940058689e-8, 3.3320448485428448e-8, 2.518491005446105e-8, 1.8989562465887681e-8, 1.4283479893922661e-8, 1.0717590258310852e-8, 8.0223918506634739e-9, 5.9903714010635304e-9, 4.4621724539016108e-9, 3.3157459783261365e-9, 2.4578650618080152e-9, 1.8175078630994235e-9, 1.3407124440918662e-9, 9.8658764503769458e-10, 7.2422917051376055e-10, 5.303423262948808e-10, 3.8741473466756636e-10, 2.8231580370432682e-10, 2.0522634252189396e-10, 1.4882282217622966e-10, 1.0765746385121517e-10, 7.7688475817097756e-11, 5.592507575942645e-11, 4.0160005838590881e-11, 2.8768541736043109e-11, 2.055788909399508e-11, 1.4654650977302715e-11, 1.0420976987965154e-11, 7.3922577780177942e-12, 5.2309575441445253e-12, 3.6924994272355614e-12, 2.600126965638173e-12, 1.8264310619769611e-12, 1.279812543885835e-12, 8.9458895587698439e-13, 6.23784446333152e-13, 4.3388950271780343e-13, 3.0106279811174218e-13, 2.0838581586720548e-13, 1.4388386381575764e-13, 9.9103427495475088e-14, 6.8092248906200155e-14, 4.6670115887190274e-14, 3.1908916729108844e-14, 2.1762912097085575e-14, 1.4806537490047908e-14, 1.0048965656526223e-14, 6.8033115407739012e-15, 4.5946274357785623e-15, 3.095358771958668e-15, 2.0801863521393674e-15, 1.394517146659261e-15, 9.3255757716812045e-16, 6.2209605742717405e-16, 4.1397018162731219e-16, 2.7479593923982212e-16, 1.8196213635266084e-16, 1.2019351542735647e-16, 7.9197263146424757e-17, 5.2055697448902465e-17, 3.4131483264581459e-17, 2.232393197288031e-17, 1.456514112590909e-17, 9.4795348222032499e-18, 6.1544255908503949e-18, 3.985804962848151e-18, 2.5749715380118873e-18, 1.6594208699647519e-18, 1.0667637375474856e-18, 6.840807685935497e-19, 4.3759647993090167e-19, 2.7923343749396233e-19, 1.7774117841455144e-19, 1.1285884059538324e-19, 7.1484170112696837e-20, 4.516591491435403e-20, 2.8466774084602088e-20, 1.7897488120140146e-20, 1.1224633591327901e-20, 7.0222842404415411e-21, 4.3823862990664603e-21, 2.7281535713460872e-21, 1.6941535024881097e-21, 1.0494515075362604e-21, 6.4848144530772079e-22, 3.9972212057261192e-22, 2.4577864834723153e-22, 1.5074931688101589e-22, 9.2234135249393526e-23, 5.6292823113765143e-23, 3.4271987941135974e-23, 2.0813752194932085e-23, 1.2609160670206559e-23],
@@ -20937,7 +19149,6 @@ module.exports = {
 
 
 var deepMap = __webpack_require__(37);
-
 function factory(type, config, load, typed) {
   var gamma = load(__webpack_require__(215));
   var latex = __webpack_require__(14);
@@ -20969,30 +19180,23 @@ function factory(type, config, load, typed) {
       if (n < 0) {
         throw new Error('Value must be non-negative');
       }
-
       return gamma(n + 1);
     },
-
     'BigNumber': function BigNumber(n) {
       if (n.isNegative()) {
         throw new Error('Value must be non-negative');
       }
-
       return gamma(n.plus(1));
     },
-
     'Array | Matrix': function ArrayMatrix(n) {
       return deepMap(n, factorial);
     }
   });
-
   factorial.toTex = {
     1: '\\left(${args[0]}\\right)' + latex.operators['factorial']
   };
-
   return factorial;
 }
-
 exports.name = 'factorial';
 exports.factory = factory;
 
@@ -21005,7 +19209,6 @@ exports.factory = factory;
 
 var deepMap = __webpack_require__(37);
 var isInteger = __webpack_require__(3).isInteger;
-
 function factory(type, config, load, typed) {
   var multiply = load(__webpack_require__(98));
   var pow = load(__webpack_require__(218));
@@ -21036,12 +19239,10 @@ function factory(type, config, load, typed) {
   var gamma = typed('gamma', {
     'number': function number(n) {
       var t, x;
-
       if (isInteger(n)) {
         if (n <= 0) {
           return isFinite(n) ? Infinity : NaN;
         }
-
         if (n > 171) {
           return Infinity; // Will overflow
         }
@@ -21052,18 +19253,15 @@ function factory(type, config, load, typed) {
           res *= value;
           value--;
         }
-
         if (res == 0) {
           res = 1; // 0! is per definition 1
         }
 
         return res;
       }
-
       if (n < 0.5) {
         return Math.PI / (Math.sin(Math.PI * n) * gamma(1 - n));
       }
-
       if (n >= 171.35) {
         return Infinity; // will overflow
       }
@@ -21076,24 +19274,19 @@ function factory(type, config, load, typed) {
         var fiveN = fourN * n;
         return Math.sqrt(2 * Math.PI / n) * Math.pow(n / Math.E, n) * (1 + 1 / (12 * n) + 1 / (288 * twoN) - 139 / (51840 * threeN) - 571 / (2488320 * fourN) + 163879 / (209018880 * fiveN) + 5246819 / (75246796800 * fiveN * n));
       }
-
       --n;
       x = p[0];
       for (var i = 1; i < p.length; ++i) {
         x += p[i] / (n + i);
       }
-
       t = n + g + 0.5;
       return Math.sqrt(2 * Math.PI) * Math.pow(t, n + 0.5) * Math.exp(-t) * x;
     },
-
     'Complex': function Complex(n) {
       var t, x;
-
       if (n.im == 0) {
         return gamma(n.re);
       }
-
       n = new type.Complex(n.re - 1, n.im);
       x = new type.Complex(p[0], 0);
       for (var i = 1; i < p.length; ++i) {
@@ -21106,10 +19299,8 @@ function factory(type, config, load, typed) {
           x.re = p[i] < 0 ? -Infinity : Infinity;
         }
       }
-
       t = new type.Complex(n.re + g + 0.5, n.im);
       var twoPiSqrt = Math.sqrt(2 * Math.PI);
-
       n.re += 0.5;
       var result = pow(t, n);
       if (result.im == 0) {
@@ -21121,26 +19312,20 @@ function factory(type, config, load, typed) {
         result.re *= twoPiSqrt;
         result.im *= twoPiSqrt;
       }
-
       var r = Math.exp(-t.re); // exp(-t)
       t.re = r * Math.cos(-t.im);
       t.im = r * Math.sin(-t.im);
-
       return multiply(multiply(result, t), x);
     },
-
     'BigNumber': function BigNumber(n) {
       if (n.isInteger()) {
         return n.isNegative() || n.isZero() ? new type.BigNumber(Infinity) : bigFactorial(n.minus(1));
       }
-
       if (!n.isFinite()) {
         return new type.BigNumber(n.isNegative() ? NaN : Infinity);
       }
-
       throw new Error('Integer BigNumber expected');
     },
-
     'Array | Matrix': function ArrayMatrix(n) {
       return deepMap(n, gamma);
     }
@@ -21157,29 +19342,27 @@ function factory(type, config, load, typed) {
     }
 
     var precision = config.precision + (Math.log(n.toNumber()) | 0);
-    var Big = type.BigNumber.clone({ precision: precision });
-
+    var Big = type.BigNumber.clone({
+      precision: precision
+    });
     var res = new Big(n);
     var value = n.toNumber() - 1; // number
     while (value > 1) {
       res = res.times(value);
       value--;
     }
-
     return new type.BigNumber(res.toPrecision(type.BigNumber.precision));
   }
-
-  gamma.toTex = { 1: '\\Gamma\\left(${args[0]}\\right)' };
-
+  gamma.toTex = {
+    1: '\\Gamma\\left(${args[0]}\\right)'
+  };
   return gamma;
 }
 
 // TODO: comment on the variables g and p
 
 var g = 4.7421875;
-
 var p = [0.99999999999999709182, 57.156235665862923517, -59.597960355475491248, 14.136097974741747174, -0.49191381609762019978, 0.33994649984811888699e-4, 0.46523628927048575665e-4, -0.98374475304879564677e-4, 0.15808870322491248884e-3, -0.21026444172410488319e-3, 0.21743961811521264320e-3, -0.16431810653676389022e-3, 0.84418223983852743293e-4, -0.26190838401581408670e-4, 0.36899182659531622704e-5];
-
 exports.name = 'gamma';
 exports.factory = factory;
 
@@ -21191,7 +19374,6 @@ exports.factory = factory;
 
 
 function factory(type, config, load, typed) {
-
   /**
    * Multiply two scalar values, `x * y`.
    * This function is meant for internal use: it is used by the public function
@@ -21206,44 +19388,34 @@ function factory(type, config, load, typed) {
    * @private
    */
   var multiplyScalar = typed('multiplyScalar', {
-
     'number, number': function numberNumber(x, y) {
       return x * y;
     },
-
     'Complex, Complex': function ComplexComplex(x, y) {
       return x.mul(y);
     },
-
     'BigNumber, BigNumber': function BigNumberBigNumber(x, y) {
       return x.times(y);
     },
-
     'Fraction, Fraction': function FractionFraction(x, y) {
       return x.mul(y);
     },
-
     'number | Fraction | BigNumber | Complex, Unit': function numberFractionBigNumberComplexUnit(x, y) {
       var res = y.clone();
       res.value = res.value === null ? res._normalize(x) : multiplyScalar(res.value, x);
       return res;
     },
-
     'Unit, number | Fraction | BigNumber | Complex': function UnitNumberFractionBigNumberComplex(x, y) {
       var res = x.clone();
       res.value = res.value === null ? res._normalize(y) : multiplyScalar(res.value, y);
       return res;
     },
-
     'Unit, Unit': function UnitUnit(x, y) {
       return x.multiply(y);
     }
-
   });
-
   return multiplyScalar;
 }
-
 exports.factory = factory;
 
 /***/ }),
@@ -21254,9 +19426,7 @@ exports.factory = factory;
 
 
 function factory(type, config, load, typed) {
-
   var equalScalar = load(__webpack_require__(23));
-
   var SparseMatrix = type.SparseMatrix;
 
   /**
@@ -21353,10 +19523,8 @@ function factory(type, config, load, typed) {
     // return sparse matrix
     return c;
   };
-
   return algorithm11;
 }
-
 exports.name = 'algorithm11';
 exports.factory = factory;
 
@@ -21369,7 +19537,6 @@ exports.factory = factory;
 
 var isInteger = __webpack_require__(3).isInteger;
 var size = __webpack_require__(22).size;
-
 function factory(type, config, load, typed) {
   var latex = __webpack_require__(14);
   var eye = load(__webpack_require__(219));
@@ -21412,11 +19579,9 @@ function factory(type, config, load, typed) {
    */
   var pow = typed('pow', {
     'number, number': _pow,
-
     'Complex, Complex': function ComplexComplex(x, y) {
       return x.pow(y);
     },
-
     'BigNumber, BigNumber': function BigNumberBigNumber(x, y) {
       if (y.isInteger() || x >= 0 || config.predictable) {
         return x.pow(y);
@@ -21424,7 +19589,6 @@ function factory(type, config, load, typed) {
         return new type.Complex(x.toNumber(), 0).pow(y.toNumber(), 0);
       }
     },
-
     'Fraction, Fraction': function FractionFraction(x, y) {
       if (y.d !== 1) {
         if (config.predictable) {
@@ -21436,23 +19600,17 @@ function factory(type, config, load, typed) {
         return x.pow(y);
       }
     },
-
     'Array, number': _powArray,
-
     'Array, BigNumber': function ArrayBigNumber(x, y) {
       return _powArray(x, y.toNumber());
     },
-
     'Matrix, number': _powMatrix,
-
     'Matrix, BigNumber': function MatrixBigNumber(x, y) {
       return _powMatrix(x, y.toNumber());
     },
-
     'Unit, number': function UnitNumber(x, y) {
       return x.pow(y);
     }
-
   });
 
   /**
@@ -21463,7 +19621,6 @@ function factory(type, config, load, typed) {
    * @private
    */
   function _pow(x, y) {
-
     // Alternatively could define a 'realmode' config option or something, but
     // 'predictable' will work for now
     if (config.predictable && !isInteger(y) && x < 0) {
@@ -21476,9 +19633,9 @@ function factory(type, config, load, typed) {
             return (yFrac.n % 2 === 0 ? 1 : -1) * Math.pow(-x, y);
           }
         }
-      } catch (ex) {}
-      // fraction() throws an error if y is Infinity, etc.
-
+      } catch (ex) {
+        // fraction() throws an error if y is Infinity, etc.
+      }
 
       // Unable to express y as a fraction, so continue on
     }
@@ -21495,7 +19652,6 @@ function factory(type, config, load, typed) {
     if (config.predictable && (x < -1 && y === Infinity || x > -1 && x < 0 && y === -Infinity)) {
       return NaN;
     }
-
     if (isInteger(y) || x >= 0 || config.predictable) {
       return Math.pow(x, y);
     } else {
@@ -21522,7 +19678,6 @@ function factory(type, config, load, typed) {
     if (s[0] != s[1]) {
       throw new Error('For A^b, A must be square (size is ' + s[0] + 'x' + s[1] + ')');
     }
-
     var res = eye(s[0]).valueOf();
     var px = x;
     while (y >= 1) {
@@ -21545,14 +19700,11 @@ function factory(type, config, load, typed) {
   function _powMatrix(x, y) {
     return matrix(_powArray(x.valueOf(), y));
   }
-
   pow.toTex = {
     2: '\\left(${args[0]}\\right)' + latex.operators['pow'] + '{${args[1]}}'
   };
-
   return pow;
 }
-
 exports.name = 'pow';
 exports.factory = factory;
 
@@ -21565,9 +19717,7 @@ exports.factory = factory;
 
 var array = __webpack_require__(22);
 var isInteger = __webpack_require__(3).isInteger;
-
 function factory(type, config, load, typed) {
-
   var matrix = load(__webpack_require__(8));
 
   /**
@@ -21604,48 +19754,37 @@ function factory(type, config, load, typed) {
     '': function _() {
       return config.matrix === 'Matrix' ? matrix([]) : [];
     },
-
     'string': function string(format) {
       return matrix(format);
     },
-
     'number | BigNumber': function numberBigNumber(rows) {
       return _eye(rows, rows, config.matrix === 'Matrix' ? 'default' : undefined);
     },
-
     'number | BigNumber, string': function numberBigNumberString(rows, format) {
       return _eye(rows, rows, format);
     },
-
     'number | BigNumber, number | BigNumber': function numberBigNumberNumberBigNumber(rows, cols) {
       return _eye(rows, cols, config.matrix === 'Matrix' ? 'default' : undefined);
     },
-
     'number | BigNumber, number | BigNumber, string': function numberBigNumberNumberBigNumberString(rows, cols, format) {
       return _eye(rows, cols, format);
     },
-
     'Array': function Array(size) {
       return _eyeVector(size);
     },
-
     'Array, string': function ArrayString(size, format) {
       return _eyeVector(size, format);
     },
-
     'Matrix': function Matrix(size) {
       return _eyeVector(size.valueOf(), size.storage());
     },
-
     'Matrix, string': function MatrixString(size, format) {
       return _eyeVector(size.valueOf(), format);
     }
   });
-
   eye.toTex = undefined; // use default template
 
   return eye;
-
   function _eyeVector(size, format) {
     switch (size.length) {
       case 0:
@@ -21670,17 +19809,14 @@ function factory(type, config, load, typed) {
   function _eye(rows, cols, format) {
     // BigNumber constructor with the right precision
     var Big = type.isBigNumber(rows) || type.isBigNumber(cols) ? type.BigNumber : null;
-
     if (type.isBigNumber(rows)) rows = rows.toNumber();
     if (type.isBigNumber(cols)) cols = cols.toNumber();
-
     if (!isInteger(rows) || rows < 1) {
       throw new Error('Parameters in function eye must be positive integers');
     }
     if (!isInteger(cols) || cols < 1) {
       throw new Error('Parameters in function eye must be positive integers');
     }
-
     var one = Big ? new type.BigNumber(1) : 1;
     var defaultValue = Big ? new Big(0) : 0;
     var size = [rows, cols];
@@ -21704,7 +19840,6 @@ function factory(type, config, load, typed) {
     return res;
   }
 }
-
 exports.name = 'eye';
 exports.factory = factory;
 
@@ -21716,7 +19851,6 @@ exports.factory = factory;
 
 
 var deepMap = __webpack_require__(37);
-
 function factory(type, config, load, typed) {
   /**
    * Create a fraction convert a value to a fraction.
@@ -21748,22 +19882,17 @@ function factory(type, config, load, typed) {
       if (!isFinite(x) || isNaN(x)) {
         throw new Error(x + ' cannot be represented as a fraction');
       }
-
       return new type.Fraction(x);
     },
-
     'string': function string(x) {
       return new type.Fraction(x);
     },
-
     'number, number': function numberNumber(numerator, denominator) {
       return new type.Fraction(numerator, denominator);
     },
-
     'BigNumber': function BigNumber(x) {
       return new type.Fraction(x.toString());
     },
-
     'Fraction': function Fraction(x) {
       return x; // fractions are immutable
     },
@@ -21771,15 +19900,12 @@ function factory(type, config, load, typed) {
     'Object': function Object(x) {
       return new type.Fraction(x);
     },
-
     'Array | Matrix': function ArrayMatrix(x) {
       return deepMap(x, fraction);
     }
   });
-
   return fraction;
 }
-
 exports.name = 'fraction';
 exports.factory = factory;
 
@@ -21791,7 +19917,6 @@ exports.factory = factory;
 
 
 var deepMap = __webpack_require__(37);
-
 function factory(type, config, load, typed) {
   /**
    * Create a number or convert a string, boolean, or unit to a number.
@@ -21822,11 +19947,9 @@ function factory(type, config, load, typed) {
     '': function _() {
       return 0;
     },
-
     'number': function number(x) {
       return x;
     },
-
     'string': function string(x) {
       var num = Number(x);
       if (isNaN(num)) {
@@ -21834,61 +19957,46 @@ function factory(type, config, load, typed) {
       }
       return num;
     },
-
     'BigNumber': function BigNumber(x) {
       return x.toNumber();
     },
-
     'Fraction': function Fraction(x) {
       return x.valueOf();
     },
-
     'Unit': function Unit(x) {
       throw new Error('Second argument with valueless unit expected');
     },
-
     'Unit, string | Unit': function UnitStringUnit(unit, valuelessUnit) {
       return unit.toNumber(valuelessUnit);
     },
-
     'Array | Matrix': function ArrayMatrix(x) {
       return deepMap(x, number);
     }
   });
-
   number.toTex = {
     0: '0',
     1: '\\left(${args[0]}\\right)',
     2: '\\left(\\left(${args[0]}\\right)${args[1]}\\right)'
   };
-
   return number;
 }
-
 exports.name = 'number';
 exports.factory = factory;
 
 /***/ }),
 /* 222 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function cat_breakdown_bars(params, cat_data, cat_graph_group, title_height, bars_index, max_bars, cat_bar_groups) {
   var paragraph_string = '<p>';
   var super_string = ': ';
-
   var bar_width = params.viz.cat_bar_width;
   var bar_height = params.viz.cat_bar_height;
-
   var max_string_length = 25;
-
   var max_bar_value = cat_data.bar_data[0][bars_index];
 
   // only keep the top max_bars categories
   cat_data.bar_data = cat_data.bar_data.slice(0, max_bars);
-
   var inst_title = cat_data.type_name;
   // ensure that title is not too long
   if (inst_title.length >= max_string_length) {
@@ -21897,7 +20005,6 @@ module.exports = function cat_breakdown_bars(params, cat_data, cat_graph_group, 
 
   // make title
   cat_graph_group.append('text').classed('cat_graph_title', true).text(inst_title).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 800);
-
   var line_y = 4;
   cat_graph_group.append('line').attr('x1', 0).attr('x2', bar_width).attr('y1', line_y).attr('y2', line_y).attr('stroke', 'blue').attr('stroke-width', 1).attr('opacity', 1.0);
 
@@ -21936,10 +20043,7 @@ module.exports = function cat_breakdown_bars(params, cat_data, cat_graph_group, 
 
 /***/ }),
 /* 223 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function cat_breakdown_values(params, cat_graph_group, cat_bar_groups, num_nodes_index, is_downsampled, count_offset, bars_index, cluster_total) {
   var bar_width = params.viz.cat_bar_width;
@@ -21980,7 +20084,6 @@ module.exports = function cat_breakdown_values(params, cat_graph_group, cat_bar_
   // Counts
   /////////////////////////////
   var shift_count_num = 35;
-
   cat_bar_groups.append('text').classed('count_labels', true).text(function (d) {
     var inst_count = d[bars_index];
     inst_count = inst_count.toLocaleString();
@@ -22009,7 +20112,6 @@ module.exports = function cat_breakdown_values(params, cat_graph_group, cat_bar_
   cat_bar_groups.append('text').classed('count_labels', true).text(function (d) {
     // calculate the percentage relative to the current cluster
     var inst_count = d[binom_pval_index];
-
     if (inst_count < 0.001) {
       inst_count = parseFloat(inst_count.toPrecision(3));
       inst_count = inst_count.toExponential();
@@ -22024,7 +20126,6 @@ module.exports = function cat_breakdown_values(params, cat_graph_group, cat_bar_
     var inst_y = 0.75 * bar_height;
     return 'translate(' + inst_x + ', ' + inst_y + ')';
   }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'end');
-
   if (is_downsampled) {
     cat_bar_groups.append('text').classed('count_labels', true).text(function (d) {
       return String(d[num_nodes_index].toLocaleString());
@@ -22039,10 +20140,7 @@ module.exports = function cat_breakdown_values(params, cat_graph_group, cat_bar_
 
 /***/ }),
 /* 224 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function make_row_tooltips(params) {
   if (params.labels.show_label_tooltips) {
@@ -22071,19 +20169,14 @@ module.exports = function make_row_tooltips(params) {
 
 /***/ }),
 /* 225 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function (params, clicked_col, id_clicked_col) {
   if (id_clicked_col != params.click_hlight_col) {
     params.click_hlight_col = id_clicked_col;
-
     var rel_width_hlight = 6;
     var opacity_hlight = 0.85;
     var hlight_width = rel_width_hlight * params.viz.border_width.x;
-
     d3.selectAll(params.root + ' .click_hlight').remove();
 
     // // highlight selected column
@@ -22102,7 +20195,6 @@ module.exports = function (params, clicked_col, id_clicked_col) {
       var tmp_translate_x = -(params.viz.clust.dim.height + params.viz.cat_room.col + params.viz.uni_margin);
       return 'translate(' + tmp_translate_x + ',' + tmp_translate_y + ')';
     });
-
     d3.select(clicked_col).append('rect').classed('click_hlight', true).classed('col_bottom_hlight', true).attr('width', params.viz.clust.dim.height).attr('height', hlight_width).attr('fill', params.matrix.hlight_color).attr('opacity', opacity_hlight).attr('transform', function () {
       // reverse x and y since rotated
       var tmp_translate_y = params.viz.x_scale.rangeBand() - hlight_width;
@@ -22119,9 +20211,6 @@ module.exports = function (params, clicked_col, id_clicked_col) {
 /* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 // var utils = require('../Utils_clust');
 var reposition_tile_highlight = __webpack_require__(93);
 var toggle_dendro_view = __webpack_require__(36);
@@ -22130,20 +20219,14 @@ var ini_zoom_info = __webpack_require__(11);
 var get_previous_zoom = __webpack_require__(38);
 var calc_downsampled_levels = __webpack_require__(33);
 var $ = __webpack_require__(2);
-
 module.exports = function col_reorder(cgm, col_selection, inst_term) {
   var params = cgm.params;
   var prev_zoom = get_previous_zoom(params);
-
   if (prev_zoom.zoom_y === 1 && prev_zoom.zoom_x === 1) {
     params.viz.inst_order.col = 'custom';
-
     toggle_dendro_view(cgm, 'col');
-
     d3.selectAll(params.root + ' .toggle_row_order .btn').classed('active', false);
-
     params.viz.run_trans = true;
-
     var mat = $.extend(true, {}, params.matrix.matrix);
     var row_nodes = params.network_data.row_nodes;
     var col_nodes = params.network_data.col_nodes;
@@ -22174,9 +20257,7 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
 
     // save to custom row order
     params.matrix.orders.custom_col = tmp_sort;
-
     var t;
-
     var row_nodes_names = params.network_data.row_nodes_names || [];
 
     // reorder
@@ -22219,11 +20300,8 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
       d.x = params.viz.x_scale(d.target);
       d.y = params.viz.y_scale(d.source);
     });
-
     reposition_tile_highlight(params);
-
     params.zoom_info = ini_zoom_info();
-
     setTimeout(function () {
       params.viz.run_trans = false;
     }, 2500);
@@ -22231,7 +20309,6 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
     // calculate downsmapling if necessary
     if (params.viz.ds_num_levels > 0 && params.viz.ds_level >= 0) {
       calc_downsampled_levels(params);
-
       var zooming_stopped = true;
       var zooming_out = true;
       var make_all_rows = true;
@@ -22245,10 +20322,7 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
 
 /***/ }),
 /* 227 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function find_viz_rows(params, viz_area) {
   var should_be_rows = [];
@@ -22291,10 +20365,7 @@ module.exports = function find_viz_rows(params, viz_area) {
 
 /***/ }),
 /* 228 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function make_row_visual_aid_triangles(params) {
   if (d3.select(params.root + ' .row_cat_group path').empty() === true) {
@@ -22313,10 +20384,7 @@ module.exports = function make_row_visual_aid_triangles(params) {
 
 /***/ }),
 /* 229 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 // Some functions take a variable number of arguments, or a few expected
 // arguments at the beginning and then a variable number of values to operate
@@ -22327,8 +20395,8 @@ function restArguments(func, startIndex) {
   startIndex = startIndex == null ? func.length - 1 : +startIndex;
   return function () {
     var length = Math.max(arguments.length - startIndex, 0),
-        rest = Array(length),
-        index = 0;
+      rest = Array(length),
+      index = 0;
     for (; index < length; index++) {
       rest[index] = arguments[index + startIndex];
     }
@@ -22348,15 +20416,11 @@ function restArguments(func, startIndex) {
     return func.apply(this, args);
   };
 }
-
 module.exports = restArguments;
 
 /***/ }),
 /* 230 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var _getLength = __webpack_require__(19);
 var _isArrayLike = __webpack_require__(18);
@@ -22381,7 +20445,7 @@ function flatten(input, depth, strict, output) {
         idx = output.length;
       } else {
         var j = 0,
-            len = value.length;
+          len = value.length;
         while (j < len) {
           output[idx++] = value[j++];
         }
@@ -22392,19 +20456,14 @@ function flatten(input, depth, strict, output) {
   }
   return output;
 }
-
 module.exports = flatten;
 
 /***/ }),
 /* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var _tagTester = __webpack_require__(29);
 var _has = __webpack_require__(28);
-
 var isArguments = _tagTester('Arguments');
 
 // Define a fallback version of the method in browsers (ahem, IE < 9), where
@@ -22416,17 +20475,12 @@ var isArguments = _tagTester('Arguments');
     };
   }
 })();
-
 var isArguments$1 = isArguments;
-
 module.exports = isArguments$1;
 
 /***/ }),
 /* 232 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function make_col_tooltips(params) {
   if (params.labels.show_label_tooltips) {
@@ -22450,17 +20504,12 @@ module.exports = function make_col_tooltips(params) {
 
 /***/ }),
 /* 233 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function (params) {
   d3.select(params.viz.viz_svg).append('rect').attr('fill', params.viz.background_color).attr('height', params.viz.super_labels.dim.width + 'px').attr('width', '3000px').classed('super_col_bkg', true).classed('white_bars', true).attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.super_labels.margin.top + ')');
-
-  d3.select(params.viz.viz_svg).append('text').attr('class', 'super_col').text(params.labels.super.col).attr('text-anchor', 'center').attr('transform', function () {
+  d3.select(params.viz.viz_svg).append('text').attr('class', 'super_col').text(params.labels["super"].col).attr('text-anchor', 'center').attr('transform', function () {
     var inst_text_width = d3.select(this)[0][0].getBBox().width;
-
     var inst_x = params.viz.clust.dim.width / 2 + params.viz.norm_labels.width.row - inst_text_width / 2;
     var inst_y = params.viz.super_labels.dim.width;
     return 'translate(' + inst_x + ',' + inst_y + ')';
@@ -22468,7 +20517,6 @@ module.exports = function (params) {
     var inst_font_size = params.labels.super_label_fs * params.labels.super_label_scale;
     return inst_font_size + 'px';
   }).style('font-weight', 300);
-
   d3.select(params.viz.viz_svg).append('rect').attr('fill', params.viz.background_color).attr('width', params.viz.super_labels.dim.width + 'px').attr('height', '3000px').classed('super_row_bkg', true).classed('white_bars', true).attr('transform', 'translate(' + params.viz.super_labels.margin.left + ',0)');
 
   // append super title row group - used to separate translation from rotation
@@ -22480,7 +20528,7 @@ module.exports = function (params) {
   });
 
   // super row label (rotate the already translated title )
-  d3.select(params.root + ' .super_row').append('text').text(params.labels.super.row).attr('text-anchor', 'center').attr('transform', function () {
+  d3.select(params.root + ' .super_row').append('text').text(params.labels["super"].row).attr('text-anchor', 'center').attr('transform', function () {
     var inst_text_width = d3.select(this)[0][0].getBBox().width;
     var inst_x_offset = inst_text_width / 2 + params.viz.norm_labels.width.col;
     var inst_offset = 'translate(0,' + inst_x_offset + '), rotate(-90)';
@@ -22495,17 +20543,12 @@ module.exports = function (params) {
 /* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var get_cat_title = __webpack_require__(57);
 var ini_cat_reorder = __webpack_require__(101);
 var make_row_cat_super_labels = __webpack_require__(61);
 var make_dendro_crop_buttons = __webpack_require__(55);
-
 module.exports = function Spillover(cgm) {
   var params = cgm.params;
-
   var viz = params.viz;
 
   // hide spillover from slanted column labels on right side
@@ -22516,12 +20559,10 @@ module.exports = function Spillover(cgm) {
   d3.select(viz.root + ' .col_container').append('path').style('stroke-width', '0').attr('d', 'M 0,0 L 500,-500, L 0,-500 Z').attr('fill', viz.background_color).attr('class', 'left_slant_triangle')
   // shift left by 1 px to prevent cutting off labels
   .attr('transform', 'translate(-1,' + viz.norm_labels.width.col + ')');
-
   var rect_height = viz.clust.margin.top + viz.uni_margin / 5;
   // white rect to cover excess labels
   d3.select(viz.viz_svg).append('rect').attr('fill', viz.background_color) //!! prog_colors
   .attr('width', viz.clust.margin.left).attr('height', rect_height - 1).attr('class', 'top_left_white');
-
   var inst_height = viz.cat_room.col + 1.5 * viz.uni_margin;
   // white rect to cover excess labels
   d3.select(viz.viz_svg).append('rect').attr('fill', viz.background_color).attr('width', 2 * viz.clust.dim.width).attr('height', inst_height).attr('class', 'top_right_white').attr('transform', function () {
@@ -22529,7 +20570,6 @@ module.exports = function Spillover(cgm) {
     var tmp_top = viz.norm_labels.width.col + viz.norm_labels.margin.top - viz.uni_margin;
     return 'translate(' + tmp_left + ', ' + tmp_top + ')';
   });
-
   x_offset = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin;
   y_offset = viz.norm_labels.margin.top + viz.norm_labels.width.col + 2.5 * viz.uni_margin;
   var cat_text_size = 1.15 * viz.cat_room.symbol_width;
@@ -22557,23 +20597,18 @@ module.exports = function Spillover(cgm) {
   } else {
     y_offset = viz.clust.margin.top + viz.clust.dim.height;
   }
-
   var b_spill_container = d3.select(viz.viz_svg).append('g').classed('bottom_spillover_container', true).attr('transform', function () {
     // shift up enough to show the entire border width
     return 'translate(0,' + y_offset + ')';
   });
-
   b_spill_container.append('rect').attr('class', 'bottom_spillover').attr('fill', viz.background_color) //!! prog_colors
   .attr('width', viz.svg_dim.width).attr('height', 2 * viz.svg_dim.height);
-
   x_offset = viz.clust.margin.left;
   y_offset = 0;
   b_spill_container.append('g').classed('col_dendro_icons_container', true).attr('transform', 'translate(' + x_offset + ',' + y_offset + ')').append('g').classed('col_dendro_icons_group', true);
-
   if (cgm.config.show_dendrogram) {
     make_dendro_crop_buttons(cgm, 'col');
   }
-
   var x_offset = viz.clust.margin.left + viz.clust.dim.width;
   var y_offset = viz.clust.margin.top + viz.clust.dim.height;
   var tmp_width = viz.cat_room.col + viz.clust.dim.width;
@@ -22590,16 +20625,12 @@ module.exports = function Spillover(cgm) {
   d3.select(viz.viz_svg).append('rect').attr('fill', viz.background_color).attr('width', tmp_width).attr('height', tmp_height).attr('transform', function () {
     return 'translate(' + x_offset + ',' + y_offset + ')';
   }).classed('white_bars', true).classed('dendro_col_spillover', true);
-
   ini_cat_reorder(cgm);
 };
 
 /***/ }),
 /* 235 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function calc_real_font_size(params) {
   var real_font_size = {};
@@ -22611,7 +20642,6 @@ module.exports = function calc_real_font_size(params) {
     real_font_size.row = params.labels.default_fs_row * params.zoom_behavior.scale() / params.viz.zoom_ratio.y;
     real_font_size.col = params.labels.default_fs_col * params.zoom_behavior.scale();
   }
-
   return real_font_size;
 };
 
@@ -22619,11 +20649,7 @@ module.exports = function calc_real_font_size(params) {
 /* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var build_single_dendro_slider = __webpack_require__(237);
-
 module.exports = function build_dendro_sliders(cgm) {
   build_single_dendro_slider(cgm, 'row');
   build_single_dendro_slider(cgm, 'col');
@@ -22633,51 +20659,36 @@ module.exports = function build_dendro_sliders(cgm) {
 /* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var change_groups = __webpack_require__(112);
 var position_dendro_slider = __webpack_require__(113);
-
 module.exports = function build_single_dendro_slider(cgm, inst_rc) {
   var slider_length = 100;
-
   var drag = d3.behavior.drag().on('drag', dragging).on('dragend', function () {
     cgm.params.is_slider_drag = false;
   });
-
   var slider_group = d3.select(cgm.params.root + ' .viz_svg').append('g').classed(inst_rc + '_slider_group', true);
-
   position_dendro_slider(cgm, inst_rc);
-
   var rect_height = slider_length + 20;
   var rect_width = 30;
   slider_group.append('rect').classed(inst_rc + '_slider_background', true).attr('height', rect_height + 'px').attr('width', rect_width + 'px').attr('fill', cgm.params.viz.background_color).attr('transform', function () {
     var translate_string = 'translate(-10, -5)';
     return translate_string;
   }).style('opacity', 0);
-
   slider_group.append('line').style('stroke-width', slider_length / 7 + 'px').style('stroke', 'black').style('stroke-linecap', 'round').style('opacity', 0.0).attr('y1', 0).attr('y2', function () {
     return slider_length - 2;
   }).on('click', click_dendro_slider);
-
   var offset_triangle = -slider_length / 40;
   slider_group.append('path').style('fill', 'black').attr('transform', 'translate(' + offset_triangle + ', 0)').attr('d', function () {
     // up triangle
     var start_x = 0;
     var start_y = 0;
-
     var mid_x = 0;
     var mid_y = slider_length;
-
     var final_x = slider_length / 10;
     var final_y = 0;
-
     var output_string = 'M' + start_x + ',' + start_y + ' L' + mid_x + ', ' + mid_y + ' L' + final_x + ',' + final_y + ' Z';
-
     return output_string;
   }).style('opacity', 0.35).on('click', click_dendro_slider);
-
   var default_opacity = 0.35;
   var high_opacity = 0.6;
   slider_group.append('circle').classed(inst_rc + '_group_circle', true).attr('r', slider_length * 0.08).attr('transform', function () {
@@ -22687,43 +20698,30 @@ module.exports = function build_single_dendro_slider(cgm, inst_rc) {
   }).on('mouseout', function () {
     d3.select(this).style('opacity', default_opacity);
   }).call(drag);
-
   function dragging() {
     cgm.params.is_slider_drag = true;
 
     // d[0] = d3.event.x;
     var slider_pos = d3.event.y;
-
     if (slider_pos < 0) {
       slider_pos = 0;
     }
-
     if (slider_pos > slider_length) {
       slider_pos = slider_length;
     }
-
     if (this.nextSibling) {
       this.parentNode.appendChild(this);
     }
-
     slider_pos = d3.round(slider_pos, -1);
-
     var slider_value = 10 - slider_pos / 10;
-
     d3.select(this).attr('transform', 'translate(0, ' + slider_pos + ')');
-
     change_groups(cgm, inst_rc, slider_value);
   }
-
   function click_dendro_slider() {
     var clicked_line_position = d3.mouse(this);
-
     var rel_pos = d3.round(clicked_line_position[1], -1);
-
     d3.select(cgm.params.root + ' .' + inst_rc + '_group_circle').attr('transform', 'translate(0, ' + rel_pos + ')');
-
     var slider_value = 10 - rel_pos / 10;
-
     change_groups(cgm, inst_rc, slider_value);
   }
 };
@@ -22732,32 +20730,23 @@ module.exports = function build_single_dendro_slider(cgm, inst_rc) {
 /* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var make_dendro_crop_buttons = __webpack_require__(55);
-
 module.exports = function make_row_dendro_spillover(cgm) {
   var viz = cgm.params.viz;
 
   // hide spillover from right
   var tmp_left = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin + viz.dendro_room.row;
-
   var r_spill_container = d3.select(viz.viz_svg).append('g').classed('right_spillover_container', true).attr('transform', function () {
     return 'translate(' + tmp_left + ', 0)';
   });
-
   var tmp_top = viz.norm_labels.margin.top + viz.norm_labels.width.col;
-
   r_spill_container.append('rect').attr('fill', viz.background_color) //!! prog_colors
   .attr('width', 10 * viz.clust.dim.width).attr('height', viz.svg_dim.height + 'px').attr('class', 'white_bars').attr('class', 'right_spillover').attr('transform', function () {
     return 'translate( 0,' + tmp_top + ')';
   });
-
   var x_offset = 0;
   var y_offset = viz.clust.margin.top;
   r_spill_container.append('g').classed('row_dendro_icons_container', true).attr('transform', 'translate(' + x_offset + ',' + y_offset + ')').append('g').classed('row_dendro_icons_group', true);
-
   if (cgm.config.show_dendrogram) {
     make_dendro_crop_buttons(cgm, 'row');
   }
@@ -22765,7 +20754,6 @@ module.exports = function make_row_dendro_spillover(cgm) {
   // hide spillover from top of row dendrogram
   x_offset = viz.clust.margin.left + viz.clust.dim.width;
   y_offset = tmp_top;
-
   var tmp_width = viz.dendro_room.row + viz.uni_margin;
   var tmp_height = viz.cat_room.col + viz.uni_margin;
   d3.select(viz.viz_svg).append('rect').attr('fill', viz.background_color).attr('width', tmp_width).attr('height', tmp_height).attr('transform', function () {
@@ -22777,9 +20765,6 @@ module.exports = function make_row_dendro_spillover(cgm) {
 /* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var constrain_font_size = __webpack_require__(60);
 var show_visible_area = __webpack_require__(13);
 var resize_label_val_bars = __webpack_require__(240);
@@ -22787,24 +20772,15 @@ var zoom_crop_triangles = __webpack_require__(97);
 var get_previous_zoom = __webpack_require__(38);
 var run_when_zoom_stopped = __webpack_require__(241);
 var check_zoom_stop_status = __webpack_require__(114);
-
 module.exports = function run_transformation(cgm) {
   var params = cgm.params;
-
   var zoom_info = params.zoom_info;
-
   var prev_zoom = get_previous_zoom(params);
-
   d3.select(params.root + ' .clust_group').attr('transform', 'translate(' + [zoom_info.trans_x, zoom_info.trans_y] + ') scale(' + zoom_info.zoom_x + ',' + zoom_info.zoom_y + ')');
-
   d3.select(params.root + ' .row_label_zoom_container').attr('transform', 'translate(' + [0, zoom_info.trans_y] + ') scale(' + zoom_info.zoom_y + ')');
-
   d3.select(params.root + ' .col_zoom_container').attr('transform', 'translate(' + [zoom_info.trans_x, 0] + ') scale(' + zoom_info.zoom_x + ')');
-
   d3.select(params.root + ' .row_cat_container').attr('transform', 'translate(' + [0, zoom_info.trans_y] + ') scale( 1,' + zoom_info.zoom_y + ')');
-
   d3.select(params.root + ' .row_dendro_container').attr('transform', 'translate(' + [params.viz.uni_margin / 2, zoom_info.trans_y] + ') ' + 'scale( 1,' + zoom_info.zoom_y + ')');
-
   d3.select(params.root + ' .row_dendro_icons_group').attr('transform', function () {
     var inst_y = zoom_info.trans_y;
     var inst_translate = 'translate(' + [0, inst_y] + ') ';
@@ -22812,7 +20788,6 @@ module.exports = function run_transformation(cgm) {
     var transform_string = inst_translate + inst_zoom;
     return transform_string;
   });
-
   d3.select(params.root + ' .col_dendro_icons_group').attr('transform', function () {
     var inst_x = zoom_info.trans_x;
     var inst_translate = 'translate(' + [inst_x, 0] + ')';
@@ -22820,16 +20795,11 @@ module.exports = function run_transformation(cgm) {
     var transform_string = inst_translate + inst_zoom;
     return transform_string;
   });
-
   zoom_crop_triangles(params, zoom_info, 'row');
   zoom_crop_triangles(params, zoom_info, 'col');
-
   d3.select(params.root + ' .col_cat_container').attr('transform', 'translate(' + [zoom_info.trans_x, 0] + ') scale(' + zoom_info.zoom_x + ',1)');
-
   d3.select(params.root + ' .col_dendro_container').attr('transform', 'translate(' + [zoom_info.trans_x, params.viz.uni_margin / 2] + ') scale(' + zoom_info.zoom_x + ',1)');
-
   resize_label_val_bars(params, zoom_info);
-
   d3.select(params.root + ' .viz_svg').attr('is_zoom', function () {
     var inst_zoom = Number(d3.select(params.root + ' .viz_svg').attr('is_zoom'));
     d3.select(params.root + ' .viz_svg').attr('stopped_zoom', 1);
@@ -22845,9 +20815,7 @@ module.exports = function run_transformation(cgm) {
       return inst_zoom - 1;
     });
   };
-
   constrain_font_size(params);
-
   if (zoom_info.zoom_y <= prev_zoom.zoom_y) {
     var zooming_out = false;
     if (zoom_info.zoom_y < prev_zoom.zoom_y) {
@@ -22858,15 +20826,11 @@ module.exports = function run_transformation(cgm) {
     var zooming_stopped = false;
     show_visible_area(cgm, zooming_stopped, zooming_out);
   }
-
   setTimeout(not_zooming, 50);
   setTimeout(check_if_zooming_has_stopped, 100, cgm);
-
   function check_if_zooming_has_stopped(cgm) {
     var params = cgm.params;
-
     var stop_attributes = check_zoom_stop_status(params);
-
     if (stop_attributes === true) {
       // wait and double check that zooming has stopped
       setTimeout(run_when_zoom_stopped, 50, cgm);
@@ -22878,11 +20842,7 @@ module.exports = function run_transformation(cgm) {
 /* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var utils = __webpack_require__(0);
-
 module.exports = function resize_label_val_bars(params) {
   var zoom_info = params.zoom_info;
 
@@ -22898,7 +20858,6 @@ module.exports = function resize_label_val_bars(params) {
       return inst_value;
     });
   }
-
   if (utils.has(params.network_data.col_nodes[0], 'value')) {
     d3.selectAll(params.root + ' .col_bars').attr('width', function (d) {
       var inst_value = 0;
@@ -22914,21 +20873,15 @@ module.exports = function resize_label_val_bars(params) {
 /* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var constrain_font_size = __webpack_require__(60);
 var trim_text = __webpack_require__(59);
 var num_visible_labels = __webpack_require__(242);
 var toggle_grid_lines = __webpack_require__(103);
 var show_visible_area = __webpack_require__(13);
 var check_zoom_stop_status = __webpack_require__(114);
-
 module.exports = function run_when_zoom_stopped(cgm) {
   var params = cgm.params;
-
   var stop_attributes = check_zoom_stop_status(params);
-
   if (stop_attributes === true) {
     // ///////////////////////////////////////////////
     // // zooming has stopped
@@ -22938,42 +20891,31 @@ module.exports = function run_when_zoom_stopped(cgm) {
 
     ['row', 'col'].forEach(function (inst_rc) {
       d3.selectAll(params.root + ' .' + inst_rc + '_label_group').select('text').style('opacity', 1);
-
       d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').select('path').style('display', 'block');
     });
-
     show_visible_area(cgm, true);
-
     d3.selectAll(params.viz.root_tips).style('display', 'block');
-
     d3.selectAll(params.root + ' .row_label_group').select('text').style('display', 'none');
     d3.selectAll(params.root + ' .row_label_group').select('text').style('display', 'block');
-
     d3.select(params.root + ' .viz_svg').attr('stopped_zoom', 0);
-
     d3.selectAll(params.root + ' .row_label_group').select('text').style('display', 'block');
     d3.selectAll(params.root + ' .col_label_group').select('text').style('display', 'block');
-
     toggle_grid_lines(params);
 
     // reset x_offset
     cgm.params.viz.x_offset = 0;
-
     var max_labels_to_trim = 150;
     // probably do not need
     /////////////////////////
     ['row', 'col'].forEach(function (inst_rc) {
       var inst_num_visible = num_visible_labels(params, inst_rc);
-
       if (inst_num_visible < max_labels_to_trim) {
         d3.selectAll(params.root + ' .' + inst_rc + '_label_group').each(function () {
           trim_text(params, this, inst_rc);
         });
       }
     });
-
     text_patch();
-
     constrain_font_size(params);
 
     // this makes sure that the text is visible after zooming and trimming
@@ -22981,7 +20923,6 @@ module.exports = function run_when_zoom_stopped(cgm) {
     // I'm running it twice in quick succession
     setTimeout(text_patch, 100);
   }
-
   function text_patch() {
     ['row', 'col'].forEach(function (inst_rc) {
       d3.selectAll(params.root + ' .' + inst_rc + '_label_group').filter(function () {
@@ -22996,10 +20937,7 @@ module.exports = function run_when_zoom_stopped(cgm) {
 
 /***/ }),
 /* 242 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function num_visible_labels(params, inst_rc) {
   // counting the number of visible labels, probably not necessary
@@ -23018,16 +20956,12 @@ module.exports = function num_visible_labels(params, inst_rc) {
       return d3.select(this).style('display') != 'none';
     })[0].length;
   }
-
   return num_visible;
 };
 
 /***/ }),
 /* 243 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function zoom_rules_y(params, zoom_info) {
   var viz = params.viz;
@@ -23060,10 +20994,7 @@ module.exports = function zoom_rules_y(params, zoom_info) {
 
 /***/ }),
 /* 244 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function zoom_rules_x(params, zoom_info) {
   var viz = params.viz;
@@ -23104,10 +21035,7 @@ module.exports = function zoom_rules_x(params, zoom_info) {
 
 /***/ }),
 /* 245 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function resize_borders(params, svg_group) {
   // left border
@@ -23134,10 +21062,7 @@ module.exports = function resize_borders(params, svg_group) {
 
 /***/ }),
 /* 246 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function resize_highlights(params) {
   // reposition tile highlight
@@ -23176,7 +21101,6 @@ module.exports = function resize_highlights(params) {
   // resize row highlight
   /////////////////////////
   d3.select(params.root + ' .row_top_hlight').attr('width', params.viz.svg_dim.width).attr('height', hlight_height);
-
   d3.select(params.root + ' .row_bottom_hlight').attr('width', params.viz.svg_dim.width).attr('height', hlight_height).attr('transform', function () {
     var tmp_translate_y = params.viz.rect_height - hlight_height;
     return 'translate(0,' + tmp_translate_y + ')';
@@ -23189,7 +21113,6 @@ module.exports = function resize_highlights(params) {
     var tmp_translate_x = -(params.viz.clust.dim.height + params.viz.cat_room.col + params.viz.uni_margin);
     return 'translate(' + tmp_translate_x + ',' + tmp_translate_y + ')';
   });
-
   d3.select(params.root + ' .col_bottom_hlight').attr('width', params.viz.clust.dim.height).attr('height', hlight_width).attr('transform', function () {
     var tmp_translate_y = params.viz.rect_width - hlight_width;
     var tmp_translate_x = -(params.viz.clust.dim.height + params.viz.cat_room.col + params.viz.uni_margin);
@@ -23201,22 +21124,17 @@ module.exports = function resize_highlights(params) {
 /* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var get_svg_dim = __webpack_require__(50);
 var calc_clust_height = __webpack_require__(52);
 var calc_clust_width = __webpack_require__(51);
 var calc_default_fs = __webpack_require__(54);
 var calc_zoom_switching = __webpack_require__(53);
 var each = __webpack_require__(1);
-
 module.exports = function recalc_params_for_resize(params) {
   // Resetting some visualization parameters
   params = get_svg_dim(params);
   params.viz = calc_clust_width(params.viz);
   params.viz = calc_clust_height(params.viz);
-
   if (params.sim_mat) {
     if (params.viz.clust.dim.width <= params.viz.clust.dim.height) {
       params.viz.clust.dim.height = params.viz.clust.dim.width;
@@ -23224,7 +21142,6 @@ module.exports = function recalc_params_for_resize(params) {
       params.viz.clust.dim.width = params.viz.clust.dim.height;
     }
   }
-
   params.viz = calc_zoom_switching(params.viz);
 
   // redefine x_scale and y_scale rangeBands
@@ -23234,7 +21151,6 @@ module.exports = function recalc_params_for_resize(params) {
   // redefine border width
   params.viz.border_width.x = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
   params.viz.border_width.y = params.viz.y_scale.rangeBand() / params.viz.border_fraction;
-
   params.viz.rect_width = params.viz.x_scale.rangeBand() - params.viz.border_width.x;
   params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width.y;
 
@@ -23252,7 +21168,6 @@ module.exports = function recalc_params_for_resize(params) {
       /////////////////////////
       inst_ds.y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
       inst_ds.y_scale.domain(d3.range(inst_ds.num_rows + 1));
-
       inst_ds.rect_height = inst_ds.y_scale.rangeBand() - params.viz.border_width.y;
     });
   }
@@ -23262,7 +21177,6 @@ module.exports = function recalc_params_for_resize(params) {
 
   // the default font sizes are set here
   params = calc_default_fs(params);
-
   return params;
 };
 
@@ -23270,16 +21184,11 @@ module.exports = function recalc_params_for_resize(params) {
 /* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var draw_up_tile = __webpack_require__(34);
 var draw_dn_tile = __webpack_require__(35);
 var fine_position_tile = __webpack_require__(12);
-
 module.exports = function resize_row_tiles(params, svg_group) {
   var row_nodes_names = params.network_data.row_nodes_names || [];
-
   if (params.viz.ds_level === -1) {
     // no downsampling
     ///////////////////////
@@ -23316,7 +21225,6 @@ module.exports = function resize_row_tiles(params, svg_group) {
     var ds_level = params.viz.ds_level;
     var row_class = '.ds' + String(ds_level) + '_row';
     var ds_rect_height = params.viz.ds[ds_level].rect_height;
-
     svg_group.selectAll(row_class).attr('transform', function (d) {
       var inst_y = params.viz.ds[ds_level].y_scale(d.row_index);
       return 'translate(0,' + inst_y + ')';
@@ -23331,10 +21239,7 @@ module.exports = function resize_row_tiles(params, svg_group) {
 
 /***/ }),
 /* 249 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function position_tree_icon(cgm) {
   var viz = cgm.params.viz;
@@ -23346,7 +21251,6 @@ module.exports = function position_tree_icon(cgm) {
 
   // position close to row dendrogram trapezoids
   tmp_left = viz.clust.margin.left + viz.clust.dim.width + 5.25 * viz.dendro_room.row;
-
   if (tmp_left > max_room) {
     tmp_left = max_room;
   }
@@ -23365,10 +21269,7 @@ module.exports = function position_tree_icon(cgm) {
 
 /***/ }),
 /* 250 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function position_filter_icon(cgm) {
   var viz = cgm.params.viz;
@@ -23380,7 +21281,6 @@ module.exports = function position_filter_icon(cgm) {
 
   // position close to row dendrogram trapezoids
   tmp_left = viz.clust.margin.left + viz.clust.dim.width + 4 * viz.dendro_room.row + 7;
-
   if (tmp_left > max_room) {
     tmp_left = max_room;
   }
@@ -23399,17 +21299,12 @@ module.exports = function position_filter_icon(cgm) {
 
 /***/ }),
 /* 251 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function position_tree_menu(cgm) {
   var params = cgm.params;
-
   if (d3.select(params.root + ' .tree_menu').empty() === false) {
     var menu_width = cgm.params.viz.tree_menu_width;
-
     d3.select(params.root + ' .tree_menu').attr('transform', function () {
       var shift = {};
       shift.x = params.viz.clust.dim.width + params.viz.clust.margin.left - menu_width + 30;
@@ -23421,39 +21316,30 @@ module.exports = function position_tree_menu(cgm) {
 
 /***/ }),
 /* 252 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function grid_lines_viz(params) {
   var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-
   var delay = 0;
   if (duration > 0) {
     delay = 2000;
   }
-
   var horz_lines = d3.selectAll(params.root + ' .horz_lines');
   var vert_lines = d3.selectAll(params.root + ' .vert_lines');
-
   horz_lines.style('opacity', 0).attr('transform', function (d) {
     var inst_index = d.row_index;
     var inst_trans = params.viz.y_scale(inst_index);
     return 'translate(  0,' + inst_trans + ') rotate(0)';
   }).transition().duration(duration).delay(delay).style('opacity', 1);
-
   horz_lines.append('line').attr('x1', 0).attr('x2', params.viz.clust.dim.width).style('stroke-width', function () {
     var inst_width = params.viz.border_width.y;
     return inst_width + 'px';
   });
-
   vert_lines.style('opacity', 0).attr('transform', function (d) {
     var inst_index = d.col_index;
     var inst_trans = params.viz.x_scale(inst_index);
     return 'translate(' + inst_trans + ') rotate(-90)';
   }).transition().duration(duration).delay(delay).style('opacity', 1);
-
   vert_lines.append('line').attr('x1', 0).attr('x2', -params.viz.clust.dim.height).style('stroke-width', function () {
     var inst_width = params.viz.border_width.x;
     return inst_width + 'px';
@@ -23463,9 +21349,6 @@ module.exports = function grid_lines_viz(params) {
 /***/ }),
 /* 253 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 /* eslint-disable */
 
@@ -23484,15 +21367,12 @@ var play_conclusion = __webpack_require__(281);
 var toggle_play_button = __webpack_require__(130);
 var play_menu_button = __webpack_require__(282);
 var $ = __webpack_require__(2);
-
 module.exports = function play_demo() {
   var cgm = this;
   var params = cgm.params;
-
   if (d3.select(params.root + ' .running_demo').empty()) {
     // prevent more than one demo from running at once
     d3.select(params.root + ' .play_button').classed('running_demo', true);
-
     toggle_play_button(params, false);
 
     // prevent user interaction while playing
@@ -23508,12 +21388,10 @@ module.exports = function play_demo() {
         cursor: 'default'
       }
     });
-
     d3.selectAll('.blockUI').style('opacity', 0);
 
     // intro text
     var inst_time = 750;
-
     if (cgm.params.viz.is_expand === false) {
       inst_time = run_segment(params, inst_time, quick_cluster);
       inst_time = inst_time - 1500;
@@ -23544,10 +21422,7 @@ module.exports = function play_demo() {
 
 /***/ }),
 /* 254 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function run_segment(segment_data, inst_time, inst_segment) {
   /* eslint-disable */
@@ -23562,7 +21437,6 @@ module.exports = function run_segment(segment_data, inst_time, inst_segment) {
 
   var inst_duration = inst_segment().get_duration();
   inst_time = inst_time + inst_duration;
-
   return inst_time;
 };
 
@@ -23570,26 +21444,18 @@ module.exports = function run_segment(segment_data, inst_time, inst_segment) {
 /* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var demo_text = __webpack_require__(5);
-
 module.exports = function play_intro() {
   var speed_up = 1;
-
   function run(params) {
     var text_1 = 'Clustergrammer allows users to generate\ninteractive and ' + 'sharable visualizations\nby uploading a matrix';
     var text_2 = "This demo will quickly overview some\nof Clustergrammer's " + 'interactive features';
-
     setTimeout(demo_text, 0, params, text_1, 4500 / speed_up);
     setTimeout(demo_text, 4500 / speed_up, params, text_2, 4500 / speed_up);
   }
-
   function get_duration() {
     return 10000 / speed_up;
   }
-
   return {
     run: run,
     get_duration: get_duration
@@ -23600,25 +21466,18 @@ module.exports = function play_intro() {
 /* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var demo_text = __webpack_require__(5);
 var two_translate_zoom = __webpack_require__(17);
-
 module.exports = function play_zoom() {
   function run(cgm) {
     var params = cgm.params;
     var text = 'Zoom and pan by\nscrolling and dragging';
     demo_text(params, text, 4000);
-
     setTimeout(two_translate_zoom, 1500, cgm, 0, 0, 4);
   }
-
   function get_duration() {
     return 4000;
   }
-
   return {
     run: run,
     get_duration: get_duration
@@ -23629,28 +21488,20 @@ module.exports = function play_zoom() {
 /* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var demo_text = __webpack_require__(5);
 var two_translate_zoom = __webpack_require__(17);
 var sim_click = __webpack_require__(27);
-
 module.exports = function play_reset_zoom() {
   function run(cgm) {
     var params = cgm.params;
-
     var text = 'Reset zoom by double-clicking\n';
     demo_text(params, text, 4000);
-
     setTimeout(sim_click, 2000, params, 'double', 300, 300);
     setTimeout(two_translate_zoom, 2400, cgm, 0, 0, 1);
   }
-
   function get_duration() {
     return 4500;
   }
-
   return {
     run: run,
     get_duration: get_duration
@@ -23661,50 +21512,36 @@ module.exports = function play_reset_zoom() {
 /* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var demo_text = __webpack_require__(5);
 var sim_click = __webpack_require__(27);
 var $ = __webpack_require__(2);
-
 module.exports = function play_reorder_row() {
   /* eslint-disable */
 
   function run(params) {
     var text = 'Reorder the matrix based on a single\nrow or column by double-clicking a\nlabel';
     demo_text(params, text, 7000);
-
     var inst_element = get_row_element(params, 'EGFR');
-
     var group_trans = d3.select(inst_element).attr('transform');
-
     var container_trans = d3.select(params.root + ' .clust_container').attr('transform').split(',')[1].replace(')', '');
-
     var x_trans = params.viz.norm_labels.width.row * 0.9;
-
     var row_trans = group_trans.split(',')[1].replace(')', '');
     var y_trans = String(Number(row_trans) + Number(container_trans) + params.viz.rect_height / 2);
-
     var wait_click = 4000;
     setTimeout(sim_click, wait_click, params, 'double', x_trans, y_trans);
     var wait_reorder = wait_click + 300;
     setTimeout(fire_double_click_row, wait_reorder, params, inst_element);
   }
-
   function get_duration() {
     return 8000;
   }
-
   function get_row_element(params, inst_row) {
     var inst_element = d3.selectAll(params.root + ' .row_label_group').filter(function () {
       var inst_data = this.__data__;
       return inst_data.name == inst_row;
     })[0][0];
-
     return inst_element;
   }
-
   function fire_double_click_row(params, inst_element) {
     $(inst_element).d3DblClick();
   }
@@ -23717,7 +21554,6 @@ module.exports = function play_reorder_row() {
       e.dispatchEvent(evt);
     });
   };
-
   return {
     run: run,
     get_duration: get_duration
@@ -23728,39 +21564,29 @@ module.exports = function play_reorder_row() {
 /* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var demo_text = __webpack_require__(5);
 var highlight_sidebar_element = __webpack_require__(40);
 var $ = __webpack_require__(2);
-
 module.exports = function play_reorder_buttons() {
   /* eslint-disable */
 
   function run(params) {
     var text = 'Reorder all rows and columns\nby clicking the reorder\n buttons';
     demo_text(params, text, 9000);
-
     setTimeout(highlight_sidebar_element, 3000, params, 'toggle_col_order');
     setTimeout(click_reorder_button, 3500, params, 'col', 'rank');
-
     setTimeout(highlight_sidebar_element, 7000, params, 'toggle_row_order');
     setTimeout(click_reorder_button, 7500, params, 'row', 'rank');
   }
-
   function get_duration() {
     return 11000;
   }
-
   function click_reorder_button(params, inst_rc, inst_order) {
     var inst_button = d3.selectAll('.toggle_' + inst_rc + '_order .btn').filter(function () {
       return this.__data__ == inst_order;
     })[0];
-
     $(inst_button).click();
   }
-
   return {
     run: run,
     get_duration: get_duration
@@ -23771,20 +21597,15 @@ module.exports = function play_reorder_buttons() {
 /* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var demo_text = __webpack_require__(5);
 var highlight_sidebar_element = __webpack_require__(40);
 var two_translate_zoom = __webpack_require__(17);
 var $ = __webpack_require__(2);
-
 module.exports = function play_search() {
   function run(cgm) {
     var params = cgm.params;
     var text = 'Search for rows using\nthe search box';
     demo_text(params, text, 5000);
-
     var ini_delay = 2500;
     setTimeout(highlight_sidebar_element, ini_delay, params, 'gene_search_container');
 
@@ -23793,26 +21614,20 @@ module.exports = function play_search() {
     setTimeout(type_out_search, ini_delay + 1500, params, 'EG');
     setTimeout(type_out_search, ini_delay + 2000, params, 'EGF');
     setTimeout(type_out_search, ini_delay + 2500, params, 'EGFR');
-
     setTimeout(run_search, 5500, params);
-
     setTimeout(two_translate_zoom, 7500, cgm, 0, 0, 1);
   }
-
   function get_duration() {
     return 10000;
   }
-
   function type_out_search(params, inst_string) {
     $(params.root + ' .gene_search_box').val(inst_string);
     $(params.root + ' .gene_search_box').autocomplete('search', inst_string);
   }
-
   function run_search(params) {
     $(params.root + ' .submit_gene_button').click();
     $(params.root + ' .gene_search_box').autocomplete('search', '');
   }
-
   return {
     run: run,
     get_duration: get_duration
@@ -23823,62 +21638,46 @@ module.exports = function play_search() {
 /* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var demo_text = __webpack_require__(5);
 var highlight_sidebar_element = __webpack_require__(40);
 var update_viz_with_view = __webpack_require__(127);
 var $ = __webpack_require__(2);
-
 module.exports = function play_filter() {
   function run(cgm) {
     var params = cgm.params;
-
     var text = 'Filter rows based on sum or\nvariance using the sliders';
     demo_text(params, text, 4000);
-
     var filter_type = 'N_row_sum';
-
     setTimeout(highlight_sidebar_element, 5000, params, 'slider_' + filter_type, 13000);
-
     text = 'Filter: Top 20 rows by sum';
     setTimeout(demo_text, 5000, params, text, 4000);
     setTimeout(run_update, 5300, cgm, filter_type, 20, 1);
-
     text = 'Filter: Top 10 rows by sum';
     setTimeout(demo_text, 10000, params, text, 4000);
     setTimeout(run_update, 10300, cgm, filter_type, 10, 2);
-
     text = 'Filter: All rows';
     setTimeout(demo_text, 15000, params, text, 4000);
     setTimeout(run_update, 15300, cgm, filter_type, 'all', 0);
   }
-
   function get_duration() {
     return 19500;
   }
-
   function run_update(cgm, filter_type, filter_value, filter_index) {
     var params = cgm.params;
-
     var requested_view = {};
     requested_view[filter_type] = filter_value;
     update_viz_with_view(cgm, requested_view);
 
     // quick fix for slider
     $(params.root + ' .slider_' + filter_type).slider('value', filter_index);
-
     var unit_name;
     if (filter_type === 'N_row_sum') {
       unit_name = 'sum';
     } else {
       unit_name = 'variance';
     }
-
     d3.select(params.root + ' .title_' + filter_type).text('Top rows ' + unit_name + ': ' + filter_value);
   }
-
   return {
     run: run,
     get_duration: get_duration
@@ -23887,10 +21686,7 @@ module.exports = function play_filter() {
 
 /***/ }),
 /* 262 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function disable_sidebar(params) {
   d3.selectAll(params.root + ' .btn').attr('disabled', true);
@@ -23901,12 +21697,8 @@ module.exports = function disable_sidebar(params) {
 /* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var map = __webpack_require__(264);
 var difference = __webpack_require__(99);
-
 module.exports = function (old_params, params) {
   // exit, update, enter
 
@@ -23920,7 +21712,6 @@ module.exports = function (old_params, params) {
     return d.name;
   });
   var all_old_nodes = old_row.concat(old_col);
-
   var row_nodes = params.network_data.row_nodes;
   var col_nodes = params.network_data.col_nodes;
   var row = map(row_nodes, function (d) {
@@ -23930,47 +21721,35 @@ module.exports = function (old_params, params) {
     return d.name;
   });
   var all_nodes = row.concat(col);
-
   var exit_nodes = difference(all_old_nodes, all_nodes).length;
   var enter_nodes = difference(all_nodes, all_old_nodes).length;
-
   var delays = {};
-
   if (exit_nodes > 0) {
     delays.update = 1000;
   } else {
     delays.update = 0;
   }
-
   if (enter_nodes > 0) {
     delays.enter = 1000;
   } else {
     delays.enter = 0;
   }
-
   delays.enter = delays.enter + delays.update;
-
   delays.run_transition = true;
-
   var old_num_links = old_params.network_data.links.length;
   var new_num_links = params.network_data.links.length;
   var cutoff_num_links = 0.5 * params.matrix.def_large_matrix;
-
   if (old_num_links > cutoff_num_links || new_num_links > cutoff_num_links) {
     delays.run_transition = false;
     delays.update = 0;
     delays.enter = 0;
   }
-
   return delays;
 };
 
 /***/ }),
 /* 264 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var _cb = __webpack_require__(15);
 var _isArrayLike = __webpack_require__(18);
@@ -23980,23 +21759,19 @@ var keys = __webpack_require__(20);
 function map(obj, iteratee, context) {
   iteratee = _cb(iteratee, context);
   var _keys = !_isArrayLike(obj) && keys(obj),
-      length = (_keys || obj).length,
-      results = Array(length);
+    length = (_keys || obj).length,
+    results = Array(length);
   for (var index = 0; index < length; index++) {
     var currentKey = _keys ? _keys[index] : index;
     results[index] = iteratee(obj[currentKey], currentKey, obj);
   }
   return results;
 }
-
 module.exports = map;
 
 /***/ }),
 /* 265 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var reset_size_after_update = __webpack_require__(128);
 var make_row_label_container = __webpack_require__(90);
@@ -24008,7 +21783,6 @@ var enter_row_groups = __webpack_require__(271);
 var resize_containers = __webpack_require__(129);
 var label_constrain_and_trim = __webpack_require__(58);
 var d3_tip_custom = __webpack_require__(10);
-
 module.exports = function enter_exit_update(cgm, network_data, delays) {
   var params = cgm.params;
 
@@ -24023,22 +21797,18 @@ module.exports = function enter_exit_update(cgm, network_data, delays) {
   }).direction('nw').offset([0, 0]).style('display', 'none').html(function (d) {
     var inst_value = String(d.value.toFixed(3));
     var tooltip_string;
-
     if (params.keep_orig) {
       var orig_value = String(d.value_orig.toFixed(3));
       tooltip_string = '<p>' + d.row_name + ' and ' + d.col_name + '</p>' + '<p> normalized value: ' + inst_value + '</p>' + '<div> original value: ' + orig_value + '</div>';
     } else {
       tooltip_string = '<p>' + d.row_name + ' and ' + d.col_name + '</p>' + '<div> value: ' + inst_value + '</div>';
     }
-
     return tooltip_string;
   });
-
   d3.select(params.root + ' .clust_group').call(tip);
 
   // necessary for repositioning clust, col and col-cat containers
   resize_containers(params);
-
   var duration = 1000;
 
   // make global so that names can be accessed
@@ -24059,7 +21829,6 @@ module.exports = function enter_exit_update(cgm, network_data, delays) {
   var move_rows = d3.select(params.root + ' .clust_group').selectAll('.row').data(params.matrix.matrix, function (d) {
     return d.name;
   });
-
   if (delays.run_transition) {
     move_rows.transition().delay(delays.update).duration(duration).attr('transform', function (d) {
       var tmp_index = d.row_index;
@@ -24078,7 +21847,6 @@ module.exports = function enter_exit_update(cgm, network_data, delays) {
     var inst_selection = this;
     eeu_existing_row(params, d, delays, duration, inst_selection, tip);
   });
-
   d3.selectAll(params.root + ' .horz_lines').remove();
   d3.selectAll(params.root + ' .vert_lines').remove();
 
@@ -24096,18 +21864,13 @@ module.exports = function enter_exit_update(cgm, network_data, delays) {
   // update existing rows
   make_row_label_container(cgm, duration);
   make_col_label_container(cgm, duration);
-
   draw_gridlines(params, delays, duration);
-
   setTimeout(label_constrain_and_trim, 2000, params);
 };
 
 /***/ }),
 /* 266 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var exit_existing_row = __webpack_require__(267);
 var enter_existing_row = __webpack_require__(268);
@@ -24131,7 +21894,6 @@ module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, dur
   var cur_row_tiles = d3.select(row_selection).selectAll('.tile').data(row_values, function (d) {
     return d.col_name;
   });
-
   exit_existing_row(params, delays, cur_row_tiles, inp_row_data, row_selection);
 
   ///////////////////////////
@@ -24140,17 +21902,14 @@ module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, dur
 
   // update tiles in x direction
   var update_row_tiles = cur_row_tiles.on('mouseover', function () {
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
-
     mouseover_tile(params, this, tip, args);
   }).on('mouseout', function mouseout() {
     mouseout_tile(params, this, tip);
   });
-
   var col_nodes_names = params.network_data.col_nodes_names;
-
   if (delays.run_transition) {
     update_row_tiles.transition().delay(delays.update).duration(duration).attr('width', params.viz.rect_width).attr('height', params.viz.rect_height).attr('transform', function (d) {
       if (contains(col_nodes_names, d.col_name)) {
@@ -24168,11 +21927,9 @@ module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, dur
       }
     });
   }
-
   if (params.matrix.tile_type == 'updn') {
     update_split_tiles(params, inp_row_data, row_selection, delays, duration, cur_row_tiles, tip);
   }
-
   enter_existing_row(params, delays, duration, cur_row_tiles, tip);
 };
 
@@ -24180,18 +21937,13 @@ module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, dur
 /* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var filter = __webpack_require__(9);
-
 module.exports = function exit_existing_row(params, delays, cur_row_tiles, inp_row_data, row_selection) {
   if (delays.run_transition) {
     cur_row_tiles.exit().transition().duration(300).attr('fill-opacity', 0).remove();
   } else {
     cur_row_tiles.exit().attr('fill-opacity', 0).remove();
   }
-
   if (params.matrix.tile_type == 'updn') {
     // value split
     var row_split_data = filter(inp_row_data, function (num) {
@@ -24202,7 +21954,6 @@ module.exports = function exit_existing_row(params, delays, cur_row_tiles, inp_r
     var cur_tiles_up = d3.select(row_selection).selectAll('.tile_up').data(row_split_data, function (d) {
       return d.col_name;
     });
-
     if (delays.run_transition) {
       cur_tiles_up.exit().transition().duration(300).attr('fill', '0').remove();
     } else {
@@ -24213,7 +21964,6 @@ module.exports = function exit_existing_row(params, delays, cur_row_tiles, inp_r
     var cur_tiles_dn = d3.select(row_selection).selectAll('.tile_dn').data(row_split_data, function (d) {
       return d.col_name;
     });
-
     if (delays.run_transition) {
       cur_tiles_dn.exit().transition().duration(300).attr('fill', 0).remove();
     } else {
@@ -24226,27 +21976,21 @@ module.exports = function exit_existing_row(params, delays, cur_row_tiles, inp_r
 /* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var mouseover_tile = __webpack_require__(24);
 var mouseout_tile = __webpack_require__(25);
 var fine_position_tile = __webpack_require__(12);
-
 module.exports = function enter_existing_row(params, delays, duration, cur_row_tiles, tip) {
   // enter new tiles
   var new_tiles = cur_row_tiles.enter().append('rect').attr('class', 'tile row_tile').attr('width', params.viz.rect_width).attr('height', params.viz.rect_height).on('mouseover', function () {
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
-
     mouseover_tile(params, this, tip, args);
   }).on('mouseout', function mouseout() {
     mouseout_tile(params, this, tip);
   }).attr('fill-opacity', 0).attr('transform', function (d) {
     return fine_position_tile(params, d);
   });
-
   if (delays.run_transition) {
     new_tiles.transition().delay(delays.enter).duration(duration).style('fill', function (d) {
       return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
@@ -24275,16 +22019,12 @@ module.exports = function enter_existing_row(params, delays, duration, cur_row_t
 /* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var draw_up_tile = __webpack_require__(34);
 var draw_dn_tile = __webpack_require__(35);
 var mouseover_tile = __webpack_require__(24);
 var mouseout_tile = __webpack_require__(25);
 var fine_position_tile = __webpack_require__(12);
 var filter = __webpack_require__(9);
-
 module.exports = function update_split_tiles(params, inp_row_data, row_selection, delays, duration, cur_row_tiles, tip) {
   // value split
   var row_split_data = filter(inp_row_data, function (num) {
@@ -24298,15 +22038,13 @@ module.exports = function update_split_tiles(params, inp_row_data, row_selection
 
   // update split tiles_up
   var update_tiles_up = cur_tiles_up.on('mouseover', function () {
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
-
     mouseover_tile(params, this, tip, args);
   }).on('mouseout', function mouseout() {
     mouseout_tile(params, this, tip);
   });
-
   if (delays.run_transition) {
     update_tiles_up.transition().delay(delays.update).duration(duration).attr('d', function () {
       return draw_up_tile(params);
@@ -24328,15 +22066,13 @@ module.exports = function update_split_tiles(params, inp_row_data, row_selection
 
   // update split tiles_dn
   var update_tiles_dn = cur_tiles_dn.on('mouseover', function () {
-    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
       args[_key2] = arguments[_key2];
     }
-
     mouseover_tile(params, this, tip, args);
   }).on('mouseout', function mouseout() {
     mouseout_tile(params, this, tip);
   });
-
   if (delays.run_transition) {
     update_tiles_dn.transition().delay(delays.update).duration(duration).attr('d', function () {
       return draw_dn_tile(params);
@@ -24361,10 +22097,7 @@ module.exports = function update_split_tiles(params, inp_row_data, row_selection
 
 /***/ }),
 /* 270 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function exit_components(params, delays, duration) {
   var row_nodes = params.network_data.row_nodes;
@@ -24374,7 +22107,6 @@ module.exports = function exit_components(params, delays, duration) {
   var exiting_rows = d3.select(params.root + ' .clust_group').selectAll('.row').data(params.matrix.matrix, function (d) {
     return d.name;
   }).exit();
-
   if (delays.run_transition) {
     exiting_rows.transition().duration(duration).style('opacity', 0).remove();
   } else {
@@ -24400,15 +22132,12 @@ module.exports = function exit_components(params, delays, duration) {
   d3.selectAll(params.root + ' .row_dendro_group').data(row_nodes, function (d) {
     return d.name;
   }).exit().transition().duration(duration).style('opacity', 0).remove();
-
   d3.selectAll(params.root + ' .col_label_text').data(col_nodes, function (d) {
     return d.name;
   }).exit().transition().duration(duration).style('opacity', 0).remove();
-
   d3.selectAll(params.root + ' .horz_lines').data(row_nodes, function (d) {
     return d.name;
   }).exit().transition().duration(duration).style('opacity', 0).remove();
-
   d3.selectAll(params.root + ' .vert_lines').data(col_nodes, function (d) {
     return d.name;
   }).exit().transition().duration(duration).style('opacity', 0).remove();
@@ -24417,7 +22146,6 @@ module.exports = function exit_components(params, delays, duration) {
   d3.selectAll(params.root + ' .col_cat_group').data(col_nodes, function (d) {
     return d.name;
   }).exit().transition().duration(duration).style('opacity', 0).remove();
-
   d3.selectAll(params.root + ' .col_dendro_group').data(col_nodes, function (d) {
     return d.name;
   }).exit().transition().duration(duration).style('opacity', 0).remove();
@@ -24427,11 +22155,7 @@ module.exports = function exit_components(params, delays, duration) {
 /* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var enter_new_rows = __webpack_require__(272);
-
 module.exports = function enter_row_groups(params, delays, duration, tip) {
   // enter new rows
   var new_row_groups = d3.select(params.root + ' .clust_group').selectAll('.row').data(params.matrix.matrix, function (d) {
@@ -24439,7 +22163,6 @@ module.exports = function enter_row_groups(params, delays, duration, tip) {
   }).enter().append('g').classed('row', true).attr('transform', function (d) {
     return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
   });
-
   new_row_groups.each(function (d) {
     enter_new_rows(params, d, delays, duration, tip, this);
   });
@@ -24448,9 +22171,6 @@ module.exports = function enter_row_groups(params, delays, duration, tip) {
 /***/ }),
 /* 272 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 var enter_split_tiles = __webpack_require__(273);
 var mouseover_tile = __webpack_require__(24);
@@ -24476,25 +22196,21 @@ module.exports = function enter_new_rows(params, ini_inp_row_data, delays, durat
   .style('fill', function (d) {
     return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
   }).on('mouseover', function () {
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
-
     mouseover_tile(params, this, tip, args);
   }).on('mouseout', function mouseout() {
     mouseout_tile(params, this, tip);
   });
-
   tile.style('fill-opacity', 0).transition().delay(delays.enter).duration(duration).style('fill-opacity', function (d) {
     // calculate output opacity using the opacity scale
     var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
     return output_opacity;
   });
-
   tile.attr('transform', function (d) {
     return fine_position_tile(params, d);
   });
-
   if (params.matrix.tile_type == 'updn') {
     enter_split_tiles(params, inp_row_data, row_selection, tip, delays, duration, tile);
   }
@@ -24504,14 +22220,10 @@ module.exports = function enter_new_rows(params, ini_inp_row_data, delays, durat
 /* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var draw_up_tile = __webpack_require__(34);
 var draw_dn_tile = __webpack_require__(35);
 var fine_position_tile = __webpack_require__(12);
 var filter = __webpack_require__(9);
-
 module.exports = function enter_split_tiles(params, inp_row_data, row_selection, tip, delays, duration, tile) {
   // value split
   var row_split_data = filter(inp_row_data, function (num) {
@@ -24532,7 +22244,6 @@ module.exports = function enter_split_tiles(params, inp_row_data, row_selection,
     d3.selectAll(params.root + ' .row_label_group text').classed('active', function (d) {
       return p.row_name === d.name;
     });
-
     d3.selectAll(params.root + ' .col_label_text text').classed('active', function (d) {
       return p.col_name === d.name;
     });
@@ -24545,7 +22256,6 @@ module.exports = function enter_split_tiles(params, inp_row_data, row_selection,
       tip.hide();
     }
   });
-
   new_tiles_up.style('fill-opacity', 0).transition().delay(delays.enter).duration(duration).style('fill-opacity', function (d) {
     var inst_opacity = 0;
     if (Math.abs(d.value_dn) > 0) {
@@ -24568,7 +22278,6 @@ module.exports = function enter_split_tiles(params, inp_row_data, row_selection,
     d3.selectAll(params.root + ' .row_label_group text').classed('active', function (d) {
       return p.row_name === d.name;
     });
-
     d3.selectAll(params.root + ' .col_label_text text').classed('active', function (d) {
       return p.col_name === d.name;
     });
@@ -24581,7 +22290,6 @@ module.exports = function enter_split_tiles(params, inp_row_data, row_selection,
       tip.hide();
     }
   });
-
   new_tiles_dn.style('fill-opacity', 0).transition().delay(delays.enter).duration(duration).style('fill-opacity', function (d) {
     var inst_opacity = 0;
     if (Math.abs(d.value_up) > 0) {
@@ -24600,10 +22308,7 @@ module.exports = function enter_split_tiles(params, inp_row_data, row_selection,
 
 /***/ }),
 /* 274 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function enable_sidebar(params) {
   /* only enable dendrogram sliders if there has been no dendro_filtering */
@@ -24615,29 +22320,21 @@ module.exports = function enable_sidebar(params) {
       d3.select(params.root + ' .row_slider_group').style('opacity', 1).style('pointer-events', 'all');
     }
   }
-
   d3.selectAll(params.root + ' .toggle_row_order .btn').attr('disabled', null);
-
   if (params.dendro_filter.col === false) {
     // orders are switched!
     if (params.viz.inst_order.row === 'clust') {
       d3.select(params.root + ' .col_slider_group').style('opacity', 1).style('pointer-events', 'all');
     }
   }
-
   d3.selectAll(params.root + ' .toggle_col_order .btn').attr('disabled', null);
-
   d3.selectAll(params.root + ' .gene_search_button .btn').attr('disabled', null);
-
   params.viz.run_trans = false;
 };
 
 /***/ }),
 /* 275 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function update_reorder_buttons(tmp_config, params) {
   ['row', 'col'].forEach(function (inst_rc) {
@@ -24647,7 +22344,6 @@ module.exports = function update_reorder_buttons(tmp_config, params) {
     } else {
       other_rc = 'row';
     }
-
     d3.selectAll(params.root + ' .toggle_' + other_rc + '_order .btn').filter(function () {
       return d3.select(this).attr('name') === tmp_config.inst_order[inst_rc];
     }).classed('active', true);
@@ -24656,19 +22352,14 @@ module.exports = function update_reorder_buttons(tmp_config, params) {
 
 /***/ }),
 /* 276 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function remove_node_cats(inst_node) {
   var all_props = Object.keys(inst_node || {});
-
   all_props.forEach(function (inst_prop) {
     if (inst_prop.indexOf('cat-') > -1) {
       delete inst_node[inst_prop];
     }
-
     if (inst_prop.indexOf('cat_') > -1) {
       delete inst_node[inst_prop];
     }
@@ -24679,14 +22370,10 @@ module.exports = function remove_node_cats(inst_node) {
 /* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var reset_size_after_update = __webpack_require__(128);
 var make_col_label_container = __webpack_require__(56);
 var show_visible_area = __webpack_require__(13);
 var resize_containers = __webpack_require__(129);
-
 module.exports = function ds_enter_exit_update(cgm) {
   // console.log('======== ds_enter_exit_update ===============');
 
@@ -24705,24 +22392,19 @@ module.exports = function ds_enter_exit_update(cgm) {
   // the parameters were not updated and two_translate_zoom if only run
   // if needed to reset zoom
   show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);
-
   make_col_label_container(cgm);
-
   var col_nodes = cgm.params.network_data.col_nodes;
 
   // remove column labels
   d3.selectAll(cgm.params.root + ' .col_label_group').data(col_nodes, function (d) {
     return d.name;
   }).exit().style('opacity', 0).remove();
-
   d3.selectAll(cgm.params.root + ' .col_label_text').data(col_nodes, function (d) {
     return d.name;
   }).exit().style('opacity', 0).remove();
-
   d3.selectAll(cgm.params.root + ' .col_cat_group').data(col_nodes, function (d) {
     return d.name;
   }).exit().style('opacity', 0).remove();
-
   d3.selectAll(cgm.params.root + ' .col_dendro_group').data(col_nodes, function (d) {
     return d.name;
   }).exit().style('opacity', 0).remove();
@@ -24743,45 +22425,34 @@ module.exports = function ds_enter_exit_update(cgm) {
 /* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var sim_click = __webpack_require__(27);
 var $ = __webpack_require__(2);
-
 module.exports = function quick_cluster() {
   /* eslint-disable */
 
   function run(params) {
     var x_trans = Number(d3.select(params.root + ' .expand_button').attr('x').replace('px', ''));
     var y_trans = Number(d3.select(params.root + ' .expand_button').attr('y').replace('px', ''));
-
     var wait_click = 0;
     var wait_real_click = 400;
     setTimeout(sim_click, wait_click, params, 'single', x_trans, y_trans);
     setTimeout(click_menu_button, wait_real_click, params);
-
     setTimeout(reset_cluster_order, 1500, params);
   }
-
   function get_duration() {
     return 3500;
   }
-
   function click_menu_button(params) {
     $(params.root + ' .expand_button').d3Click();
   }
-
   function reset_cluster_order(params) {
     click_reorder_button(params, 'row', 'clust');
     click_reorder_button(params, 'col', 'clust');
   }
-
   function click_reorder_button(params, inst_rc, inst_order) {
     var inst_button = d3.selectAll('.toggle_' + inst_rc + '_order .btn').filter(function () {
       return this.__data__ == inst_order;
     })[0];
-
     $(inst_button).click();
   }
 
@@ -24793,7 +22464,6 @@ module.exports = function quick_cluster() {
       e.dispatchEvent(evt);
     });
   };
-
   return {
     run: run,
     get_duration: get_duration
@@ -24804,23 +22474,17 @@ module.exports = function quick_cluster() {
 /* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var demo_text = __webpack_require__(5);
 var highlight_sidebar_element = __webpack_require__(40);
 var change_groups = __webpack_require__(112);
 var $ = __webpack_require__(2);
-
 module.exports = function play_groups() {
   /* eslint-disable */
 
   function run(params) {
     var text = 'Identify row and column groups\nof varying sizes using ' + ' the\nsliders and dendrogram';
     demo_text(params, text, 10000);
-
     setTimeout(highlight_sidebar_element, 3000, params, 'slider_col', 7000);
-
     setTimeout(change_group_slider, 4000, params, 'row', 3);
     setTimeout(change_group_slider, 5000, params, 'row', 4);
     setTimeout(change_group_slider, 6000, params, 'row', 5);
@@ -24828,16 +22492,13 @@ module.exports = function play_groups() {
     setTimeout(change_group_slider, 8000, params, 'row', 7);
     setTimeout(change_group_slider, 9000, params, 'row', 5);
   }
-
   function get_duration() {
     return 11000;
   }
-
   function change_group_slider(params, inst_rc, inst_value) {
     $(cgm.params.root + ' .slider_col').slider('value', inst_value / 10);
     change_groups(cgm, inst_rc, inst_value);
   }
-
   return {
     run: run,
     get_duration: get_duration
@@ -24848,39 +22509,29 @@ module.exports = function play_groups() {
 /* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var demo_text = __webpack_require__(5);
 var sim_click = __webpack_require__(27);
 var $ = __webpack_require__(2);
-
 module.exports = function play_category() {
   /* eslint-disable */
 
   function run(params) {
     var text = 'Row and column categories\ncan be use to reorder\nby double-clicking';
     demo_text(params, text, 7000);
-
     var inst_element = d3.selectAll(params.root + ' .col_cat_super').filter(function () {
       return this.__data__ === 'cat-1';
     })[0];
-
     var tmp_pos = d3.select('.col_cat_super').attr('transform');
     var x_trans = Number(tmp_pos.split('(')[1].split(',')[0].replace(')', '')) + 20;
     var y_trans = Number(tmp_pos.split(',')[1].replace(')', ''));
-
     var wait_click = 4000;
     setTimeout(sim_click, wait_click, params, 'double', x_trans, y_trans);
-
     var wait_reorder = wait_click + 300;
     setTimeout(fire_double_click_row, wait_reorder, params, inst_element);
   }
-
   function get_duration() {
     return 8000;
   }
-
   function fire_double_click_row(params, inst_element) {
     $(inst_element).d3DblClick();
   }
@@ -24903,36 +22554,26 @@ module.exports = function play_category() {
 /* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var demo_text = __webpack_require__(5);
 var toggle_play_button = __webpack_require__(130);
-
 module.exports = function play_conclusion() {
   function run(params) {
     var text_1 = 'Clustergrammer is built with gene\nexpression data in mind' + " and interfaces\nwith several Ma'ayan lab web tools";
     var text_2 = 'The example data being visualized is\ngene expression data' + ' obtained from the\nCancer Cell Line Encyclopedia';
     var text_3 = 'For more information please view\nthe help documentation';
-
     setTimeout(demo_text, 0, params, text_1, 4500);
     setTimeout(demo_text, 4500, params, text_2, 4500);
     setTimeout(demo_text, 9000, params, text_3, 4500);
-
     setTimeout(reset_demo, 14000, params);
   }
-
   function reset_demo(params) {
     // prevent more than one demo from running at once
     d3.select(params.root + ' .play_button').classed('running_demo', false);
-
     toggle_play_button(params, true);
   }
-
   function get_duration() {
     return 12000;
   }
-
   return {
     run: run,
     get_duration: get_duration
@@ -24943,13 +22584,9 @@ module.exports = function play_conclusion() {
 /* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var demo_text = __webpack_require__(5);
 var sim_click = __webpack_require__(27);
 var $ = __webpack_require__(2);
-
 module.exports = function play_menu_button() {
   /* eslint-disable */
 
@@ -24973,27 +22610,22 @@ module.exports = function play_menu_button() {
 
     var x_trans = Number(d3.select(params.root + ' .expand_button').attr('x').replace('px', ''));
     var y_trans = Number(d3.select(params.root + ' .expand_button').attr('y').replace('px', ''));
-
     var wait_click = 3000;
     var wait_real_click = 3400;
     setTimeout(sim_click, wait_click, params, 'single', x_trans, y_trans);
     setTimeout(click_menu_button, wait_real_click, params);
   }
-
   function get_duration() {
     return 5000;
   }
-
   function click_menu_button(params) {
     $(params.root + ' .expand_button').d3Click();
   }
-
   function get_row_element(params, inst_row) {
     var inst_element = d3.selectAll(params.root + ' .row_label_group').filter(function () {
       var inst_data = this.__data__;
       return inst_data.name == inst_row;
     })[0][0];
-
     return inst_element;
   }
 
@@ -25024,18 +22656,12 @@ module.exports = function play_menu_button() {
 /* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var make_play_button = __webpack_require__(284);
 var make_demo_text_containers = __webpack_require__(285);
-
 module.exports = function ini_demo() {
   var cgm = this;
   var params = cgm.params;
-
   make_play_button(cgm);
-
   var demo_text_size = 30;
   make_demo_text_containers(params, demo_text_size);
 };
@@ -25044,33 +22670,23 @@ module.exports = function ini_demo() {
 /* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var position_play_button = __webpack_require__(126);
-
 module.exports = function make_play_button(cgm) {
   var params = cgm.params;
-
   if (d3.select(params.root + ' .play_button').empty()) {
     var play_button = d3.select(params.root + ' .viz_svg').append('g').classed('play_button', true).classed('running_demo', false);
-
     position_play_button(params);
-
     play_button.append('circle').style('r', 45).style('fill', 'white').style('stroke', 'black').style('stroke-width', '3px').style('opacity', 0.5);
-
     play_button.append('path').attr('d', function () {
       var tri_w = 40;
       var tri_h = 22;
       var tri_offset = 15;
-
       return 'M-' + tri_offset + ',-' + tri_h + ' l ' + tri_w + ',' + tri_h + ' l -' + tri_w + ',' + tri_h + ' z ';
     }).style('fill', 'black').style('opacity', 0.5);
 
     // mouseover behavior
     play_button.on('mouseover', function () {
       d3.select(this).select('path').style('fill', 'red').style('opacity', 1);
-
       d3.select(this).select('circle').style('opacity', 1);
     }).on('mouseout', function () {
       d3.select(this).select('path').style('fill', 'black').style('opacity', 0.5);
@@ -25084,10 +22700,7 @@ module.exports = function make_play_button(cgm) {
 
 /***/ }),
 /* 285 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function make_demo_text_containers(params, demo_text_size) {
   if (d3.select(params.root + ' .demo_group').empty()) {
@@ -25101,21 +22714,14 @@ module.exports = function make_demo_text_containers(params, demo_text_size) {
       var pos_y = clust_y + 40;
       return 'translate(' + pos_x + ',' + pos_y + ')';
     });
-
     demo_group.append('rect').classed('rect_1', true);
-
     demo_group.append('rect').classed('rect_2', true);
-
     demo_group.append('rect').classed('rect_3', true);
-
     var shift_height = 1.3 * demo_text_size;
-
     demo_group.append('text').attr('id', 'text_1').attr('font-size', demo_text_size + 'px').attr('font-weight', 1000).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif');
-
     demo_group.append('text').attr('id', 'text_2').attr('font-size', demo_text_size + 'px').attr('font-weight', 1000).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('transform', function () {
       return 'translate(0,' + String(shift_height) + ')';
     });
-
     demo_group.append('text').attr('id', 'text_3').attr('font-size', demo_text_size + 'px').attr('font-weight', 1000).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('transform', function () {
       return 'translate(0,' + String(2 * shift_height) + ')';
     });
@@ -25126,12 +22732,8 @@ module.exports = function make_demo_text_containers(params, demo_text_size) {
 /* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var filter_network_using_new_nodes = __webpack_require__(43);
 var update_viz_with_network = __webpack_require__(65);
-
 module.exports = function filter_viz_using_nodes(new_nodes) {
   var new_network_data = filter_network_using_new_nodes(this.config, new_nodes);
   update_viz_with_network(this, new_network_data);
@@ -25141,17 +22743,12 @@ module.exports = function filter_viz_using_nodes(new_nodes) {
 /* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var filter_network_using_new_nodes = __webpack_require__(43);
 var update_viz_with_network = __webpack_require__(65);
 var utils = __webpack_require__(0);
 var $ = __webpack_require__(2);
-
 module.exports = function filter_viz_using_names(names) {
   var external_cgm = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
   // names is an object with row and column names that will be used to filter
   // the matrix
 
@@ -25161,14 +22758,11 @@ module.exports = function filter_viz_using_names(names) {
   } else {
     cgm = external_cgm;
   }
-
   var params = cgm.params;
   var new_nodes = {};
   var found_nodes;
-
   ['row', 'col'].forEach(function (inst_rc) {
     var orig_nodes = params.inst_nodes[inst_rc + '_nodes'];
-
     if (utils.has(names, inst_rc)) {
       if (names[inst_rc].length > 0) {
         var inst_names = names[inst_rc];
@@ -25181,14 +22775,12 @@ module.exports = function filter_viz_using_names(names) {
     } else {
       found_nodes = orig_nodes;
     }
-
     new_nodes[inst_rc + '_nodes'] = found_nodes;
   });
 
   // keep backup of the nodes for resetting filtering
   var inst_row_nodes = cgm.params.network_data.row_nodes;
   var inst_col_nodes = cgm.params.network_data.col_nodes;
-
   var new_network_data = filter_network_using_new_nodes(cgm.config, new_nodes);
 
   // takes entire cgm object
@@ -25200,7 +22792,6 @@ module.exports = function filter_viz_using_names(names) {
   if (inst_row_nodes.length > cgm.params.inst_nodes.row_nodes.length) {
     cgm.params.inst_nodes.row_nodes = inst_row_nodes;
   }
-
   if (inst_col_nodes.length > cgm.params.inst_nodes.col_nodes.length) {
     cgm.params.inst_nodes.col_nodes = inst_col_nodes;
   }
@@ -25210,14 +22801,10 @@ module.exports = function filter_viz_using_names(names) {
 /* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var make_row_cat = __webpack_require__(39);
 var calc_viz_params = __webpack_require__(49);
 var resize_viz = __webpack_require__(63);
 var modify_row_node_cats = __webpack_require__(66);
-
 module.exports = function update_cats(cgm, cat_data) {
   // Only accessible from the cgm API, cat_data is provided by externally
   ///////////////////////////////////////////////////////////////////////////
@@ -25228,19 +22815,15 @@ module.exports = function update_cats(cgm, cat_data) {
 
   // do not change column category info
   var col_cat_colors = cgm.params.viz.cat_colors.col;
-
   modify_row_node_cats(cat_data, cgm.params.network_data.row_nodes, true);
   // modify the current inst copy of nodes
   modify_row_node_cats(cat_data, cgm.params.inst_nodes.row_nodes, true);
 
   // recalculate the visualization parameters using the updated network_data
   cgm.params = calc_viz_params(cgm.params, false);
-
   make_row_cat(cgm, true);
   resize_viz(cgm);
-
   cgm.params.new_row_cats = cat_data;
-
   cgm.params.viz.cat_colors.col = col_cat_colors;
 };
 
@@ -25248,41 +22831,31 @@ module.exports = function update_cats(cgm, cat_data) {
 /* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var make_row_cat = __webpack_require__(39);
 var calc_viz_params = __webpack_require__(49);
 var resize_viz = __webpack_require__(63);
 var modify_row_node_cats = __webpack_require__(66);
 var generate_cat_data = __webpack_require__(290);
-
 module.exports = function reset_cats() {
   var run_resize_viz = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-
   // console.log('RESET CATS')
 
   var cgm = this;
-
   var cat_data = generate_cat_data(cgm);
 
   // do not change column category info
   var col_cat_colors = cgm.params.viz.cat_colors.col;
-
   modify_row_node_cats(cat_data, cgm.params.network_data.row_nodes);
   // modify the current inst copy of nodes
   modify_row_node_cats(cat_data, cgm.params.inst_nodes.row_nodes);
-
   cgm.params.new_row_cats = cat_data;
   cgm.params.viz.cat_colors.col = col_cat_colors;
-
   if (run_resize_viz) {
     // resize visualizatino
     ////////////////////////////
     // recalculate the visualization parameters using the updated network_data
     var predefine_cat_colors = true;
     cgm.params = calc_viz_params(cgm.params, predefine_cat_colors);
-
     make_row_cat(cgm, true);
     resize_viz(cgm);
   }
@@ -25292,11 +22865,7 @@ module.exports = function reset_cats() {
 /* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var each = __webpack_require__(1);
-
 module.exports = function generate_cat_data(cgm) {
   // only row category resetting is supported currently
 
@@ -25327,7 +22896,6 @@ module.exports = function generate_cat_data(cgm) {
     if (inst_prop.indexOf('cat-') >= 0) {
       // generate titles from cat info
       tmp_cat = check_node[inst_prop];
-
       cat_index = parseInt(inst_prop.split('cat-')[1], 10);
 
       // use given title
@@ -25348,23 +22916,18 @@ module.exports = function generate_cat_data(cgm) {
 
   // initialize cat_data with categories in the correct order
   var all_index = Object.keys(current_cats || {}).sort();
-
   var inst_data;
   all_index.forEach(function (inst_index) {
     inst_data = {};
     inst_data.cat_title = current_cats[inst_index];
     inst_data.cats = [];
-
     cat_data.push(inst_data);
   });
-
   row_nodes.each(function (inst_node) {
     var all_props = Object.keys(inst_node || {});
-
     all_props.forEach(function (inst_prop) {
       if (inst_prop.indexOf('cat-') > -1) {
         cat_name = inst_node[inst_prop];
-
         cat_index = parseInt(inst_prop.split('cat-')[1], 10);
 
         // default title and name
@@ -25437,7 +23000,6 @@ module.exports = function generate_cat_data(cgm) {
       }
     });
   });
-
   function add_new_cat_type(cat_title, cat_name, cat_row_name) {
     // initialize cat_type object to push to cat_data
     cat_type = {};
@@ -25449,9 +23011,7 @@ module.exports = function generate_cat_data(cgm) {
     cat_info.cat_name = cat_name;
     cat_info.members = [];
     cat_info.members.push(cat_row_name);
-
     cat_type.cats.push(cat_info);
-
     cat_data.push(cat_type);
   }
 
@@ -25465,12 +23025,8 @@ module.exports = function generate_cat_data(cgm) {
 /* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var update_viz_with_view = __webpack_require__(127);
 var reset_other_filter_sliders = __webpack_require__(292);
-
 module.exports = function update_view(cgm, filter_type, inst_state) {
   // add something to control slider position
   /////////////////////////////////////////////
@@ -25478,7 +23034,6 @@ module.exports = function update_view(cgm, filter_type, inst_state) {
   var requested_view = {};
   requested_view[filter_type] = inst_state;
   update_viz_with_view(cgm, requested_view);
-
   reset_other_filter_sliders(cgm, filter_type, inst_state);
 };
 
@@ -25486,18 +23041,12 @@ module.exports = function update_view(cgm, filter_type, inst_state) {
 /* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var make_filter_title = __webpack_require__(293);
-
 module.exports = function reset_other_filter_sliders(cgm, filter_type, inst_state) {
   var params = cgm.params;
   var inst_rc;
   var reset_rc;
-
   d3.select(params.root + ' .slider_' + filter_type).attr('current_state', inst_state);
-
   Object.keys(params.viz.possible_filters || {}).forEach(function (reset_filter) {
     if (filter_type.indexOf('row') > -1) {
       inst_rc = 'row';
@@ -25506,7 +23055,6 @@ module.exports = function reset_other_filter_sliders(cgm, filter_type, inst_stat
     } else {
       inst_rc = 'neither';
     }
-
     if (reset_filter.indexOf('row') > -1) {
       reset_rc = 'row';
     } else if (reset_filter.indexOf('col') > -1) {
@@ -25514,22 +23062,16 @@ module.exports = function reset_other_filter_sliders(cgm, filter_type, inst_stat
     } else {
       reset_rc = 'neither';
     }
-
     if (filter_type != reset_filter && inst_rc != 'neither') {
       if (inst_rc == reset_rc) {
         var tmp_title = make_filter_title(params, reset_filter);
-
         cgm.slider_functions[reset_filter].value(0);
-
         d3.select(params.root + ' .title_' + reset_filter).text(tmp_title.text + tmp_title.state);
-
         d3.select(params.root + ' .slider_' + reset_filter).attr('current_state', tmp_title.state);
       }
     }
   });
-
   var filter_title = make_filter_title(params, filter_type);
-
   d3.select(params.root + ' .title_' + filter_type).text(filter_title.text + inst_state + filter_title.suffix);
 };
 
@@ -25537,47 +23079,35 @@ module.exports = function reset_other_filter_sliders(cgm, filter_type, inst_stat
 /* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var get_filter_default_state = __webpack_require__(42);
-
 module.exports = function make_filter_title(params, filter_type) {
   var filter_title = {};
   var title = {};
   var type = {};
-
   filter_title.state = get_filter_default_state(params.viz.filter_data, filter_type);
-
   type.top = filter_type.split('_')[0];
   type.node = filter_type.split('_')[1];
   type.measure = filter_type.split('_')[2];
-
   if (type.node === 'row') {
     title.node = 'rows';
   } else {
     title.node = 'columns';
   }
-
   if (type.top === 'N') {
     // filter_title.suffix = ' '+title.node;
     filter_title.suffix = '';
   }
-
   if (type.top === 'pct') {
     filter_title.suffix = '%';
   }
-
   if (type.measure == 'sum') {
     title.measure = 'sum';
   } else if (type.measure == 'var') {
     title.measure = 'variance';
   }
-
   if (type.measure === 'sum') {
     filter_title.text = 'Top ' + title.node + ' ' + title.measure + ': ';
   }
-
   if (type.measure === 'var') {
     filter_title.text = 'Top ' + title.node + ' ' + title.measure + ': ';
   }
@@ -25589,7 +23119,6 @@ module.exports = function make_filter_title(params, filter_type) {
       filter_title.suffix = '';
     }
   }
-
   return filter_title;
 };
 
@@ -25597,29 +23126,21 @@ module.exports = function make_filter_title(params, filter_type) {
 /* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var file_saver = __webpack_require__(295);
 var make_matrix_string = __webpack_require__(131);
-
 module.exports = function save_matrix() {
   var saveAs = file_saver();
-
   var params = this.params;
-
   var matrix_string = make_matrix_string(params);
-
-  var blob = new Blob([matrix_string], { type: 'text/plain;charset=utf-8' });
+  var blob = new Blob([matrix_string], {
+    type: 'text/plain;charset=utf-8'
+  });
   saveAs(blob, 'clustergrammer.txt');
 };
 
 /***/ }),
 /* 295 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function file_saver() {
   /* eslint-disable */
@@ -25642,178 +23163,181 @@ module.exports = function file_saver() {
     'use strict';
 
     var doc = view.document,
-
-    // only get URL when necessary in case BlobBuilder.js hasn't overridden it yet
-    get_URL = function get_URL() {
-      return view.URL || view.webkitURL || view;
-    },
-        URL = view.URL || view.webkitURL || view,
-        save_link = doc.createElementNS('http://www.w3.org/1999/xhtml', 'a'),
-        can_use_save_link = 'download' in save_link,
-        click = function click(node) {
-      var event = doc.createEvent('MouseEvents');
-      event.initMouseEvent('click', true, false, view, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-      node.dispatchEvent(event);
-    },
-        webkit_req_fs = view.webkitRequestFileSystem,
-        req_fs = view.requestFileSystem || webkit_req_fs || view.mozRequestFileSystem,
-        throw_outside = function throw_outside(ex) {
-      (view.setImmediate || view.setTimeout)(function () {
-        throw ex;
-      }, 0);
-    },
-        force_saveable_type = 'application/octet-stream',
-        fs_min_size = 0,
-        deletion_queue = [],
-        process_deletion_queue = function process_deletion_queue() {
-      var i = deletion_queue.length;
-      while (i--) {
-        var file = deletion_queue[i];
-        if (typeof file === 'string') {
-          // file is an object URL
-          URL.revokeObjectURL(file);
-        } else {
-          // file is a File
-          file.remove();
-        }
-      }
-      deletion_queue.length = 0; // clear queue
-    },
-        dispatch = function dispatch(filesaver, event_types, event) {
-      event_types = [].concat(event_types);
-      var i = event_types.length;
-      while (i--) {
-        var listener = filesaver['on' + event_types[i]];
-        if (typeof listener === 'function') {
-          try {
-            listener.call(filesaver, event || filesaver);
-          } catch (ex) {
-            throw_outside(ex);
+      // only get URL when necessary in case BlobBuilder.js hasn't overridden it yet
+      get_URL = function get_URL() {
+        return view.URL || view.webkitURL || view;
+      },
+      URL = view.URL || view.webkitURL || view,
+      save_link = doc.createElementNS('http://www.w3.org/1999/xhtml', 'a'),
+      can_use_save_link = ('download' in save_link),
+      click = function click(node) {
+        var event = doc.createEvent('MouseEvents');
+        event.initMouseEvent('click', true, false, view, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+        node.dispatchEvent(event);
+      },
+      webkit_req_fs = view.webkitRequestFileSystem,
+      req_fs = view.requestFileSystem || webkit_req_fs || view.mozRequestFileSystem,
+      throw_outside = function throw_outside(ex) {
+        (view.setImmediate || view.setTimeout)(function () {
+          throw ex;
+        }, 0);
+      },
+      force_saveable_type = 'application/octet-stream',
+      fs_min_size = 0,
+      deletion_queue = [],
+      process_deletion_queue = function process_deletion_queue() {
+        var i = deletion_queue.length;
+        while (i--) {
+          var file = deletion_queue[i];
+          if (typeof file === 'string') {
+            // file is an object URL
+            URL.revokeObjectURL(file);
+          } else {
+            // file is a File
+            file.remove();
           }
         }
-      }
-    },
-        FileSaver = function FileSaver(blob, name) {
-      // First try a.download, then web filesystem, then object URLs
-      var filesaver = this,
+        deletion_queue.length = 0; // clear queue
+      },
+      dispatch = function dispatch(filesaver, event_types, event) {
+        event_types = [].concat(event_types);
+        var i = event_types.length;
+        while (i--) {
+          var listener = filesaver['on' + event_types[i]];
+          if (typeof listener === 'function') {
+            try {
+              listener.call(filesaver, event || filesaver);
+            } catch (ex) {
+              throw_outside(ex);
+            }
+          }
+        }
+      },
+      FileSaver = function FileSaver(blob, name) {
+        // First try a.download, then web filesystem, then object URLs
+        var filesaver = this,
           type = blob.type,
           blob_changed = false,
           object_url,
           target_view,
           get_object_url = function get_object_url() {
-        var object_url = get_URL().createObjectURL(blob);
-        deletion_queue.push(object_url);
-        return object_url;
-      },
+            var object_url = get_URL().createObjectURL(blob);
+            deletion_queue.push(object_url);
+            return object_url;
+          },
           dispatch_all = function dispatch_all() {
-        dispatch(filesaver, 'writestart progress write writeend'.split(' '));
-      },
-
-      // on any filesys errors revert to saving with object URLs
-      fs_error = function fs_error() {
-        // don't create more object URLs than needed
-        if (blob_changed || !object_url) {
-          object_url = get_object_url(blob);
-        }
-        if (target_view) {
-          target_view.location.href = object_url;
-        }
-        filesaver.readyState = filesaver.DONE;
-        dispatch_all();
-      },
-          abortable = function abortable(func) {
-        return function () {
-          if (filesaver.readyState !== filesaver.DONE) {
-            return func.apply(this, arguments);
-          }
-        };
-      },
-          create_if_not_found = { create: true, exclusive: false },
-          slice;
-      filesaver.readyState = filesaver.INIT;
-      if (!name) {
-        name = 'download';
-      }
-      if (can_use_save_link) {
-        object_url = get_object_url(blob);
-        save_link.href = object_url;
-        save_link.download = name;
-        click(save_link);
-        filesaver.readyState = filesaver.DONE;
-        dispatch_all();
-        return;
-      }
-      // Object and web filesystem URLs have a problem saving in Google Chrome when
-      // viewed in a tab, so I force save with application/octet-stream
-      // http://code.google.com/p/chromium/issues/detail?id=91158
-      if (view.chrome && type && type !== force_saveable_type) {
-        slice = blob.slice || blob.webkitSlice;
-        blob = slice.call(blob, 0, blob.size, force_saveable_type);
-        blob_changed = true;
-      }
-      // Since I can't be sure that the guessed media type will trigger a download
-      // in WebKit, I append .download to the filename.
-      // https://bugs.webkit.org/show_bug.cgi?id=65440
-      if (webkit_req_fs && name !== 'download') {
-        name += '.download';
-      }
-      if (type === force_saveable_type || webkit_req_fs) {
-        target_view = view;
-      } else {
-        target_view = view.open();
-      }
-      if (!req_fs) {
-        fs_error();
-        return;
-      }
-      fs_min_size += blob.size;
-      req_fs(view.TEMPORARY, fs_min_size, abortable(function (fs) {
-        fs.root.getDirectory('saved', create_if_not_found, abortable(function (dir) {
-          var save = function save() {
-            dir.getFile(name, create_if_not_found, abortable(function (file) {
-              file.createWriter(abortable(function (writer) {
-                writer.onwriteend = function (event) {
-                  target_view.location.href = file.toURL();
-                  deletion_queue.push(file);
-                  filesaver.readyState = filesaver.DONE;
-                  dispatch(filesaver, 'writeend', event);
-                };
-                writer.onerror = function () {
-                  var error = writer.error;
-                  if (error.code !== error.ABORT_ERR) {
-                    fs_error();
-                  }
-                };
-                'writestart progress write abort'.split(' ').forEach(function (event) {
-                  writer['on' + event] = filesaver['on' + event];
-                });
-                writer.write(blob);
-                filesaver.abort = function () {
-                  writer.abort();
-                  filesaver.readyState = filesaver.DONE;
-                };
-                filesaver.readyState = filesaver.WRITING;
-              }), fs_error);
-            }), fs_error);
-          };
-          dir.getFile(name, { create: false }, abortable(function (file) {
-            // delete file if it already exists
-            file.remove();
-            save();
-          }), abortable(function (ex) {
-            if (ex.code === ex.NOT_FOUND_ERR) {
-              save();
-            } else {
-              fs_error();
+            dispatch(filesaver, 'writestart progress write writeend'.split(' '));
+          },
+          // on any filesys errors revert to saving with object URLs
+          fs_error = function fs_error() {
+            // don't create more object URLs than needed
+            if (blob_changed || !object_url) {
+              object_url = get_object_url(blob);
             }
-          }));
+            if (target_view) {
+              target_view.location.href = object_url;
+            }
+            filesaver.readyState = filesaver.DONE;
+            dispatch_all();
+          },
+          abortable = function abortable(func) {
+            return function () {
+              if (filesaver.readyState !== filesaver.DONE) {
+                return func.apply(this, arguments);
+              }
+            };
+          },
+          create_if_not_found = {
+            create: true,
+            exclusive: false
+          },
+          slice;
+        filesaver.readyState = filesaver.INIT;
+        if (!name) {
+          name = 'download';
+        }
+        if (can_use_save_link) {
+          object_url = get_object_url(blob);
+          save_link.href = object_url;
+          save_link.download = name;
+          click(save_link);
+          filesaver.readyState = filesaver.DONE;
+          dispatch_all();
+          return;
+        }
+        // Object and web filesystem URLs have a problem saving in Google Chrome when
+        // viewed in a tab, so I force save with application/octet-stream
+        // http://code.google.com/p/chromium/issues/detail?id=91158
+        if (view.chrome && type && type !== force_saveable_type) {
+          slice = blob.slice || blob.webkitSlice;
+          blob = slice.call(blob, 0, blob.size, force_saveable_type);
+          blob_changed = true;
+        }
+        // Since I can't be sure that the guessed media type will trigger a download
+        // in WebKit, I append .download to the filename.
+        // https://bugs.webkit.org/show_bug.cgi?id=65440
+        if (webkit_req_fs && name !== 'download') {
+          name += '.download';
+        }
+        if (type === force_saveable_type || webkit_req_fs) {
+          target_view = view;
+        } else {
+          target_view = view.open();
+        }
+        if (!req_fs) {
+          fs_error();
+          return;
+        }
+        fs_min_size += blob.size;
+        req_fs(view.TEMPORARY, fs_min_size, abortable(function (fs) {
+          fs.root.getDirectory('saved', create_if_not_found, abortable(function (dir) {
+            var save = function save() {
+              dir.getFile(name, create_if_not_found, abortable(function (file) {
+                file.createWriter(abortable(function (writer) {
+                  writer.onwriteend = function (event) {
+                    target_view.location.href = file.toURL();
+                    deletion_queue.push(file);
+                    filesaver.readyState = filesaver.DONE;
+                    dispatch(filesaver, 'writeend', event);
+                  };
+                  writer.onerror = function () {
+                    var error = writer.error;
+                    if (error.code !== error.ABORT_ERR) {
+                      fs_error();
+                    }
+                  };
+                  'writestart progress write abort'.split(' ').forEach(function (event) {
+                    writer['on' + event] = filesaver['on' + event];
+                  });
+                  writer.write(blob);
+                  filesaver.abort = function () {
+                    writer.abort();
+                    filesaver.readyState = filesaver.DONE;
+                  };
+                  filesaver.readyState = filesaver.WRITING;
+                }), fs_error);
+              }), fs_error);
+            };
+            dir.getFile(name, {
+              create: false
+            }, abortable(function (file) {
+              // delete file if it already exists
+              file.remove();
+              save();
+            }), abortable(function (ex) {
+              if (ex.code === ex.NOT_FOUND_ERR) {
+                save();
+              } else {
+                fs_error();
+              }
+            }));
+          }), fs_error);
         }), fs_error);
-      }), fs_error);
-    },
-        FS_proto = FileSaver.prototype,
-        saveAs = function saveAs(blob, name) {
-      return new FileSaver(blob, name);
-    };
+      },
+      FS_proto = FileSaver.prototype,
+      saveAs = function saveAs(blob, name) {
+        return new FileSaver(blob, name);
+      };
     FS_proto.abort = function () {
       var filesaver = this;
       filesaver.readyState = filesaver.DONE;
@@ -25822,22 +23346,16 @@ module.exports = function file_saver() {
     FS_proto.readyState = FS_proto.INIT = 0;
     FS_proto.WRITING = 1;
     FS_proto.DONE = 2;
-
     FS_proto.error = FS_proto.onwritestart = FS_proto.onprogress = FS_proto.onwrite = FS_proto.onabort = FS_proto.onerror = FS_proto.onwriteend = null;
-
     view.addEventListener('unload', process_deletion_queue, false);
     return saveAs;
   }(self);
-
   return saveAs;
 };
 
 /***/ }),
 /* 296 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function make_full_name(params, inst_node, inst_rc) {
   var cat_name;
@@ -25847,19 +23365,15 @@ module.exports = function make_full_name(params, inst_node, inst_rc) {
   // make tuple if necessary
   if (num_cats > 0) {
     inst_name = "('" + inst_name + "'";
-
     for (var cat_index = 0; cat_index < num_cats; cat_index++) {
       cat_name = 'cat-' + String(cat_index);
-
       inst_name = inst_name + ", '" + String(inst_node[cat_name]) + "'";
     }
-
     inst_name = inst_name + ')';
   } else {
     // always make names strings
     inst_name = String(inst_name);
   }
-
   return inst_name;
 };
 
@@ -25867,68 +23381,50 @@ module.exports = function make_full_name(params, inst_node, inst_rc) {
 /* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var deactivate_cropping = __webpack_require__(298);
 var each = __webpack_require__(1);
-
 module.exports = function brush_crop_matrix() {
   // get rows/cols from brush-extent
   // works for differnt brushing directions (e.g. start end sites)
 
   var cgm = this;
   var params = cgm.params;
-
   var clust_width = params.viz.clust.dim.width;
   var clust_height = params.viz.clust.dim.height;
-
   var x = d3.scale.linear().domain([0, clust_width]).range([0, clust_width]);
   var y = d3.scale.linear().domain([0, clust_height]).range([0, clust_height]);
 
   // make brush group
   d3.select(params.root + ' .clust_container').append('g').classed('brush_group', true);
-
   cgm.params.is_cropping = true;
-
   var brush = d3.svg.brush().x(x).y(y).on('brushend', brushend);
-
   d3.select(params.root + ' .brush_group').call(brush);
-
   function brushend() {
     // do not display dendro crop buttons when cropping with brushing
     d3.select(cgm.params.root + ' .col_dendro_icons_container').style('display', 'none');
     d3.select(cgm.params.root + ' .row_dendro_icons_container').style('display', 'none');
-
     var brushing_extent = brush.extent();
     var brush_start = brushing_extent[0];
     var brush_end = brushing_extent[1];
-
     var x_start = brush_start[0];
     var x_end = brush_end[0];
-
     var y_start = brush_start[1];
     var y_end = brush_end[1];
-
     if (x_start != x_end && y_start != y_end) {
       setTimeout(deactivate_cropping, 500, cgm);
 
       // find cropped nodes
       var found_nodes = find_cropped_nodes(x_start, x_end, y_start, y_end, brush_start, brush_end);
-
       cgm.filter_viz_using_names(found_nodes);
-
       d3.select(params.root + ' .crop_button').style('color', '#337ab7').classed('fa-crop', false).classed('fa-undo', true);
     }
   }
-
   function find_cropped_nodes(x_start, x_end, y_start, y_end, brush_start, brush_end) {
     // reverse if necessary (depending on how brushing was done)
     if (x_start > x_end) {
       x_start = brush_end[0];
       x_end = brush_start[0];
     }
-
     if (y_start > y_end) {
       y_start = brush_end[1];
       y_end = brush_start[1];
@@ -25937,7 +23433,6 @@ module.exports = function brush_crop_matrix() {
     // add room to brushing
     y_start = y_start - params.viz.rect_height;
     x_start = x_start - params.viz.rect_width;
-
     var found_nodes = {};
     found_nodes.row = [];
     found_nodes.col = [];
@@ -25961,39 +23456,29 @@ module.exports = function brush_crop_matrix() {
 
     each(params.matrix.matrix, function (row_data) {
       var y_trans = params.viz.y_scale(row_data.row_index);
-
       if (y_trans > y_start && y_trans < y_end) {
         found_nodes.row.push(row_data.name);
       }
     });
-
     d3.selectAll(params.root + ' .col_label_text').each(function (inst_col) {
       // there is already bound data on the cols
       var inst_trans = d3.select(this).attr('transform');
-
       var x_trans = Number(inst_trans.split(',')[0].split('(')[1]);
-
       if (x_trans > x_start && x_trans < x_end) {
         found_nodes.col.push(inst_col.name);
       }
     });
-
     return found_nodes;
   }
-
   d3.selectAll(params.root + ' .extent').style('opacity', 0.2).style('fill', 'black');
 };
 
 /***/ }),
 /* 298 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 module.exports = function deactivate_cropping(cgm) {
   d3.select(cgm.params.root + ' .brush_group').transition().style('opacity', 0).remove();
-
   cgm.params.is_cropping = false;
 };
 
@@ -26001,11 +23486,7 @@ module.exports = function deactivate_cropping(cgm) {
 /* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 /*
     D3.js Slider
     Inspired by jQuery UI Slider
@@ -26020,34 +23501,32 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else {}
-})(undefined, function (d3) {
+})(this, function (d3) {
   return function module() {
     'use strict';
 
     // Public variables width default settings
-
     var min = 0,
-        max = 100,
-        step = 0.01,
-        animate = false,
-        orientation = 'horizontal',
-        axis = false,
-        margin = 50,
-        value,
-        active = 1,
-        snap = false,
-        scale;
+      max = 100,
+      step = 0.01,
+      animate = false,
+      orientation = 'horizontal',
+      axis = false,
+      margin = 50,
+      value,
+      active = 1,
+      snap = false,
+      scale;
 
     // Private variables
     var axisScale,
-        dispatch = d3.dispatch('slide', 'slideend'),
-        formatPercent = d3.format('.2%'),
-        tickFormat = d3.format('.0'),
-        handle1,
-        handle2 = null,
-        divRange,
-        sliderLength;
-
+      dispatch = d3.dispatch('slide', 'slideend'),
+      formatPercent = d3.format('.2%'),
+      tickFormat = d3.format('.0'),
+      handle1,
+      handle2 = null,
+      divRange,
+      sliderLength;
     function slider(selection) {
       selection.each(function () {
         // Create scale if not defined by user
@@ -26060,7 +23539,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
         // DIV container
         var div = d3.select(this).classed('d3-slider d3-slider-' + orientation, true);
-
         var drag = d3.behavior.drag();
         drag.on('dragend', function () {
           dispatch.slideend(d3.event, value);
@@ -26080,14 +23558,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         // Horizontal slider
         if (orientation === 'horizontal') {
           div.on('click', onClickHorizontal);
-
           if (toType(value) == 'array' && value.length == 2) {
             divRange = d3.select(this).append('div').classed('d3-slider-range', true);
-
             handle1.style('left', formatPercent(scale(value[0])));
             divRange.style('left', formatPercent(scale(value[0])));
             drag.on('drag', onDragHorizontal);
-
             var width = 100 - parseFloat(formatPercent(scale(value[1])));
             handle2.style('left', formatPercent(scale(value[1])));
             divRange.style('right', width + '%');
@@ -26096,7 +23571,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             handle1.style('left', formatPercent(scale(value)));
             drag.on('drag', onDragHorizontal);
           }
-
           sliderLength = parseInt(div.style('width'), 10);
         } else {
           // Vertical
@@ -26105,11 +23579,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           drag.on('drag', onDragVertical);
           if (toType(value) == 'array' && value.length == 2) {
             divRange = d3.select(this).append('div').classed('d3-slider-range-vertical', true);
-
             handle1.style('bottom', formatPercent(scale(value[0])));
             divRange.style('bottom', formatPercent(scale(value[0])));
             drag.on('drag', onDragVertical);
-
             var top = 100 - parseFloat(formatPercent(scale(value[1])));
             handle2.style('bottom', formatPercent(scale(value[1])));
             divRange.style('top', top + '%');
@@ -26118,14 +23590,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             handle1.style('bottom', formatPercent(scale(value)));
             drag.on('drag', onDragVertical);
           }
-
           sliderLength = parseInt(div.style('height'), 10);
         }
-
         if (axis) {
           createAxis(div);
         }
-
         function createAxis(dom) {
           // Create axis if not defined by user
           if (typeof axis === 'boolean') {
@@ -26138,18 +23607,15 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
           // Create SVG axis container
           var svg = dom.append('svg').classed('d3-slider-axis d3-slider-axis-' + axis.orient(), true).on('click', stopPropagation);
-
           var g = svg.append('g');
 
           // Horizontal axis
           if (orientation === 'horizontal') {
             svg.style('margin-left', -margin + 'px');
-
             svg.attr({
               width: sliderLength + margin * 2,
               height: margin
             });
-
             if (axis.orient() === 'top') {
               svg.style('top', -margin + 'px');
               g.attr('transform', 'translate(' + margin + ',' + margin + ')');
@@ -26161,12 +23627,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             // Vertical
 
             svg.style('top', -margin + 'px');
-
             svg.attr({
               width: margin,
               height: sliderLength + margin * 2
             });
-
             if (axis.orient() === 'left') {
               svg.style('left', -margin + 'px');
               g.attr('transform', 'translate(' + margin + ',' + margin + ')');
@@ -26175,24 +23639,20 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
               g.attr('transform', 'translate(' + 0 + ',' + margin + ')');
             }
           }
-
           g.call(axis);
         }
-
         function onClickHorizontal() {
           if (toType(value) != 'array') {
             var pos = Math.max(0, Math.min(sliderLength, d3.event.offsetX || d3.event.layerX));
             moveHandle(scale.invert ? stepValue(scale.invert(pos / sliderLength)) : nearestTick(pos / sliderLength));
           }
         }
-
         function onClickVertical() {
           if (toType(value) != 'array') {
             var pos = sliderLength - Math.max(0, Math.min(sliderLength, d3.event.offsetY || d3.event.layerY));
             moveHandle(scale.invert ? stepValue(scale.invert(pos / sliderLength)) : nearestTick(pos / sliderLength));
           }
         }
-
         function onDragHorizontal() {
           if (d3.event.sourceEvent.target.id === 'handle-one') {
             active = 1;
@@ -26202,7 +23662,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           var pos = Math.max(0, Math.min(sliderLength, d3.event.x));
           moveHandle(scale.invert ? stepValue(scale.invert(pos / sliderLength)) : nearestTick(pos / sliderLength));
         }
-
         function onDragVertical() {
           if (d3.event.sourceEvent.target.id === 'handle-one') {
             active = 1;
@@ -26212,7 +23671,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           var pos = sliderLength - Math.max(0, Math.min(sliderLength, d3.event.y));
           moveHandle(scale.invert ? stepValue(scale.invert(pos / sliderLength)) : nearestTick(pos / sliderLength));
         }
-
         function stopPropagation() {
           d3.event.stopPropagation();
         }
@@ -26222,9 +23680,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     // Move slider handle on click/drag
     function moveHandle(newValue) {
       var currentValue = toType(value) == 'array' && value.length == 2 ? value[active - 1] : value,
-          oldPos = formatPercent(scale(stepValue(currentValue))),
-          newPos = formatPercent(scale(stepValue(newValue))),
-          position = orientation === 'horizontal' ? 'left' : 'bottom';
+        oldPos = formatPercent(scale(stepValue(currentValue))),
+        newPos = formatPercent(scale(stepValue(newValue))),
+        position = orientation === 'horizontal' ? 'left' : 'bottom';
       if (oldPos !== newPos) {
         if (toType(value) == 'array' && value.length == 2) {
           value[active - 1] = newValue;
@@ -26236,13 +23694,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             dispatch.slide(d3.event.sourceEvent || d3.event, value = newValue);
           }
         }
-
         if (value[0] >= value[1]) return;
         if (active === 1) {
           if (toType(value) == 'array' && value.length == 2) {
             position === 'left' ? divRange.style('left', newPos) : divRange.style('bottom', newPos);
           }
-
           if (animate) {
             handle1.transition().styleTween(position, function () {
               return d3.interpolate(oldPos, newPos);
@@ -26253,9 +23709,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         } else {
           var width = 100 - parseFloat(newPos);
           var top = 100 - parseFloat(newPos);
-
           position === 'left' ? divRange.style('right', width + '%') : divRange.style('top', top + '%');
-
           if (animate) {
             handle2.transition().styleTween(position, function () {
               return d3.interpolate(oldPos, newPos);
@@ -26272,19 +23726,16 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       if (val === scale.domain()[0] || val === scale.domain()[1]) {
         return val;
       }
-
       var alignValue = val;
       if (snap) {
         alignValue = nearestTick(scale(val));
       } else {
         var valModStep = (val - scale.domain()[0]) % step;
         alignValue = val - valModStep;
-
         if (Math.abs(valModStep) * 2 >= step) {
           alignValue += valModStep > 0 ? step : -step;
         }
       }
-
       return alignValue;
     }
 
@@ -26295,8 +23746,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         return pos - scale(d);
       });
       var i = -1,
-          index = 0,
-          r = scale.ticks ? scale.range()[1] : scale.rangeExtent()[1];
+        index = 0,
+        r = scale.ticks ? scale.range()[1] : scale.rangeExtent()[1];
       do {
         i++;
         if (Math.abs(dist[i]) < r) {
@@ -26304,7 +23755,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           index = i;
         }
       } while (dist[i] > 0 && i < dist.length - 1);
-
       return ticks[index];
     }
 
@@ -26319,43 +23769,36 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       min = _;
       return slider;
     };
-
     slider.max = function (_) {
       if (!arguments.length) return max;
       max = _;
       return slider;
     };
-
     slider.step = function (_) {
       if (!arguments.length) return step;
       step = _;
       return slider;
     };
-
     slider.animate = function (_) {
       if (!arguments.length) return animate;
       animate = _;
       return slider;
     };
-
     slider.orientation = function (_) {
       if (!arguments.length) return orientation;
       orientation = _;
       return slider;
     };
-
     slider.axis = function (_) {
       if (!arguments.length) return axis;
       axis = _;
       return slider;
     };
-
     slider.margin = function (_) {
       if (!arguments.length) return margin;
       margin = _;
       return slider;
     };
-
     slider.value = function (_) {
       if (!arguments.length) return value;
       if (value) {
@@ -26364,24 +23807,21 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       value = _;
       return slider;
     };
-
     slider.snap = function (_) {
       if (!arguments.length) return snap;
       snap = _;
       return slider;
     };
-
     slider.scale = function (_) {
       if (!arguments.length) return scale;
       scale = _;
       return slider;
     };
-
     d3.rebind(slider, dispatch, 'on');
-
     return slider;
   };
 });
 
 /***/ })
 /******/ ]);
+//# sourceMappingURL=clustergrammer.cjs.js.map
