@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/MaayanLab/clustergrammer#readme",
   "devDependencies": {
-    "babel-core": "^6.14.0",
+    "babel-core": "^6.26.3",
     "babel-eslint": "^4.1.8",
     "babel-loader": "^7.1.5",
     "babel-preset-es2015": "^6.14.0",
