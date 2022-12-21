@@ -16,7 +16,7 @@ module.exports = [
       library: 'Clustergrammer'
     },
     externals: {
-      jquery: 'jQuery',
+      jquery: 'jquery',
       d3: 'd3'
     },
     module: {
