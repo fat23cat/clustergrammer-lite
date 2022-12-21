@@ -23,7 +23,7 @@ module.exports = [
       loaders: [
         {
           test: /\.js$/,
-          loader: 'babel',
+          loader: 'babel-loader',
           query: {
             // presets: ['es2015']
           }
@@ -61,7 +61,7 @@ module.exports = [
       loaders: [
         {
           test: /\.js$/,
-          loader: 'babel',
+          loader: 'babel-loader',
           query: {
             presets: ['es2015']
           }
@@ -90,7 +90,7 @@ module.exports = [
       loaders: [
         {
           test: /\.js$/,
-          loader: 'babel',
+          loader: 'babel-loader',
           query: {
             presets: ['es2015']
           }
