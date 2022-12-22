@@ -88,9 +88,8 @@ module.exports = function make_matrix_rows(
     });
   }
 
-  d3.select(params.root + ' .clust_group').on('mousemove', (e) => {
-    console.log('mousemove', e);
-    console.log('mouse', d3.mouse(this));
+  d3.select(params.root + ' .clust_group').on('mousemove', function (...args) {
+    console.log('mousemove', args);
     console.log(
       'size',
       d3
@@ -98,6 +97,7 @@ module.exports = function make_matrix_rows(
         .node()
         .getBoundingClientRect()
     );
+    console.log('mouse', d3.mouse(this));
   });
 
   d3.select(params.root + ' .clust_group')
