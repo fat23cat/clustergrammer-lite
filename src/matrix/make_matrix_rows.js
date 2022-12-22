@@ -88,16 +88,10 @@ module.exports = function make_matrix_rows(
     });
   }
 
-  d3.select(params.root + ' .clust_group').on('mousemove', function (...args) {
-    console.log('mousemove', args);
-    console.log(
-      'size',
-      d3
-        .select(params.root + ' .clust_group')
-        .node()
-        .getBoundingClientRect()
-    );
-    console.log('mouse', d3.mouse(this));
+  d3.select(params.root + ' .clust_group').on('mousemove', function () {
+    const node = d3.select(params.root + ' .clust_group').node();
+    console.log('size', node.getBoundingClientRect());
+    console.log('mouse', d3.mouse(node));
   });
 
   d3.select(params.root + ' .clust_group')

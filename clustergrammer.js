@@ -19623,12 +19623,9 @@ module.exports = function make_matrix_rows(params, current_matrix) {
     });
   }
   d3.select(params.root + ' .clust_group').on('mousemove', function () {
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-    console.log('mousemove', args);
-    console.log('size', d3.select(params.root + ' .clust_group').node().getBoundingClientRect());
-    console.log('mouse', d3.mouse(this));
+    var node = d3.select(params.root + ' .clust_group').node();
+    console.log('size', node.getBoundingClientRect());
+    console.log('mouse', d3.mouse(node));
   });
   d3.select(params.root + ' .clust_group').selectAll('.row').data(matrix_subset, function (d) {
     return d.name;
