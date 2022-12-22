@@ -19622,11 +19622,14 @@ module.exports = function make_matrix_rows(params, current_matrix) {
       }
     });
   }
-  d3.select(params.root + ' .clust_group').on('mousemove', function () {
-    var node = d3.select(params.root + ' .clust_group').node();
-    console.log('size', node.getBoundingClientRect());
-    console.log('mouse', d3.mouse(node));
+  d3.select(params.root + ' .clust_group').on('click', function (e) {
+    console.log('size', this);
+    console.log('mouse', d3.mouse(this));
+    console.log('e', e);
+    // const coord = d3.mouse(this);
+    // const size = coord[0]
   });
+
   d3.select(params.root + ' .clust_group').selectAll('.row').data(matrix_subset, function (d) {
     return d.name;
   }).enter().append('g').classed(row_class, true).attr('transform', function (d) {

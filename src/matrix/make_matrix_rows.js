@@ -88,10 +88,12 @@ module.exports = function make_matrix_rows(
     });
   }
 
-  d3.select(params.root + ' .clust_group').on('mousemove', function () {
-    const node = d3.select(params.root + ' .clust_group').node();
-    console.log('size', node.getBoundingClientRect());
-    console.log('mouse', d3.mouse(node));
+  d3.select(params.root + ' .clust_group').on('click', function (e) {
+    console.log('size', this);
+    console.log('mouse', d3.mouse(this));
+    console.log('e', e);
+    // const coord = d3.mouse(this);
+    // const size = coord[0]
   });
 
   d3.select(params.root + ' .clust_group')
