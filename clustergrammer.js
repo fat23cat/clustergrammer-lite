@@ -3703,9 +3703,7 @@ function factory(type, config, load, typed) {
     if (index.length != this._size.length) throw new DimensionError(index.length, this._size.length);
 
     // check index
-    for (var x = 0; x < index.length; x++) {
-      validateIndex(index[x], this._size[x]);
-    }
+    for (var x = 0; x < index.length; x++) validateIndex(index[x], this._size[x]);
     var data = this._data;
     for (var i = 0, ii = index.length; i < ii; i++) {
       var index_i = index[i];
@@ -6446,9 +6444,7 @@ function factory(type, config, load, typed) {
     values.splice(k, 1);
     index.splice(k, 1);
     // update pointers
-    for (var x = j + 1; x < ptr.length; x++) {
-      ptr[x]--;
-    }
+    for (var x = j + 1; x < ptr.length; x++) ptr[x]--;
   };
   var _insert = function _insert(k, i, j, v, values, index, ptr) {
     // insert value
@@ -6456,9 +6452,7 @@ function factory(type, config, load, typed) {
     // update row for k
     index.splice(k, 0, i);
     // update column pointers
-    for (var x = j + 1; x < ptr.length; x++) {
-      ptr[x]++;
-    }
+    for (var x = j + 1; x < ptr.length; x++) ptr[x]++;
   };
 
   /**
@@ -6802,9 +6796,7 @@ function factory(type, config, load, typed) {
         if (i >= minRow && i <= maxRow) {
           // zero values
           if (!skipZeros) {
-            for (var x = p; x < i; x++) {
-              invoke(0, x - minRow, j - minColumn);
-            }
+            for (var x = p; x < i; x++) invoke(0, x - minRow, j - minColumn);
           }
           // value @ k
           invoke(matrix._values[k], i - minRow, j - minColumn);
@@ -6814,9 +6806,7 @@ function factory(type, config, load, typed) {
       }
       // zero values
       if (!skipZeros) {
-        for (var y = p; y <= maxRow; y++) {
-          invoke(0, y - minRow, j - minColumn);
-        }
+        for (var y = p; y <= maxRow; y++) invoke(0, y - minRow, j - minColumn);
       }
     }
     // store number of values in ptr
@@ -6860,9 +6850,7 @@ function factory(type, config, load, typed) {
         // check we need to process zeros
         if (!skipZeros) {
           // zero values
-          for (var x = p; x < i; x++) {
-            callback(0, [x, j], me);
-          }
+          for (var x = p; x < i; x++) callback(0, [x, j], me);
         }
         // value @ k
         callback(this._values[k], [i, j], me);
@@ -6872,9 +6860,7 @@ function factory(type, config, load, typed) {
       // check we need to process zeros
       if (!skipZeros) {
         // zero values
-        for (var y = p; y < rows; y++) {
-          callback(0, [y, j], me);
-        }
+        for (var y = p; y < rows; y++) callback(0, [y, j], me);
       }
     }
   };
@@ -6907,9 +6893,7 @@ function factory(type, config, load, typed) {
     // initialize array
     for (i = 0; i < rows; i++) {
       a[i] = [];
-      for (j = 0; j < columns; j++) {
-        a[i][j] = 0;
-      }
+      for (j = 0; j < columns; j++) a[i][j] = 0;
     }
 
     // loop columns
@@ -7626,9 +7610,7 @@ function factory(type, config, load, typed) {
     // result (DenseMatrix)
     var cdata = [];
     // initialize c
-    for (i = 0; i < rows; i++) {
-      cdata[i] = [];
-    }
+    for (i = 0; i < rows; i++) cdata[i] = [];
 
     // workspace
     var x = [];
@@ -8057,9 +8039,7 @@ function factory(type, config, load, typed) {
     // result arrays
     var cdata = [];
     // initialize c
-    for (i = 0; i < rows; i++) {
-      cdata[i] = [];
-    }
+    for (i = 0; i < rows; i++) cdata[i] = [];
 
     // matrix
     var c = new DenseMatrix({
@@ -10229,9 +10209,7 @@ exports.toEngineering = function (value, precision) {
   var decimalIdx = 1;
 
   // push decimal index over by expDiff times
-  while (--expDiff >= 0) {
-    decimalIdx++;
-  }
+  while (--expDiff >= 0) decimalIdx++;
 
   // if all coefficient values are zero after the decimal point, don't add a decimal value.
   // otherwise concat with the rest of the coefficients
@@ -12416,9 +12394,7 @@ var _has = __webpack_require__(/*! ./_has.js */ "./node_modules/underscore/cjs/_
 // arrays of strings.
 function emulatedSet(keys) {
   var hash = {};
-  for (var l = keys.length, i = 0; i < l; ++i) {
-    hash[keys[i]] = true;
-  }
+  for (var l = keys.length, i = 0; i < l; ++i) hash[keys[i]] = true;
   return {
     contains: function contains(key) {
       return hash[key] === true;
@@ -12619,9 +12595,7 @@ function flatten(input, depth, strict, output) {
       } else {
         var j = 0,
           len = value.length;
-        while (j < len) {
-          output[idx++] = value[j++];
-        }
+        while (j < len) output[idx++] = value[j++];
       }
     } else if (!strict) {
       output[idx++] = value;
@@ -13248,9 +13222,7 @@ function keys(obj) {
   if (!isObject(obj)) return [];
   if (_setup.nativeKeys) return _setup.nativeKeys(obj);
   var keys = [];
-  for (var key in obj) {
-    if (_has(obj, key)) keys.push(key);
-  }
+  for (var key in obj) if (_has(obj, key)) keys.push(key);
   // Ahem, IE < 9.
   if (_setup.hasEnumBug) _collectNonEnumProps(obj, keys);
   return keys;
@@ -17045,6 +17017,7 @@ var mouseout_tile = __webpack_require__(/*! ../matrix/mouseout_tile */ "./src/ma
 var fine_position_tile = __webpack_require__(/*! ../matrix/fine_position_tile */ "./src/matrix/fine_position_tile.js");
 var filter = __webpack_require__(/*! underscore/cjs/filter */ "./node_modules/underscore/cjs/filter.js");
 var contains = __webpack_require__(/*! underscore/cjs/contains */ "./node_modules/underscore/cjs/contains.js");
+var click_tile = __webpack_require__(/*! ../matrix/click_tile */ "./src/matrix/click_tile.js");
 
 // TODO add tip back to arguments
 module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, duration, row_selection, tip) {
@@ -17073,6 +17046,11 @@ module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, dur
     mouseover_tile(params, this, tip, args);
   }).on('mouseout', function mouseout() {
     mouseout_tile(params, this, tip);
+  }).on('click', function () {
+    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
+    }
+    click_tile(args);
   });
   var col_nodes_names = params.network_data.col_nodes_names;
   if (delays.run_transition) {
@@ -17110,6 +17088,7 @@ module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, dur
 var mouseover_tile = __webpack_require__(/*! ../matrix/mouseover_tile */ "./src/matrix/mouseover_tile.js");
 var mouseout_tile = __webpack_require__(/*! ../matrix/mouseout_tile */ "./src/matrix/mouseout_tile.js");
 var fine_position_tile = __webpack_require__(/*! ../matrix/fine_position_tile */ "./src/matrix/fine_position_tile.js");
+var click_tile = __webpack_require__(/*! ../matrix/click_tile */ "./src/matrix/click_tile.js");
 module.exports = function enter_existing_row(params, delays, duration, cur_row_tiles, tip) {
   // enter new tiles
   var new_tiles = cur_row_tiles.enter().append('rect').attr('class', 'tile row_tile').attr('width', params.viz.rect_width).attr('height', params.viz.rect_height).on('mouseover', function () {
@@ -17119,6 +17098,11 @@ module.exports = function enter_existing_row(params, delays, duration, cur_row_t
     mouseover_tile(params, this, tip, args);
   }).on('mouseout', function mouseout() {
     mouseout_tile(params, this, tip);
+  }).on('click', function () {
+    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
+    }
+    click_tile(args);
   }).attr('fill-opacity', 0).attr('transform', function (d) {
     return fine_position_tile(params, d);
   });
@@ -17264,6 +17248,7 @@ var mouseover_tile = __webpack_require__(/*! ../matrix/mouseover_tile */ "./src/
 var mouseout_tile = __webpack_require__(/*! ../matrix/mouseout_tile */ "./src/matrix/mouseout_tile.js");
 var fine_position_tile = __webpack_require__(/*! ../matrix/fine_position_tile */ "./src/matrix/fine_position_tile.js");
 var filter = __webpack_require__(/*! underscore/cjs/filter */ "./node_modules/underscore/cjs/filter.js");
+var click_tile = __webpack_require__(/*! ../matrix/click_tile */ "./src/matrix/click_tile.js");
 
 // make each row in the clustergram
 module.exports = function enter_new_rows(params, ini_inp_row_data, delays, duration, tip, row_selection) {
@@ -17289,6 +17274,11 @@ module.exports = function enter_new_rows(params, ini_inp_row_data, delays, durat
     mouseover_tile(params, this, tip, args);
   }).on('mouseout', function mouseout() {
     mouseout_tile(params, this, tip);
+  }).on('click', function () {
+    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
+    }
+    click_tile(args);
   });
   tile.style('fill-opacity', 0).transition().delay(delays.enter).duration(duration).style('fill-opacity', function (d) {
     // calculate output opacity using the opacity scale
@@ -19283,6 +19273,23 @@ module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
 
 /***/ }),
 
+/***/ "./src/matrix/click_tile.js":
+/*!**********************************!*\
+  !*** ./src/matrix/click_tile.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = function click_tile(inst_arguments) {
+  dispatchEvent(new CustomEvent('TILE_CLICK', {
+    detail: {
+      tile: inst_arguments[0]
+    }
+  }));
+};
+
+/***/ }),
+
 /***/ "./src/matrix/deactivate_cropping.js":
 /*!*******************************************!*\
   !*** ./src/matrix/deactivate_cropping.js ***!
@@ -19692,6 +19699,7 @@ var mouseout_tile = __webpack_require__(/*! ./mouseout_tile */ "./src/matrix/mou
 var fine_position_tile = __webpack_require__(/*! ./fine_position_tile */ "./src/matrix/fine_position_tile.js");
 var filter = __webpack_require__(/*! underscore/cjs/filter */ "./node_modules/underscore/cjs/filter.js");
 var utils = __webpack_require__(/*! ../Utils_clust */ "./src/Utils_clust.js");
+var click_tile = __webpack_require__(/*! ./click_tile */ "./src/matrix/click_tile.js");
 module.exports = function make_simple_rows(params, inst_data, tip, row_selection) {
   var ds_level = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : -1;
   var inp_row_data = inst_data.row_data;
@@ -19750,6 +19758,11 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
       mouseover_tile(params, this, tip, args);
     }).on('mouseout', function () {
       mouseout_tile(params, this, tip);
+    }).on('click', function () {
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+      click_tile(args);
     });
   }
 
@@ -19816,12 +19829,17 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
       }
       return inst_opacity;
     }).on('mouseover', function () {
-      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
+      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
       }
       mouseover_tile(params, this, tip, args);
     }).on('mouseout', function () {
       mouseout_tile(params, this, tip);
+    }).on('click', function () {
+      for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        args[_key3] = arguments[_key3];
+      }
+      click_tile(args);
     });
 
     // tile_dn
@@ -19840,12 +19858,17 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
       }
       return inst_opacity;
     }).on('mouseover', function () {
-      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        args[_key2] = arguments[_key2];
+      for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+        args[_key4] = arguments[_key4];
       }
       mouseover_tile(params, this, tip, args);
     }).on('mouseout', function () {
       mouseout_tile(params, this, tip);
+    }).on('click', function () {
+      for (var _len5 = arguments.length, args = new Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
+        args[_key5] = arguments[_key5];
+      }
+      click_tile(args);
     });
 
     // remove rect when tile is split
@@ -23919,6 +23942,7 @@ var mouseover_tile = __webpack_require__(/*! ../matrix/mouseover_tile */ "./src/
 var mouseout_tile = __webpack_require__(/*! ../matrix/mouseout_tile */ "./src/matrix/mouseout_tile.js");
 var fine_position_tile = __webpack_require__(/*! ../matrix/fine_position_tile */ "./src/matrix/fine_position_tile.js");
 var filter = __webpack_require__(/*! underscore/cjs/filter */ "./node_modules/underscore/cjs/filter.js");
+var click_tile = __webpack_require__(/*! ../matrix/click_tile */ "./src/matrix/click_tile.js");
 module.exports = function update_split_tiles(params, inp_row_data, row_selection, delays, duration, cur_row_tiles, tip) {
   // value split
   var row_split_data = filter(inp_row_data, function (num) {
@@ -23938,6 +23962,11 @@ module.exports = function update_split_tiles(params, inp_row_data, row_selection
     mouseover_tile(params, this, tip, args);
   }).on('mouseout', function mouseout() {
     mouseout_tile(params, this, tip);
+  }).on('click', function () {
+    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
+    }
+    click_tile(args);
   });
   if (delays.run_transition) {
     update_tiles_up.transition().delay(delays.update).duration(duration).attr('d', function () {
@@ -23960,12 +23989,17 @@ module.exports = function update_split_tiles(params, inp_row_data, row_selection
 
   // update split tiles_dn
   var update_tiles_dn = cur_tiles_dn.on('mouseover', function () {
-    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-      args[_key2] = arguments[_key2];
+    for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+      args[_key3] = arguments[_key3];
     }
     mouseover_tile(params, this, tip, args);
   }).on('mouseout', function mouseout() {
     mouseout_tile(params, this, tip);
+  }).on('click', function () {
+    for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+      args[_key4] = arguments[_key4];
+    }
+    click_tile(args);
   });
   if (delays.run_transition) {
     update_tiles_dn.transition().delay(delays.update).duration(duration).attr('d', function () {
