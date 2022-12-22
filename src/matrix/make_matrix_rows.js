@@ -122,7 +122,7 @@ module.exports = function make_matrix_rows(
 
     var xy = d3.mouse(this);
 
-    var transform = d3.zoomTransform(rect.node());
+    var transform = d3.zoomTransform(this);
     var xy1 = transform.invert(xy);
 
     console.log('Mouse:[', xy[0], xy[1], '] Zoomed:[', xy1[0], xy1[1], ']');
