@@ -19626,30 +19626,38 @@ module.exports = function make_matrix_rows(params, current_matrix) {
     // console.log('size', this);
     // console.log('mouse', d3.mouse(this));
     // console.log('e', e);
-    var coord = d3.mouse(this);
-    var bounds = this.getBoundingClientRect();
-    var x = coord[0] - bounds.left;
-    var y = coord[1] - bounds.top;
-    var row = bounds.height / params.inst_nodes.row_nodes.length;
-    var col = bounds.width / params.inst_nodes.col_nodes.length;
-    var countX = 0;
-    for (var i = 0; i < params.inst_nodes.row_nodes.length; i++) {
-      if (countX > x) {
-        console.log(i);
-        console.log(params.inst_nodes.row_nodes[Math.floor(i)]);
-        break;
-      }
-      countX += row;
-    }
-    var countY = 0;
-    for (var _i = 0; _i < params.inst_nodes.col_nodes.length; _i++) {
-      if (countY > y) {
-        console.log(_i);
-        console.log(params.inst_nodes.col_nodes[Math.floor(_i)]);
-        break;
-      }
-      countY += col;
-    }
+
+    // const coord = d3.mouse(this);
+    // const bounds = this.getBoundingClientRect();
+    // const x = coord[0] - bounds.left;
+    // const y = coord[1] - bounds.top;
+    // const row = bounds.height / params.inst_nodes.row_nodes.length;
+    // const col = bounds.width / params.inst_nodes.col_nodes.length;
+
+    // let countX = 0;
+    // for (let i = 0; i < params.inst_nodes.row_nodes.length; i++) {
+    //   if (countX > x) {
+    //     console.log(i);
+    //     console.log(params.inst_nodes.row_nodes[Math.floor(i)]);
+    //     break;
+    //   }
+    //   countX += row;
+    // }
+
+    // let countY = 0;
+    // for (let i = 0; i < params.inst_nodes.col_nodes.length; i++) {
+    //   if (countY > y) {
+    //     console.log(i);
+    //     console.log(params.inst_nodes.col_nodes[Math.floor(i)]);
+    //     break;
+    //   }
+    //   countY += col;
+    // }
+
+    var xy = d3.mouse(this);
+    var transform = d3.zoomTransform(rect.node());
+    var xy1 = transform.invert(xy);
+    console.log('Mouse:[', xy[0], xy[1], '] Zoomed:[', xy1[0], xy1[1], ']');
   });
   d3.select(params.root + ' .clust_group').selectAll('.row').data(matrix_subset, function (d) {
     return d.name;
