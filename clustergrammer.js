@@ -19623,13 +19623,34 @@ module.exports = function make_matrix_rows(params, current_matrix) {
     });
   }
   d3.select(params.root + ' .clust_group').on('click', function (e) {
-    console.log('size', this);
-    console.log('mouse', d3.mouse(this));
-    console.log('e', e);
-    // const coord = d3.mouse(this);
-    // const size = coord[0]
+    // console.log('size', this);
+    // console.log('mouse', d3.mouse(this));
+    // console.log('e', e);
+    var coord = d3.mouse(this);
+    var bounds = this.getBoundingClientRect();
+    var x = coord[0] - bounds.left;
+    var y = coord[1] - bounds.top;
+    var row = bounds.height / params.inst_nodes.row_nodes.length;
+    var col = bounds.width / params.inst_nodes.col_nodes.length;
+    var countX = 0;
+    for (var i = 0; i < params.inst_nodes.row_nodes.length; i++) {
+      if (countX > x) {
+        console.log(i);
+        console.log(params.inst_nodes.row_nodes[Math.floor(i)]);
+        break;
+      }
+      countX += row;
+    }
+    var countY = 0;
+    for (var _i = 0; _i < params.inst_nodes.col_nodes.length; _i++) {
+      if (countY > y) {
+        console.log(_i);
+        console.log(params.inst_nodes.col_nodes[Math.floor(_i)]);
+        break;
+      }
+      countY += col;
+    }
   });
-
   d3.select(params.root + ' .clust_group').selectAll('.row').data(matrix_subset, function (d) {
     return d.name;
   }).enter().append('g').classed(row_class, true).attr('transform', function (d) {

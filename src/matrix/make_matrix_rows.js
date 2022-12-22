@@ -89,11 +89,35 @@ module.exports = function make_matrix_rows(
   }
 
   d3.select(params.root + ' .clust_group').on('click', function (e) {
-    console.log('size', this);
-    console.log('mouse', d3.mouse(this));
-    console.log('e', e);
-    // const coord = d3.mouse(this);
-    // const size = coord[0]
+    // console.log('size', this);
+    // console.log('mouse', d3.mouse(this));
+    // console.log('e', e);
+    const coord = d3.mouse(this);
+    const bounds = this.getBoundingClientRect();
+    const x = coord[0] - bounds.left;
+    const y = coord[1] - bounds.top;
+    const row = bounds.height / params.inst_nodes.row_nodes.length;
+    const col = bounds.width / params.inst_nodes.col_nodes.length;
+
+    let countX = 0;
+    for (let i = 0; i < params.inst_nodes.row_nodes.length; i++) {
+      if (countX > x) {
+        console.log(i);
+        console.log(params.inst_nodes.row_nodes[Math.floor(i)]);
+        break;
+      }
+      countX += row;
+    }
+
+    let countY = 0;
+    for (let i = 0; i < params.inst_nodes.col_nodes.length; i++) {
+      if (countY > y) {
+        console.log(i);
+        console.log(params.inst_nodes.col_nodes[Math.floor(i)]);
+        break;
+      }
+      countY += col;
+    }
   });
 
   d3.select(params.root + ' .clust_group')
