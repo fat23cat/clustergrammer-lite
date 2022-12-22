@@ -93,39 +93,39 @@ module.exports = function make_matrix_rows(
     // console.log('mouse', d3.mouse(this));
     // console.log('e', e);
 
-    // const coord = d3.mouse(this);
-    // const bounds = this.getBoundingClientRect();
-    // const x = coord[0] - bounds.left;
-    // const y = coord[1] - bounds.top;
-    // const row = bounds.height / params.inst_nodes.row_nodes.length;
-    // const col = bounds.width / params.inst_nodes.col_nodes.length;
+    const coord = d3.mouse(this);
+    const bounds = this.getBoundingClientRect();
+    const x = d3.event.clientX - bounds.left;
+    const y = d3.event.clientY - bounds.top;
+    const row = bounds.height / params.inst_nodes.row_nodes.length;
+    const col = bounds.width / params.inst_nodes.col_nodes.length;
 
-    // let countX = 0;
-    // for (let i = 0; i < params.inst_nodes.row_nodes.length; i++) {
-    //   if (countX > x) {
-    //     console.log(i);
-    //     console.log(params.inst_nodes.row_nodes[Math.floor(i)]);
-    //     break;
-    //   }
-    //   countX += row;
-    // }
+    let countX = 0;
+    for (let i = 0; i < params.inst_nodes.row_nodes.length; i++) {
+      if (countX > x) {
+        console.log(i);
+        console.log(params.inst_nodes.row_nodes[Math.floor(i)]);
+        break;
+      }
+      countX += row;
+    }
 
-    // let countY = 0;
-    // for (let i = 0; i < params.inst_nodes.col_nodes.length; i++) {
-    //   if (countY > y) {
-    //     console.log(i);
-    //     console.log(params.inst_nodes.col_nodes[Math.floor(i)]);
-    //     break;
-    //   }
-    //   countY += col;
-    // }
+    let countY = 0;
+    for (let i = 0; i < params.inst_nodes.col_nodes.length; i++) {
+      if (countY > y) {
+        console.log(i);
+        console.log(params.inst_nodes.col_nodes[Math.floor(i)]);
+        break;
+      }
+      countY += col;
+    }
 
-    var xy = d3.mouse(this);
+    // var xy = d3.mouse(this);
 
-    var transform = d3.zoomTransform(this);
-    var xy1 = transform.invert(xy);
+    // var transform = d3.zoomTransform(this);
+    // var xy1 = transform.invert(xy);
 
-    console.log('Mouse:[', xy[0], xy[1], '] Zoomed:[', xy1[0], xy1[1], ']');
+    // console.log('Mouse:[', xy[0], xy[1], '] Zoomed:[', xy1[0], xy1[1], ']');
   });
 
   d3.select(params.root + ' .clust_group')
