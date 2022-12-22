@@ -19627,10 +19627,14 @@ module.exports = function make_matrix_rows(params, current_matrix) {
     // console.log('mouse', d3.mouse(this));
     // console.log('e', e);
 
+    // zoom params.zoom_info zoom_x, zoom_y
+
     var coord = d3.mouse(this);
     var bounds = this.getBoundingClientRect();
-    var x = d3.event.clientX - bounds.left;
-    var y = d3.event.clientY - bounds.top;
+    // const x = d3.event.clientX - bounds.left;
+    // const y = d3.event.clientY - bounds.top;
+    var x = coord[1] * params.zoom_info.zoom_x;
+    var y = coord[0] * params.zoom_info.zoom_y;
     var row = bounds.height / params.inst_nodes.row_nodes.length;
     var col = bounds.width / params.inst_nodes.col_nodes.length;
     var countX = 0;

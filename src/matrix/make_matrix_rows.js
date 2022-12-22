@@ -93,10 +93,14 @@ module.exports = function make_matrix_rows(
     // console.log('mouse', d3.mouse(this));
     // console.log('e', e);
 
+    // zoom params.zoom_info zoom_x, zoom_y
+
     const coord = d3.mouse(this);
     const bounds = this.getBoundingClientRect();
-    const x = d3.event.clientX - bounds.left;
-    const y = d3.event.clientY - bounds.top;
+    // const x = d3.event.clientX - bounds.left;
+    // const y = d3.event.clientY - bounds.top;
+    const x = coord[1] * params.zoom_info.zoom_x;
+    const y = coord[0] * params.zoom_info.zoom_y;
     const row = bounds.height / params.inst_nodes.row_nodes.length;
     const col = bounds.width / params.inst_nodes.col_nodes.length;
 
