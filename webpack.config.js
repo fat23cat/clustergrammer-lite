@@ -48,39 +48,6 @@ module.exports = [
     devtool: 'cheap-source-map',
     output: {
       path: __dirname,
-      filename: 'clustergrammer.cjs.js',
-      libraryTarget: 'commonjs2',
-      library: 'Clustergrammer'
-    },
-    performance: {
-      hints: false
-    },
-    externals: {
-      jquery: 'jquery',
-      d3: 'd3'
-    },
-    optimization: {
-      minimize: false
-    },
-    module: {
-      rules: [
-        {
-          test: /\.js$/,
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env']
-          }
-        }
-      ]
-    }
-  },
-  {
-    mode: 'production',
-    entry: './src/main.js',
-    target: 'web',
-    devtool: 'cheap-source-map',
-    output: {
-      path: __dirname,
       filename: 'clustergrammer.min.js',
       libraryTarget: 'var',
       library: 'Clustergrammer'
