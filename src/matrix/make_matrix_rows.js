@@ -90,6 +90,14 @@ module.exports = function make_matrix_rows(
 
   d3.select(params.root + ' .clust_group').on('mousemove', (e) => {
     console.log('mousemove', e);
+    console.log('mouse', d3.mouse(this));
+    console.log(
+      'size',
+      d3
+        .select(params.root + ' .clust_group')
+        .node()
+        .getBoundingClientRect()
+    );
   });
 
   d3.select(params.root + ' .clust_group')

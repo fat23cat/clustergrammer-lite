@@ -7574,6 +7574,7 @@ var contains = __webpack_require__(16);
 
 // current matrix can change with downsampling
 module.exports = function make_matrix_rows(params, current_matrix) {
+  var _this = this;
   var row_names = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'all';
   var ds_level = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : -1;
   // defaults
@@ -7626,6 +7627,8 @@ module.exports = function make_matrix_rows(params, current_matrix) {
   }
   d3.select(params.root + ' .clust_group').on('mousemove', function (e) {
     console.log('mousemove', e);
+    console.log('mouse', d3.mouse(_this));
+    console.log('size', d3.select(params.root + ' .clust_group').node().getBoundingClientRect());
   });
   d3.select(params.root + ' .clust_group').selectAll('.row').data(matrix_subset, function (d) {
     return d.name;
