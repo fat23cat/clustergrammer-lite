@@ -88,6 +88,10 @@ module.exports = function make_matrix_rows(
     });
   }
 
+  d3.select(params.root + ' .clust_group').on('mousemove', (e) => {
+    console.log('mousemove', e);
+  });
+
   d3.select(params.root + ' .clust_group')
     .selectAll('.row')
     .data(matrix_subset, function (d) {

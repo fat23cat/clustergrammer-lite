@@ -401,7 +401,9 @@ exports.toEngineering = function (value, precision) {
   var decimalIdx = 1;
 
   // push decimal index over by expDiff times
-  while (--expDiff >= 0) decimalIdx++;
+  while (--expDiff >= 0) {
+    decimalIdx++;
+  }
 
   // if all coefficient values are zero after the decimal point, don't add a decimal value.
   // otherwise concat with the rest of the coefficients
@@ -2079,7 +2081,9 @@ function keys(obj) {
   if (!isObject(obj)) return [];
   if (_setup.nativeKeys) return _setup.nativeKeys(obj);
   var keys = [];
-  for (var key in obj) if (_has(obj, key)) keys.push(key);
+  for (var key in obj) {
+    if (_has(obj, key)) keys.push(key);
+  }
   // Ahem, IE < 9.
   if (_setup.hasEnumBug) _collectNonEnumProps(obj, keys);
   return keys;
@@ -5889,7 +5893,9 @@ function factory(type, config, load, typed) {
     if (index.length != this._size.length) throw new DimensionError(index.length, this._size.length);
 
     // check index
-    for (var x = 0; x < index.length; x++) validateIndex(index[x], this._size[x]);
+    for (var x = 0; x < index.length; x++) {
+      validateIndex(index[x], this._size[x]);
+    }
     var data = this._data;
     for (var i = 0, ii = index.length; i < ii; i++) {
       var index_i = index[i];
@@ -7128,7 +7134,9 @@ function factory(type, config, load, typed) {
     // result arrays
     var cdata = [];
     // initialize c
-    for (i = 0; i < rows; i++) cdata[i] = [];
+    for (i = 0; i < rows; i++) {
+      cdata[i] = [];
+    }
 
     // matrix
     var c = new DenseMatrix({
@@ -7616,6 +7624,9 @@ module.exports = function make_matrix_rows(params, current_matrix) {
       }
     });
   }
+  d3.select(params.root + ' .clust_group').on('mousemove', function (e) {
+    console.log('mousemove', e);
+  });
   d3.select(params.root + ' .clust_group').selectAll('.row').data(matrix_subset, function (d) {
     return d.name;
   }).enter().append('g').classed(row_class, true).attr('transform', function (d) {
@@ -10878,7 +10889,9 @@ var _has = __webpack_require__(29);
 // arrays of strings.
 function emulatedSet(keys) {
   var hash = {};
-  for (var l = keys.length, i = 0; i < l; ++i) hash[keys[i]] = true;
+  for (var l = keys.length, i = 0; i < l; ++i) {
+    hash[keys[i]] = true;
+  }
   return {
     contains: function contains(key) {
       return hash[key] === true;
@@ -14199,7 +14212,9 @@ function factory(type, config, load, typed) {
     values.splice(k, 1);
     index.splice(k, 1);
     // update pointers
-    for (var x = j + 1; x < ptr.length; x++) ptr[x]--;
+    for (var x = j + 1; x < ptr.length; x++) {
+      ptr[x]--;
+    }
   };
   var _insert = function _insert(k, i, j, v, values, index, ptr) {
     // insert value
@@ -14207,7 +14222,9 @@ function factory(type, config, load, typed) {
     // update row for k
     index.splice(k, 0, i);
     // update column pointers
-    for (var x = j + 1; x < ptr.length; x++) ptr[x]++;
+    for (var x = j + 1; x < ptr.length; x++) {
+      ptr[x]++;
+    }
   };
 
   /**
@@ -14551,7 +14568,9 @@ function factory(type, config, load, typed) {
         if (i >= minRow && i <= maxRow) {
           // zero values
           if (!skipZeros) {
-            for (var x = p; x < i; x++) invoke(0, x - minRow, j - minColumn);
+            for (var x = p; x < i; x++) {
+              invoke(0, x - minRow, j - minColumn);
+            }
           }
           // value @ k
           invoke(matrix._values[k], i - minRow, j - minColumn);
@@ -14561,7 +14580,9 @@ function factory(type, config, load, typed) {
       }
       // zero values
       if (!skipZeros) {
-        for (var y = p; y <= maxRow; y++) invoke(0, y - minRow, j - minColumn);
+        for (var y = p; y <= maxRow; y++) {
+          invoke(0, y - minRow, j - minColumn);
+        }
       }
     }
     // store number of values in ptr
@@ -14605,7 +14626,9 @@ function factory(type, config, load, typed) {
         // check we need to process zeros
         if (!skipZeros) {
           // zero values
-          for (var x = p; x < i; x++) callback(0, [x, j], me);
+          for (var x = p; x < i; x++) {
+            callback(0, [x, j], me);
+          }
         }
         // value @ k
         callback(this._values[k], [i, j], me);
@@ -14615,7 +14638,9 @@ function factory(type, config, load, typed) {
       // check we need to process zeros
       if (!skipZeros) {
         // zero values
-        for (var y = p; y < rows; y++) callback(0, [y, j], me);
+        for (var y = p; y < rows; y++) {
+          callback(0, [y, j], me);
+        }
       }
     }
   };
@@ -14648,7 +14673,9 @@ function factory(type, config, load, typed) {
     // initialize array
     for (i = 0; i < rows; i++) {
       a[i] = [];
-      for (j = 0; j < columns; j++) a[i][j] = 0;
+      for (j = 0; j < columns; j++) {
+        a[i][j] = 0;
+      }
     }
 
     // loop columns
@@ -15404,7 +15431,9 @@ function factory(type, config, load, typed) {
     // result (DenseMatrix)
     var cdata = [];
     // initialize c
-    for (i = 0; i < rows; i++) cdata[i] = [];
+    for (i = 0; i < rows; i++) {
+      cdata[i] = [];
+    }
 
     // workspace
     var x = [];
@@ -20448,7 +20477,9 @@ function flatten(input, depth, strict, output) {
       } else {
         var j = 0,
           len = value.length;
-        while (j < len) output[idx++] = value[j++];
+        while (j < len) {
+          output[idx++] = value[j++];
+        }
       }
     } else if (!strict) {
       output[idx++] = value;
