@@ -89,6 +89,12 @@ module.exports = function make_matrix_rows(
   }
 
   d3.select(params.root + ' .clust_group')
+    .on('mousedown', function (...args) {
+      console.log(args);
+    })
+    .on('mouseup', function (...args) {
+      console.log(args);
+    })
     .on('click', function (e) {
       // console.log('size', this);
       // console.log('mouse', d3.mouse(this));
@@ -131,12 +137,6 @@ module.exports = function make_matrix_rows(
       // var xy1 = transform.invert(xy);
 
       // console.log('Mouse:[', xy[0], xy[1], '] Zoomed:[', xy1[0], xy1[1], ']');
-    })
-    .on('mousedown', function (...args) {
-      debugger;
-    })
-    .on('mouseup', function (...args) {
-      debugger;
     });
 
   d3.select(params.root + ' .clust_group')

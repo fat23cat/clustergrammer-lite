@@ -19622,7 +19622,17 @@ module.exports = function make_matrix_rows(params, current_matrix) {
       }
     });
   }
-  d3.select(params.root + ' .clust_group').on('click', function (e) {
+  d3.select(params.root + ' .clust_group').on('mousedown', function () {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+    console.log(args);
+  }).on('mouseup', function () {
+    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
+    }
+    console.log(args);
+  }).on('click', function (e) {
     // console.log('size', this);
     // console.log('mouse', d3.mouse(this));
     // console.log('e', e);
@@ -19662,11 +19672,8 @@ module.exports = function make_matrix_rows(params, current_matrix) {
     // var xy1 = transform.invert(xy);
 
     // console.log('Mouse:[', xy[0], xy[1], '] Zoomed:[', xy1[0], xy1[1], ']');
-  }).on('mousedown', function () {
-    debugger;
-  }).on('mouseup', function () {
-    debugger;
   });
+
   d3.select(params.root + ' .clust_group').selectAll('.row').data(matrix_subset, function (d) {
     return d.name;
   }).enter().append('g').classed(row_class, true).attr('transform', function (d) {
