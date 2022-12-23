@@ -4228,7 +4228,7 @@ module.exports = function mouse_tile_events(element, params, context, tip) {
   }).on('mousedown', function mousedown() {
     position = d3.mouse(this);
   }).on('mouseup', function mouseup() {
-    var newPosition;
+    var newPosition = d3.mouse(this);
     if (position[0] == newPosition[0] || position[1] == newPosition[1]) {
       click_tile(args);
     }
@@ -18526,7 +18526,7 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
     }).on('mousedown', function mousedown() {
       position = d3.mouse(this);
     }).on('mouseup', function mouseup() {
-      var newPosition;
+      var newPosition = d3.mouse(this);
       if (position[0] == newPosition[0] || position[1] == newPosition[1]) {
         click_tile(argsData);
       }

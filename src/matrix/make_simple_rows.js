@@ -124,7 +124,7 @@ module.exports = function make_simple_rows(
         position = d3.mouse(this);
       })
       .on('mouseup', function mouseup() {
-        var newPosition;
+        var newPosition = d3.mouse(this);
         if (position[0] == newPosition[0] || position[1] == newPosition[1]) {
           click_tile(argsData);
         }
