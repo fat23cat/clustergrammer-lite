@@ -17067,19 +17067,17 @@ module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, dur
   ///////////////////////////
 
   // update tiles in x direction
-  var update_row_tiles = cur_row_tiles.on('mouseover', function () {
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-    mouseover_tile(params, this, tip, args);
-  }).on('mouseout', function mouseout() {
-    mouseout_tile(params, this, tip);
-  }).on('click', function () {
-    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-      args[_key2] = arguments[_key2];
-    }
-    click_tile(args);
-  });
+  // var update_row_tiles = cur_row_tiles
+  //   .on('mouseover', function mouseover(...args) {
+  //     mouseover_tile(params, this, tip, args);
+  //   })
+  //   .on('mouseout', function mouseout() {
+  //     mouseout_tile(params, this, tip);
+  //   })
+  //   .on('click', function (...args) {
+  //     click_tile(args);
+  //   });
+  var update_row_tiles = mouse_tile_events(cur_row_tiles, params, this, tip);
   var col_nodes_names = params.network_data.col_nodes_names;
   if (delays.run_transition) {
     update_row_tiles.transition().delay(delays.update).duration(duration).attr('width', params.viz.rect_width).attr('height', params.viz.rect_height).attr('transform', function (d) {
@@ -17117,32 +17115,32 @@ var mouseover_tile = __webpack_require__(/*! ../matrix/mouseover_tile */ "./src/
 var mouseout_tile = __webpack_require__(/*! ../matrix/mouseout_tile */ "./src/matrix/mouseout_tile.js");
 var fine_position_tile = __webpack_require__(/*! ../matrix/fine_position_tile */ "./src/matrix/fine_position_tile.js");
 var click_tile = __webpack_require__(/*! ../matrix/click_tile */ "./src/matrix/click_tile.js");
+var mouse_tile_events = __webpack_require__(/*! ../matrix/mouse_tile_events */ "./src/matrix/mouse_tile_events.js");
 module.exports = function enter_existing_row(params, delays, duration, cur_row_tiles, tip) {
   // enter new tiles
-  var new_tiles = cur_row_tiles.enter().append('rect').attr('class', 'tile row_tile').attr('width', params.viz.rect_width).attr('height', params.viz.rect_height).on('mouseover', function () {
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-    mouseover_tile(params, this, tip, args);
-  }).on('mouseout', function mouseout() {
-    mouseout_tile(params, this, tip);
-  }).on('click', function () {
-    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-      args[_key2] = arguments[_key2];
-    }
-    click_tile(args);
-  }).attr('fill-opacity', 0).attr('transform', function (d) {
+  var new_tiles = cur_row_tiles.enter().append('rect').attr('class', 'tile row_tile').attr('width', params.viz.rect_width).attr('height', params.viz.rect_height)
+  // .on('mouseover', function (...args) {
+  //   mouseover_tile(params, this, tip, args);
+  // })
+  // .on('mouseout', function mouseout() {
+  //   mouseout_tile(params, this, tip);
+  // })
+  // .on('click', function (...args) {
+  //   click_tile(args);
+  // })
+  .attr('fill-opacity', 0).attr('transform', function (d) {
     return fine_position_tile(params, d);
   });
+  var new_tiles_with_events = mouse_tile_events(new_tiles, params, this, tip);
   if (delays.run_transition) {
-    new_tiles.transition().delay(delays.enter).duration(duration).style('fill', function (d) {
+    new_tiles_with_events.transition().delay(delays.enter).duration(duration).style('fill', function (d) {
       return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
     }).attr('fill-opacity', function (d) {
       var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
       return output_opacity;
     });
   } else {
-    new_tiles.style('fill', function (d) {
+    new_tiles_with_events.style('fill', function (d) {
       return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
     }).attr('fill-opacity', function (d) {
       var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
@@ -17151,7 +17149,7 @@ module.exports = function enter_existing_row(params, delays, duration, cur_row_t
   }
 
   // remove new tiles if necessary
-  new_tiles.each(function (d) {
+  new_tiles_with_events.each(function (d) {
     if (Math.abs(d.value_up) > 0 && Math.abs(d.value_dn) > 0) {
       d3.select(this).remove();
     }
@@ -17277,6 +17275,7 @@ var mouseout_tile = __webpack_require__(/*! ../matrix/mouseout_tile */ "./src/ma
 var fine_position_tile = __webpack_require__(/*! ../matrix/fine_position_tile */ "./src/matrix/fine_position_tile.js");
 var filter = __webpack_require__(/*! underscore/cjs/filter */ "./node_modules/underscore/cjs/filter.js");
 var click_tile = __webpack_require__(/*! ../matrix/click_tile */ "./src/matrix/click_tile.js");
+var mouse_tile_events = __webpack_require__(/*! ../matrix/mouse_tile_events */ "./src/matrix/mouse_tile_events.js");
 
 // make each row in the clustergram
 module.exports = function enter_new_rows(params, ini_inp_row_data, delays, duration, tip, row_selection) {
@@ -17295,29 +17294,28 @@ module.exports = function enter_new_rows(params, ini_inp_row_data, delays, durat
   // switch the color based on up/dn value
   .style('fill', function (d) {
     return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
-  }).on('mouseover', function () {
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-    mouseover_tile(params, this, tip, args);
-  }).on('mouseout', function mouseout() {
-    mouseout_tile(params, this, tip);
-  }).on('click', function () {
-    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-      args[_key2] = arguments[_key2];
-    }
-    click_tile(args);
   });
-  tile.style('fill-opacity', 0).transition().delay(delays.enter).duration(duration).style('fill-opacity', function (d) {
+  // .on('mouseover', function (...args) {
+  //   mouseover_tile(params, this, tip, args);
+  // })
+  // .on('mouseout', function mouseout() {
+  //   mouseout_tile(params, this, tip);
+  // })
+  // .on('click', function (...args) {
+  //   click_tile(args);
+  // });
+
+  var tile_with_events = mouse_tile_events(new_tiles, params, this, tip);
+  tile_with_events.style('fill-opacity', 0).transition().delay(delays.enter).duration(duration).style('fill-opacity', function (d) {
     // calculate output opacity using the opacity scale
     var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
     return output_opacity;
   });
-  tile.attr('transform', function (d) {
+  tile_with_events.attr('transform', function (d) {
     return fine_position_tile(params, d);
   });
   if (params.matrix.tile_type == 'updn') {
-    enter_split_tiles(params, inp_row_data, row_selection, tip, delays, duration, tile);
+    enter_split_tiles(params, inp_row_data, row_selection, tip, delays, duration, tile_with_events);
   }
 };
 
@@ -19309,6 +19307,7 @@ module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
 /***/ (function(module, exports) {
 
 module.exports = function click_tile(inst_arguments) {
+  console.log('TILE_CLICK');
   dispatchEvent(new CustomEvent('TILE_CLICK', {
     detail: {
       tile: inst_arguments[0]
@@ -19776,6 +19775,7 @@ var fine_position_tile = __webpack_require__(/*! ./fine_position_tile */ "./src/
 var filter = __webpack_require__(/*! underscore/cjs/filter */ "./node_modules/underscore/cjs/filter.js");
 var utils = __webpack_require__(/*! ../Utils_clust */ "./src/Utils_clust.js");
 var click_tile = __webpack_require__(/*! ./click_tile */ "./src/matrix/click_tile.js");
+var mouse_tile_events = __webpack_require__(/*! ./mouse_tile_events */ "./src/matrix/mouse_tile_events.js");
 module.exports = function make_simple_rows(params, inst_data, tip, row_selection) {
   var ds_level = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : -1;
   var inp_row_data = inst_data.row_data;
@@ -19827,18 +19827,42 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
     return fine_position_tile(params, d);
   });
   if (make_tip) {
-    tile.on('mouseover', function () {
+    // tile
+    //   .on('mouseover', function () {
+    //     for (
+    //       var inst_len = arguments.length, args = Array(inst_len), inst_key = 0;
+    //       inst_key < inst_len;
+    //       inst_key++
+    //     ) {
+    //       args[inst_key] = arguments[inst_key];
+    //     }
+    //     mouseover_tile(params, this, tip, args);
+    //   })
+    //   .on('mouseout', function () {
+    //     mouseout_tile(params, this, tip);
+    //   })
+    //   .on('click', function (...args) {
+    //     click_tile(args);
+    //   });
+
+    var argsData = null;
+    var position;
+    tile.on('mouseover', function mouseover() {
       for (var inst_len = arguments.length, args = Array(inst_len), inst_key = 0; inst_key < inst_len; inst_key++) {
         args[inst_key] = arguments[inst_key];
       }
-      mouseover_tile(params, this, tip, args);
-    }).on('mouseout', function () {
-      mouseout_tile(params, this, tip);
-    }).on('click', function () {
-      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
+      mouseover_tile(params, context, tip, args);
+      argsData = args;
+    }).on('mouseout', function mouseout() {
+      mouseout_tile(params, context, tip);
+      argsData = null;
+    }).on('mousedown', function mousedown() {
+      position = d3.mouse(this);
+    }).on('mouseup', function mouseup() {
+      var newPosition;
+      if (position[0] == newPosition[0] || position[1] == newPosition[1]) {
+        click_tile(argsData);
       }
-      click_tile(args);
     });
   }
 
@@ -19890,7 +19914,7 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
     });
 
     // tile_up
-    d3.select(row_selection).selectAll('.tile_up').data(row_split_data, function (d) {
+    var tile_up = d3.select(row_selection).selectAll('.tile_up').data(row_split_data, function (d) {
       return d.col_name;
     }).enter().append('path').attr('class', 'tile_up').attr('d', function () {
       return draw_up_tile(params);
@@ -19904,22 +19928,20 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
         inst_opacity = params.matrix.opacity_scale(Math.abs(d.value_up));
       }
       return inst_opacity;
-    }).on('mouseover', function () {
-      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        args[_key2] = arguments[_key2];
-      }
-      mouseover_tile(params, this, tip, args);
-    }).on('mouseout', function () {
-      mouseout_tile(params, this, tip);
-    }).on('click', function () {
-      for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-        args[_key3] = arguments[_key3];
-      }
-      click_tile(args);
     });
+    // .on('mouseover', function (...args) {
+    //   mouseover_tile(params, this, tip, args);
+    // })
+    // .on('mouseout', function () {
+    //   mouseout_tile(params, this, tip);
+    // })
+    // .on('click', function (...args) {
+    //   click_tile(args);
+    // });
+    mouse_tile_events(tile_up, params, this, tip);
 
     // tile_dn
-    d3.select(row_selection).selectAll('.tile_dn').data(row_split_data, function (d) {
+    var tile_dn = d3.select(row_selection).selectAll('.tile_dn').data(row_split_data, function (d) {
       return d.col_name;
     }).enter().append('path').attr('class', 'tile_dn').attr('d', function () {
       return draw_dn_tile(params);
@@ -19933,19 +19955,17 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
         inst_opacity = params.matrix.opacity_scale(Math.abs(d.value_dn));
       }
       return inst_opacity;
-    }).on('mouseover', function () {
-      for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
-        args[_key4] = arguments[_key4];
-      }
-      mouseover_tile(params, this, tip, args);
-    }).on('mouseout', function () {
-      mouseout_tile(params, this, tip);
-    }).on('click', function () {
-      for (var _len5 = arguments.length, args = new Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
-        args[_key5] = arguments[_key5];
-      }
-      click_tile(args);
     });
+    // .on('mouseover', function (...args) {
+    //   mouseover_tile(params, this, tip, args);
+    // })
+    // .on('mouseout', function () {
+    //   mouseout_tile(params, this, tip);
+    // })
+    // .on('click', function (...args) {
+    //   click_tile(args);
+    // });
+    mouse_tile_events(tile_dn, params, this, tip);
 
     // remove rect when tile is split
     tile.each(function (d) {
@@ -19962,6 +19982,38 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
       return inst_string;
     });
   }
+};
+
+/***/ }),
+
+/***/ "./src/matrix/mouse_tile_events.js":
+/*!*****************************************!*\
+  !*** ./src/matrix/mouse_tile_events.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var click_tile = __webpack_require__(/*! ./click_tile */ "./src/matrix/click_tile.js");
+module.exports = function mouse_tile_events(element, params, context, tip) {
+  var data = null;
+  var position;
+  return element.on('mouseover', function mouseover() {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+    mouseover_tile(params, context, tip, args);
+    data = args;
+  }).on('mouseout', function mouseout() {
+    mouseout_tile(params, context, tip);
+    data = null;
+  }).on('mousedown', function mousedown() {
+    position = d3.mouse(this);
+  }).on('mouseup', function mouseup() {
+    var newPosition;
+    if (position[0] == newPosition[0] || position[1] == newPosition[1]) {
+      click_tile(args);
+    }
+  });
 };
 
 /***/ }),
@@ -24031,19 +24083,18 @@ module.exports = function update_split_tiles(params, inp_row_data, row_selection
   });
 
   // update split tiles_up
-  var update_tiles_up = cur_tiles_up.on('mouseover', function () {
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-    mouseover_tile(params, this, tip, args);
-  }).on('mouseout', function mouseout() {
-    mouseout_tile(params, this, tip);
-  }).on('click', function () {
-    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-      args[_key2] = arguments[_key2];
-    }
-    click_tile(args);
-  });
+  // var update_tiles_up = cur_tiles_up
+  //   .on('mouseover', function (...args) {
+  //     mouseover_tile(params, this, tip, args);
+  //   })
+  //   .on('mouseout', function mouseout() {
+  //     mouseout_tile(params, this, tip);
+  //   })
+  //   .on('click', function (...args) {
+  //     click_tile(args);
+  //   });
+
+  var update_tiles_up = mouse_tile_events(cur_tiles_up, params, this, tip);
   if (delays.run_transition) {
     update_tiles_up.transition().delay(delays.update).duration(duration).attr('d', function () {
       return draw_up_tile(params);
@@ -24064,19 +24115,18 @@ module.exports = function update_split_tiles(params, inp_row_data, row_selection
   });
 
   // update split tiles_dn
-  var update_tiles_dn = cur_tiles_dn.on('mouseover', function () {
-    for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-      args[_key3] = arguments[_key3];
-    }
-    mouseover_tile(params, this, tip, args);
-  }).on('mouseout', function mouseout() {
-    mouseout_tile(params, this, tip);
-  }).on('click', function () {
-    for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
-      args[_key4] = arguments[_key4];
-    }
-    click_tile(args);
-  });
+  // var update_tiles_dn = cur_tiles_dn
+  //   .on('mouseover', function (...args) {
+  //     mouseover_tile(params, this, tip, args);
+  //   })
+  //   .on('mouseout', function mouseout() {
+  //     mouseout_tile(params, this, tip);
+  //   })
+  //   .on('click', function (...args) {
+  //     click_tile(args);
+  //   });
+
+  var update_tiles_dn = mouse_tile_events(cur_tiles_dn, params, this, tip);
   if (delays.run_transition) {
     update_tiles_dn.transition().delay(delays.update).duration(duration).attr('d', function () {
       return draw_dn_tile(params);

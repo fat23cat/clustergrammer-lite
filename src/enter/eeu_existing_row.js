@@ -39,16 +39,17 @@ module.exports = function eeu_existing_row(
   ///////////////////////////
 
   // update tiles in x direction
-  var update_row_tiles = cur_row_tiles
-    .on('mouseover', function (...args) {
-      mouseover_tile(params, this, tip, args);
-    })
-    .on('mouseout', function mouseout() {
-      mouseout_tile(params, this, tip);
-    })
-    .on('click', function (...args) {
-      click_tile(args);
-    });
+  // var update_row_tiles = cur_row_tiles
+  //   .on('mouseover', function mouseover(...args) {
+  //     mouseover_tile(params, this, tip, args);
+  //   })
+  //   .on('mouseout', function mouseout() {
+  //     mouseout_tile(params, this, tip);
+  //   })
+  //   .on('click', function (...args) {
+  //     click_tile(args);
+  //   });
+  var update_row_tiles = mouse_tile_events(cur_row_tiles, params, this, tip);
 
   var col_nodes_names = params.network_data.col_nodes_names;
 

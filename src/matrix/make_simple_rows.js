@@ -8,6 +8,7 @@ var fine_position_tile = require('./fine_position_tile');
 var filter = require('underscore/cjs/filter');
 var utils = require('../Utils_clust');
 var click_tile = require('./click_tile');
+const mouse_tile_events = require('./mouse_tile_events');
 
 module.exports = function make_simple_rows(
   params,
@@ -83,8 +84,28 @@ module.exports = function make_simple_rows(
     });
 
   if (make_tip) {
+    // tile
+    //   .on('mouseover', function () {
+    //     for (
+    //       var inst_len = arguments.length, args = Array(inst_len), inst_key = 0;
+    //       inst_key < inst_len;
+    //       inst_key++
+    //     ) {
+    //       args[inst_key] = arguments[inst_key];
+    //     }
+    //     mouseover_tile(params, this, tip, args);
+    //   })
+    //   .on('mouseout', function () {
+    //     mouseout_tile(params, this, tip);
+    //   })
+    //   .on('click', function (...args) {
+    //     click_tile(args);
+    //   });
+
+    var argsData = null;
+    var position;
     tile
-      .on('mouseover', function () {
+      .on('mouseover', function mouseover() {
         for (
           var inst_len = arguments.length, args = Array(inst_len), inst_key = 0;
           inst_key < inst_len;
@@ -92,13 +113,21 @@ module.exports = function make_simple_rows(
         ) {
           args[inst_key] = arguments[inst_key];
         }
-        mouseover_tile(params, this, tip, args);
+        mouseover_tile(params, context, tip, args);
+        argsData = args;
       })
-      .on('mouseout', function () {
-        mouseout_tile(params, this, tip);
+      .on('mouseout', function mouseout() {
+        mouseout_tile(params, context, tip);
+        argsData = null;
       })
-      .on('click', function (...args) {
-        click_tile(args);
+      .on('mousedown', function mousedown() {
+        position = d3.mouse(this);
+      })
+      .on('mouseup', function mouseup() {
+        var newPosition;
+        if (position[0] == newPosition[0] || position[1] == newPosition[1]) {
+          click_tile(argsData);
+        }
       });
   }
 
@@ -150,7 +179,8 @@ module.exports = function make_simple_rows(
     });
 
     // tile_up
-    d3.select(row_selection)
+    var tile_up = d3
+      .select(row_selection)
       .selectAll('.tile_up')
       .data(row_split_data, function (d) {
         return d.col_name;
@@ -173,19 +203,21 @@ module.exports = function make_simple_rows(
           inst_opacity = params.matrix.opacity_scale(Math.abs(d.value_up));
         }
         return inst_opacity;
-      })
-      .on('mouseover', function (...args) {
-        mouseover_tile(params, this, tip, args);
-      })
-      .on('mouseout', function () {
-        mouseout_tile(params, this, tip);
-      })
-      .on('click', function (...args) {
-        click_tile(args);
       });
+    // .on('mouseover', function (...args) {
+    //   mouseover_tile(params, this, tip, args);
+    // })
+    // .on('mouseout', function () {
+    //   mouseout_tile(params, this, tip);
+    // })
+    // .on('click', function (...args) {
+    //   click_tile(args);
+    // });
+    mouse_tile_events(tile_up, params, this, tip);
 
     // tile_dn
-    d3.select(row_selection)
+    var tile_dn = d3
+      .select(row_selection)
       .selectAll('.tile_dn')
       .data(row_split_data, function (d) {
         return d.col_name;
@@ -208,16 +240,17 @@ module.exports = function make_simple_rows(
           inst_opacity = params.matrix.opacity_scale(Math.abs(d.value_dn));
         }
         return inst_opacity;
-      })
-      .on('mouseover', function (...args) {
-        mouseover_tile(params, this, tip, args);
-      })
-      .on('mouseout', function () {
-        mouseout_tile(params, this, tip);
-      })
-      .on('click', function (...args) {
-        click_tile(args);
       });
+    // .on('mouseover', function (...args) {
+    //   mouseover_tile(params, this, tip, args);
+    // })
+    // .on('mouseout', function () {
+    //   mouseout_tile(params, this, tip);
+    // })
+    // .on('click', function (...args) {
+    //   click_tile(args);
+    // });
+    mouse_tile_events(tile_dn, params, this, tip);
 
     // remove rect when tile is split
     tile.each(function (d) {

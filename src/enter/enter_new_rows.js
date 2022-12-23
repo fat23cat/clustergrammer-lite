@@ -4,6 +4,7 @@ var mouseout_tile = require('../matrix/mouseout_tile');
 var fine_position_tile = require('../matrix/fine_position_tile');
 var filter = require('underscore/cjs/filter');
 var click_tile = require('../matrix/click_tile');
+const mouse_tile_events = require('../matrix/mouse_tile_events');
 
 // make each row in the clustergram
 module.exports = function enter_new_rows(
@@ -39,18 +40,20 @@ module.exports = function enter_new_rows(
       return d.value > 0
         ? params.matrix.tile_colors[0]
         : params.matrix.tile_colors[1];
-    })
-    .on('mouseover', function (...args) {
-      mouseover_tile(params, this, tip, args);
-    })
-    .on('mouseout', function mouseout() {
-      mouseout_tile(params, this, tip);
-    })
-    .on('click', function (...args) {
-      click_tile(args);
     });
+  // .on('mouseover', function (...args) {
+  //   mouseover_tile(params, this, tip, args);
+  // })
+  // .on('mouseout', function mouseout() {
+  //   mouseout_tile(params, this, tip);
+  // })
+  // .on('click', function (...args) {
+  //   click_tile(args);
+  // });
 
-  tile
+  var tile_with_events = mouse_tile_events(new_tiles, params, this, tip);
+
+  tile_with_events
     .style('fill-opacity', 0)
     .transition()
     .delay(delays.enter)
@@ -61,7 +64,7 @@ module.exports = function enter_new_rows(
       return output_opacity;
     });
 
-  tile.attr('transform', function (d) {
+  tile_with_events.attr('transform', function (d) {
     return fine_position_tile(params, d);
   });
 
@@ -73,7 +76,7 @@ module.exports = function enter_new_rows(
       tip,
       delays,
       duration,
-      tile
+      tile_with_events
     );
   }
 };
