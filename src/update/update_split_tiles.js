@@ -38,6 +38,12 @@ module.exports = function update_split_tiles(
     })
     .on('click', function (...args) {
       click_tile(args);
+    })
+    .on('mousedown', function (...args) {
+      debugger;
+    })
+    .on('mouseup', function (...args) {
+      debugger;
     });
 
   if (delays.run_transition) {
@@ -79,6 +85,12 @@ module.exports = function update_split_tiles(
     })
     .on('click', function (...args) {
       click_tile(args);
+    })
+    .on('mousedown', function (...args) {
+      debugger;
+    })
+    .on('mouseup', function (...args) {
+      debugger;
     });
 
   if (delays.run_transition) {

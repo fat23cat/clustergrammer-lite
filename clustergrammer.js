@@ -17079,6 +17079,10 @@ module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, dur
       args[_key2] = arguments[_key2];
     }
     click_tile(args);
+  }).on('mousedown', function () {
+    debugger;
+  }).on('mouseup', function () {
+    debugger;
   });
   var col_nodes_names = params.network_data.col_nodes_names;
   if (delays.run_transition) {
@@ -17133,6 +17137,10 @@ module.exports = function enter_existing_row(params, delays, duration, cur_row_t
     click_tile(args);
   }).attr('fill-opacity', 0).attr('transform', function (d) {
     return fine_position_tile(params, d);
+  }).on('mousedown', function () {
+    debugger;
+  }).on('mouseup', function () {
+    debugger;
   });
   if (delays.run_transition) {
     new_tiles.transition().delay(delays.enter).duration(duration).style('fill', function (d) {
@@ -17307,6 +17315,10 @@ module.exports = function enter_new_rows(params, ini_inp_row_data, delays, durat
       args[_key2] = arguments[_key2];
     }
     click_tile(args);
+  }).on('mousedown', function () {
+    debugger;
+  }).on('mouseup', function () {
+    debugger;
   });
   tile.style('fill-opacity', 0).transition().delay(delays.enter).duration(duration).style('fill-opacity', function (d) {
     // calculate output opacity using the opacity scale
@@ -19833,6 +19845,10 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
         args[_key] = arguments[_key];
       }
       click_tile(args);
+    }).on('mousedown', function () {
+      debugger;
+    }).on('mouseup', function () {
+      debugger;
     });
   }
 
@@ -19910,6 +19926,10 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
         args[_key3] = arguments[_key3];
       }
       click_tile(args);
+    }).on('mousedown', function () {
+      debugger;
+    }).on('mouseup', function () {
+      debugger;
     });
 
     // tile_dn
@@ -19939,6 +19959,10 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
         args[_key5] = arguments[_key5];
       }
       click_tile(args);
+    }).on('mousedown', function () {
+      debugger;
+    }).on('mouseup', function () {
+      debugger;
     });
 
     // remove rect when tile is split
@@ -24037,6 +24061,10 @@ module.exports = function update_split_tiles(params, inp_row_data, row_selection
       args[_key2] = arguments[_key2];
     }
     click_tile(args);
+  }).on('mousedown', function () {
+    debugger;
+  }).on('mouseup', function () {
+    debugger;
   });
   if (delays.run_transition) {
     update_tiles_up.transition().delay(delays.update).duration(duration).attr('d', function () {
@@ -24070,6 +24098,10 @@ module.exports = function update_split_tiles(params, inp_row_data, row_selection
       args[_key4] = arguments[_key4];
     }
     click_tile(args);
+  }).on('mousedown', function () {
+    debugger;
+  }).on('mouseup', function () {
+    debugger;
   });
   if (delays.run_transition) {
     update_tiles_dn.transition().delay(delays.update).duration(duration).attr('d', function () {

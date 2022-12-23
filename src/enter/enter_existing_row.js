@@ -29,6 +29,12 @@ module.exports = function enter_existing_row(
     .attr('fill-opacity', 0)
     .attr('transform', function (d) {
       return fine_position_tile(params, d);
+    })
+    .on('mousedown', function (...args) {
+      debugger;
+    })
+    .on('mouseup', function (...args) {
+      debugger;
     });
 
   if (delays.run_transition) {
