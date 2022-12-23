@@ -99,12 +99,6 @@ module.exports = function make_simple_rows(
       })
       .on('click', function (...args) {
         click_tile(args);
-      })
-      .on('mousedown', function (...args) {
-        debugger;
-      })
-      .on('mouseup', function (...args) {
-        debugger;
       });
   }
 
@@ -188,12 +182,6 @@ module.exports = function make_simple_rows(
       })
       .on('click', function (...args) {
         click_tile(args);
-      })
-      .on('mousedown', function (...args) {
-        debugger;
-      })
-      .on('mouseup', function (...args) {
-        debugger;
       });
 
     // tile_dn
@@ -229,12 +217,6 @@ module.exports = function make_simple_rows(
       })
       .on('click', function (...args) {
         click_tile(args);
-      })
-      .on('mousedown', function (...args) {
-        debugger;
-      })
-      .on('mouseup', function (...args) {
-        debugger;
       });
 
     // remove rect when tile is split

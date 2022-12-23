@@ -48,12 +48,6 @@ module.exports = function eeu_existing_row(
     })
     .on('click', function (...args) {
       click_tile(args);
-    })
-    .on('mousedown', function (...args) {
-      debugger;
-    })
-    .on('mouseup', function (...args) {
-      debugger;
     });
 
   var col_nodes_names = params.network_data.col_nodes_names;

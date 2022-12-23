@@ -48,12 +48,6 @@ module.exports = function enter_new_rows(
     })
     .on('click', function (...args) {
       click_tile(args);
-    })
-    .on('mousedown', function (...args) {
-      debugger;
-    })
-    .on('mouseup', function (...args) {
-      debugger;
     });
 
   tile
