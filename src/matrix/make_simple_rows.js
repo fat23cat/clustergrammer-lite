@@ -113,11 +113,11 @@ module.exports = function make_simple_rows(
         ) {
           args[inst_key] = arguments[inst_key];
         }
-        mouseover_tile(params, context, tip, args);
+        mouseover_tile(params, this, tip, args);
         argsData = args;
       })
       .on('mouseout', function mouseout() {
-        mouseout_tile(params, context, tip);
+        mouseout_tile(params, this, tip);
         argsData = null;
       })
       .on('mousedown', function mousedown() {

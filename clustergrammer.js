@@ -19851,10 +19851,10 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
       for (var inst_len = arguments.length, args = Array(inst_len), inst_key = 0; inst_key < inst_len; inst_key++) {
         args[inst_key] = arguments[inst_key];
       }
-      mouseover_tile(params, context, tip, args);
+      mouseover_tile(params, this, tip, args);
       argsData = args;
     }).on('mouseout', function mouseout() {
-      mouseout_tile(params, context, tip);
+      mouseout_tile(params, this, tip);
       argsData = null;
     }).on('mousedown', function mousedown() {
       position = d3.mouse(this);
