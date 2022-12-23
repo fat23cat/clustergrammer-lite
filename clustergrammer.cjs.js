@@ -7625,15 +7625,9 @@ module.exports = function make_matrix_rows(params, current_matrix) {
     });
   }
   d3.select(params.root + ' .clust_group').on('mousedown', function () {
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-    console.log(args);
+    console.log(d3.mouse(this));
   }).on('mouseup', function () {
-    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-      args[_key2] = arguments[_key2];
-    }
-    console.log(args);
+    console.log(d3.mouse(this));
   }).on('click', function (e) {
     // console.log('size', this);
     // console.log('mouse', d3.mouse(this));
@@ -7649,24 +7643,26 @@ module.exports = function make_matrix_rows(params, current_matrix) {
     var y = coord[0] * params.zoom_info.zoom_y;
     var row = bounds.height / params.inst_nodes.row_nodes.length;
     var col = bounds.width / params.inst_nodes.col_nodes.length;
-    var countX = 0;
-    for (var i = 0; i < params.inst_nodes.row_nodes.length; i++) {
-      if (countX > x) {
-        console.log(i);
-        console.log(params.inst_nodes.row_nodes[Math.floor(i)]);
-        break;
-      }
-      countX += row;
-    }
-    var countY = 0;
-    for (var _i = 0; _i < params.inst_nodes.col_nodes.length; _i++) {
-      if (countY > y) {
-        console.log(_i);
-        console.log(params.inst_nodes.col_nodes[Math.floor(_i)]);
-        break;
-      }
-      countY += col;
-    }
+
+    // let countX = 0;
+    // for (let i = 0; i < params.inst_nodes.row_nodes.length; i++) {
+    //   if (countX > x) {
+    //     console.log(i);
+    //     console.log(params.inst_nodes.row_nodes[Math.floor(i)]);
+    //     break;
+    //   }
+    //   countX += row;
+    // }
+
+    // let countY = 0;
+    // for (let i = 0; i < params.inst_nodes.col_nodes.length; i++) {
+    //   if (countY > y) {
+    //     console.log(i);
+    //     console.log(params.inst_nodes.col_nodes[Math.floor(i)]);
+    //     break;
+    //   }
+    //   countY += col;
+    // }
 
     // var xy = d3.mouse(this);
 

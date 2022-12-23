@@ -89,11 +89,11 @@ module.exports = function make_matrix_rows(
   }
 
   d3.select(params.root + ' .clust_group')
-    .on('mousedown', function (...args) {
-      console.log(args);
+    .on('mousedown', function () {
+      console.log(d3.mouse(this));
     })
-    .on('mouseup', function (...args) {
-      console.log(args);
+    .on('mouseup', function () {
+      console.log(d3.mouse(this));
     })
     .on('click', function (e) {
       // console.log('size', this);
@@ -111,25 +111,25 @@ module.exports = function make_matrix_rows(
       const row = bounds.height / params.inst_nodes.row_nodes.length;
       const col = bounds.width / params.inst_nodes.col_nodes.length;
 
-      let countX = 0;
-      for (let i = 0; i < params.inst_nodes.row_nodes.length; i++) {
-        if (countX > x) {
-          console.log(i);
-          console.log(params.inst_nodes.row_nodes[Math.floor(i)]);
-          break;
-        }
-        countX += row;
-      }
+      // let countX = 0;
+      // for (let i = 0; i < params.inst_nodes.row_nodes.length; i++) {
+      //   if (countX > x) {
+      //     console.log(i);
+      //     console.log(params.inst_nodes.row_nodes[Math.floor(i)]);
+      //     break;
+      //   }
+      //   countX += row;
+      // }
 
-      let countY = 0;
-      for (let i = 0; i < params.inst_nodes.col_nodes.length; i++) {
-        if (countY > y) {
-          console.log(i);
-          console.log(params.inst_nodes.col_nodes[Math.floor(i)]);
-          break;
-        }
-        countY += col;
-      }
+      // let countY = 0;
+      // for (let i = 0; i < params.inst_nodes.col_nodes.length; i++) {
+      //   if (countY > y) {
+      //     console.log(i);
+      //     console.log(params.inst_nodes.col_nodes[Math.floor(i)]);
+      //     break;
+      //   }
+      //   countY += col;
+      // }
 
       // var xy = d3.mouse(this);
 
