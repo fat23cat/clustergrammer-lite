@@ -17139,7 +17139,7 @@ module.exports = function enter_existing_row(params, delays, duration, cur_row_t
   }
 
   // remove new tiles if necessary
-  new_tiles_with_events.each(function (d) {
+  new_tiles.each(function (d) {
     if (Math.abs(d.value_up) > 0 && Math.abs(d.value_dn) > 0) {
       d3.select(this).remove();
     }
@@ -19291,7 +19291,6 @@ module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
 /***/ (function(module, exports) {
 
 module.exports = function click_tile(inst_arguments) {
-  console.log('TILE_CLICK');
   dispatchEvent(new CustomEvent('TILE_CLICK', {
     detail: {
       tile: inst_arguments[0]
@@ -19763,7 +19762,7 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
     return fine_position_tile(params, d);
   });
   if (make_tip) {
-    var argsData = null;
+    var data = null;
     var posX,
       posY = null;
     tile.on('mouseover', function mouseover() {
@@ -19771,10 +19770,10 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
         args[inst_key] = arguments[inst_key];
       }
       mouseover_tile(params, this, tip, args);
-      argsData = args;
+      data = args;
     }).on('mouseout', function mouseout() {
       mouseout_tile(params, this, tip);
-      argsData = null;
+      data = null;
     }).on('mousedown', function mousedown() {
       var _d3$event = d3.event,
         clientX = _d3$event.clientX,
@@ -19786,7 +19785,7 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
         clientX = _d3$event2.clientX,
         clientY = _d3$event2.clientY;
       if (clientX <= posX + POSITION_INACCURACY && clientX >= posX - POSITION_INACCURACY && clientY <= posY + POSITION_INACCURACY && clientY >= posY - POSITION_INACCURACY) {
-        click_tile(argsData);
+        click_tile(data);
       }
     });
   }

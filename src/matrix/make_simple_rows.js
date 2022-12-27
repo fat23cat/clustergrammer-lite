@@ -85,7 +85,7 @@ module.exports = function make_simple_rows(
     });
 
   if (make_tip) {
-    let argsData = null;
+    let data = null;
     let posX,
       posY = null;
     tile
@@ -98,11 +98,11 @@ module.exports = function make_simple_rows(
           args[inst_key] = arguments[inst_key];
         }
         mouseover_tile(params, this, tip, args);
-        argsData = args;
+        data = args;
       })
       .on('mouseout', function mouseout() {
         mouseout_tile(params, this, tip);
-        argsData = null;
+        data = null;
       })
       .on('mousedown', function mousedown() {
         const { clientX, clientY } = d3.event;
@@ -117,7 +117,7 @@ module.exports = function make_simple_rows(
           clientY <= posY + POSITION_INACCURACY &&
           clientY >= posY - POSITION_INACCURACY
         ) {
-          click_tile(argsData);
+          click_tile(data);
         }
       });
   }

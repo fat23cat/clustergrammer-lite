@@ -55,7 +55,7 @@ module.exports = function enter_existing_row(
   }
 
   // remove new tiles if necessary
-  new_tiles_with_events.each(function (d) {
+  new_tiles.each(function (d) {
     if (Math.abs(d.value_up) > 0 && Math.abs(d.value_dn) > 0) {
       d3.select(this).remove();
     }
