@@ -112,10 +112,10 @@ module.exports = function make_simple_rows(
       .on('mouseup', function mouseup() {
         const { clientX, clientY } = d3.event;
         if (
-          (clientX <= posX + POSITION_INACCURACY ||
-            clientX >= posX - POSITION_INACCURACY) &&
-          (clientY <= posY + POSITION_INACCURACY ||
-            clientY >= posY - POSITION_INACCURACY)
+          clientX <= posX + POSITION_INACCURACY &&
+          clientX >= posX - POSITION_INACCURACY &&
+          clientY <= posY + POSITION_INACCURACY &&
+          clientY >= posY - POSITION_INACCURACY
         ) {
           click_tile(argsData);
         }

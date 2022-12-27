@@ -19837,7 +19837,7 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
       var _d3$event2 = d3.event,
         clientX = _d3$event2.clientX,
         clientY = _d3$event2.clientY;
-      if ((clientX <= posX + POSITION_INACCURACY || clientX >= posX - POSITION_INACCURACY) && (clientY <= posY + POSITION_INACCURACY || clientY >= posY - POSITION_INACCURACY)) {
+      if (clientX <= posX + POSITION_INACCURACY && clientX >= posX - POSITION_INACCURACY && clientY <= posY + POSITION_INACCURACY && clientY >= posY - POSITION_INACCURACY) {
         click_tile(argsData);
       }
     });
