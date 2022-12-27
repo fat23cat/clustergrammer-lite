@@ -88,57 +88,6 @@ module.exports = function make_matrix_rows(
     });
   }
 
-  // d3.select(params.root + ' .clust_group')
-  //   .on('mousedown', function () {
-  //     console.log(d3.mouse(this));
-  //   })
-  //   .on('mouseup', function () {
-  //     console.log(d3.mouse(this));
-  //   })
-  //   .on('click', function (e) {
-  //     // console.log('size', this);
-  //     // console.log('mouse', d3.mouse(this));
-  //     // console.log('e', e);
-
-  //     // zoom params.zoom_info zoom_x, zoom_y
-
-  //     const coord = d3.mouse(this);
-  //     const bounds = this.getBoundingClientRect();
-  //     // const x = d3.event.clientX - bounds.left;
-  //     // const y = d3.event.clientY - bounds.top;
-  //     const x = coord[1] * params.zoom_info.zoom_x;
-  //     const y = coord[0] * params.zoom_info.zoom_y;
-  //     const row = bounds.height / params.inst_nodes.row_nodes.length;
-  //     const col = bounds.width / params.inst_nodes.col_nodes.length;
-
-  //     // let countX = 0;
-  //     // for (let i = 0; i < params.inst_nodes.row_nodes.length; i++) {
-  //     //   if (countX > x) {
-  //     //     console.log(i);
-  //     //     console.log(params.inst_nodes.row_nodes[Math.floor(i)]);
-  //     //     break;
-  //     //   }
-  //     //   countX += row;
-  //     // }
-
-  //     // let countY = 0;
-  //     // for (let i = 0; i < params.inst_nodes.col_nodes.length; i++) {
-  //     //   if (countY > y) {
-  //     //     console.log(i);
-  //     //     console.log(params.inst_nodes.col_nodes[Math.floor(i)]);
-  //     //     break;
-  //     //   }
-  //     //   countY += col;
-  //     // }
-
-  //     // var xy = d3.mouse(this);
-
-  //     // var transform = d3.zoomTransform(this);
-  //     // var xy1 = transform.invert(xy);
-
-  //     // console.log('Mouse:[', xy[0], xy[1], '] Zoomed:[', xy1[0], xy1[1], ']');
-  //   });
-
   d3.select(params.root + ' .clust_group')
     .selectAll('.row')
     .data(matrix_subset, function (d) {

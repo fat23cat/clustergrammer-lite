@@ -7612,58 +7612,6 @@ module.exports = function make_matrix_rows(params, current_matrix) {
       }
     });
   }
-
-  // d3.select(params.root + ' .clust_group')
-  //   .on('mousedown', function () {
-  //     console.log(d3.mouse(this));
-  //   })
-  //   .on('mouseup', function () {
-  //     console.log(d3.mouse(this));
-  //   })
-  //   .on('click', function (e) {
-  //     // console.log('size', this);
-  //     // console.log('mouse', d3.mouse(this));
-  //     // console.log('e', e);
-
-  //     // zoom params.zoom_info zoom_x, zoom_y
-
-  //     const coord = d3.mouse(this);
-  //     const bounds = this.getBoundingClientRect();
-  //     // const x = d3.event.clientX - bounds.left;
-  //     // const y = d3.event.clientY - bounds.top;
-  //     const x = coord[1] * params.zoom_info.zoom_x;
-  //     const y = coord[0] * params.zoom_info.zoom_y;
-  //     const row = bounds.height / params.inst_nodes.row_nodes.length;
-  //     const col = bounds.width / params.inst_nodes.col_nodes.length;
-
-  //     // let countX = 0;
-  //     // for (let i = 0; i < params.inst_nodes.row_nodes.length; i++) {
-  //     //   if (countX > x) {
-  //     //     console.log(i);
-  //     //     console.log(params.inst_nodes.row_nodes[Math.floor(i)]);
-  //     //     break;
-  //     //   }
-  //     //   countX += row;
-  //     // }
-
-  //     // let countY = 0;
-  //     // for (let i = 0; i < params.inst_nodes.col_nodes.length; i++) {
-  //     //   if (countY > y) {
-  //     //     console.log(i);
-  //     //     console.log(params.inst_nodes.col_nodes[Math.floor(i)]);
-  //     //     break;
-  //     //   }
-  //     //   countY += col;
-  //     // }
-
-  //     // var xy = d3.mouse(this);
-
-  //     // var transform = d3.zoomTransform(this);
-  //     // var xy1 = transform.invert(xy);
-
-  //     // console.log('Mouse:[', xy[0], xy[1], '] Zoomed:[', xy1[0], xy1[1], ']');
-  //   });
-
   d3.select(params.root + ' .clust_group').selectAll('.row').data(matrix_subset, function (d) {
     return d.name;
   }).enter().append('g').classed(row_class, true).attr('transform', function (d) {
@@ -18534,7 +18482,7 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
     });
 
     // tile_up
-    var tile_up = d3.select(row_selection).selectAll('.tile_up').data(row_split_data, function (d) {
+    d3.select(row_selection).selectAll('.tile_up').data(row_split_data, function (d) {
       return d.col_name;
     }).enter().append('path').attr('class', 'tile_up').attr('d', function () {
       return draw_up_tile(params);
@@ -18558,7 +18506,7 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
     });
 
     // tile_dn
-    var tile_dn = d3.select(row_selection).selectAll('.tile_dn').data(row_split_data, function (d) {
+    d3.select(row_selection).selectAll('.tile_dn').data(row_split_data, function (d) {
       return d.col_name;
     }).enter().append('path').attr('class', 'tile_dn').attr('d', function () {
       return draw_dn_tile(params);
@@ -22150,18 +22098,14 @@ module.exports = function update_split_tiles(params, inp_row_data, row_selection
   });
 
   // update split tiles_dn
-  // var update_tiles_dn = cur_tiles_dn
-  //   .on('mouseover', function (...args) {
-  //     mouseover_tile(params, this, tip, args);
-  //   })
-  //   .on('mouseout', function mouseout() {
-  //     mouseout_tile(params, this, tip);
-  //   })
-  //   .on('click', function (...args) {
-  //     click_tile(args);
-  //   });
-
-  var update_tiles_dn = mouse_tile_events(cur_tiles_dn, params, this, tip);
+  var update_tiles_dn = cur_tiles_dn.on('mouseover', function () {
+    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
+    }
+    mouseover_tile(params, this, tip, args);
+  }).on('mouseout', function mouseout() {
+    mouseout_tile(params, this, tip);
+  });
   if (delays.run_transition) {
     update_tiles_dn.transition().delay(delays.update).duration(duration).attr('d', function () {
       return draw_dn_tile(params);

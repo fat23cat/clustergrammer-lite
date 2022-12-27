@@ -66,18 +66,13 @@ module.exports = function update_split_tiles(
     });
 
   // update split tiles_dn
-  // var update_tiles_dn = cur_tiles_dn
-  //   .on('mouseover', function (...args) {
-  //     mouseover_tile(params, this, tip, args);
-  //   })
-  //   .on('mouseout', function mouseout() {
-  //     mouseout_tile(params, this, tip);
-  //   })
-  //   .on('click', function (...args) {
-  //     click_tile(args);
-  //   });
-
-  var update_tiles_dn = mouse_tile_events(cur_tiles_dn, params, this, tip);
+  var update_tiles_dn = cur_tiles_dn
+    .on('mouseover', function (...args) {
+      mouseover_tile(params, this, tip, args);
+    })
+    .on('mouseout', function mouseout() {
+      mouseout_tile(params, this, tip);
+    });
 
   if (delays.run_transition) {
     update_tiles_dn

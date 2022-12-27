@@ -170,8 +170,7 @@ module.exports = function make_simple_rows(
     });
 
     // tile_up
-    var tile_up = d3
-      .select(row_selection)
+    d3.select(row_selection)
       .selectAll('.tile_up')
       .data(row_split_data, function (d) {
         return d.col_name;
@@ -203,8 +202,7 @@ module.exports = function make_simple_rows(
       });
 
     // tile_dn
-    var tile_dn = d3
-      .select(row_selection)
+    d3.select(row_selection)
       .selectAll('.tile_dn')
       .data(row_split_data, function (d) {
         return d.col_name;
