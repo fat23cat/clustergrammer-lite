@@ -1,8 +1,6 @@
 var mouseover_tile = require('../matrix/mouseover_tile');
 var mouseout_tile = require('../matrix/mouseout_tile');
 var fine_position_tile = require('../matrix/fine_position_tile');
-var click_tile = require('../matrix/click_tile');
-const mouse_tile_events = require('../matrix/mouse_tile_events');
 
 module.exports = function enter_existing_row(
   params,
@@ -18,24 +16,19 @@ module.exports = function enter_existing_row(
     .attr('class', 'tile row_tile')
     .attr('width', params.viz.rect_width)
     .attr('height', params.viz.rect_height)
-    // .on('mouseover', function (...args) {
-    //   mouseover_tile(params, this, tip, args);
-    // })
-    // .on('mouseout', function mouseout() {
-    //   mouseout_tile(params, this, tip);
-    // })
-    // .on('click', function (...args) {
-    //   click_tile(args);
-    // })
+    .on('mouseover', function (...args) {
+      mouseover_tile(params, this, tip, args);
+    })
+    .on('mouseout', function mouseout() {
+      mouseout_tile(params, this, tip);
+    })
     .attr('fill-opacity', 0)
     .attr('transform', function (d) {
       return fine_position_tile(params, d);
     });
 
-  var new_tiles_with_events = mouse_tile_events(new_tiles, params, this, tip);
-
   if (delays.run_transition) {
-    new_tiles_with_events
+    new_tiles
       .transition()
       .delay(delays.enter)
       .duration(duration)
@@ -49,7 +42,7 @@ module.exports = function enter_existing_row(
         return output_opacity;
       });
   } else {
-    new_tiles_with_events
+    new_tiles
       .style('fill', function (d) {
         return d.value > 0
           ? params.matrix.tile_colors[0]
