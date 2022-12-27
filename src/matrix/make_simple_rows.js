@@ -9,6 +9,8 @@ var filter = require('underscore/cjs/filter');
 var utils = require('../Utils_clust');
 var click_tile = require('./click_tile');
 
+const POSITION_INACCURACY = 2;
+
 module.exports = function make_simple_rows(
   params,
   inst_data,
@@ -83,26 +85,8 @@ module.exports = function make_simple_rows(
     });
 
   if (make_tip) {
-    // tile
-    //   .on('mouseover', function () {
-    //     for (
-    //       var inst_len = arguments.length, args = Array(inst_len), inst_key = 0;
-    //       inst_key < inst_len;
-    //       inst_key++
-    //     ) {
-    //       args[inst_key] = arguments[inst_key];
-    //     }
-    //     mouseover_tile(params, this, tip, args);
-    //   })
-    //   .on('mouseout', function () {
-    //     mouseout_tile(params, this, tip);
-    //   })
-    //   .on('click', function (...args) {
-    //     click_tile(args);
-    //   });
-
-    var argsData = null;
-    var posX,
+    let argsData = null;
+    let posX,
       posY = null;
     tile
       .on('mouseover', function mouseover() {
@@ -121,13 +105,18 @@ module.exports = function make_simple_rows(
         argsData = null;
       })
       .on('mousedown', function mousedown() {
-        var { clientX, clientY } = d3.event;
+        const { clientX, clientY } = d3.event;
         posX = clientX;
         posY = clientY;
       })
       .on('mouseup', function mouseup() {
-        var { clientX, clientY } = d3.event;
-        if (posX === clientX || posY === clientY) {
+        const { clientX, clientY } = d3.event;
+        if (
+          (clientX <= posX + POSITION_INACCURACY ||
+            clientX >= posX - POSITION_INACCURACY) &&
+          (clientY <= posY + POSITION_INACCURACY ||
+            clientY >= posY - POSITION_INACCURACY)
+        ) {
           click_tile(argsData);
         }
       });

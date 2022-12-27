@@ -18406,6 +18406,7 @@ var fine_position_tile = __webpack_require__(12);
 var filter = __webpack_require__(9);
 var utils = __webpack_require__(0);
 var click_tile = __webpack_require__(200);
+var POSITION_INACCURACY = 2;
 module.exports = function make_simple_rows(params, inst_data, tip, row_selection) {
   var ds_level = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : -1;
   var inp_row_data = inst_data.row_data;
@@ -18457,24 +18458,6 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
     return fine_position_tile(params, d);
   });
   if (make_tip) {
-    // tile
-    //   .on('mouseover', function () {
-    //     for (
-    //       var inst_len = arguments.length, args = Array(inst_len), inst_key = 0;
-    //       inst_key < inst_len;
-    //       inst_key++
-    //     ) {
-    //       args[inst_key] = arguments[inst_key];
-    //     }
-    //     mouseover_tile(params, this, tip, args);
-    //   })
-    //   .on('mouseout', function () {
-    //     mouseout_tile(params, this, tip);
-    //   })
-    //   .on('click', function (...args) {
-    //     click_tile(args);
-    //   });
-
     var argsData = null;
     var posX,
       posY = null;
@@ -18497,7 +18480,7 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
       var _d3$event2 = d3.event,
         clientX = _d3$event2.clientX,
         clientY = _d3$event2.clientY;
-      if (posX === clientX || posY === clientY) {
+      if ((clientX <= posX + POSITION_INACCURACY || clientX >= posX - POSITION_INACCURACY) && (clientY <= posY + POSITION_INACCURACY || clientY >= posY - POSITION_INACCURACY)) {
         click_tile(argsData);
       }
     });
