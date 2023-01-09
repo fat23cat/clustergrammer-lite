@@ -29,6 +29,9 @@ module.exports = function filter_viz_using_names(names, external_cgm = false) {
             d.name.toLowerCase().includes(name.toLowerCase())
           )
         );
+        if (!found_nodes.length) {
+          found_nodes = new Array(orig_nodes.length).fill('');
+        }
       } else {
         found_nodes = orig_nodes;
       }

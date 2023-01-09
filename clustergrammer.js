@@ -20222,14 +20222,14 @@ module.exports = function filter_viz_using_names(names) {
     if (utils.has(names, inst_rc)) {
       if (names[inst_rc].length > 0) {
         var inst_names = names[inst_rc];
-        // found_nodes = $.grep(orig_nodes, function (d) {
-        //   return $.inArray(d.name, inst_names) > -1;
-        // });
         found_nodes = (orig_nodes || []).filter(function (d) {
           return (inst_names || []).some(function (name) {
             return d.name.toLowerCase().includes(name.toLowerCase());
           });
         });
+        if (!found_nodes.length) {
+          found_nodes = new Array(orig_nodes.length).fill('');
+        }
       } else {
         found_nodes = orig_nodes;
       }
