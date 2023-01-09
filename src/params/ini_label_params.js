@@ -16,11 +16,11 @@ module.exports = function ini_label_params(params) {
 
   labels.row_max_char = max(params.network_data.row_nodes, function (inst) {
     return inst.name.length;
-  }).name.length;
+  })?.name?.length;
 
   labels.col_max_char = max(params.network_data.col_nodes, function (inst) {
     return inst.name.length;
-  }).name.length;
+  })?.name?.length;
 
   labels.max_allow_fs = params.max_allow_fs;
 

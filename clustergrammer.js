@@ -20222,8 +20222,13 @@ module.exports = function filter_viz_using_names(names) {
     if (utils.has(names, inst_rc)) {
       if (names[inst_rc].length > 0) {
         var inst_names = names[inst_rc];
-        found_nodes = $.grep(orig_nodes, function (d) {
-          return $.inArray(d.name, inst_names) > -1;
+        // found_nodes = $.grep(orig_nodes, function (d) {
+        //   return $.inArray(d.name, inst_names) > -1;
+        // });
+        found_nodes = (orig_nodes || []).filter(function (d) {
+          return (inst_names || []).some(function (name) {
+            return d.name.toLowerCase().includes(name.toLowerCase());
+          });
         });
       } else {
         found_nodes = orig_nodes;
@@ -20936,6 +20941,7 @@ module.exports = function get_svg_dim(params) {
 
 var max = __webpack_require__(/*! underscore/cjs/max */ "./node_modules/underscore/cjs/max.js");
 module.exports = function ini_label_params(params) {
+  var _max, _max$name, _max2, _max2$name;
   var labels = {};
   labels.super_label_scale = params.super_label_scale;
   labels.super_labels = params.super_labels;
@@ -20946,12 +20952,12 @@ module.exports = function ini_label_params(params) {
     labels["super"].col = params["super"].col;
   }
   labels.show_label_tooltips = params.show_label_tooltips;
-  labels.row_max_char = max(params.network_data.row_nodes, function (inst) {
+  labels.row_max_char = (_max = max(params.network_data.row_nodes, function (inst) {
     return inst.name.length;
-  }).name.length;
-  labels.col_max_char = max(params.network_data.col_nodes, function (inst) {
+  })) === null || _max === void 0 ? void 0 : (_max$name = _max.name) === null || _max$name === void 0 ? void 0 : _max$name.length;
+  labels.col_max_char = (_max2 = max(params.network_data.col_nodes, function (inst) {
     return inst.name.length;
-  }).name.length;
+  })) === null || _max2 === void 0 ? void 0 : (_max2$name = _max2.name) === null || _max2$name === void 0 ? void 0 : _max2$name.length;
   labels.max_allow_fs = params.max_allow_fs;
   return labels;
 };
