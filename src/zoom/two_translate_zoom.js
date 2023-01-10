@@ -162,16 +162,16 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
       );
 
     // toggle crop buttons
-    var inst_button_opacity;
-    ['row', 'col'].forEach(function (inst_rc) {
-      inst_button_opacity = d3
-        ?.select(params.root + ' .' + inst_rc + '_dendro_crop_buttons')
-        ?.style('opacity');
-      d3.selectAll(
-        params.root + ' .' + inst_rc + '_dendro_crop_buttons'
-      )?.style('opacity', 0);
-      setTimeout(show_crop_buttons, 700, inst_rc, inst_button_opacity);
-    });
+    // var inst_button_opacity;
+    // ['row', 'col'].forEach(function (inst_rc) {
+    //   inst_button_opacity = d3
+    //     .select(params.root + ' .' + inst_rc + '_dendro_crop_buttons')
+    //     .style('opacity');
+    //   d3.selectAll(
+    //     params.root + ' .' + inst_rc + '_dendro_crop_buttons'
+    //   ).style('opacity', 0);
+    //   setTimeout(show_crop_buttons, 700, inst_rc, inst_button_opacity);
+    // });
 
     // transform col labels
     d3.select(params.root + ' .col_zoom_container')
