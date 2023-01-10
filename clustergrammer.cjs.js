@@ -22777,7 +22777,10 @@ module.exports = function filter_viz_using_names(names) {
           });
         });
         if (!found_nodes.length) {
-          found_nodes = [''];
+          found_nodes = [{
+            name: '',
+            row_index: 0
+          }];
         }
       } else {
         found_nodes = orig_nodes;
