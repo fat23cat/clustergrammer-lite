@@ -20226,6 +20226,9 @@ module.exports = function filter_viz_using_names(names) {
             return d.name.toLowerCase().includes(name.toLowerCase());
           });
         });
+        if (!found_nodes.length) {
+          found_nodes = [''];
+        }
       } else {
         found_nodes = orig_nodes;
       }
