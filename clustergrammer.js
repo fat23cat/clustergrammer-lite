@@ -25148,8 +25148,9 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
     // toggle crop buttons
     var inst_button_opacity;
     ['row', 'col'].forEach(function (inst_rc) {
-      inst_button_opacity = d3.select(params.root + ' .' + inst_rc + '_dendro_crop_buttons').style('opacity');
-      d3.selectAll(params.root + ' .' + inst_rc + '_dendro_crop_buttons').style('opacity', 0);
+      var _d3$select, _d3$selectAll;
+      inst_button_opacity = (_d3$select = d3.select(params.root + ' .' + inst_rc + '_dendro_crop_buttons')) === null || _d3$select === void 0 ? void 0 : _d3$select.style('opacity');
+      (_d3$selectAll = d3.selectAll(params.root + ' .' + inst_rc + '_dendro_crop_buttons')) === null || _d3$selectAll === void 0 ? void 0 : _d3$selectAll.style('opacity', 0);
       setTimeout(show_crop_buttons, 700, inst_rc, inst_button_opacity);
     });
 
