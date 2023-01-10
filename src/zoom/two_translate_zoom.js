@@ -165,7 +165,7 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
     var inst_button_opacity;
     ['row', 'col'].forEach(function (inst_rc) {
       inst_button_opacity = d3
-        .select(params.root + ' .' + inst_rc + '_dendro_crop_buttons')
+        ?.select(params.root + ' .' + inst_rc + '_dendro_crop_buttons')
         ?.style('opacity');
       d3.selectAll(
         params.root + ' .' + inst_rc + '_dendro_crop_buttons'
