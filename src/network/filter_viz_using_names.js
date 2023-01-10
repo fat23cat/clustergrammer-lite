@@ -18,8 +18,9 @@ module.exports = function filter_viz_using_names(names, external_cgm = false) {
   var found_nodes;
 
   ['row', 'col'].forEach(function (inst_rc) {
-    var orig_nodes = params.inst_nodes[inst_rc + '_nodes'];
-
+    var orig_nodes = JSON.parse(
+      JSON.stringify(config.network_data[inst_rc + '_nodes'])
+    );
     if (utils.has(names, inst_rc)) {
       if (names[inst_rc].length > 0) {
         var inst_names = names[inst_rc];
@@ -28,12 +29,6 @@ module.exports = function filter_viz_using_names(names, external_cgm = false) {
             d.name.toLowerCase().includes(name.toLowerCase())
           )
         );
-        if (!found_nodes.length) {
-          found_nodes = orig_nodes.map((node) => ({
-            ...node,
-            name: ''
-          }));
-        }
       } else {
         found_nodes = orig_nodes;
       }

@@ -20199,12 +20199,6 @@ module.exports = function filter_network_using_new_nodes(config, new_nodes) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 var filter_network_using_new_nodes = __webpack_require__(/*! ./filter_network_using_new_nodes */ "./src/network/filter_network_using_new_nodes.js");
 var update_viz_with_network = __webpack_require__(/*! ../update/update_viz_with_network */ "./src/update/update_viz_with_network.js");
 var utils = __webpack_require__(/*! ../Utils_clust */ "./src/Utils_clust.js");
@@ -20223,7 +20217,7 @@ module.exports = function filter_viz_using_names(names) {
   var new_nodes = {};
   var found_nodes;
   ['row', 'col'].forEach(function (inst_rc) {
-    var orig_nodes = params.inst_nodes[inst_rc + '_nodes'];
+    var orig_nodes = JSON.parse(JSON.stringify(config.network_data[inst_rc + '_nodes']));
     if (utils.has(names, inst_rc)) {
       if (names[inst_rc].length > 0) {
         var inst_names = names[inst_rc];
@@ -20232,13 +20226,6 @@ module.exports = function filter_viz_using_names(names) {
             return d.name.toLowerCase().includes(name.toLowerCase());
           });
         });
-        if (!found_nodes.length) {
-          found_nodes = orig_nodes.map(function (node) {
-            return _objectSpread(_objectSpread({}, node), {}, {
-              name: ''
-            });
-          });
-        }
       } else {
         found_nodes = orig_nodes;
       }
