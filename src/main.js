@@ -17,6 +17,7 @@ var d3_tip_custom = require('./tooltip/d3_tip_custom');
 var all_reorder = require('./reorder/all_reorder');
 var make_matrix_string = require('./matrix/make_matrix_string');
 var d3 = require('d3');
+const run_row_search = require('./search/run_row_search');
 // var jQuery = require('jquery');
 
 // moved d3.slider to src
@@ -129,6 +130,9 @@ function Clustergrammer(args) {
   cgm.reorder = api_reorder;
   cgm.export_matrix_string = export_matrix_string;
   cgm.update_view = external_update_view;
+  cgm.row_search = function (searchValue) {
+    run_row_search(this, searchValue, this.params.network_data.row_nodes_names);
+  };
 
   return cgm;
 }

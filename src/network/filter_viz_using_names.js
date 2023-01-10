@@ -2,6 +2,7 @@ var filter_network_using_new_nodes = require('./filter_network_using_new_nodes')
 var update_viz_with_network = require('../update/update_viz_with_network');
 var utils = require('../Utils_clust');
 
+// TODO: revert changes
 module.exports = function filter_viz_using_names(names, external_cgm = false) {
   // names is an object with row and column names that will be used to filter
   // the matrix

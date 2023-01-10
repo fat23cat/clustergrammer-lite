@@ -18566,6 +18566,7 @@ var d3_tip_custom = __webpack_require__(/*! ./tooltip/d3_tip_custom */ "./src/to
 var all_reorder = __webpack_require__(/*! ./reorder/all_reorder */ "./src/reorder/all_reorder.js");
 var make_matrix_string = __webpack_require__(/*! ./matrix/make_matrix_string */ "./src/matrix/make_matrix_string.js");
 var d3 = __webpack_require__(/*! d3 */ "d3");
+var run_row_search = __webpack_require__(/*! ./search/run_row_search */ "./src/search/run_row_search.js");
 // var jQuery = require('jquery');
 
 // moved d3.slider to src
@@ -18660,6 +18661,9 @@ function Clustergrammer(args) {
   cgm.reorder = api_reorder;
   cgm.export_matrix_string = export_matrix_string;
   cgm.update_view = external_update_view;
+  cgm.row_search = function (searchValue) {
+    run_row_search(this, searchValue, this.params.network_data.row_nodes_names);
+  };
   return cgm;
 }
 module.exports = Clustergrammer;
@@ -20204,6 +20208,8 @@ module.exports = function filter_network_using_new_nodes(config, new_nodes) {
 var filter_network_using_new_nodes = __webpack_require__(/*! ./filter_network_using_new_nodes */ "./src/network/filter_network_using_new_nodes.js");
 var update_viz_with_network = __webpack_require__(/*! ../update/update_viz_with_network */ "./src/update/update_viz_with_network.js");
 var utils = __webpack_require__(/*! ../Utils_clust */ "./src/Utils_clust.js");
+
+// TODO: revert changes
 module.exports = function filter_viz_using_names(names) {
   var external_cgm = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
   // names is an object with row and column names that will be used to filter
@@ -23023,6 +23029,50 @@ module.exports = function file_saver() {
     return saveAs;
   }(self);
   return saveAs;
+};
+
+/***/ }),
+
+/***/ "./src/search/run_row_search.js":
+/*!**************************************!*\
+  !*** ./src/search/run_row_search.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var two_translate_zoom = __webpack_require__(/*! ../zoom/two_translate_zoom */ "./src/zoom/two_translate_zoom.js");
+module.exports = function run_row_search(cgm, search_term, entities) {
+  var prop = 'name';
+  if (entities.indexOf(search_term) !== -1) {
+    // unhighlight
+    d3.selectAll(cgm.params.root + ' .row_label_group').select('rect').style('opacity', 0);
+
+    // calc pan_dy
+    var idx = entities.indexOf(search_term);
+    var inst_y_pos = cgm.params.viz.y_scale(idx);
+    var pan_dy = cgm.params.viz.clust.dim.height / 2 - inst_y_pos;
+    var inst_zoom = cgm.params.viz.zoom_ratio.x;
+
+    // working on improving zoom behavior
+    ///////////////////////////////////////////////////
+    ///////////////////////////////////////////////////
+
+    // // increase zoom
+    // inst_zoom = 3 * inst_zoom;
+
+    // // move visualization down less
+    // pan_dy = pan_dy - 5;
+
+    two_translate_zoom(cgm, 0, pan_dy, inst_zoom);
+
+    // set y zoom to zoom_switch
+    cgm.params.zoom_info.zoom_y = inst_zoom;
+
+    // highlight
+    d3.selectAll(cgm.params.root + ' .row_label_group').filter(function (d) {
+      return d[prop] === search_term;
+    }).select('rect').style('opacity', 1);
+  }
 };
 
 /***/ }),
