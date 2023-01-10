@@ -20213,7 +20213,7 @@ module.exports = function filter_viz_using_names(names) {
   } else {
     cgm = external_cgm;
   }
-  var params = cgm.params;
+  var config = cgm.config;
   var new_nodes = {};
   var found_nodes;
   ['row', 'col'].forEach(function (inst_rc) {

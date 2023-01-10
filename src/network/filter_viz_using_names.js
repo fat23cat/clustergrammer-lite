@@ -13,7 +13,7 @@ module.exports = function filter_viz_using_names(names, external_cgm = false) {
     cgm = external_cgm;
   }
 
-  var params = cgm.params;
+  var config = cgm.config;
   var new_nodes = {};
   var found_nodes;
 
