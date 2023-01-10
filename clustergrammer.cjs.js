@@ -3322,6 +3322,8 @@ module.exports = function make_row_cat(cgm) {
   }).enter().append('g').attr('class', 'row_cat_group').attr('transform', function (d) {
     var inst_index = (params.network_data.row_nodes_names || []).indexOf(d.name);
     return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
+  }).attr('opacity', function (d) {
+    return d.name ? 'initial' : 0;
   });
   d3.select(params.root + ' .row_cat_container').selectAll('.row_cat_group').call(cat_tip);
   var cat_rect;
