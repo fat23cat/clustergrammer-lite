@@ -1,4 +1,4 @@
-import Clastergrammer from '../src/main.js';
+import Clustergrammer from '../src/main.js';
 
 function generateData() {
   const rowCount = 500;
@@ -36,7 +36,7 @@ function generateData() {
 }
 
 const network_data = generateData();
-const clastergrammer = Clastergrammer({
+const clustergrammer = Clustergrammer({
   root: '#clust_container',
   network_data,
   tile_colors: ['#2F80ED', '#2F80ED']
