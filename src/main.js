@@ -22,8 +22,6 @@ var d3 = require('d3');
 // moved d3.slider to src
 d3.slider = require('./d3.slider');
 
-/* eslint-disable */
-
 /* clustergrammer v1.19.5
  * Nicolas Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
  * (c) 2017
