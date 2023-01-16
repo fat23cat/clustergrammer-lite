@@ -71,11 +71,11 @@ HierarchicalClustering.prototype = {
 
   mergeClosest: function () {
     // find two closest clusters from cached mins
-    var minKey = 0,
-      min = Infinity;
+    var minKey = 0;
+    var min = Infinity;
     for (var i = 0; i < this.tree.length; i++) {
-      var key = this.tree[i].key,
-        dist = this.dists[key][this.mins[key]];
+      var key = this.tree[i].key;
+      var dist = this.dists[key][this.mins[key]];
       if (dist < min) {
         minKey = key;
         min = dist;
@@ -85,7 +85,8 @@ HierarchicalClustering.prototype = {
       return false;
     }
 
-    const c1 = this.index[minKey], c2 = this.index[this.mins[minKey]];
+    const c1 = this.index[minKey];
+    const c2 = this.index[this.mins[minKey]];
 
     // merge two closest clusters
     const merged = {
@@ -155,7 +156,8 @@ HierarchicalClustering.prototype = {
     //  Return all nodes if num is invalid
     if (num > this.tree.size || num < 1) num = this.tree.size;
 
-    const result = [], subtrees = [this.tree];
+    const result = [];
+    const subtrees = [this.tree];
 
     //  Get a list of root nodes for num different clusters
     while (num > 1) {
@@ -172,7 +174,8 @@ HierarchicalClustering.prototype = {
 
     //  Split the next furthest distance root node
     function _findNextFurthest(subtrees) {
-      let max = -1, furthest;
+      let max = -1;
+      let furthest;
       subtrees.forEach(function (tree) {
         if (tree.dist > max) {
           max = tree.dist;

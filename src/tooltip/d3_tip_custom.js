@@ -13,12 +13,12 @@ module.exports = function d3_tip_custom() {
   // improved multiple svg, scrolling+zooming support
   // made syntax fixes
   //////////////////////////////////////////////
-  let direction = d3_tip_direction,
-    offset = d3_tip_offset,
-    html = d3_tip_html,
-    svg = null,
-    point = null,
-    target = null;
+  let direction = d3_tip_direction;
+  let offset = d3_tip_offset;
+  let html = d3_tip_html;
+  let svg = null;
+  let point = null;
+  let target = null;
   const node = initNode();
 
   function tip(vis) {
@@ -170,17 +170,17 @@ module.exports = function d3_tip_custom() {
   }
 
   const direction_callbacks = d3.map({
-      n: direction_n,
-      s: direction_s,
-      e: direction_e,
-      w: direction_w,
-      nw: direction_nw,
-      ne: direction_ne,
-      sw: direction_sw,
-      se: direction_se,
-      south_custom: direction_south_custom
-    }),
-    directions = direction_callbacks.keys();
+    n: direction_n,
+    s: direction_s,
+    e: direction_e,
+    w: direction_w,
+    nw: direction_nw,
+    ne: direction_ne,
+    sw: direction_sw,
+    se: direction_se,
+    south_custom: direction_south_custom
+  });
+  const directions = direction_callbacks.keys();
 
   function direction_south_custom() {
     const bbox = getScreenBBox();

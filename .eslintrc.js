@@ -11,6 +11,7 @@ module.exports = {
   },
   rules: {
     'no-var': 'warn',
-    'prefer-const': 'warn'
+    'prefer-const': 'warn',
+    'one-var': ['warn', 'never']
   }
 };

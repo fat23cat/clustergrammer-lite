@@ -1,3 +1,4 @@
+/* eslint-disable */
 module.exports = function file_saver() {
   /* FileSaver.js
    * A saveAs() FileSaver implementation.
@@ -8,14 +9,18 @@ module.exports = function file_saver() {
    *   See LICENSE.md
    */
 
+  /*global self */
+  /*jslint bitwise: true, regexp: true, confusion: true, es5: true, vars: true, white: true,
+  plusplus: true */
+
   /*! @source http://purl.eligrey.com/github/FileSaver.js/blob/master/FileSaver.js */
 
-  const saveAs =
+  var saveAs =
     saveAs ||
     (navigator.msSaveBlob && navigator.msSaveBlob.bind(navigator)) ||
     (function (view) {
       'use strict';
-      let doc = view.document,
+      var doc = view.document,
         // only get URL when necessary in case BlobBuilder.js hasn't overridden it yet
         get_URL = function () {
           return view.URL || view.webkitURL || view;
@@ -24,7 +29,7 @@ module.exports = function file_saver() {
         save_link = doc.createElementNS('http://www.w3.org/1999/xhtml', 'a'),
         can_use_save_link = 'download' in save_link,
         click = function (node) {
-          const event = doc.createEvent('MouseEvents');
+          var event = doc.createEvent('MouseEvents');
           event.initMouseEvent(
             'click',
             true,
@@ -56,9 +61,9 @@ module.exports = function file_saver() {
         fs_min_size = 0,
         deletion_queue = [],
         process_deletion_queue = function () {
-          let i = deletion_queue.length;
+          var i = deletion_queue.length;
           while (i--) {
-            const file = deletion_queue[i];
+            var file = deletion_queue[i];
             if (typeof file === 'string') {
               // file is an object URL
               URL.revokeObjectURL(file);
@@ -71,9 +76,9 @@ module.exports = function file_saver() {
         },
         dispatch = function (filesaver, event_types, event) {
           event_types = [].concat(event_types);
-          let i = event_types.length;
+          var i = event_types.length;
           while (i--) {
-            const listener = filesaver['on' + event_types[i]];
+            var listener = filesaver['on' + event_types[i]];
             if (typeof listener === 'function') {
               try {
                 listener.call(filesaver, event || filesaver);
@@ -85,13 +90,13 @@ module.exports = function file_saver() {
         },
         FileSaver = function (blob, name) {
           // First try a.download, then web filesystem, then object URLs
-          let filesaver = this,
+          var filesaver = this,
             type = blob.type,
             blob_changed = false,
             object_url,
             target_view,
             get_object_url = function () {
-              const object_url = get_URL().createObjectURL(blob);
+              var object_url = get_URL().createObjectURL(blob);
               deletion_queue.push(object_url);
               return object_url;
             },
@@ -167,7 +172,7 @@ module.exports = function file_saver() {
                 'saved',
                 create_if_not_found,
                 abortable(function (dir) {
-                  const save = function () {
+                  var save = function () {
                     dir.getFile(
                       name,
                       create_if_not_found,
@@ -181,7 +186,7 @@ module.exports = function file_saver() {
                               dispatch(filesaver, 'writeend', event);
                             };
                             writer.onerror = function () {
-                              const error = writer.error;
+                              var error = writer.error;
                               if (error.code !== error.ABORT_ERR) {
                                 fs_error();
                               }
@@ -232,7 +237,7 @@ module.exports = function file_saver() {
           return new FileSaver(blob, name);
         };
       FS_proto.abort = function () {
-        const filesaver = this;
+        var filesaver = this;
         filesaver.readyState = filesaver.DONE;
         dispatch(filesaver, 'abort');
       };

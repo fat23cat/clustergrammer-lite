@@ -85,8 +85,8 @@ module.exports = function make_simple_rows(
 
   if (make_tip) {
     let data = null;
-    let posX,
-      posY = null;
+    let posX;
+    let posY = null;
     tile
       .on('mouseover', function mouseover() {
         for (

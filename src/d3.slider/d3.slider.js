@@ -26,10 +26,27 @@
     'use strict';
 
     // Public variables width default settings
-    let min = 0, max = 100, step = 0.01, animate = false, orientation = 'horizontal', axis = false, margin = 50, value, active = 1, snap = false, scale;
+    let min = 0;
+    let max = 100;
+    let step = 0.01;
+    let animate = false;
+    let orientation = 'horizontal';
+    let axis = false;
+    let margin = 50;
+    let value;
+    let active = 1;
+    let snap = false;
+    let scale;
 
     // Private variables
-    let axisScale, dispatch = d3.dispatch('slide', 'slideend'), formatPercent = d3.format('.2%'), tickFormat = d3.format('.0'), handle1, handle2 = null, divRange, sliderLength;
+    let axisScale;
+    let dispatch = d3.dispatch('slide', 'slideend');
+    let formatPercent = d3.format('.2%');
+    let tickFormat = d3.format('.0');
+    let handle1;
+    let handle2 = null;
+    let divRange;
+    let sliderLength;
 
     function slider(selection) {
       selection.each(function () {
@@ -265,12 +282,12 @@
     // Move slider handle on click/drag
     function moveHandle(newValue) {
       const currentValue =
-                toType(value) == 'array' && value.length == 2
-                  ? value[active - 1]
-                  : value,
-            oldPos = formatPercent(scale(stepValue(currentValue))),
-            newPos = formatPercent(scale(stepValue(newValue))),
-            position = orientation === 'horizontal' ? 'left' : 'bottom';
+        toType(value) == 'array' && value.length == 2
+          ? value[active - 1]
+          : value;
+      const oldPos = formatPercent(scale(stepValue(currentValue)));
+      const newPos = formatPercent(scale(stepValue(newValue)));
+      const position = orientation === 'horizontal' ? 'left' : 'bottom';
       if (oldPos !== newPos) {
         if (toType(value) == 'array' && value.length == 2) {
           value[active - 1] = newValue;
@@ -353,7 +370,9 @@
       const dist = ticks.map(function (d) {
         return pos - scale(d);
       });
-      let i = -1, index = 0, r = scale.ticks ? scale.range()[1] : scale.rangeExtent()[1];
+      let i = -1;
+      let index = 0;
+      let r = scale.ticks ? scale.range()[1] : scale.rangeExtent()[1];
       do {
         i++;
         if (Math.abs(dist[i]) < r) {

@@ -13,7 +13,8 @@ KMeans.prototype.randomCentroids = function (points, k) {
 };
 
 KMeans.prototype.classify = function (point, distance) {
-  let min = Infinity, index = 0;
+  let min = Infinity;
+  let index = 0;
 
   distance = distance || 'euclidean';
   if (typeof distance == 'string') {
