@@ -1,22 +1,19 @@
-const d3 = require('d3');
-const utils = require('../Utils_clust');
-const add_row_click_hlight = require('./add_row_click_hlight');
-const row_reorder = require('../reorder/row_reorder');
-const make_row_tooltips = require('./make_row_tooltips');
-const each = require('underscore/cjs/each');
-const contains = require('underscore/cjs/contains');
-
-module.exports = function make_row_labels(
+import d3 from 'd3';
+import utils from '../Utils_clust.js';
+import add_row_click_hlight from './add_row_click_hlight.js';
+import row_reorder from '../reorder/row_reorder.js';
+import make_row_tooltips from './make_row_tooltips.js';
+import each from 'underscore/modules/each';
+import contains from 'underscore/modules/contains';
+export default (function make_row_labels(
   cgm,
   row_names = 'all',
   text_delay = 0
 ) {
   // console.log('make_row_labels')
   // console.log(row_names)
-
   const params = cgm.params;
   let row_nodes = [];
-
   if (row_names === 'all') {
     row_nodes = params.network_data.row_nodes;
   } else {
@@ -26,7 +23,6 @@ module.exports = function make_row_labels(
       }
     });
   }
-
   // make row labels in row_label_zoom_container, bind row_nodes data
   const row_labels = d3
     .select(params.root + ' .row_label_zoom_container')
@@ -37,46 +33,35 @@ module.exports = function make_row_labels(
     .enter()
     .append('g')
     .classed('row_label_group', true);
-
   const row_nodes_names = params.network_data.row_nodes_names || [];
   row_labels.attr('transform', function (d) {
     // var inst_index = d.row_index;
     const inst_index = row_nodes_names.indexOf(d.name);
     return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
   });
-
   row_labels.on('dblclick', function (d) {
     const data_attr = '__data__';
     const row_name = this[data_attr].name;
-
     // if (params.sim_mat){
     //   row_reorder(cgm, this, row_name);
-
     //   d3.selectAll(params.root+' .col_label_text')
     //     .filter(function(d){
     //       return d.name == row_name;}
     //       )[0][0];
-
     //   // this is causing buggyness may reenable
     //   // col_reorder -> two_translate_zoom -> show_visible_area -> make_row_labels -> col_reorder
     //   // col_reorder(cgm, col_selection, row_name);
-
     // } else {
     //   row_reorder(cgm, this, row_name);
     // }
-
     row_reorder(cgm, this, row_name);
-
     if (params.tile_click_hlight) {
       add_row_click_hlight(this, d.ini);
     }
   });
-
   make_row_tooltips(params);
-
   // append rectangle behind text
   row_labels.insert('rect').style('opacity', 0);
-
   // append row label text
   row_labels
     .append('text')
@@ -96,7 +81,6 @@ module.exports = function make_row_labels(
     .delay(text_delay)
     .duration(text_delay)
     .style('opacity', 1);
-
   // change the size of the highlighting rects
   row_labels.each(function () {
     const bbox = d3.select(this).select('text')[0][0].getBBox();
@@ -119,7 +103,6 @@ module.exports = function make_row_labels(
         return inst_opacity;
       });
   });
-
   // almost-deprecated row value bars
   ///////////////////////////////
   if (utils.has(params.network_data.row_nodes[0], 'value')) {
@@ -144,4 +127,4 @@ module.exports = function make_row_labels(
       })
       .attr('opacity', 0.4);
   }
-};
+});

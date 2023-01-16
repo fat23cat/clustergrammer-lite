@@ -1,31 +1,25 @@
-const d3 = require('d3');
-const utils = require('../Utils_clust');
-const trim_text = require('../zoom/trim_text');
-const constrain_font_size = require('../zoom/constrain_font_size');
-
-module.exports = function label_constrain_and_trim(params) {
-  // console.log('label_constrain_and_trim');
-
-  // reset text in rows and columns
-  d3.selectAll(params.root + ' .row_label_group')
-    .select('text')
-    .text(function (d) {
-      return utils.normal_name(d);
+import d3 from "d3";
+import utils from "../Utils_clust.js";
+import trim_text from "../zoom/trim_text.js";
+import constrain_font_size from "../zoom/constrain_font_size.js";
+export default (function label_constrain_and_trim(params) {
+    // console.log('label_constrain_and_trim');
+    // reset text in rows and columns
+    d3.selectAll(params.root + ' .row_label_group')
+        .select('text')
+        .text(function (d) {
+        return utils.normal_name(d);
     });
-
-  d3.selectAll(params.root + ' .col_label_text')
-    .select('text')
-    .text(function (d) {
-      return utils.normal_name(d);
+    d3.selectAll(params.root + ' .col_label_text')
+        .select('text')
+        .text(function (d) {
+        return utils.normal_name(d);
     });
-
-  constrain_font_size(params);
-
-  d3.selectAll(params.root + ' .row_label_group').each(function () {
-    trim_text(params, this, 'row');
-  });
-
-  d3.selectAll(params.root + ' .col_label_group').each(function () {
-    trim_text(params, this, 'col');
-  });
-};
+    constrain_font_size(params);
+    d3.selectAll(params.root + ' .row_label_group').each(function () {
+        trim_text(params, this, 'row');
+    });
+    d3.selectAll(params.root + ' .col_label_group').each(function () {
+        trim_text(params, this, 'col');
+    });
+});

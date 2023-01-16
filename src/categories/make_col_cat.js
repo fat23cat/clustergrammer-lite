@@ -1,16 +1,13 @@
-const d3 = require('d3');
-const cat_tooltip_text = require('./cat_tooltip_text');
-const d3_tip_custom = require('../tooltip/d3_tip_custom');
-const reset_cat_opacity = require('./reset_cat_opacity');
-const ini_cat_opacity = require('./ini_cat_opacity');
-// var click_filter_cats = require('./click_filter_cats');
-const get_cat_names = require('../categories/get_cat_names');
-const each = require('underscore/cjs/each');
-const $ = require('jquery');
-
-module.exports = function make_col_cat(cgm) {
+import d3 from 'd3';
+import cat_tooltip_text from './cat_tooltip_text.js';
+import d3_tip_custom from '../tooltip/d3_tip_custom.js';
+import reset_cat_opacity from './reset_cat_opacity.js';
+import ini_cat_opacity from './ini_cat_opacity.js';
+import get_cat_names from './get_cat_names.js';
+import each from 'underscore/modules/each';
+import * as $ from 'jquery';
+export default (function make_col_cat(cgm) {
   const params = cgm.params;
-
   // make or reuse outer container
   if (d3.select(params.root + ' .col_cat_outer_container').empty()) {
     d3.select(params.root + ' .col_container')
@@ -30,10 +27,8 @@ module.exports = function make_col_cat(cgm) {
         return 'translate(0,' + inst_offset + ')';
       });
   }
-
   // remove old col_cat_tips
   d3.selectAll(params.viz.root_tips + '_col_cat_tip').remove();
-
   // d3-tooltip
   const cat_tip = d3_tip_custom()
     .attr('class', function () {
@@ -48,7 +43,6 @@ module.exports = function make_col_cat(cgm) {
     .html(function (d) {
       return cat_tooltip_text(params, d, this, 'col');
     });
-
   // append groups - each will hold classification rects
   d3.select(params.root + ' .col_cat_container')
     .selectAll('g')
@@ -65,20 +59,16 @@ module.exports = function make_col_cat(cgm) {
       // return 'translate(' + params.viz.x_scale(d.col_index) + ',0)';
       return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
     });
-
   d3.select(params.root + ' .col_cat_container')
     .selectAll('.col_cat_group')
     .call(cat_tip);
-
   // add category rects
   d3.selectAll(params.root + ' .col_cat_group').each(function () {
     const inst_selection = this;
     let cat_rect;
-
     each(params.viz.all_cats.col, function (inst_cat) {
       const inst_num = parseInt(inst_cat.split('-')[1], 10);
       const cat_rect_class = 'col_cat_rect_' + String(inst_num);
-
       if (
         d3
           .select(inst_selection)
@@ -99,7 +89,6 @@ module.exports = function make_col_cat(cgm) {
           .on('click', function (d) {
             if (d3.select(this).classed('cat_strings')) {
               const found_names = get_cat_names(params, d, this, 'col');
-
               $(params.root + ' .dendro_info').modal('toggle');
               const group_string = found_names.join(', ');
               d3.select(params.root + ' .dendro_info input').attr(
@@ -111,7 +100,6 @@ module.exports = function make_col_cat(cgm) {
       } else {
         cat_rect = d3.select(inst_selection).select('.' + cat_rect_class);
       }
-
       cat_rect
         .attr('width', params.viz.x_scale.rangeBand())
         .attr('height', params.viz.cat_room.symbol_width)
@@ -125,11 +113,9 @@ module.exports = function make_col_cat(cgm) {
           cat_tip.hide(this);
           reset_cat_opacity(params);
           d3.select(this).classed('hovering', false);
-
           d3.selectAll('.d3-tip').style('display', 'none');
         });
-
       ini_cat_opacity(params.viz, 'col', cat_rect, inst_cat);
     });
   });
-};
+});

@@ -1,10 +1,9 @@
-const d3 = require('d3');
-const draw_up_tile = require('./draw_up_tile');
-const draw_dn_tile = require('./draw_dn_tile');
-const fine_position_tile = require('../matrix/fine_position_tile');
-const filter = require('underscore/cjs/filter');
-
-module.exports = function enter_split_tiles(
+import d3 from 'd3';
+import draw_up_tile from './draw_up_tile.js';
+import draw_dn_tile from './draw_dn_tile.js';
+import fine_position_tile from '../matrix/fine_position_tile.js';
+import filter from 'underscore/modules/filter';
+export default (function enter_split_tiles(
   params,
   inp_row_data,
   row_selection,
@@ -17,7 +16,6 @@ module.exports = function enter_split_tiles(
   const row_split_data = filter(inp_row_data, function (num) {
     return num.value_up != 0 || num.value_dn != 0;
   });
-
   // tile_up
   const new_tiles_up = d3
     .select(row_selection)
@@ -45,7 +43,6 @@ module.exports = function enter_split_tiles(
           return p.row_name === d.name;
         }
       );
-
       d3.selectAll(params.root + ' .col_label_text text').classed(
         'active',
         function (d) {
@@ -62,7 +59,6 @@ module.exports = function enter_split_tiles(
         tip.hide();
       }
     });
-
   new_tiles_up
     .style('fill-opacity', 0)
     .transition()
@@ -75,7 +71,6 @@ module.exports = function enter_split_tiles(
       }
       return inst_opacity;
     });
-
   // tile_dn
   const new_tiles_dn = d3
     .select(row_selection)
@@ -103,7 +98,6 @@ module.exports = function enter_split_tiles(
           return p.row_name === d.name;
         }
       );
-
       d3.selectAll(params.root + ' .col_label_text text').classed(
         'active',
         function (d) {
@@ -120,7 +114,6 @@ module.exports = function enter_split_tiles(
         tip.hide();
       }
     });
-
   new_tiles_dn
     .style('fill-opacity', 0)
     .transition()
@@ -133,11 +126,10 @@ module.exports = function enter_split_tiles(
       }
       return inst_opacity;
     });
-
   // remove tiles when splitting is done
   tile.each(function (d) {
     if (Math.abs(d.value_up) > 0 && Math.abs(d.value_dn) > 0) {
       d3.select(this).remove();
     }
   });
-};
+});

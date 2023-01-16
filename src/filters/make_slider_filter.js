@@ -4,7 +4,7 @@ const get_filter_default_state = require('./get_filter_default_state');
 const get_subset_views = require('./get_subset_views');
 const d3 = require('d3');
 d3.slider = require('../d3.slider');
-const debounce = require('underscore/cjs/debounce');
+const debounce = require('underscore/modules/debounce');
 
 module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
   const params = cgm.params;

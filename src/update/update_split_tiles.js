@@ -1,12 +1,11 @@
-const d3 = require('d3');
-const draw_up_tile = require('../enter/draw_up_tile');
-const draw_dn_tile = require('../enter/draw_dn_tile');
-const mouseover_tile = require('../matrix/mouseover_tile');
-const mouseout_tile = require('../matrix/mouseout_tile');
-const fine_position_tile = require('../matrix/fine_position_tile');
-const filter = require('underscore/cjs/filter');
-
-module.exports = function update_split_tiles(
+import d3 from 'd3';
+import draw_up_tile from '../enter/draw_up_tile.js';
+import draw_dn_tile from '../enter/draw_dn_tile.js';
+import mouseover_tile from '../matrix/mouseover_tile.js';
+import mouseout_tile from '../matrix/mouseout_tile.js';
+import fine_position_tile from '../matrix/fine_position_tile.js';
+import filter from 'underscore/modules/filter';
+export default (function update_split_tiles(
   params,
   inp_row_data,
   row_selection,
@@ -19,7 +18,6 @@ module.exports = function update_split_tiles(
   const row_split_data = filter(inp_row_data, function (num) {
     return num.value_up != 0 || num.value_dn != 0;
   });
-
   // tile_up
   const cur_tiles_up = d3
     .select(row_selection)
@@ -27,7 +25,6 @@ module.exports = function update_split_tiles(
     .data(row_split_data, function (d) {
       return d.col_name;
     });
-
   // update split tiles_up
   const update_tiles_up = cur_tiles_up
     .on('mouseover', function (...args) {
@@ -36,7 +33,6 @@ module.exports = function update_split_tiles(
     .on('mouseout', function mouseout() {
       mouseout_tile(params, this, tip);
     });
-
   if (delays.run_transition) {
     update_tiles_up
       .transition()
@@ -57,7 +53,6 @@ module.exports = function update_split_tiles(
         return fine_position_tile(params, d);
       });
   }
-
   // tile_dn
   const cur_tiles_dn = d3
     .select(row_selection)
@@ -65,7 +60,6 @@ module.exports = function update_split_tiles(
     .data(row_split_data, function (d) {
       return d.col_name;
     });
-
   // update split tiles_dn
   const update_tiles_dn = cur_tiles_dn
     .on('mouseover', function (...args) {
@@ -74,7 +68,6 @@ module.exports = function update_split_tiles(
     .on('mouseout', function mouseout() {
       mouseout_tile(params, this, tip);
     });
-
   if (delays.run_transition) {
     update_tiles_dn
       .transition()
@@ -95,11 +88,10 @@ module.exports = function update_split_tiles(
         return fine_position_tile(params, d);
       });
   }
-
   // remove tiles when splitting is done
   cur_row_tiles.selectAll('.tile').each(function (d) {
     if (Math.abs(d.value_up) > 0 && Math.abs(d.value_dn) > 0) {
       d3.select(this).remove();
     }
   });
-};
+});

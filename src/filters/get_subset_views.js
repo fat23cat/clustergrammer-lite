@@ -1,23 +1,18 @@
-const utils = require('../Utils_clust');
-const get_filter_default_state = require('./get_filter_default_state');
-const filter = require('underscore/cjs/filter');
-const each = require('underscore/cjs/each');
-
-module.exports = function get_subset_views(params, views, requested_view) {
+import utils from '../Utils_clust.js';
+import get_filter_default_state from './get_filter_default_state.js';
+import filter from 'underscore/modules/filter';
+import each from 'underscore/modules/each';
+export default (function get_subset_views(params, views, requested_view) {
   let inst_value;
   let found_filter;
-
   const request_filters = Object.keys(requested_view || {});
-
   // find a view that matches all of the requested view/filter-attributes
   request_filters.forEach(function (inst_filter) {
     inst_value = requested_view[inst_filter];
-
     // if the value is a number, then convert it to an integer
     if (/[^a-z_]/i.test(inst_value)) {
       inst_value = parseInt(inst_value, 10);
     }
-
     // only run filtering if any of the views has the filter
     found_filter = false;
     each(views, function (tmp_view) {
@@ -25,25 +20,21 @@ module.exports = function get_subset_views(params, views, requested_view) {
         found_filter = true;
       }
     });
-
     if (found_filter) {
       views = filter(views, function (d) {
         return d[inst_filter] == inst_value;
       });
     }
   });
-
   // remove duplicate complete default states
   const export_views = [];
   let found_default = false;
   let check_default;
   let inst_default_state;
-
   // check if each view is a default state: all filters are at default
   // there can only be one of these
   each(views, function (inst_view) {
     check_default = true;
-
     // check each filter in a view to see if it is in the default state
     Object.keys(params.viz.possible_filters || {}).forEach(function (
       inst_filter
@@ -52,12 +43,10 @@ module.exports = function get_subset_views(params, views, requested_view) {
         params.viz.filter_data,
         inst_filter
       );
-
       if (inst_view[inst_filter] != inst_default_state) {
         check_default = false;
       }
     });
-
     // found defaule view, only append if you have not already found a default
     if (check_default) {
       if (found_default === false) {
@@ -68,6 +57,5 @@ module.exports = function get_subset_views(params, views, requested_view) {
       export_views.push(inst_view);
     }
   });
-
   return export_views;
-};
+});

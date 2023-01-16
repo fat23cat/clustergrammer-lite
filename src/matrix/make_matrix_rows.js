@@ -1,11 +1,9 @@
-const d3 = require('d3');
-const make_simple_rows = require('./make_simple_rows');
-const d3_tip_custom = require('../tooltip/d3_tip_custom');
-const each = require('underscore/cjs/each');
-const contains = require('underscore/cjs/contains');
-
-// current matrix can change with downsampling
-module.exports = function make_matrix_rows(
+import d3 from 'd3';
+import make_simple_rows from './make_simple_rows.js';
+import d3_tip_custom from '../tooltip/d3_tip_custom.js';
+import each from 'underscore/modules/each';
+import contains from 'underscore/modules/contains';
+export default (function make_matrix_rows(
   params,
   current_matrix,
   row_names = 'all',
@@ -15,21 +13,16 @@ module.exports = function make_matrix_rows(
   let y_scale = params.viz.y_scale;
   let make_tip = true;
   let row_class = 'row';
-
   if (ds_level >= 0) {
     y_scale = params.viz.ds[ds_level].y_scale;
-
     // do not show tip when rows are downsampled
     make_tip = false;
     row_class = 'ds' + String(ds_level) + '_row';
   }
-
   let tip;
-
   if (make_tip) {
     // do not remove tile_tip here
     /////////////////////////////////
-
     // make rows in the matrix - add key names to rows in matrix
     /////////////////////////////////////////////////////////////
     // d3-tooltip - for tiles
@@ -46,7 +39,6 @@ module.exports = function make_matrix_rows(
       .html(function (d) {
         const inst_value = String(d.value.toFixed(3));
         let tooltip_string;
-
         if (params.keep_orig) {
           const orig_value = String(d.value_orig.toFixed(3));
           tooltip_string =
@@ -72,13 +64,11 @@ module.exports = function make_matrix_rows(
             inst_value +
             '</div>';
         }
-
         return tooltip_string;
       });
   } else {
     tip = null;
   }
-
   // gather a subset of row data from the matrix or use all rows
   let matrix_subset = [];
   if (row_names === 'all') {
@@ -90,7 +80,6 @@ module.exports = function make_matrix_rows(
       }
     });
   }
-
   d3.select(params.root + ' .clust_group')
     .selectAll('.row')
     .data(matrix_subset, function (d) {
@@ -105,8 +94,7 @@ module.exports = function make_matrix_rows(
     .each(function (d) {
       make_simple_rows(params, d, tip, this, ds_level);
     });
-
   if (params.viz.ds_level === -1 && tip != null) {
     d3.selectAll(params.root + ' .row').call(tip);
   }
-};
+});

@@ -1,14 +1,10 @@
-const d3 = require('d3');
-
-const utils = require('../Utils_clust');
-const initialize_matrix = require('../initialize_matrix');
-const max = require('underscore/cjs/max');
-
-module.exports = function ini_matrix_params(params) {
+import d3 from 'd3';
+import utils from '../Utils_clust.js';
+import initialize_matrix from '../initialize_matrix.js';
+import max from 'underscore/modules/max';
+export default (function ini_matrix_params(params) {
   const matrix = {};
-
   const network_data = params.network_data;
-
   matrix.tile_colors = params.tile_colors;
   matrix.bar_colors = params.bar_colors;
   matrix.outline_colors = params.outline_colors;
@@ -16,24 +12,19 @@ module.exports = function ini_matrix_params(params) {
   matrix.tile_title = params.tile_title;
   matrix.show_tile_tooltips = params.show_tile_tooltips;
   matrix.make_tile_tooltip = params.make_tile_tooltip;
-
   matrix.distance_metric = 'cosine';
   matrix.linkage_type = 'average';
   matrix.filter_state = 'no-filter';
   matrix.normalization_state = 'no-normalization';
-
   // initialized clicked tile and rows
   matrix.click_hlight_x = -666;
   matrix.click_hlight_y = -666;
   matrix.click_hlight_row = -666;
   matrix.click_hlight_col = -666;
-
   // definition of a large matrix (num links) determines if transition is run
   matrix.def_large_matrix = 2e4;
   matrix.opacity_function = params.opacity_scale;
-
   matrix.orders = {};
-
   ['row', 'col'].forEach(function (inst_rc) {
     // row ordering is based on col info and vice versa
     let other_rc;
@@ -42,26 +33,19 @@ module.exports = function ini_matrix_params(params) {
     } else {
       other_rc = 'row';
     }
-
     // the nodes are defined using other_rc
     const inst_nodes = network_data[other_rc + '_nodes'] || [];
     const num_nodes = inst_nodes.length;
-
     const nodes_names = utils.pluck(inst_nodes, 'name');
     const tmp = nodes_names.sort();
-
     const alpha_index = tmp.map(function (d) {
       return network_data[other_rc + '_nodes_names'].indexOf(d);
     });
-
     matrix.orders['alpha_' + inst_rc] = alpha_index;
-
     const possible_orders = ['clust', 'rank'];
-
     if (utils.has(inst_nodes[0], 'rankvar')) {
       possible_orders.push('rankvar');
     }
-
     if (params.viz.all_cats[other_rc].length > 0) {
       params.viz.all_cats[other_rc].forEach(function (inst_cat) {
         // the index of the category has replaced - with _
@@ -69,16 +53,13 @@ module.exports = function ini_matrix_params(params) {
         possible_orders.push(inst_cat + '_index');
       });
     }
-
     possible_orders.forEach(function (inst_order) {
       const tmp_order_index = d3.range(num_nodes).sort(function (a, b) {
         return inst_nodes[b][inst_order] - inst_nodes[a][inst_order];
       });
-
       matrix.orders[inst_order + '_' + inst_rc] = tmp_order_index;
     });
   });
-
   if (utils.has(network_data, 'all_links')) {
     matrix.max_link = max(network_data.all_links, function (d) {
       return Math.abs(d.value);
@@ -88,9 +69,7 @@ module.exports = function ini_matrix_params(params) {
       return Math.abs(d.value);
     }).value;
   }
-
   matrix.abs_max_val = Math.abs(matrix.max_link) * params.clamp_opacity;
-
   if (params.input_domain === 0) {
     if (matrix.opacity_function === 'linear') {
       matrix.opacity_scale = d3.scale
@@ -120,25 +99,19 @@ module.exports = function ini_matrix_params(params) {
         .range([0.0, 1.0]);
     }
   }
-
   const has_val_up = utils.has(network_data.links[0], 'value_up');
   const has_val_dn = utils.has(network_data.links[0], 'value_dn');
-
   if (has_val_up || has_val_dn) {
     matrix.tile_type = 'updn';
   } else {
     matrix.tile_type = 'simple';
   }
-
   if (utils.has(network_data.links[0], 'highlight')) {
     matrix.highlight = 1;
   } else {
     matrix.highlight = 0;
   }
-
   matrix.matrix = initialize_matrix(network_data);
-
   matrix.wait_tooltip = 0;
-
   return matrix;
-};
+});

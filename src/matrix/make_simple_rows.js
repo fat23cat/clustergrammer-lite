@@ -1,16 +1,14 @@
-const d3 = require('d3');
-const draw_up_tile = require('../enter/draw_up_tile');
-const draw_dn_tile = require('../enter/draw_dn_tile');
-const mouseover_tile = require('./mouseover_tile');
-const mouseout_tile = require('./mouseout_tile');
-const fine_position_tile = require('./fine_position_tile');
-const filter = require('underscore/cjs/filter');
-const utils = require('../Utils_clust');
-const click_tile = require('./click_tile');
-
+import d3 from 'd3';
+import draw_up_tile from '../enter/draw_up_tile.js';
+import draw_dn_tile from '../enter/draw_dn_tile.js';
+import mouseover_tile from './mouseover_tile.js';
+import mouseout_tile from './mouseout_tile.js';
+import fine_position_tile from './fine_position_tile.js';
+import filter from 'underscore/modules/filter';
+import utils from '../Utils_clust.js';
+import click_tile from './click_tile.js';
 const POSITION_INACCURACY = 2;
-
-module.exports = function make_simple_rows(
+export default (function make_simple_rows(
   params,
   inst_data,
   tip,
@@ -18,21 +16,18 @@ module.exports = function make_simple_rows(
   ds_level = -1
 ) {
   const inp_row_data = inst_data.row_data;
-
   const make_tip = true;
   let rect_height = params.viz.rect_height;
   if (ds_level >= 0) {
     // make_tip = false;
     rect_height = params.viz.ds[ds_level].rect_height;
   }
-
   let keep_orig;
   if (utils.has(params.network_data.links[0], 'value_orig')) {
     keep_orig = true;
   } else {
     keep_orig = false;
   }
-
   let row_values;
   if (keep_orig === false) {
     // value: remove zero values to make visualization faster
@@ -42,7 +37,6 @@ module.exports = function make_simple_rows(
   } else {
     row_values = inp_row_data;
   }
-
   // generate tiles in the current row
   const tile = d3
     .select(row_selection)
@@ -82,7 +76,6 @@ module.exports = function make_simple_rows(
     .attr('transform', function (d) {
       return fine_position_tile(params, d);
     });
-
   if (make_tip) {
     let data = null;
     let posX;
@@ -114,7 +107,6 @@ module.exports = function make_simple_rows(
         }
       });
   }
-
   // // tile circles
   // /////////////////////////////
   // var tile = d3.select(row_selection)
@@ -155,13 +147,11 @@ module.exports = function make_simple_rows(
   //   .attr('transform', function(d) {
   //     return fine_position_tile(params, d);
   //   });
-
   if (params.matrix.tile_type == 'updn') {
     // value split
     const row_split_data = filter(inp_row_data, function (num) {
       return num.value_up != 0 || num.value_dn != 0;
     });
-
     // tile_up
     d3.select(row_selection)
       .selectAll('.tile_up')
@@ -193,7 +183,6 @@ module.exports = function make_simple_rows(
       .on('mouseout', function () {
         mouseout_tile(params, this, tip);
       });
-
     // tile_dn
     d3.select(row_selection)
       .selectAll('.tile_dn')
@@ -225,7 +214,6 @@ module.exports = function make_simple_rows(
       .on('mouseout', function () {
         mouseout_tile(params, this, tip);
       });
-
     // remove rect when tile is split
     tile.each(function (d) {
       if (Math.abs(d.value_up) > 0 && Math.abs(d.value_dn) > 0) {
@@ -233,7 +221,6 @@ module.exports = function make_simple_rows(
       }
     });
   }
-
   // append title to group
   if (params.matrix.tile_title) {
     tile.append('title').text(function (d) {
@@ -241,4 +228,4 @@ module.exports = function make_simple_rows(
       return inst_string;
     });
   }
-};
+});

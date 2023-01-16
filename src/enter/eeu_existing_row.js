@@ -1,15 +1,13 @@
-const d3 = require('d3');
-const exit_existing_row = require('../exit/exit_existing_row');
-const enter_existing_row = require('./enter_existing_row');
-const update_split_tiles = require('../update/update_split_tiles');
-const mouseover_tile = require('../matrix/mouseover_tile');
-const mouseout_tile = require('../matrix/mouseout_tile');
-const fine_position_tile = require('../matrix/fine_position_tile');
-const filter = require('underscore/cjs/filter');
-const contains = require('underscore/cjs/contains');
-
-// TODO add tip back to arguments
-module.exports = function eeu_existing_row(
+import d3 from 'd3';
+import exit_existing_row from '../exit/exit_existing_row.js';
+import enter_existing_row from './enter_existing_row.js';
+import update_split_tiles from '../update/update_split_tiles.js';
+import mouseover_tile from '../matrix/mouseover_tile.js';
+import mouseout_tile from '../matrix/mouseout_tile.js';
+import fine_position_tile from '../matrix/fine_position_tile.js';
+import filter from 'underscore/modules/filter';
+import contains from 'underscore/modules/contains';
+export default (function eeu_existing_row(
   params,
   ini_inp_row_data,
   delays,
@@ -18,12 +16,10 @@ module.exports = function eeu_existing_row(
   tip
 ) {
   const inp_row_data = ini_inp_row_data.row_data;
-
   // remove zero values from
   const row_values = filter(inp_row_data, function (num) {
     return num.value != 0;
   });
-
   // bind data to tiles
   const cur_row_tiles = d3
     .select(row_selection)
@@ -31,13 +27,10 @@ module.exports = function eeu_existing_row(
     .data(row_values, function (d) {
       return d.col_name;
     });
-
   exit_existing_row(params, delays, cur_row_tiles, inp_row_data, row_selection);
-
   ///////////////////////////
   // Update
   ///////////////////////////
-
   // update tiles in x direction
   const update_row_tiles = cur_row_tiles
     .on('mouseover', function mouseover(...args) {
@@ -46,9 +39,7 @@ module.exports = function eeu_existing_row(
     .on('mouseout', function mouseout() {
       mouseout_tile(params, this, tip);
     });
-
   const col_nodes_names = params.network_data.col_nodes_names;
-
   if (delays.run_transition) {
     update_row_tiles
       .transition()
@@ -75,7 +66,6 @@ module.exports = function eeu_existing_row(
         }
       });
   }
-
   if (params.matrix.tile_type == 'updn') {
     update_split_tiles(
       params,
@@ -87,6 +77,5 @@ module.exports = function eeu_existing_row(
       tip
     );
   }
-
   enter_existing_row(params, delays, duration, cur_row_tiles, tip);
-};
+});

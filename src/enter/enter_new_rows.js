@@ -1,12 +1,10 @@
-const d3 = require('d3');
-const enter_split_tiles = require('./enter_split_tiles');
-const mouseover_tile = require('../matrix/mouseover_tile');
-const mouseout_tile = require('../matrix/mouseout_tile');
-const fine_position_tile = require('../matrix/fine_position_tile');
-const filter = require('underscore/cjs/filter');
-
-// make each row in the clustergram
-module.exports = function enter_new_rows(
+import d3 from 'd3';
+import enter_split_tiles from './enter_split_tiles.js';
+import mouseover_tile from '../matrix/mouseover_tile.js';
+import mouseout_tile from '../matrix/mouseout_tile.js';
+import fine_position_tile from '../matrix/fine_position_tile.js';
+import filter from 'underscore/modules/filter';
+export default (function enter_new_rows(
   params,
   ini_inp_row_data,
   delays,
@@ -15,12 +13,10 @@ module.exports = function enter_new_rows(
   row_selection
 ) {
   const inp_row_data = ini_inp_row_data.row_data;
-
   // remove zero values to make visualization faster
   const row_data = filter(inp_row_data, function (num) {
     return num.value !== 0;
   });
-
   // update tiles
   ////////////////////////////////////////////
   const tile = d3
@@ -46,7 +42,6 @@ module.exports = function enter_new_rows(
     .on('mouseout', function mouseout() {
       mouseout_tile(params, this, tip);
     });
-
   tile
     .style('fill-opacity', 0)
     .transition()
@@ -57,11 +52,9 @@ module.exports = function enter_new_rows(
       const output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
       return output_opacity;
     });
-
   tile.attr('transform', function (d) {
     return fine_position_tile(params, d);
   });
-
   if (params.matrix.tile_type == 'updn') {
     enter_split_tiles(
       params,
@@ -73,4 +66,4 @@ module.exports = function enter_new_rows(
       tile
     );
   }
-};
+});

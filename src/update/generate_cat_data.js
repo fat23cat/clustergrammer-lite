@@ -1,12 +1,9 @@
-const each = require('underscore/cjs/each');
-
-module.exports = function generate_cat_data(cgm) {
+import each from 'underscore/modules/each';
+export default (function generate_cat_data(cgm) {
   // only row category resetting is supported currently
-
   // get row_nodes from config, since this is has the original network
   const row_nodes = cgm.config.network_data.row_nodes || [];
   const title_sep = ': ';
-
   // contains all the category information stored as an array of
   // cat_type
   const cat_data = [];
@@ -15,10 +12,8 @@ module.exports = function generate_cat_data(cgm) {
   let found_cat_title;
   let found_cat_name;
   let cat_name;
-
   // console.log('generate_cat_data')
   // console.log(cgm.params.viz.cat_names.row)
-
   // get current list of cateories
   const check_node = row_nodes[0];
   const node_keys = Object.keys(check_node || {});
@@ -30,52 +25,39 @@ module.exports = function generate_cat_data(cgm) {
     if (inst_prop.indexOf('cat-') >= 0) {
       // generate titles from cat info
       tmp_cat = check_node[inst_prop];
-
       cat_index = parseInt(inst_prop.split('cat-')[1], 10);
-
       // use given title
       if (tmp_cat.indexOf(title_sep) >= 0) {
         tmp_title = tmp_cat.split(title_sep)[0];
       } else {
         tmp_title = inst_prop;
       }
-
       // current_cats.push(tmp_title);
-
       current_cats[cat_index] = tmp_title;
     }
   });
-
   // console.log('current_cats')
   // console.log(current_cats)
-
   // initialize cat_data with categories in the correct order
   const all_index = Object.keys(current_cats || {}).sort();
-
   let inst_data;
   all_index.forEach(function (inst_index) {
     inst_data = {};
     inst_data.cat_title = current_cats[inst_index];
     inst_data.cats = [];
-
     cat_data.push(inst_data);
   });
-
   row_nodes.each(function (inst_node) {
     const all_props = Object.keys(inst_node || {});
-
     all_props.forEach(function (inst_prop) {
       if (inst_prop.indexOf('cat-') > -1) {
         cat_name = inst_node[inst_prop];
-
         cat_index = parseInt(inst_prop.split('cat-')[1], 10);
-
         // default title and name
         let cat_title = inst_prop;
         cat_name = inst_node[inst_prop];
         const cat_string = inst_node[inst_prop];
         const cat_row_name = inst_node.name;
-
         // console.log('cat_string: '+String(cat_string))
         // found actual title
         if (cat_string.indexOf(title_sep) > -1) {
@@ -86,39 +68,32 @@ module.exports = function generate_cat_data(cgm) {
           cat_title = inst_prop;
           cat_name = cat_string;
         }
-
         // console.log('cat_index -> ' + String(cat_index))
         // console.log('cat_name '+cat_name)
         // console.log('cat_title ' + cat_title)
         // console.log('--------')
-
         // cat_data is empty
         if (cat_data.length === 0) {
           add_new_cat_type(cat_title, cat_name, cat_row_name);
-
           // cat_data is not empty
         } else {
           // look for cat_title in cat_data
           found_cat_title = false;
           cat_data.forEach(function (inst_cat_type) {
             // console.log('inst_cat_data title ' + inst_cat_type.cat_title)
-
             // check each cat_type object for a matching title
             if (cat_title === inst_cat_type.cat_title) {
               found_cat_title = true;
-
               // check if cat_name is in cats
               found_cat_name = false;
               each(inst_cat_type.cats, function (inst_cat_obj) {
                 // found category name, add cat_row_name to members
                 if (cat_name === inst_cat_obj.cat_name) {
                   found_cat_name = true;
-
                   // add cat_row_name to members
                   inst_cat_obj.members.push(cat_row_name);
                 }
               });
-
               // did not find cat name in cat_type - add cat_info for new
               // category
               if (found_cat_name === false) {
@@ -130,7 +105,6 @@ module.exports = function generate_cat_data(cgm) {
               }
             }
           });
-
           // did not find category type, initialize category type object
           if (found_cat_title === false) {
             // console.log('did not find cat_title: ' + String(cat_title))
@@ -140,26 +114,20 @@ module.exports = function generate_cat_data(cgm) {
       }
     });
   });
-
   function add_new_cat_type(cat_title, cat_name, cat_row_name) {
     // initialize cat_type object to push to cat_data
     cat_type = {};
     cat_type.cat_title = cat_title;
     cat_type.cats = [];
-
     // initialize cat_info (e.g. 'true' category has members [...])
     cat_info = {};
     cat_info.cat_name = cat_name;
     cat_info.members = [];
     cat_info.members.push(cat_row_name);
-
     cat_type.cats.push(cat_info);
-
     cat_data.push(cat_type);
   }
-
   // console.log('RETURNING CAT DATA')
   // console.log(cat_data)
-
   return cat_data;
-};
+});

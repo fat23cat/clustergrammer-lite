@@ -1,6 +1,6 @@
 const d3 = require('d3');
-const max = require('underscore/cjs/max');
-const min = require('underscore/cjs/min');
+const max = require('underscore/modules/max');
+const min = require('underscore/modules/min');
 
 module.exports = function make_colorbar(cgm) {
   const params = cgm.params;
