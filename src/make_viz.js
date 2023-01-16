@@ -1,27 +1,27 @@
-var d3 = require('d3');
-var generate_matrix = require('./matrix');
-var make_row_label_container = require('./labels/make_row_label_container');
-var make_col_label_container = require('./labels/make_col_label_container');
-var generate_super_labels = require('./labels/super_labels');
-var spillover = require('./spillover/main_spillover');
-var initialize_resizing = require('./initialize_resizing');
-var ini_doubleclick = require('./zoom/ini_doubleclick');
-var make_col_cat = require('./categories/make_col_cat');
-var make_row_cat = require('./categories/make_row_cat');
-var trim_text = require('./zoom/trim_text');
-var make_row_dendro = require('./dendrogram/make_row_dendro');
-var make_col_dendro = require('./dendrogram/make_col_dendro');
-var build_dendro_sliders = require('./dendrogram/build_dendro_sliders');
+const d3 = require('d3');
+const generate_matrix = require('./matrix');
+const make_row_label_container = require('./labels/make_row_label_container');
+const make_col_label_container = require('./labels/make_col_label_container');
+const generate_super_labels = require('./labels/super_labels');
+const spillover = require('./spillover/main_spillover');
+const initialize_resizing = require('./initialize_resizing');
+const ini_doubleclick = require('./zoom/ini_doubleclick');
+const make_col_cat = require('./categories/make_col_cat');
+const make_row_cat = require('./categories/make_row_cat');
+const trim_text = require('./zoom/trim_text');
+const make_row_dendro = require('./dendrogram/make_row_dendro');
+const make_col_dendro = require('./dendrogram/make_col_dendro');
+const build_dendro_sliders = require('./dendrogram/build_dendro_sliders');
 // var build_tree_icon = require('./menus/build_tree_icon');
 // var build_filter_icon = require('./menus/build_filter_icon');
-var make_row_dendro_spillover = require('./spillover/make_row_dendro_spillover');
+const make_row_dendro_spillover = require('./spillover/make_row_dendro_spillover');
 
 module.exports = function make_viz(cgm) {
-  var params = cgm.params;
+  const params = cgm.params;
 
   d3.select(params.viz.viz_wrapper + ' svg').remove();
 
-  var svg_group = d3
+  const svg_group = d3
     .select(params.viz.viz_wrapper)
     .append('svg')
     .attr('class', 'viz_svg')
@@ -51,7 +51,7 @@ module.exports = function make_viz(cgm) {
   // initial trim text
   if (params.viz.ds_level === -1) {
     ['row', 'col'].forEach(function (inst_rc) {
-      var inst_fs = Number(
+      const inst_fs = Number(
         d3
           .select('.' + inst_rc + '_label_group')
           .select('text')
@@ -59,7 +59,7 @@ module.exports = function make_viz(cgm) {
           .replace('px', '')
       );
 
-      var min_trim_fs = 8;
+      const min_trim_fs = 8;
       if (inst_fs > min_trim_fs) {
         d3.selectAll(params.root + ' .' + inst_rc + '_label_group').each(
           function () {
@@ -96,7 +96,7 @@ module.exports = function make_viz(cgm) {
   }
 
   function border_colors() {
-    var inst_color = params.viz.super_border_color;
+    let inst_color = params.viz.super_border_color;
     if (params.viz.is_expand || params.show_viz_border == false) {
       inst_color = 'white';
     }
@@ -122,7 +122,7 @@ module.exports = function make_viz(cgm) {
     .attr('width', params.viz.grey_border_width)
     .attr('height', params.viz.svg_dim.height)
     .attr('transform', function () {
-      var inst_offset = params.viz.svg_dim.width - params.viz.grey_border_width;
+      const inst_offset = params.viz.svg_dim.width - params.viz.grey_border_width;
       return 'translate(' + inst_offset + ',0)';
     });
 
@@ -135,7 +135,7 @@ module.exports = function make_viz(cgm) {
     .attr('width', params.viz.svg_dim.width)
     .attr('height', params.viz.grey_border_width)
     .attr('transform', function () {
-      var inst_offset = 0;
+      const inst_offset = 0;
       return 'translate(' + inst_offset + ',0)';
     });
 
@@ -148,7 +148,7 @@ module.exports = function make_viz(cgm) {
     .attr('width', params.viz.svg_dim.width)
     .attr('height', params.viz.grey_border_width)
     .attr('transform', function () {
-      var inst_offset =
+      const inst_offset =
         params.viz.svg_dim.height - params.viz.grey_border_width;
       return 'translate(0,' + inst_offset + ')';
     });

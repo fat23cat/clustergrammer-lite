@@ -1,22 +1,22 @@
-var make_params = require('../params/make_params');
-var define_enter_exit_delays = require('../network/define_enter_exit_delays');
-var enter_exit_update = require('../enter/enter_exit_update');
-var initialize_resizing = require('../initialize_resizing');
-var make_col_cat = require('../categories/make_col_cat');
-var make_row_cat = require('../categories/make_row_cat');
-var make_row_dendro = require('../dendrogram/make_row_dendro');
-var make_col_dendro = require('../dendrogram/make_col_dendro');
+const make_params = require('../params/make_params');
+const define_enter_exit_delays = require('../network/define_enter_exit_delays');
+const enter_exit_update = require('../enter/enter_exit_update');
+const initialize_resizing = require('../initialize_resizing');
+const make_col_cat = require('../categories/make_col_cat');
+const make_row_cat = require('../categories/make_row_cat');
+const make_row_dendro = require('../dendrogram/make_row_dendro');
+const make_col_dendro = require('../dendrogram/make_col_dendro');
 // var ini_sidebar = require('../sidebar/ini_sidebar');
-var enable_sidebar = require('../sidebar/enable_sidebar');
-var ini_doubleclick = require('../zoom/ini_doubleclick');
-var update_reorder_buttons = require('../reorder/update_reorder_buttons');
-var make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
-var modify_row_node_cats = require('./modify_row_node_cats');
-var run_zoom = require('../zoom/run_zoom');
-var ds_enter_exit_update = require('../enter/ds_enter_exit_update');
-var make_cat_params = require('../params/make_cat_params');
-var $ = require('jquery');
-var d3 = require('d3');
+const enable_sidebar = require('../sidebar/enable_sidebar');
+const ini_doubleclick = require('../zoom/ini_doubleclick');
+const update_reorder_buttons = require('../reorder/update_reorder_buttons');
+const make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
+const modify_row_node_cats = require('./modify_row_node_cats');
+const run_zoom = require('../zoom/run_zoom');
+const ds_enter_exit_update = require('../enter/ds_enter_exit_update');
+const make_cat_params = require('../params/make_cat_params');
+const $ = require('jquery');
+const d3 = require('d3');
 
 module.exports = function update_viz_with_network(cgm, new_network_data) {
   // set runnning_update class, prevents multiple update from running at once
@@ -33,18 +33,18 @@ module.exports = function update_viz_with_network(cgm, new_network_data) {
   }
 
   // copy persistent parameters
-  var inst_distance_metric = cgm.params.matrix.distance_metric;
-  var inst_linkage_type = cgm.params.matrix.linkage_type;
-  var inst_filter_state = cgm.params.matrix.filter_state;
-  var inst_normalization_state = cgm.params.matrix.normalization_state;
+  const inst_distance_metric = cgm.params.matrix.distance_metric;
+  const inst_linkage_type = cgm.params.matrix.linkage_type;
+  const inst_filter_state = cgm.params.matrix.filter_state;
+  const inst_normalization_state = cgm.params.matrix.normalization_state;
 
-  var inst_group_level = cgm.params.group_level;
-  var inst_crop_fitler = cgm.params.crop_filter_nodes;
+  const inst_group_level = cgm.params.group_level;
+  const inst_crop_fitler = cgm.params.crop_filter_nodes;
 
   // make tmp config to make new params
-  var tmp_config = $.extend(true, {}, cgm.config);
+  const tmp_config = $.extend(true, {}, cgm.config);
 
-  var new_row_cats = null;
+  let new_row_cats = null;
 
   // bring in 'new' category data
   if (cgm.params.new_row_cats != null) {
@@ -52,7 +52,7 @@ module.exports = function update_viz_with_network(cgm, new_network_data) {
     new_row_cats = cgm.params.new_row_cats;
     cgm.params.new_row_cats = new_row_cats;
     // do not preserve the updated (row) cats
-    var predefined_cat_colors = true;
+    const predefined_cat_colors = true;
     cgm.params.viz = make_cat_params(
       cgm.params,
       cgm.params.viz,
@@ -74,10 +74,10 @@ module.exports = function update_viz_with_network(cgm, new_network_data) {
   // always preserve category colors when updating
   tmp_config.cat_colors = cgm.params.viz.cat_colors;
 
-  var new_params = make_params(tmp_config);
+  const new_params = make_params(tmp_config);
 
   // this function is sensitive to further updates, so run here
-  var delays = define_enter_exit_delays(cgm.params, new_params);
+  const delays = define_enter_exit_delays(cgm.params, new_params);
 
   // pass the newly calcluated params back to the cgm object
   cgm.params = new_params;

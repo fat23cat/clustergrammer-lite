@@ -1,8 +1,8 @@
-var d3 = require('d3');
-var two_translate_zoom = require('../zoom/two_translate_zoom');
+const d3 = require('d3');
+const two_translate_zoom = require('../zoom/two_translate_zoom');
 
 module.exports = function run_row_search(cgm, search_term, entities) {
-  var prop = 'name';
+  const prop = 'name';
 
   if (entities.indexOf(search_term) !== -1) {
     // unhighlight
@@ -11,11 +11,11 @@ module.exports = function run_row_search(cgm, search_term, entities) {
       .style('opacity', 0);
 
     // calc pan_dy
-    var idx = entities.indexOf(search_term);
-    var inst_y_pos = cgm.params.viz.y_scale(idx);
-    var pan_dy = cgm.params.viz.clust.dim.height / 2 - inst_y_pos;
+    const idx = entities.indexOf(search_term);
+    const inst_y_pos = cgm.params.viz.y_scale(idx);
+    const pan_dy = cgm.params.viz.clust.dim.height / 2 - inst_y_pos;
 
-    var inst_zoom = cgm.params.viz.zoom_ratio.x;
+    const inst_zoom = cgm.params.viz.zoom_ratio.x;
 
     // working on improving zoom behavior
     ///////////////////////////////////////////////////

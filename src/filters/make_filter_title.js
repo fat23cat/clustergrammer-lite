@@ -1,9 +1,9 @@
-var get_filter_default_state = require('./get_filter_default_state');
+const get_filter_default_state = require('./get_filter_default_state');
 
 module.exports = function make_filter_title(params, filter_type) {
-  var filter_title = {};
-  var title = {};
-  var type = {};
+  const filter_title = {};
+  const title = {};
+  const type = {};
 
   filter_title.state = get_filter_default_state(
     params.viz.filter_data,

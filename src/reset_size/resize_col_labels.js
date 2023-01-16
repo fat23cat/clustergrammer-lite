@@ -1,10 +1,10 @@
 module.exports = function (params, ini_svg_group, delay_info = false) {
-  var delays = {};
-  var duration = params.viz.duration;
-  var svg_group;
+  let delays = {};
+  const duration = params.viz.duration;
+  let svg_group;
 
-  var col_nodes = params.network_data.col_nodes;
-  var col_nodes_names = params.network_data.col_nodes_names || [];
+  const col_nodes = params.network_data.col_nodes;
+  const col_nodes_names = params.network_data.col_nodes_names || [];
 
   if (delay_info === false) {
     delays.run_transition = false;
@@ -27,7 +27,7 @@ module.exports = function (params, ini_svg_group, delay_info = false) {
       .delay(delays.update)
       .duration(duration)
       .attr('transform', function (d) {
-        var inst_index = col_nodes_names.indexOf(d.name);
+        const inst_index = col_nodes_names.indexOf(d.name);
         return (
           'translate(' + params.viz.x_scale(inst_index) + ', 0) rotate(-90)'
         );
@@ -41,7 +41,7 @@ module.exports = function (params, ini_svg_group, delay_info = false) {
         return d.name;
       })
       .attr('transform', function (d) {
-        var inst_index = col_nodes_names.indexOf(d.name);
+        const inst_index = col_nodes_names.indexOf(d.name);
         return (
           'translate(' + params.viz.x_scale(inst_index) + ', 0) rotate(-90)'
         );
@@ -49,7 +49,7 @@ module.exports = function (params, ini_svg_group, delay_info = false) {
   }
 
   // offset click group column label
-  var x_offset_click =
+  const x_offset_click =
     params.viz.x_scale.rangeBand() / 2 + params.viz.border_width.x;
 
   svg_group

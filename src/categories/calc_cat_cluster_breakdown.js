@@ -1,6 +1,6 @@
-var binom_test = require('./binom_test');
-var each = require('underscore/cjs/each');
-var utils = require('../Utils_clust');
+const binom_test = require('./binom_test');
+const each = require('underscore/cjs/each');
+const utils = require('../Utils_clust');
 
 module.exports = function calc_cat_cluster_breakdown(
   params,
@@ -24,14 +24,14 @@ module.exports = function calc_cat_cluster_breakdown(
   ///////////////////////////////////////////
 
   // names of nodes in cluster
-  var clust_names = inst_data.all_names;
+  const clust_names = inst_data.all_names;
   // array of nodes in the cluster
-  var clust_nodes = [];
-  var all_nodes = params.network_data[inst_rc + '_nodes'];
-  var num_in_clust_index = null;
-  var is_downsampled = false;
+  const clust_nodes = [];
+  const all_nodes = params.network_data[inst_rc + '_nodes'];
+  let num_in_clust_index = null;
+  let is_downsampled = false;
 
-  var inst_name;
+  let inst_name;
   each(all_nodes, function (inst_node) {
     inst_name = inst_node.name;
 
@@ -43,22 +43,22 @@ module.exports = function calc_cat_cluster_breakdown(
   // 2: find category-types that are string-type
   ///////////////////////////////////////////////
 
-  var cat_breakdown = [];
+  const cat_breakdown = [];
 
   if (params.viz.cat_info[inst_rc] !== null) {
-    var inst_cat_info = params.viz.cat_info[inst_rc];
+    const inst_cat_info = params.viz.cat_info[inst_rc];
 
     // tmp list of all categories
-    var tmp_types_index = Object.keys(inst_cat_info || {});
+    const tmp_types_index = Object.keys(inst_cat_info || {});
     // this will hold the indexes of string-type categories
-    var cat_types_index = [];
+    const cat_types_index = [];
 
     // get category names (only include string-type categories)
-    var cat_types_names = [];
-    var type_name;
-    var inst_index;
-    var cat_index;
-    for (var i = 0; i < tmp_types_index.length; i++) {
+    const cat_types_names = [];
+    let type_name;
+    let inst_index;
+    let cat_index;
+    for (let i = 0; i < tmp_types_index.length; i++) {
       cat_index = 'cat-' + String(i);
 
       if (params.viz.cat_info[inst_rc][cat_index].type === 'cat_strings') {
@@ -74,18 +74,18 @@ module.exports = function calc_cat_cluster_breakdown(
       }
     }
 
-    var tmp_run_count = {};
-    var inst_breakdown = {};
-    var bar_data;
-    var radix_param = 10;
+    const tmp_run_count = {};
+    let inst_breakdown = {};
+    let bar_data;
+    const radix_param = 10;
 
     // sort by actual counts (rather than cluster counts)
-    var sorting_index = 4;
+    let sorting_index = 4;
     if (is_downsampled) {
       sorting_index = 5;
     }
 
-    var no_title_given;
+    let no_title_given;
     if (type_name === cat_index) {
       no_title_given = true;
     } else {
@@ -94,8 +94,8 @@ module.exports = function calc_cat_cluster_breakdown(
 
     if (cat_types_names.length > 0) {
       // 3: count instances of each category name for each category-type
-      var cat_name;
-      var num_in_clust = clust_names.length;
+      let cat_name;
+      const num_in_clust = clust_names.length;
 
       // use the cat_hist to get the number of instances of this category in
       // all rows/cols
@@ -107,7 +107,7 @@ module.exports = function calc_cat_cluster_breakdown(
 
         if (no_title_given) {
           if (cat_index.indexOf('-') >= 0) {
-            var tmp_num = parseInt(cat_index.split('-')[1], radix_param) + 1;
+            const tmp_num = parseInt(cat_index.split('-')[1], radix_param) + 1;
             type_name = 'Category ' + String(tmp_num);
           } else {
             // backup behavior
@@ -155,15 +155,15 @@ module.exports = function calc_cat_cluster_breakdown(
 
         // sort cat info in cat_breakdown
         bar_data = [];
-        var bar_color;
-        var cat_title_and_name;
-        var inst_run_count = tmp_run_count[type_name];
+        let bar_color;
+        let cat_title_and_name;
+        const inst_run_count = tmp_run_count[type_name];
 
-        for (var inst_cat in inst_run_count) {
-          var tot_num_cat =
+        for (const inst_cat in inst_run_count) {
+          const tot_num_cat =
             params.viz.cat_info[inst_rc][cat_index].cat_hist[inst_cat];
-          var total_nodes = params.network_data[inst_rc + '_nodes'].length;
-          var expect_prob = tot_num_cat / total_nodes;
+          const total_nodes = params.network_data[inst_rc + '_nodes'].length;
+          const expect_prob = tot_num_cat / total_nodes;
 
           // if no cat-title given
           if (no_title_given) {
@@ -175,8 +175,8 @@ module.exports = function calc_cat_cluster_breakdown(
           // num_nodes: number of cat-nodes drawn in cluster
           var num_nodes = inst_run_count[inst_cat].num_nodes;
 
-          var actual_k = num_nodes;
-          var pval = binom_test(actual_k, num_in_clust, expect_prob);
+          const actual_k = num_nodes;
+          const pval = binom_test(actual_k, num_in_clust, expect_prob);
 
           // working on tracking the 'real' number of nodes, which is only different
           // if downsampling has been done

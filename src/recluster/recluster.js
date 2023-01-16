@@ -1,24 +1,24 @@
 // var clusterfck = require('cornhundred-clusterfck');
-var clusterfck = require('../clusterfck_local/clusterfck');
-var core = require('mathjs/core');
-var math = core.create();
-var dist_fun = require('./distance_functions');
-var get_order_and_groups_clusterfck_tree = require('./get_order_and_groups_clusterfck_tree');
-var update_view = require('../update/update_view');
-var $ = require('jquery');
-var d3 = require('d3');
+const clusterfck = require('../clusterfck_local/clusterfck');
+const core = require('mathjs/core');
+const math = core.create();
+const dist_fun = require('./distance_functions');
+const get_order_and_groups_clusterfck_tree = require('./get_order_and_groups_clusterfck_tree');
+const update_view = require('../update/update_view');
+const $ = require('jquery');
+const d3 = require('d3');
 
 math.import(require('mathjs/lib/function/matrix/transpose'));
 math.import(require('mathjs/lib/type/matrix'));
 
 module.exports = function recluster(cgm, distance_metric, linkage_type) {
-  var new_view = {};
+  const new_view = {};
   new_view.N_row_sum = 'null';
   new_view.N_row_var = 'null';
   new_view.distance_metric = distance_metric;
   new_view.linkage_type = distance_metric;
 
-  var view_name = distance_metric + '_' + linkage_type;
+  const view_name = distance_metric + '_' + linkage_type;
 
   new_view.name = view_name;
 
@@ -38,10 +38,10 @@ module.exports = function recluster(cgm, distance_metric, linkage_type) {
   );
 
   ['row', 'col'].forEach(function (inst_rc) {
-    var mat;
-    var transpose = math.transpose;
-    var names;
-    var name_nodes;
+    let mat;
+    const transpose = math.transpose;
+    let names;
+    let name_nodes;
 
     if (inst_rc === 'row') {
       mat = $.extend(true, [], cgm.params.network_data.mat);
@@ -57,20 +57,20 @@ module.exports = function recluster(cgm, distance_metric, linkage_type) {
     }
 
     // average, single, complete
-    var clusters = clusterfck.hcluster(
+    const clusters = clusterfck.hcluster(
       mat,
       dist_fun[distance_metric],
       linkage_type
     );
 
-    var order_info = get_order_and_groups_clusterfck_tree(clusters, names);
-    var inst_node;
-    var inst_order;
+    const order_info = get_order_and_groups_clusterfck_tree(clusters, names);
+    let inst_node;
+    let inst_order;
 
     // row or column nodes
-    var rc_nodes = new_view.nodes[name_nodes];
+    const rc_nodes = new_view.nodes[name_nodes];
 
-    for (var index = 0; index < rc_nodes.length; index++) {
+    for (let index = 0; index < rc_nodes.length; index++) {
       inst_node = rc_nodes[index];
       inst_order = order_info.info[index];
 

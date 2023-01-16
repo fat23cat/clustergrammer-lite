@@ -1,19 +1,19 @@
-var calc_cat_params = require('./calc_cat_params');
-var utils = require('../Utils_clust');
-var colors = require('../Colors');
-var check_if_value_cats = require('./check_if_value_cats');
-var each = require('underscore/cjs/each');
-var countBy = require('underscore/cjs/countBy');
+const calc_cat_params = require('./calc_cat_params');
+const utils = require('../Utils_clust');
+const colors = require('../Colors');
+const check_if_value_cats = require('./check_if_value_cats');
+const each = require('underscore/cjs/each');
+const countBy = require('underscore/cjs/countBy');
 
 module.exports = function make_cat_params(
   params,
   viz,
   predefined_cat_colors = true
 ) {
-  var super_string = ': ';
-  var tmp_super;
-  var inst_info;
-  var inst_color;
+  const super_string = ': ';
+  let tmp_super;
+  let inst_info;
+  let inst_color;
 
   viz.show_categories = {};
   viz.all_cats = {};
@@ -22,19 +22,19 @@ module.exports = function make_cat_params(
 
   // this will hold the information for calculating the opacity of the value
   // function
-  var ini_val_opacity = {};
+  const ini_val_opacity = {};
   ini_val_opacity.row = null;
   ini_val_opacity.col = null;
 
   viz.cat_colors = {};
   viz.cat_colors.value_opacity = ini_val_opacity;
 
-  var num_colors = 0;
+  let num_colors = 0;
   ['row', 'col'].forEach(function (inst_rc) {
     viz.show_categories[inst_rc] = false;
 
     viz.all_cats[inst_rc] = [];
-    var tmp_keys = Object.keys(
+    let tmp_keys = Object.keys(
       params.network_data[inst_rc + '_nodes'][0] || {}
     );
 
@@ -55,7 +55,7 @@ module.exports = function make_cat_params(
       viz.cat_names[inst_rc] = {};
 
       each(viz.all_cats[inst_rc], function (cat_title) {
-        var inst_node = params.network_data[inst_rc + '_nodes'][0];
+        const inst_node = params.network_data[inst_rc + '_nodes'][0];
 
         // look for title of category in category name
         if (typeof inst_node[cat_title] === 'string') {
@@ -69,12 +69,12 @@ module.exports = function make_cat_params(
           viz.cat_names[inst_rc][cat_title] = cat_title;
         }
 
-        var cat_instances_titles =
+        const cat_instances_titles =
           utils.pluck(params.network_data[inst_rc + '_nodes'], cat_title) || [];
-        var cat_instances = [];
+        const cat_instances = [];
 
         cat_instances_titles.forEach(function (inst_cat) {
-          var new_cat;
+          let new_cat;
           if (inst_cat.indexOf(': ') > 0) {
             new_cat = inst_cat.split(': ')[1];
           } else {
@@ -84,7 +84,7 @@ module.exports = function make_cat_params(
           cat_instances.push(new_cat);
         });
 
-        var cat_states = Array.from(new Set(cat_instances_titles)).sort();
+        const cat_states = Array.from(new Set(cat_instances_titles)).sort();
 
         // check whether all the categories are of value type
         inst_info = check_if_value_cats(cat_states);

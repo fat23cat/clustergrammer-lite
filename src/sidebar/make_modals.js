@@ -1,9 +1,9 @@
-var make_modal_skeleton = require('../modal/make_modal_skeleton');
+const make_modal_skeleton = require('../modal/make_modal_skeleton');
 
 module.exports = function ini_modals(params) {
   // share modal
   ///////////////////////////////////////
-  var share_modal = make_modal_skeleton(params, 'share_info');
+  const share_modal = make_modal_skeleton(params, 'share_info');
 
   share_modal.header
     .append('a')
@@ -22,7 +22,7 @@ module.exports = function ini_modals(params) {
 
   // picture modal
   ///////////////////////////////////////
-  var screenshot_modal = make_modal_skeleton(params, 'picture_info');
+  const screenshot_modal = make_modal_skeleton(params, 'picture_info');
 
   screenshot_modal.header
     .append('h4')
@@ -33,7 +33,7 @@ module.exports = function ini_modals(params) {
 
   // dendro modal
   ///////////////////////////////////////
-  var dendro_modal = make_modal_skeleton(params, 'dendro_info');
+  const dendro_modal = make_modal_skeleton(params, 'dendro_info');
 
   dendro_modal.header
     .append('h4')

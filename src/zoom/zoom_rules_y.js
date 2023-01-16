@@ -1,5 +1,5 @@
 module.exports = function zoom_rules_y(params, zoom_info) {
-  var viz = params.viz;
+  const viz = params.viz;
   // zoom in the x direction before zooming in the y direction
   if (viz.zoom_ratio.y > 1) {
     if (zoom_info.zoom_y < viz.zoom_ratio.y) {

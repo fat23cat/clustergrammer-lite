@@ -1,31 +1,31 @@
-var each = require('underscore/cjs/each');
+const each = require('underscore/cjs/each');
 
 module.exports = function generate_cat_data(cgm) {
   // only row category resetting is supported currently
 
   // get row_nodes from config, since this is has the original network
-  var row_nodes = cgm.config.network_data.row_nodes || [];
-  var title_sep = ': ';
+  const row_nodes = cgm.config.network_data.row_nodes || [];
+  const title_sep = ': ';
 
   // contains all the category information stored as an array of
   // cat_type
-  var cat_data = [];
-  var cat_type;
-  var cat_info;
-  var found_cat_title;
-  var found_cat_name;
-  var cat_name;
+  const cat_data = [];
+  let cat_type;
+  let cat_info;
+  let found_cat_title;
+  let found_cat_name;
+  let cat_name;
 
   // console.log('generate_cat_data')
   // console.log(cgm.params.viz.cat_names.row)
 
   // get current list of cateories
-  var check_node = row_nodes[0];
-  var node_keys = Object.keys(check_node || {});
-  var current_cats = {};
-  var tmp_cat;
-  var tmp_title;
-  var cat_index;
+  const check_node = row_nodes[0];
+  const node_keys = Object.keys(check_node || {});
+  const current_cats = {};
+  let tmp_cat;
+  let tmp_title;
+  let cat_index;
   node_keys.forEach(function (inst_prop) {
     if (inst_prop.indexOf('cat-') >= 0) {
       // generate titles from cat info
@@ -50,9 +50,9 @@ module.exports = function generate_cat_data(cgm) {
   // console.log(current_cats)
 
   // initialize cat_data with categories in the correct order
-  var all_index = Object.keys(current_cats || {}).sort();
+  const all_index = Object.keys(current_cats || {}).sort();
 
-  var inst_data;
+  let inst_data;
   all_index.forEach(function (inst_index) {
     inst_data = {};
     inst_data.cat_title = current_cats[inst_index];
@@ -62,7 +62,7 @@ module.exports = function generate_cat_data(cgm) {
   });
 
   row_nodes.each(function (inst_node) {
-    var all_props = Object.keys(inst_node || {});
+    const all_props = Object.keys(inst_node || {});
 
     all_props.forEach(function (inst_prop) {
       if (inst_prop.indexOf('cat-') > -1) {
@@ -71,10 +71,10 @@ module.exports = function generate_cat_data(cgm) {
         cat_index = parseInt(inst_prop.split('cat-')[1], 10);
 
         // default title and name
-        var cat_title = inst_prop;
+        let cat_title = inst_prop;
         cat_name = inst_node[inst_prop];
-        var cat_string = inst_node[inst_prop];
-        var cat_row_name = inst_node.name;
+        const cat_string = inst_node[inst_prop];
+        const cat_row_name = inst_node.name;
 
         // console.log('cat_string: '+String(cat_string))
         // found actual title

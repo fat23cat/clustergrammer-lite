@@ -1,5 +1,5 @@
-var d3 = require('d3');
-var filter = require('underscore/cjs/filter');
+const d3 = require('d3');
+const filter = require('underscore/cjs/filter');
 
 module.exports = function exit_existing_row(
   params,
@@ -21,12 +21,12 @@ module.exports = function exit_existing_row(
 
   if (params.matrix.tile_type == 'updn') {
     // value split
-    var row_split_data = filter(inp_row_data, function (num) {
+    const row_split_data = filter(inp_row_data, function (num) {
       return num.value_up != 0 || num.value_dn != 0;
     });
 
     // tile_up
-    var cur_tiles_up = d3
+    const cur_tiles_up = d3
       .select(row_selection)
       .selectAll('.tile_up')
       .data(row_split_data, function (d) {
@@ -40,7 +40,7 @@ module.exports = function exit_existing_row(
     }
 
     // tile_dn
-    var cur_tiles_dn = d3
+    const cur_tiles_dn = d3
       .select(row_selection)
       .selectAll('.tile_dn')
       .data(row_split_data, function (d) {

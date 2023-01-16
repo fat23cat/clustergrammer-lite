@@ -1,5 +1,5 @@
 module.exports = function run_segment(segment_data, inst_time, inst_segment) {
-  var timer = setTimeout(inst_segment().run, inst_time, segment_data);
+  const timer = setTimeout(inst_segment().run, inst_time, segment_data);
 
   // set up kill demo that will stop setTimeouts
   //////////////////////////////////////////////////
@@ -7,7 +7,7 @@ module.exports = function run_segment(segment_data, inst_time, inst_segment) {
   //   clearTimeout(timer);
   // }
 
-  var inst_duration = inst_segment().get_duration();
+  const inst_duration = inst_segment().get_duration();
   inst_time = inst_time + inst_duration;
 
   return inst_time;

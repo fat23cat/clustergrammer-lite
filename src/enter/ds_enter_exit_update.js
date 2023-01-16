@@ -1,8 +1,8 @@
-var d3 = require('d3');
-var reset_size_after_update = require('../reset_size/reset_size_after_update');
-var make_col_label_container = require('../labels/make_col_label_container');
-var show_visible_area = require('../zoom/show_visible_area');
-var resize_containers = require('../reset_size/resize_containers');
+const d3 = require('d3');
+const reset_size_after_update = require('../reset_size/reset_size_after_update');
+const make_col_label_container = require('../labels/make_col_label_container');
+const show_visible_area = require('../zoom/show_visible_area');
+const resize_containers = require('../reset_size/resize_containers');
 
 module.exports = function ds_enter_exit_update(cgm) {
   // console.log('======== ds_enter_exit_update ===============');
@@ -14,9 +14,9 @@ module.exports = function ds_enter_exit_update(cgm) {
 
   // no need to re-calculate the downsampled layers
   // calc_downsampled_levels(params);
-  var zooming_stopped = true;
-  var zooming_out = true;
-  var make_all_rows = true;
+  const zooming_stopped = true;
+  const zooming_out = true;
+  const make_all_rows = true;
 
   // show_visible_area is also run with two_translate_zoom, but at that point
   // the parameters were not updated and two_translate_zoom if only run
@@ -25,7 +25,7 @@ module.exports = function ds_enter_exit_update(cgm) {
 
   make_col_label_container(cgm);
 
-  var col_nodes = cgm.params.network_data.col_nodes;
+  const col_nodes = cgm.params.network_data.col_nodes;
 
   // remove column labels
   d3.selectAll(cgm.params.root + ' .col_label_group')
@@ -64,10 +64,10 @@ module.exports = function ds_enter_exit_update(cgm) {
   resize_containers(cgm.params);
 
   // seeing if this fixes resizing issue
-  var delays = {};
+  const delays = {};
   delays.enter = 0;
   delays.update = 0;
   delays.run_transition = false;
-  var duration = 0;
+  const duration = 0;
   reset_size_after_update(cgm, duration, delays);
 };

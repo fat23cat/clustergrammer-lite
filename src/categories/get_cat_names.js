@@ -1,6 +1,6 @@
-var d3 = require('d3');
-var utils = require('../Utils_clust');
-var filter = require('underscore/cjs/each');
+const d3 = require('d3');
+const utils = require('../Utils_clust');
+const filter = require('underscore/cjs/each');
 
 module.exports = function get_cat_names(
   params,
@@ -9,15 +9,15 @@ module.exports = function get_cat_names(
   inst_rc
 ) {
   // category index
-  var inst_cat = d3.select(inst_selection).attr('cat');
-  var cat_name = inst_data[inst_cat];
-  var tmp_nodes = params.network_data[inst_rc + '_nodes'];
+  const inst_cat = d3.select(inst_selection).attr('cat');
+  const cat_name = inst_data[inst_cat];
+  const tmp_nodes = params.network_data[inst_rc + '_nodes'];
 
-  var found_nodes = filter(tmp_nodes, function (d) {
+  const found_nodes = filter(tmp_nodes, function (d) {
     return d[inst_cat] == cat_name;
   });
 
-  var found_names = utils.pluck(found_nodes, 'name');
+  const found_names = utils.pluck(found_nodes, 'name');
 
   return found_names;
 };

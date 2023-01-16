@@ -1,11 +1,11 @@
-var demo_text = require('./demo_text');
-var highlight_sidebar_element = require('./highlight_sidebar_element');
-var change_groups = require('../dendrogram/change_groups');
-var $ = require('jquery');
+const demo_text = require('./demo_text');
+const highlight_sidebar_element = require('./highlight_sidebar_element');
+const change_groups = require('../dendrogram/change_groups');
+const $ = require('jquery');
 
 module.exports = function play_groups() {
   function run(params) {
-    var text =
+    const text =
       'Identify row and column groups\nof varying sizes using ' +
       ' the\nsliders and dendrogram';
     demo_text(params, text, 10000);

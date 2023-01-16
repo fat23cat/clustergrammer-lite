@@ -1,25 +1,25 @@
-var each = require('underscore/cjs/each');
-var utils = require('../Utils_clust');
+const each = require('underscore/cjs/each');
+const utils = require('../Utils_clust');
 
 module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
-  var inst_num_rows = params.viz.ds[ds_level].num_rows;
+  const inst_num_rows = params.viz.ds[ds_level].num_rows;
 
-  var num_compressed_rows =
+  const num_compressed_rows =
     params.network_data.row_nodes.length / inst_num_rows;
 
   // increase ds opacity, as more rows are compressed into a single downsampled
   // row, increase the opacity of the downsampled row.
-  var opacity_factor = params.viz.ds_opacity_scale(num_compressed_rows);
+  const opacity_factor = params.viz.ds_opacity_scale(num_compressed_rows);
 
-  var mod_val = params.viz.clust.dim.height / inst_num_rows;
+  const mod_val = params.viz.clust.dim.height / inst_num_rows;
 
-  var ds_mat = [];
-  var inst_obj;
+  const ds_mat = [];
+  let inst_obj;
 
-  var len_ds_array = inst_num_rows + 1;
+  const len_ds_array = inst_num_rows + 1;
 
-  var i;
-  var x;
+  let i;
+  let x;
 
   // initialize array of objects
   for (i = 0; i < len_ds_array; i++) {
@@ -33,11 +33,11 @@ module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
 
   each(mat, function (inst_row) {
     // row ordering information is contained in y_scale
-    var inst_y = params.viz.y_scale(inst_row.row_index);
+    const inst_y = params.viz.y_scale(inst_row.row_index);
 
-    var ds_index = Math.round(inst_y / mod_val);
+    const ds_index = Math.round(inst_y / mod_val);
 
-    var inst_row_data = inst_row.row_data;
+    const inst_row_data = inst_row.row_data;
 
     // gather names
     ds_mat[ds_index].all_names.push(inst_row.name);
@@ -49,7 +49,7 @@ module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
           ds_mat[ds_index].row_data[x].value + inst_row_data[x].value;
       }
     } else {
-      var new_data = [];
+      const new_data = [];
       for (x = 0; x < inst_row_data.length; x++) {
         new_data[x] = inst_row_data[x];
       }
@@ -60,9 +60,9 @@ module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
 
   // average the values
   ds_mat.forEach(function (tmp_ds) {
-    var tmp_row_data = tmp_ds.row_data;
+    const tmp_row_data = tmp_ds.row_data;
 
-    var num_names = tmp_ds.all_names.length;
+    const num_names = tmp_ds.all_names.length;
 
     each(tmp_row_data, function (tmp_obj) {
       tmp_obj.value = (tmp_obj.value / num_names) * opacity_factor;

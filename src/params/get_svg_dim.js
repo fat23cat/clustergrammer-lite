@@ -1,4 +1,4 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function get_svg_dim(params) {
   params.viz.svg_dim = {};

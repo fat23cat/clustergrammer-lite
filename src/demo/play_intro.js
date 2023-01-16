@@ -1,13 +1,13 @@
-var demo_text = require('./demo_text');
+const demo_text = require('./demo_text');
 
 module.exports = function play_intro() {
-  var speed_up = 1;
+  const speed_up = 1;
 
   function run(params) {
-    var text_1 =
+    const text_1 =
       'Clustergrammer allows users to generate\ninteractive and ' +
       'sharable visualizations\nby uploading a matrix';
-    var text_2 =
+    const text_2 =
       "This demo will quickly overview some\nof Clustergrammer's " +
       'interactive features';
 

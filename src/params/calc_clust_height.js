@@ -3,7 +3,7 @@ module.exports = function calc_clust_height(viz) {
   // the margin of the clustergram on the top
   // the dendrogram
   // the bottom_space
-  var ini_clust_height =
+  const ini_clust_height =
     viz.svg_dim.height -
     viz.clust.margin.top -
     viz.dendro_room.col -

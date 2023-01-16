@@ -1,9 +1,9 @@
-var d3 = require('d3');
-var enter_split_tiles = require('./enter_split_tiles');
-var mouseover_tile = require('../matrix/mouseover_tile');
-var mouseout_tile = require('../matrix/mouseout_tile');
-var fine_position_tile = require('../matrix/fine_position_tile');
-var filter = require('underscore/cjs/filter');
+const d3 = require('d3');
+const enter_split_tiles = require('./enter_split_tiles');
+const mouseover_tile = require('../matrix/mouseover_tile');
+const mouseout_tile = require('../matrix/mouseout_tile');
+const fine_position_tile = require('../matrix/fine_position_tile');
+const filter = require('underscore/cjs/filter');
 
 // make each row in the clustergram
 module.exports = function enter_new_rows(
@@ -14,7 +14,7 @@ module.exports = function enter_new_rows(
   tip,
   row_selection
 ) {
-  var inp_row_data = ini_inp_row_data.row_data;
+  const inp_row_data = ini_inp_row_data.row_data;
 
   // remove zero values to make visualization faster
   var row_data = filter(inp_row_data, function (num) {
@@ -23,7 +23,7 @@ module.exports = function enter_new_rows(
 
   // update tiles
   ////////////////////////////////////////////
-  var tile = d3
+  const tile = d3
     .select(row_selection)
     .selectAll('rect')
     .data(row_data, function (d) {
@@ -54,7 +54,7 @@ module.exports = function enter_new_rows(
     .duration(duration)
     .style('fill-opacity', function (d) {
       // calculate output opacity using the opacity scale
-      var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+      const output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
       return output_opacity;
     });
 

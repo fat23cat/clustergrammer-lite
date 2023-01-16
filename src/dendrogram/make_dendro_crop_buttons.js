@@ -1,19 +1,19 @@
-var d3 = require('d3');
-var calc_row_dendro_triangles = require('./calc_row_dendro_triangles');
-var calc_col_dendro_triangles = require('./calc_col_dendro_triangles');
-var d3_tip_custom = require('../tooltip/d3_tip_custom');
-var dendro_group_highlight = require('./dendro_group_highlight');
-var run_dendro_filter = require('./run_dendro_filter');
-var zoom_crop_triangles = require('../zoom/zoom_crop_triangles');
+const d3 = require('d3');
+const calc_row_dendro_triangles = require('./calc_row_dendro_triangles');
+const calc_col_dendro_triangles = require('./calc_col_dendro_triangles');
+const d3_tip_custom = require('../tooltip/d3_tip_custom');
+const dendro_group_highlight = require('./dendro_group_highlight');
+const run_dendro_filter = require('./run_dendro_filter');
+const zoom_crop_triangles = require('../zoom/zoom_crop_triangles');
 
 module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
-  var params = cgm.params;
+  const params = cgm.params;
 
-  var button_opacity = params.viz.dendro_opacity * 0.6;
+  const button_opacity = params.viz.dendro_opacity * 0.6;
 
   // information needed to make dendro
-  var dendro_info;
-  var other_rc;
+  let dendro_info;
+  let other_rc;
   if (params.viz.show_dendrogram) {
     if (inst_rc === 'row') {
       dendro_info = calc_row_dendro_triangles(params);
@@ -25,12 +25,12 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
   }
 
   // d3-tooltip
-  var tmp_y_offset = 5;
-  var tmp_x_offset = -5;
-  var dendro_crop_tip = d3_tip_custom()
+  const tmp_y_offset = 5;
+  const tmp_x_offset = -5;
+  const dendro_crop_tip = d3_tip_custom()
     .attr('class', function () {
-      var root_tip_selector = params.viz.root_tips.replace('.', '');
-      var class_string =
+      const root_tip_selector = params.viz.root_tips.replace('.', '');
+      const class_string =
         root_tip_selector +
         ' d3-tip ' +
         root_tip_selector +
@@ -44,31 +44,31 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
     .style('display', 'none')
     .offset([tmp_y_offset, tmp_x_offset]);
 
-  var wait_before_tooltip = 500;
+  const wait_before_tooltip = 500;
 
   d3.selectAll(
     params.viz.root_tips + '_' + inst_rc + '_dendro_crop_tip'
   ).remove();
   d3.selectAll(params.root + ' .' + inst_rc + '_dendro_crop_buttons').remove();
 
-  var icons;
+  let icons;
   // position triangles
-  var start_x;
-  var start_y;
-  var mid_x;
-  var mid_y;
-  var final_x;
-  var final_y;
+  let start_x;
+  let start_y;
+  let mid_x;
+  let mid_y;
+  let final_x;
+  let final_y;
 
   // need to improve to account for zooming
-  var min_tri_height = 45;
-  var scale_down_tri = 0.25;
-  var tri_height;
-  var tri_width;
-  var tri_dim;
+  const min_tri_height = 45;
+  const scale_down_tri = 0.25;
+  let tri_height;
+  let tri_width;
+  let tri_dim;
 
   // make crop buttons or undo buttons
-  var button_class = inst_rc + '_dendro_crop_buttons';
+  const button_class = inst_rc + '_dendro_crop_buttons';
   if (
     d3
       .select(cgm.params.root + ' .' + inst_rc + '_dendro_icons_group')
@@ -90,7 +90,7 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
         tri_height = 10;
         tri_width = 10;
 
-        var tmp_height = d.pos_bot - d.pos_top;
+        const tmp_height = d.pos_bot - d.pos_top;
 
         // Row Dendrogram Crop Triangle
         if (inst_rc === 'row') {
@@ -127,10 +127,10 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
 
         // save triangle height
         // d3.select(this)[0][0].__data__.tri_dim = tri_dim;
-        var data_key = '__data__';
+        const data_key = '__data__';
         d3.select(this)[0][0][data_key].tri_dim = tri_dim;
 
-        var output_string =
+        const output_string =
           'M' +
           start_x +
           ',' +
@@ -149,7 +149,7 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
       });
 
     dendro_crop_tip.html(function () {
-      var full_string = 'Click to crop cluster';
+      const full_string = 'Click to crop cluster';
       return full_string;
     });
   } else {
@@ -169,7 +169,7 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
         tri_height = 10;
         tri_width = 12;
 
-        var tmp_height = d.pos_bot - d.pos_top;
+        const tmp_height = d.pos_bot - d.pos_top;
 
         if (inst_rc === 'row') {
           if (tmp_height < min_tri_height) {
@@ -198,10 +198,10 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
         }
 
         // save triangle height
-        var data_key = '__data__';
+        const data_key = '__data__';
         d3.select(this)[0][0][data_key].tri_dim = 10;
 
-        var output_string =
+        const output_string =
           'M' +
           start_x +
           ',' +
@@ -220,7 +220,7 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
       });
 
     dendro_crop_tip.html(function () {
-      var full_string = 'Click to undo crop';
+      const full_string = 'Click to undo crop';
       return full_string;
     });
   }
@@ -228,7 +228,7 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
   icons
     .style('cursor', 'pointer')
     .style('opacity', function () {
-      var inst_opacity;
+      let inst_opacity;
 
       // if (d3.select(this).classed('hide_crop')){
       //   inst_opacity = 0;
@@ -240,10 +240,10 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
       return inst_opacity;
     })
     .attr('transform', function (d) {
-      var inst_translate;
+      let inst_translate;
 
-      var inst_x;
-      var inst_y;
+      let inst_x;
+      let inst_y;
 
       if (inst_rc === 'row') {
         inst_x = params.viz.uni_margin;

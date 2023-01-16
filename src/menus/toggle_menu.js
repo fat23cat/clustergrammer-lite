@@ -1,4 +1,4 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function toggle_menu(
   cgm,
@@ -6,7 +6,7 @@ module.exports = function toggle_menu(
   toggle,
   make_menu = null
 ) {
-  var params = cgm.params;
+  const params = cgm.params;
 
   if (toggle === 'open') {
     d3.selectAll(cgm.params.root + ' .svg_menus').remove();

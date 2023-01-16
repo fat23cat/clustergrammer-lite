@@ -1,8 +1,8 @@
-var d3 = require('d3');
-var two_translate_zoom = require('./two_translate_zoom');
+const d3 = require('d3');
+const two_translate_zoom = require('./two_translate_zoom');
 
 module.exports = function ini_doubleclick(cgm) {
-  var params = cgm.params;
+  const params = cgm.params;
   // disable double-click zoom
   d3.selectAll(params.viz.zoom_element).on('dblclick.zoom', null);
 

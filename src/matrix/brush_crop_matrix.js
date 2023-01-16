@@ -1,19 +1,19 @@
-var d3 = require('d3');
-var deactivate_cropping = require('./deactivate_cropping');
-var each = require('underscore/cjs/each');
+const d3 = require('d3');
+const deactivate_cropping = require('./deactivate_cropping');
+const each = require('underscore/cjs/each');
 
 module.exports = function brush_crop_matrix() {
   // get rows/cols from brush-extent
   // works for differnt brushing directions (e.g. start end sites)
 
-  var cgm = this;
-  var params = cgm.params;
+  const cgm = this;
+  const params = cgm.params;
 
-  var clust_width = params.viz.clust.dim.width;
-  var clust_height = params.viz.clust.dim.height;
+  const clust_width = params.viz.clust.dim.width;
+  const clust_height = params.viz.clust.dim.height;
 
-  var x = d3.scale.linear().domain([0, clust_width]).range([0, clust_width]);
-  var y = d3.scale.linear().domain([0, clust_height]).range([0, clust_height]);
+  const x = d3.scale.linear().domain([0, clust_width]).range([0, clust_width]);
+  const y = d3.scale.linear().domain([0, clust_height]).range([0, clust_height]);
 
   // make brush group
   d3.select(params.root + ' .clust_container')
@@ -22,7 +22,7 @@ module.exports = function brush_crop_matrix() {
 
   cgm.params.is_cropping = true;
 
-  var brush = d3.svg.brush().x(x).y(y).on('brushend', brushend);
+  const brush = d3.svg.brush().x(x).y(y).on('brushend', brushend);
 
   d3.select(params.root + ' .brush_group').call(brush);
 
@@ -37,21 +37,21 @@ module.exports = function brush_crop_matrix() {
       'none'
     );
 
-    var brushing_extent = brush.extent();
-    var brush_start = brushing_extent[0];
-    var brush_end = brushing_extent[1];
+    const brushing_extent = brush.extent();
+    const brush_start = brushing_extent[0];
+    const brush_end = brushing_extent[1];
 
-    var x_start = brush_start[0];
-    var x_end = brush_end[0];
+    const x_start = brush_start[0];
+    const x_end = brush_end[0];
 
-    var y_start = brush_start[1];
-    var y_end = brush_end[1];
+    const y_start = brush_start[1];
+    const y_end = brush_end[1];
 
     if (x_start != x_end && y_start != y_end) {
       setTimeout(deactivate_cropping, 500, cgm);
 
       // find cropped nodes
-      var found_nodes = find_cropped_nodes(
+      const found_nodes = find_cropped_nodes(
         x_start,
         x_end,
         y_start,
@@ -92,7 +92,7 @@ module.exports = function brush_crop_matrix() {
     y_start = y_start - params.viz.rect_height;
     x_start = x_start - params.viz.rect_width;
 
-    var found_nodes = {};
+    const found_nodes = {};
     found_nodes.row = [];
     found_nodes.col = [];
 
@@ -114,7 +114,7 @@ module.exports = function brush_crop_matrix() {
     //   });
 
     each(params.matrix.matrix, function (row_data) {
-      var y_trans = params.viz.y_scale(row_data.row_index);
+      const y_trans = params.viz.y_scale(row_data.row_index);
 
       if (y_trans > y_start && y_trans < y_end) {
         found_nodes.row.push(row_data.name);
@@ -123,9 +123,9 @@ module.exports = function brush_crop_matrix() {
 
     d3.selectAll(params.root + ' .col_label_text').each(function (inst_col) {
       // there is already bound data on the cols
-      var inst_trans = d3.select(this).attr('transform');
+      const inst_trans = d3.select(this).attr('transform');
 
-      var x_trans = Number(inst_trans.split(',')[0].split('(')[1]);
+      const x_trans = Number(inst_trans.split(',')[0].split('(')[1]);
 
       if (x_trans > x_start && x_trans < x_end) {
         found_nodes.col.push(inst_col.name);

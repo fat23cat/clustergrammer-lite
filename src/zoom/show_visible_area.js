@@ -1,10 +1,10 @@
-var d3 = require('d3');
-var find_viz_rows = require('../zoom/find_viz_rows');
-var make_matrix_rows = require('../matrix/make_matrix_rows');
-var make_row_labels = require('../labels/make_row_labels');
-var make_row_visual_aid_triangles = require('../labels/make_row_visual_aid_triangles');
-var contains = require('underscore/cjs/contains');
-var difference = require('underscore/cjs/difference');
+const d3 = require('d3');
+const find_viz_rows = require('../zoom/find_viz_rows');
+const make_matrix_rows = require('../matrix/make_matrix_rows');
+const make_row_labels = require('../labels/make_row_labels');
+const make_row_visual_aid_triangles = require('../labels/make_row_visual_aid_triangles');
+const contains = require('underscore/cjs/contains');
+const difference = require('underscore/cjs/difference');
 
 module.exports = function show_visible_area(
   cgm,
@@ -14,13 +14,13 @@ module.exports = function show_visible_area(
 ) {
   // console.log('show_visible_area stopped: ' + String(zooming_stopped));
 
-  var params = cgm.params;
-  var zoom_info = params.zoom_info;
+  const params = cgm.params;
+  const zoom_info = params.zoom_info;
 
   // update ds_level if necessary
   //////////////////////////////////////////////
-  var check_ds_level = params.viz.ds_level;
-  var old_ds_level = params.viz.ds_level;
+  let check_ds_level = params.viz.ds_level;
+  const old_ds_level = params.viz.ds_level;
 
   // toggle the downsampling level (if necessary)
   if (params.viz.ds === null) {
@@ -38,7 +38,7 @@ module.exports = function show_visible_area(
   // check if override_ds is necessary
   //////////////////////////////////////////////
   // force update of view if moving to more coarse view
-  var override_ds = false;
+  let override_ds = false;
 
   if (old_ds_level == -1) {
     // transitioning to more coarse downsampling view (from real data)
@@ -53,7 +53,7 @@ module.exports = function show_visible_area(
   }
 
   // update level if zooming has stopped or if transitioning to more coarse view
-  var new_ds_level;
+  let new_ds_level;
 
   if (zooming_stopped === true || override_ds === true) {
     // update new_ds_level if necessary (if decreasing detail, zooming out)
@@ -68,8 +68,8 @@ module.exports = function show_visible_area(
     new_ds_level = old_ds_level;
   }
 
-  var viz_area = {};
-  var buffer_size = 5;
+  const viz_area = {};
+  const buffer_size = 5;
   // get translation vector absolute values
   viz_area.min_x =
     Math.abs(zoom_info.trans_x) / zoom_info.zoom_x -
@@ -91,7 +91,7 @@ module.exports = function show_visible_area(
   // generate lists of visible rows/cols
   find_viz_rows(params, viz_area);
 
-  var missing_rows;
+  let missing_rows;
   if (make_all_rows === false) {
     missing_rows = difference(
       params.viz.viz_nodes.row,
@@ -106,7 +106,7 @@ module.exports = function show_visible_area(
   }
 
   if (params.viz.ds != null) {
-    var ds_row_class = '.ds' + String(params.viz.ds_level) + '_row';
+    const ds_row_class = '.ds' + String(params.viz.ds_level) + '_row';
     d3.selectAll(ds_row_class).style('display', 'block');
   }
 
@@ -120,7 +120,7 @@ module.exports = function show_visible_area(
   }
 
   // default state for downsampling
-  var inst_matrix;
+  let inst_matrix;
 
   if (new_ds_level < 0) {
     // set matrix to default matrix
@@ -198,13 +198,13 @@ module.exports = function show_visible_area(
       // check if labels need to be made
       ///////////////////////////////////
       // get the names visible row_labels
-      var visible_row_labels = [];
+      const visible_row_labels = [];
       d3.selectAll(params.root + ' .row_label_group').each(function (d) {
         visible_row_labels.push(d.name);
       });
 
       // find missing labels
-      var missing_row_labels = difference(
+      const missing_row_labels = difference(
         params.viz.viz_nodes.row,
         visible_row_labels
       );
@@ -212,7 +212,7 @@ module.exports = function show_visible_area(
       // make labels
       //////////////////////////////////
       // only make row labels if there are any missing
-      var addback_thresh = 1;
+      const addback_thresh = 1;
       if (missing_row_labels.length > addback_thresh) {
         make_row_labels(cgm, missing_row_labels);
       }

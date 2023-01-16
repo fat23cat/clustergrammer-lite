@@ -3,9 +3,9 @@ module.exports = function resize_row_viz(
   ini_svg_group,
   delay_info = false
 ) {
-  var delays = {};
-  var duration = params.viz.duration;
-  var svg_group;
+  let delays = {};
+  const duration = params.viz.duration;
+  let svg_group;
 
   if (delay_info === false) {
     delays.run_transition = false;
@@ -28,12 +28,12 @@ module.exports = function resize_row_viz(
     .select('white_bars')
     .attr('width', params.viz.cat_room.row + 'px')
     .attr('height', function () {
-      var inst_height = params.viz.clust.dim.height;
+      const inst_height = params.viz.clust.dim.height;
       return inst_height;
     });
 
-  var x_offset = params.viz.clust.margin.left + params.viz.clust.dim.width;
-  var y_offset = params.viz.clust.margin.top;
+  let x_offset = params.viz.clust.margin.left + params.viz.clust.dim.width;
+  let y_offset = params.viz.clust.margin.top;
   svg_group
     .select('.row_dendro_outer_container')
     .attr('transform', 'translate(' + x_offset + ',' + y_offset + ')');

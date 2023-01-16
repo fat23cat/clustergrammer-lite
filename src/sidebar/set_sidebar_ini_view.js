@@ -1,12 +1,12 @@
-var d3 = require('d3');
-var make_filter_title = require('../filters/make_filter_title');
+const d3 = require('d3');
+const make_filter_title = require('../filters/make_filter_title');
 
 module.exports = function set_sidebar_ini_view(params) {
   Object.keys(params.ini_view || {}).forEach(function (inst_filter) {
     // initialize filter slider using ini_view
-    var inst_value = params.ini_view[inst_filter];
+    let inst_value = params.ini_view[inst_filter];
 
-    var filter_type = params.viz.possible_filters[inst_filter];
+    const filter_type = params.viz.possible_filters[inst_filter];
 
     if (filter_type === 'numerical') {
       if (inst_value != 'all') {
@@ -17,7 +17,7 @@ module.exports = function set_sidebar_ini_view(params) {
         inst_value = 'all';
       }
 
-      var filter_title = make_filter_title(params, inst_filter);
+      const filter_title = make_filter_title(params, inst_filter);
 
       d3.select(params.root + ' .title_' + inst_filter).text(
         filter_title.text + inst_value + filter_title.suffix

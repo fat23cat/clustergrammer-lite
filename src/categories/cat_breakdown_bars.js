@@ -1,4 +1,4 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function cat_breakdown_bars(
   params,
@@ -9,20 +9,20 @@ module.exports = function cat_breakdown_bars(
   max_bars,
   cat_bar_groups
 ) {
-  var paragraph_string = '<p>';
-  var super_string = ': ';
+  const paragraph_string = '<p>';
+  const super_string = ': ';
 
-  var bar_width = params.viz.cat_bar_width;
-  var bar_height = params.viz.cat_bar_height;
+  const bar_width = params.viz.cat_bar_width;
+  const bar_height = params.viz.cat_bar_height;
 
-  var max_string_length = 25;
+  const max_string_length = 25;
 
-  var max_bar_value = cat_data.bar_data[0][bars_index];
+  const max_bar_value = cat_data.bar_data[0][bars_index];
 
   // only keep the top max_bars categories
   cat_data.bar_data = cat_data.bar_data.slice(0, max_bars);
 
-  var inst_title = cat_data.type_name;
+  let inst_title = cat_data.type_name;
   // ensure that title is not too long
   if (inst_title.length >= max_string_length) {
     inst_title = inst_title.slice(0, max_string_length) + '..';
@@ -36,7 +36,7 @@ module.exports = function cat_breakdown_bars(
     .style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
     .style('font-weight', 800);
 
-  var line_y = 4;
+  const line_y = 4;
   cat_graph_group
     .append('line')
     .attr('x1', 0)
@@ -49,7 +49,7 @@ module.exports = function cat_breakdown_bars(
 
   // bar length is max when all nodes in cluster are of
   // a single cat
-  var bar_scale = d3.scale
+  const bar_scale = d3.scale
     .linear()
     .domain([0, max_bar_value])
     .range([0, bar_width]);
@@ -59,7 +59,7 @@ module.exports = function cat_breakdown_bars(
     .append('rect')
     .attr('height', bar_height + 'px')
     .attr('width', function (d) {
-      var inst_width = bar_scale(d[bars_index]);
+      const inst_width = bar_scale(d[bars_index]);
       return inst_width + 'px';
     })
     .attr('fill', function (d) {
@@ -75,7 +75,7 @@ module.exports = function cat_breakdown_bars(
     .append('text')
     .classed('bar_labels', true)
     .text(function (d) {
-      var inst_text = d[1];
+      let inst_text = d[1];
       if (inst_text.indexOf(super_string) > 0) {
         inst_text = inst_text.split(super_string)[1];
       }

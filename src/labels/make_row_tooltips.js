@@ -1,4 +1,4 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function make_row_tooltips(params) {
   if (params.labels.show_label_tooltips) {

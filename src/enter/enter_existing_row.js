@@ -1,7 +1,7 @@
-var d3 = require('d3');
-var mouseover_tile = require('../matrix/mouseover_tile');
-var mouseout_tile = require('../matrix/mouseout_tile');
-var fine_position_tile = require('../matrix/fine_position_tile');
+const d3 = require('d3');
+const mouseover_tile = require('../matrix/mouseover_tile');
+const mouseout_tile = require('../matrix/mouseout_tile');
+const fine_position_tile = require('../matrix/fine_position_tile');
 
 module.exports = function enter_existing_row(
   params,
@@ -11,7 +11,7 @@ module.exports = function enter_existing_row(
   tip
 ) {
   // enter new tiles
-  var new_tiles = cur_row_tiles
+  const new_tiles = cur_row_tiles
     .enter()
     .append('rect')
     .attr('class', 'tile row_tile')
@@ -39,7 +39,7 @@ module.exports = function enter_existing_row(
           : params.matrix.tile_colors[1];
       })
       .attr('fill-opacity', function (d) {
-        var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+        const output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
         return output_opacity;
       });
   } else {
@@ -50,7 +50,7 @@ module.exports = function enter_existing_row(
           : params.matrix.tile_colors[1];
       })
       .attr('fill-opacity', function (d) {
-        var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+        const output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
         return output_opacity;
       });
   }

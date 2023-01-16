@@ -1,24 +1,24 @@
-var sim_click = require('./sim_click');
-var $ = require('jquery');
-var d3 = require('d3');
+const sim_click = require('./sim_click');
+const $ = require('jquery');
+const d3 = require('d3');
 
 module.exports = function quick_cluster() {
   function run(params) {
-    var x_trans = Number(
+    const x_trans = Number(
       d3
         .select(params.root + ' .expand_button')
         .attr('x')
         .replace('px', '')
     );
-    var y_trans = Number(
+    const y_trans = Number(
       d3
         .select(params.root + ' .expand_button')
         .attr('y')
         .replace('px', '')
     );
 
-    var wait_click = 0;
-    var wait_real_click = 400;
+    const wait_click = 0;
+    const wait_real_click = 400;
     setTimeout(sim_click, wait_click, params, 'single', x_trans, y_trans);
     setTimeout(click_menu_button, wait_real_click, params);
 
@@ -39,7 +39,7 @@ module.exports = function quick_cluster() {
   }
 
   function click_reorder_button(params, inst_rc, inst_order) {
-    var inst_button = d3
+    const inst_button = d3
       .selectAll('.toggle_' + inst_rc + '_order .btn')
       .filter(function () {
         return this.__data__ == inst_order;
@@ -51,7 +51,7 @@ module.exports = function quick_cluster() {
   // allows doubleclicking on d3 element
   $.fn.d3Click = function () {
     this.each(function (i, e) {
-      var evt = document.createEvent('MouseEvents');
+      const evt = document.createEvent('MouseEvents');
       evt.initMouseEvent(
         'click',
         true,

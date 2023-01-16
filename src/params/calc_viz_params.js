@@ -1,16 +1,16 @@
-var ini_label_params = require('./ini_label_params');
-var set_viz_wrapper_size = require('../set_viz_wrapper_size');
-var get_svg_dim = require('./get_svg_dim');
-var calc_label_params = require('./calc_label_params');
-var calc_clust_width = require('./calc_clust_width');
-var calc_clust_height = require('./calc_clust_height');
-var calc_val_max = require('./calc_val_max');
-var calc_matrix_params = require('./calc_matrix_params');
-var set_zoom_params = require('./set_zoom_params');
-var calc_default_fs = require('./calc_default_fs');
-var utils = require('../Utils_clust');
-var get_available_filters = require('./get_available_filters');
-var make_cat_params = require('./make_cat_params');
+const ini_label_params = require('./ini_label_params');
+const set_viz_wrapper_size = require('../set_viz_wrapper_size');
+const get_svg_dim = require('./get_svg_dim');
+const calc_label_params = require('./calc_label_params');
+const calc_clust_width = require('./calc_clust_width');
+const calc_clust_height = require('./calc_clust_height');
+const calc_val_max = require('./calc_val_max');
+const calc_matrix_params = require('./calc_matrix_params');
+const set_zoom_params = require('./set_zoom_params');
+const calc_default_fs = require('./calc_default_fs');
+const utils = require('../Utils_clust');
+const get_available_filters = require('./get_available_filters');
+const make_cat_params = require('./make_cat_params');
 
 module.exports = function calc_viz_params(
   params,
@@ -40,7 +40,7 @@ module.exports = function calc_viz_params(
   params = calc_default_fs(params);
 
   function ini_viz_params(params, predefined_cat_colors = true) {
-    var viz = {};
+    let viz = {};
 
     viz.root = params.root;
 
@@ -148,7 +148,7 @@ module.exports = function calc_viz_params(
 
     viz.spillover_col_slant = viz.norm_labels.width.col;
 
-    var filters = get_available_filters(params.network_data.views);
+    const filters = get_available_filters(params.network_data.views);
 
     viz.possible_filters = filters.possible_filters;
     viz.filter_data = filters.filter_data;

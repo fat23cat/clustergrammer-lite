@@ -1,14 +1,14 @@
-var d3 = require('d3');
-var utils = require('../Utils_clust');
-var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
-var show_visible_area = require('./show_visible_area');
-var ini_zoom_info = require('../zoom/ini_zoom_info');
-var toggle_grid_lines = require('../matrix/toggle_grid_lines');
+const d3 = require('d3');
+const utils = require('../Utils_clust');
+const label_constrain_and_trim = require('../labels/label_constrain_and_trim');
+const show_visible_area = require('./show_visible_area');
+const ini_zoom_info = require('../zoom/ini_zoom_info');
+const toggle_grid_lines = require('../matrix/toggle_grid_lines');
 
 module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
   // console.log('pan_dy: ' + String(pan_dy))
 
-  var params = cgm.params;
+  const params = cgm.params;
 
   d3.selectAll(params.viz.root_tips).style('display', 'none');
 
@@ -19,12 +19,12 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
   // do not allow while transitioning, e.g. reordering
   if (!params.viz.run_trans) {
     // define the commonly used variable half_height
-    var half_height = params.viz.clust.dim.height / 2;
+    const half_height = params.viz.clust.dim.height / 2;
 
     // y pan room, the pan room has to be less than half_height since
     // zooming in on a gene that is near the top of the clustergram also causes
     // panning out of the visible region
-    var y_pan_room = half_height / fin_zoom;
+    const y_pan_room = half_height / fin_zoom;
 
     // prevent visualization from panning down too much
     // when zooming into genes near the top of the clustergram
@@ -74,14 +74,14 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
     }
 
     // will improve this !!
-    var zoom_y = fin_zoom;
-    var zoom_x = 1;
+    const zoom_y = fin_zoom;
+    const zoom_x = 1;
 
     // search duration - the duration of zooming and panning
     var search_duration = 700;
 
     // center_y
-    var center_y = -(zoom_y - 1) * half_height;
+    const center_y = -(zoom_y - 1) * half_height;
 
     // transform clust group
     ////////////////////////////
@@ -163,9 +163,9 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
       );
 
     // toggle crop buttons
-    var inst_button_opacity;
+    let inst_button_opacity;
     ['row', 'col'].forEach(function (inst_rc) {
-      var selection = d3.select(
+      const selection = d3.select(
         params.root + ' .' + inst_rc + '_dendro_crop_buttons'
       );
 
@@ -223,8 +223,8 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
     // set y translate: center_y is positive, positive moves the visualization down
     // the translate vector has the initial margin, the first y centering, and pan_dy
     // times the scaling zoom_y
-    var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
-    var net_x_offset = params.viz.clust.margin.left + pan_dx;
+    const net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
+    const net_x_offset = params.viz.clust.margin.left + pan_dx;
 
     // reset the zoom and translate
     params.zoom_behavior.scale(zoom_y).translate([net_x_offset, net_y_offset]);
@@ -239,7 +239,7 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
     ) {
       d3.select(params.root + ' .row_label_zoom_container').each(function () {
         // get the bounding box of the row label text
-        var bbox = d3.select(this).select('text')[0][0].getBBox();
+        const bbox = d3.select(this).select('text')[0][0].getBBox();
 
         // use the bounding box to set the size of the rect
         d3.select(this)
@@ -271,8 +271,8 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
     d3.select(params.root + ' .row_dendro_icons_group')
       .selectAll('path')
       .attr('transform', function (d) {
-        var inst_x = params.viz.uni_margin;
-        var inst_y = d.pos_mid;
+        const inst_x = params.viz.uni_margin;
+        const inst_y = d.pos_mid;
         return (
           'translate(' +
           inst_x +
@@ -293,7 +293,7 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
     d3.select(params.root + ' .col_dendro_icons_group').attr(
       'transform',
       function () {
-        var inst_trans =
+        const inst_trans =
           // 'translate(' + [0, 0 + center_y] + ')' +
           ' scale(' + zoom_x + ',' + zoom_y + ')';
         // + 'translate(' + [pan_dx, pan_dy ] + ')';
@@ -304,8 +304,8 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
     d3.select(params.root + ' .col_dendro_icons_group')
       .selectAll('path')
       .attr('transform', function (d) {
-        var inst_x = d.pos_mid;
-        var inst_y = params.viz.uni_margin;
+        const inst_x = d.pos_mid;
+        const inst_y = params.viz.uni_margin;
         // return 'translate('+ inst_x +',' + inst_y + ') ' + 'scale('+1/zoom_x+',1)';
         return 'translate(' + inst_x + ',' + inst_y + ') ' + 'scale(1,1)';
       });
@@ -317,7 +317,7 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
     // col_label_obj.select('rect')
     if (utils.has(params.network_data.col_nodes[0], 'value')) {
       d3.selectAll(params.root + ' .col_bars').attr('width', function (d) {
-        var inst_value = 0;
+        let inst_value = 0;
         if (d.value > 0) {
           inst_value = params.labels.bar_scale_col(d.value) / zoom_x;
         }
@@ -330,12 +330,12 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
         .transition()
         .duration(search_duration)
         .attr('width', function (d) {
-          var inst_value = 0;
+          let inst_value = 0;
           inst_value = params.labels.bar_scale_row(Math.abs(d.value)) / zoom_y;
           return inst_value;
         })
         .attr('x', function (d) {
-          var inst_value = 0;
+          let inst_value = 0;
           inst_value = -params.labels.bar_scale_row(Math.abs(d.value)) / zoom_y;
           return inst_value;
         });

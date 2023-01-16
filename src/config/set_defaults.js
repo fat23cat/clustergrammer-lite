@@ -1,5 +1,5 @@
 module.exports = function set_defaults() {
-  var defaults = {
+  const defaults = {
     // Label options
     row_label_scale: 1,
     col_label_scale: 1,

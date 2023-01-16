@@ -1,26 +1,26 @@
-var d3 = require('d3');
-var change_groups = require('./change_groups');
-var position_dendro_slider = require('./position_dendro_slider');
+const d3 = require('d3');
+const change_groups = require('./change_groups');
+const position_dendro_slider = require('./position_dendro_slider');
 
 module.exports = function build_single_dendro_slider(cgm, inst_rc) {
-  var slider_length = 100;
+  const slider_length = 100;
 
-  var drag = d3.behavior
+  const drag = d3.behavior
     .drag()
     .on('drag', dragging)
     .on('dragend', function () {
       cgm.params.is_slider_drag = false;
     });
 
-  var slider_group = d3
+  const slider_group = d3
     .select(cgm.params.root + ' .viz_svg')
     .append('g')
     .classed(inst_rc + '_slider_group', true);
 
   position_dendro_slider(cgm, inst_rc);
 
-  var rect_height = slider_length + 20;
-  var rect_width = 30;
+  const rect_height = slider_length + 20;
+  const rect_width = 30;
   slider_group
     .append('rect')
     .classed(inst_rc + '_slider_background', true)
@@ -28,7 +28,7 @@ module.exports = function build_single_dendro_slider(cgm, inst_rc) {
     .attr('width', rect_width + 'px')
     .attr('fill', cgm.params.viz.background_color)
     .attr('transform', function () {
-      var translate_string = 'translate(-10, -5)';
+      const translate_string = 'translate(-10, -5)';
       return translate_string;
     })
     .style('opacity', 0);
@@ -45,23 +45,23 @@ module.exports = function build_single_dendro_slider(cgm, inst_rc) {
     })
     .on('click', click_dendro_slider);
 
-  var offset_triangle = -slider_length / 40;
+  const offset_triangle = -slider_length / 40;
   slider_group
     .append('path')
     .style('fill', 'black')
     .attr('transform', 'translate(' + offset_triangle + ', 0)')
     .attr('d', function () {
       // up triangle
-      var start_x = 0;
-      var start_y = 0;
+      const start_x = 0;
+      const start_y = 0;
 
-      var mid_x = 0;
-      var mid_y = slider_length;
+      const mid_x = 0;
+      const mid_y = slider_length;
 
-      var final_x = slider_length / 10;
-      var final_y = 0;
+      const final_x = slider_length / 10;
+      const final_y = 0;
 
-      var output_string =
+      const output_string =
         'M' +
         start_x +
         ',' +
@@ -81,8 +81,8 @@ module.exports = function build_single_dendro_slider(cgm, inst_rc) {
     .style('opacity', 0.35)
     .on('click', click_dendro_slider);
 
-  var default_opacity = 0.35;
-  var high_opacity = 0.6;
+  const default_opacity = 0.35;
+  const high_opacity = 0.6;
   slider_group
     .append('circle')
     .classed(inst_rc + '_group_circle', true)
@@ -104,7 +104,7 @@ module.exports = function build_single_dendro_slider(cgm, inst_rc) {
     cgm.params.is_slider_drag = true;
 
     // d[0] = d3.event.x;
-    var slider_pos = d3.event.y;
+    let slider_pos = d3.event.y;
 
     if (slider_pos < 0) {
       slider_pos = 0;
@@ -120,7 +120,7 @@ module.exports = function build_single_dendro_slider(cgm, inst_rc) {
 
     slider_pos = d3.round(slider_pos, -1);
 
-    var slider_value = 10 - slider_pos / 10;
+    const slider_value = 10 - slider_pos / 10;
 
     d3.select(this).attr('transform', 'translate(0, ' + slider_pos + ')');
 
@@ -128,16 +128,16 @@ module.exports = function build_single_dendro_slider(cgm, inst_rc) {
   }
 
   function click_dendro_slider() {
-    var clicked_line_position = d3.mouse(this);
+    const clicked_line_position = d3.mouse(this);
 
-    var rel_pos = d3.round(clicked_line_position[1], -1);
+    const rel_pos = d3.round(clicked_line_position[1], -1);
 
     d3.select(cgm.params.root + ' .' + inst_rc + '_group_circle').attr(
       'transform',
       'translate(0, ' + rel_pos + ')'
     );
 
-    var slider_value = 10 - rel_pos / 10;
+    const slider_value = 10 - rel_pos / 10;
 
     change_groups(cgm, inst_rc, slider_value);
   }

@@ -1,11 +1,11 @@
-var d3 = require('d3');
-var position_play_button = require('./position_play_button');
+const d3 = require('d3');
+const position_play_button = require('./position_play_button');
 
 module.exports = function make_play_button(cgm) {
-  var params = cgm.params;
+  const params = cgm.params;
 
   if (d3.select(params.root + ' .play_button').empty()) {
-    var play_button = d3
+    const play_button = d3
       .select(params.root + ' .viz_svg')
       .append('g')
       .classed('play_button', true)
@@ -24,9 +24,9 @@ module.exports = function make_play_button(cgm) {
     play_button
       .append('path')
       .attr('d', function () {
-        var tri_w = 40;
-        var tri_h = 22;
-        var tri_offset = 15;
+        const tri_w = 40;
+        const tri_h = 22;
+        const tri_offset = 15;
 
         return (
           'M-' +

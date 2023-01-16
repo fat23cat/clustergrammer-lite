@@ -1,10 +1,10 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function calc_cat_params(params, viz) {
-  var separtion_room;
+  let separtion_room;
 
   // increase the width of the label container based on the label length
-  var label_scale = d3.scale
+  const label_scale = d3.scale
     .linear()
     .domain([5, 15])
     .range([85, 120])
@@ -29,12 +29,12 @@ module.exports = function calc_cat_params(params, viz) {
         viz.dendro_room.symbol_width + 3 * viz.uni_margin;
     }
 
-    var num_cats = viz.all_cats[inst_rc].length;
+    const num_cats = viz.all_cats[inst_rc].length;
 
     if (viz.show_categories[inst_rc]) {
       separtion_room = (num_cats - 1) * viz.cat_room.separation;
 
-      var adjusted_cats;
+      let adjusted_cats;
       if (inst_rc === 'row') {
         adjusted_cats = num_cats + 1;
       } else {

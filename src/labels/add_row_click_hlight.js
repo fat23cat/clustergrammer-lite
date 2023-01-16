@@ -1,10 +1,10 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function (params, clicked_row, id_clicked_row) {
   if (id_clicked_row != params.click_hlight_row) {
-    var rel_width_hlight = 6;
-    var opacity_hlight = 0.85;
-    var hlight_height = rel_width_hlight * params.viz.border_width.x;
+    const rel_width_hlight = 6;
+    const opacity_hlight = 0.85;
+    const hlight_height = rel_width_hlight * params.viz.border_width.x;
 
     d3.selectAll(params.root + ' .click_hlight').remove();
 
@@ -33,7 +33,7 @@ module.exports = function (params, clicked_row, id_clicked_row) {
       .attr('fill', params.matrix.hlight_color)
       .attr('opacity', opacity_hlight)
       .attr('transform', function () {
-        var tmp_translate_y = params.viz.y_scale.rangeBand() - hlight_height;
+        const tmp_translate_y = params.viz.y_scale.rangeBand() - hlight_height;
         return 'translate(0,' + tmp_translate_y + ')';
       });
   } else {

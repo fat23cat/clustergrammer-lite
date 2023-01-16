@@ -1,12 +1,12 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function (params) {
   // resize click hlight
-  var rel_width_hlight = 6;
+  const rel_width_hlight = 6;
   // var opacity_hlight = 0.85;
 
-  var hlight_width = rel_width_hlight * params.viz.border_width.x;
-  var hlight_height = rel_width_hlight * params.viz.border_width.y;
+  const hlight_width = rel_width_hlight * params.viz.border_width.x;
+  const hlight_height = rel_width_hlight * params.viz.border_width.y;
 
   // reposition tile highlight
   ////////////////////////////////
@@ -45,7 +45,7 @@ module.exports = function (params) {
     .transition()
     .duration(2500)
     .attr('transform', function () {
-      var tmp_translate =
+      const tmp_translate =
         params.viz.x_scale(params.matrix.click_hlight_x) +
         params.viz.x_scale.rangeBand() -
         hlight_width;
@@ -61,9 +61,9 @@ module.exports = function (params) {
     .transition()
     .duration(2500)
     .attr('transform', function () {
-      var tmp_translate_x =
+      const tmp_translate_x =
         params.viz.x_scale(params.matrix.click_hlight_x) + hlight_width * 0.99;
-      var tmp_translate_y = params.viz.y_scale.rangeBand() - hlight_height;
+      const tmp_translate_y = params.viz.y_scale.rangeBand() - hlight_height;
       return 'translate(' + tmp_translate_x + ',' + tmp_translate_y + ')';
     });
 };

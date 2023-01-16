@@ -1,11 +1,11 @@
-var utils = require('../Utils_clust');
+const utils = require('../Utils_clust');
 
 module.exports = function resize_col_hlight(
   params,
   svg_group,
   delay_info = false
 ) {
-  var delays = {};
+  let delays = {};
   // var duration = params.viz.duration;
 
   if (delay_info === false) {
@@ -21,7 +21,7 @@ module.exports = function resize_col_hlight(
         return d.name;
       })
       .attr('width', function (d) {
-        var inst_value = 0;
+        let inst_value = 0;
 
         if (d.value > 0) {
           inst_value = params.labels.bar_scale_col(d.value);

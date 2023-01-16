@@ -1,10 +1,10 @@
-var make_network_using_view = require('../network/make_network_using_view');
+const make_network_using_view = require('../network/make_network_using_view');
 // var ini_sidebar_params = require('./ini_sidebar_params');
-var make_requested_view = require('../filters/make_requested_view');
-var get_available_filters = require('./get_available_filters');
-var calc_viz_params = require('./calc_viz_params');
-var ini_zoom_info = require('../zoom/ini_zoom_info');
-var $ = require('jquery');
+const make_requested_view = require('../filters/make_requested_view');
+const get_available_filters = require('./get_available_filters');
+const calc_viz_params = require('./calc_viz_params');
+const ini_zoom_info = require('../zoom/ini_zoom_info');
+const $ = require('jquery');
 
 /*
 Params: calculates the size of all the visualization elements in the
@@ -12,8 +12,8 @@ clustergram.
  */
 
 module.exports = function make_params(input_config) {
-  var config = $.extend(true, {}, input_config);
-  var params = config;
+  const config = $.extend(true, {}, input_config);
+  let params = config;
 
   // keep a copy of inst_view
   params.inst_nodes = {};
@@ -22,9 +22,9 @@ module.exports = function make_params(input_config) {
 
   // when pre-loading the visualization using a view
   if (params.ini_view !== null) {
-    var requested_view = params.ini_view;
+    let requested_view = params.ini_view;
 
-    var filters = get_available_filters(params.network_data.views);
+    const filters = get_available_filters(params.network_data.views);
 
     params.viz = {};
     params.viz.possible_filters = filters.possible_filters;

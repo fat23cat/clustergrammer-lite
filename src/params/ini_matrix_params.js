@@ -1,13 +1,13 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
-var utils = require('../Utils_clust');
-var initialize_matrix = require('../initialize_matrix');
-var max = require('underscore/cjs/max');
+const utils = require('../Utils_clust');
+const initialize_matrix = require('../initialize_matrix');
+const max = require('underscore/cjs/max');
 
 module.exports = function ini_matrix_params(params) {
-  var matrix = {};
+  const matrix = {};
 
-  var network_data = params.network_data;
+  const network_data = params.network_data;
 
   matrix.tile_colors = params.tile_colors;
   matrix.bar_colors = params.bar_colors;
@@ -36,7 +36,7 @@ module.exports = function ini_matrix_params(params) {
 
   ['row', 'col'].forEach(function (inst_rc) {
     // row ordering is based on col info and vice versa
-    var other_rc;
+    let other_rc;
     if (inst_rc === 'row') {
       other_rc = 'col';
     } else {
@@ -44,19 +44,19 @@ module.exports = function ini_matrix_params(params) {
     }
 
     // the nodes are defined using other_rc
-    var inst_nodes = network_data[other_rc + '_nodes'] || [];
-    var num_nodes = inst_nodes.length;
+    const inst_nodes = network_data[other_rc + '_nodes'] || [];
+    const num_nodes = inst_nodes.length;
 
-    var nodes_names = utils.pluck(inst_nodes, 'name');
-    var tmp = nodes_names.sort();
+    const nodes_names = utils.pluck(inst_nodes, 'name');
+    const tmp = nodes_names.sort();
 
-    var alpha_index = tmp.map(function (d) {
+    const alpha_index = tmp.map(function (d) {
       return network_data[other_rc + '_nodes_names'].indexOf(d);
     });
 
     matrix.orders['alpha_' + inst_rc] = alpha_index;
 
-    var possible_orders = ['clust', 'rank'];
+    const possible_orders = ['clust', 'rank'];
 
     if (utils.has(inst_nodes[0], 'rankvar')) {
       possible_orders.push('rankvar');
@@ -71,7 +71,7 @@ module.exports = function ini_matrix_params(params) {
     }
 
     possible_orders.forEach(function (inst_order) {
-      var tmp_order_index = d3.range(num_nodes).sort(function (a, b) {
+      const tmp_order_index = d3.range(num_nodes).sort(function (a, b) {
         return inst_nodes[b][inst_order] - inst_nodes[a][inst_order];
       });
 
@@ -121,8 +121,8 @@ module.exports = function ini_matrix_params(params) {
     }
   }
 
-  var has_val_up = utils.has(network_data.links[0], 'value_up');
-  var has_val_dn = utils.has(network_data.links[0], 'value_dn');
+  const has_val_up = utils.has(network_data.links[0], 'value_up');
+  const has_val_dn = utils.has(network_data.links[0], 'value_dn');
 
   if (has_val_up || has_val_dn) {
     matrix.tile_type = 'updn';

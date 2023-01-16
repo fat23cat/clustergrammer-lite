@@ -1,5 +1,5 @@
 module.exports = function calc_real_font_size(params) {
-  var real_font_size = {};
+  const real_font_size = {};
   // zoom_switch behavior has to change with zoom_ratio.y
   if (params.viz.zoom_ratio.x > 1) {
     real_font_size.row =

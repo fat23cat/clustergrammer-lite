@@ -1,42 +1,42 @@
-var d3 = require('d3');
-var utils = require('../Utils_clust');
-var run_zoom = require('../zoom/run_zoom');
-var ini_doubleclick = require('../zoom/ini_doubleclick');
-var reset_zoom = require('../zoom/reset_zoom');
-var resize_dendro = require('./resize_dendro');
-var resize_super_labels = require('./resize_super_labels');
-var resize_spillover = require('./resize_spillover');
-var resize_borders = require('./resize_borders');
-var resize_row_labels = require('./resize_row_labels');
-var resize_highlights = require('./resize_highlights');
-var resize_row_viz = require('./resize_row_viz');
-var resize_col_labels = require('./resize_col_labels');
-var resize_col_text = require('./resize_col_text');
-var resize_col_triangle = require('./resize_col_triangle');
-var resize_col_hlight = require('./resize_col_hlight');
-var recalc_params_for_resize = require('./recalc_params_for_resize');
-var resize_row_tiles = require('./resize_row_tiles');
-var resize_label_bars = require('./resize_label_bars');
-var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
-var make_dendro_triangles = require('../dendrogram/make_dendro_triangles');
-var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
-var show_visible_area = require('../zoom/show_visible_area');
-var calc_viz_dimensions = require('../params/calc_viz_dimensions');
-var position_play_button = require('../demo/position_play_button');
-var make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
-var ini_cat_reorder = require('../reorder/ini_cat_reorder');
-var position_dendro_slider = require('../dendrogram/position_dendro_slider');
-var position_tree_icon = require('../menus/position_tree_icon');
-var position_filter_icon = require('../menus/position_filter_icon');
-var position_tree_menu = require('../menus/position_tree_menu');
-var ini_zoom_info = require('../zoom/ini_zoom_info');
-var grid_lines_viz = require('../matrix/grid_lines_viz');
-var each = require('underscore/cjs/each');
+const d3 = require('d3');
+const utils = require('../Utils_clust');
+const run_zoom = require('../zoom/run_zoom');
+const ini_doubleclick = require('../zoom/ini_doubleclick');
+const reset_zoom = require('../zoom/reset_zoom');
+const resize_dendro = require('./resize_dendro');
+const resize_super_labels = require('./resize_super_labels');
+const resize_spillover = require('./resize_spillover');
+const resize_borders = require('./resize_borders');
+const resize_row_labels = require('./resize_row_labels');
+const resize_highlights = require('./resize_highlights');
+const resize_row_viz = require('./resize_row_viz');
+const resize_col_labels = require('./resize_col_labels');
+const resize_col_text = require('./resize_col_text');
+const resize_col_triangle = require('./resize_col_triangle');
+const resize_col_hlight = require('./resize_col_hlight');
+const recalc_params_for_resize = require('./recalc_params_for_resize');
+const resize_row_tiles = require('./resize_row_tiles');
+const resize_label_bars = require('./resize_label_bars');
+const label_constrain_and_trim = require('../labels/label_constrain_and_trim');
+const make_dendro_triangles = require('../dendrogram/make_dendro_triangles');
+const toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
+const show_visible_area = require('../zoom/show_visible_area');
+const calc_viz_dimensions = require('../params/calc_viz_dimensions');
+const position_play_button = require('../demo/position_play_button');
+const make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
+const ini_cat_reorder = require('../reorder/ini_cat_reorder');
+const position_dendro_slider = require('../dendrogram/position_dendro_slider');
+const position_tree_icon = require('../menus/position_tree_icon');
+const position_filter_icon = require('../menus/position_filter_icon');
+const position_tree_menu = require('../menus/position_tree_menu');
+const ini_zoom_info = require('../zoom/ini_zoom_info');
+const grid_lines_viz = require('../matrix/grid_lines_viz');
+const each = require('underscore/cjs/each');
 
 module.exports = function resize_viz(cgm) {
-  var params = cgm.params;
+  let params = cgm.params;
 
-  var cont_dim = calc_viz_dimensions(params);
+  const cont_dim = calc_viz_dimensions(params);
 
   d3.select(params.root + ' .play_button');
   // .style('opacity', 0.2);
@@ -58,7 +58,7 @@ module.exports = function resize_viz(cgm) {
 
   reset_zoom(params);
 
-  var svg_group = d3.select(params.viz.viz_svg);
+  const svg_group = d3.select(params.viz.viz_svg);
 
   // redefine x and y positions
   each(params.network_data.links, function (d) {
@@ -99,8 +99,8 @@ module.exports = function resize_viz(cgm) {
 
   setTimeout(position_play_button, 100, params);
 
-  var row_nodes = params.network_data.row_nodes;
-  var row_nodes_names = utils.pluck(row_nodes, 'name') || [];
+  const row_nodes = params.network_data.row_nodes;
+  const row_nodes_names = utils.pluck(row_nodes, 'name') || [];
 
   resize_row_tiles(params, svg_group);
 
@@ -119,7 +119,7 @@ module.exports = function resize_viz(cgm) {
 
   // change the size of the highlighting rects
   svg_group.selectAll('.row_label_group').each(function () {
-    var bbox = d3.select(this).select('text')[0][0].getBBox();
+    const bbox = d3.select(this).select('text')[0][0].getBBox();
     d3.select(this)
       .select('rect')
       .attr('x', bbox.x)
@@ -128,7 +128,7 @@ module.exports = function resize_viz(cgm) {
       .attr('height', params.viz.rect_height)
       .style('fill', 'yellow')
       .style('opacity', function (d) {
-        var inst_opacity = 0;
+        let inst_opacity = 0;
         // highlight target genes
         if (d.target === 1) {
           inst_opacity = 1;
@@ -151,7 +151,7 @@ module.exports = function resize_viz(cgm) {
   }
 
   svg_group.selectAll('.row_cat_group').attr('transform', function (d) {
-    var inst_index = row_nodes_names.indexOf(d.name);
+    const inst_index = row_nodes_names.indexOf(d.name);
     return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
   });
 
@@ -159,13 +159,13 @@ module.exports = function resize_viz(cgm) {
     .selectAll('.row_cat_group')
     .select('path')
     .attr('d', function () {
-      var origin_x = params.viz.cat_room.symbol_width - 1;
-      var origin_y = 0;
-      var mid_x = 1;
-      var mid_y = params.viz.rect_height / 2;
-      var final_x = params.viz.cat_room.symbol_width - 1;
-      var final_y = params.viz.rect_height;
-      var output_string =
+      const origin_x = params.viz.cat_room.symbol_width - 1;
+      const origin_y = 0;
+      const mid_x = 1;
+      const mid_y = params.viz.rect_height / 2;
+      const final_x = params.viz.cat_room.symbol_width - 1;
+      const final_y = params.viz.rect_height;
+      const output_string =
         'M ' +
         origin_x +
         ',' +
@@ -182,7 +182,7 @@ module.exports = function resize_viz(cgm) {
       return output_string;
     });
 
-  var is_resize = true;
+  const is_resize = true;
   if (params.viz.show_dendrogram) {
     make_dendro_triangles(cgm, 'row', is_resize);
     make_dendro_triangles(cgm, 'col', is_resize);

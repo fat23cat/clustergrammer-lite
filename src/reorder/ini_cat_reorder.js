@@ -1,8 +1,8 @@
-var d3 = require('d3');
-var all_reorder = require('./all_reorder');
+const d3 = require('d3');
+const all_reorder = require('./all_reorder');
 
 module.exports = function ini_cat_reorder(cgm) {
-  var params = cgm.params;
+  const params = cgm.params;
 
   ['row', 'col'].forEach(function (inst_rc) {
     if (params.viz.show_categories[inst_rc]) {
@@ -17,7 +17,7 @@ module.exports = function ini_cat_reorder(cgm) {
             params.root + ' .toggle_' + inst_rc + '_order .btn'
           ).classed('active', false);
 
-          var order_id = this.__data__.replace('-', '_') + '_index';
+          const order_id = this.__data__.replace('-', '_') + '_index';
           if (params.viz.sim_mat) {
             all_reorder(cgm, order_id, 'row');
             all_reorder(cgm, order_id, 'col');

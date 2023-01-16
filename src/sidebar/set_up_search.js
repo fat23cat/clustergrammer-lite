@@ -1,5 +1,5 @@
 module.exports = function set_up_search(sidebar, params) {
-  var search_container = sidebar
+  const search_container = sidebar
     .append('div')
     // .classed('row',true)
     .classed('gene_search_container', true)

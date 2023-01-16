@@ -1,8 +1,8 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function get_current_orders(params) {
   // get current orders
-  var other_rc;
+  let other_rc;
   ['row', 'col'].forEach(function (inst_rc) {
     if (inst_rc === 'row') {
       other_rc = 'col';

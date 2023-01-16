@@ -1,7 +1,7 @@
-var d3 = require('d3');
-var utils = require('../Utils_clust');
-var trim_text = require('../zoom/trim_text');
-var constrain_font_size = require('../zoom/constrain_font_size');
+const d3 = require('d3');
+const utils = require('../Utils_clust');
+const trim_text = require('../zoom/trim_text');
+const constrain_font_size = require('../zoom/constrain_font_size');
 
 module.exports = function label_constrain_and_trim(params) {
   // console.log('label_constrain_and_trim');

@@ -1,9 +1,9 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
-var max = require('underscore/cjs/max');
+const max = require('underscore/cjs/max');
 
 module.exports = function calc_val_max(params) {
-  var val_max = Math.abs(
+  let val_max = Math.abs(
     max(params.network_data.col_nodes, function (d) {
       return Math.abs(d.value);
     }).value

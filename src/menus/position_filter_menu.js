@@ -1,13 +1,13 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function position_filter_menu(cgm) {
-  var params = cgm.params;
+  const params = cgm.params;
 
   if (d3.select(params.root + ' .filter_menu').empty() === false) {
-    var menu_width = cgm.params.viz.filter_menu_width;
+    const menu_width = cgm.params.viz.filter_menu_width;
 
     d3.select(params.root + ' .filter_menu').attr('transform', function () {
-      var shift = {};
+      const shift = {};
       shift.x =
         params.viz.clust.dim.width +
         params.viz.clust.margin.left -

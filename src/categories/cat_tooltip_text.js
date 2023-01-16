@@ -1,5 +1,5 @@
-var d3 = require('d3');
-var get_cat_title = require('../categories/get_cat_title');
+const d3 = require('d3');
+const get_cat_title = require('../categories/get_cat_title');
 
 module.exports = function cat_tooltip_text(
   params,
@@ -12,9 +12,9 @@ module.exports = function cat_tooltip_text(
   d3.selectAll(params.viz.root_tips + '_row_cat_tip').style('display', 'block');
 
   // category index
-  var inst_cat = d3.select(inst_selection).attr('cat');
-  var cat_title = get_cat_title(params.viz, inst_cat, inst_rc);
-  var cat_name = inst_data[inst_cat];
+  const inst_cat = d3.select(inst_selection).attr('cat');
+  const cat_title = get_cat_title(params.viz, inst_cat, inst_rc);
+  let cat_name = inst_data[inst_cat];
 
   if (typeof cat_name === 'string') {
     if (cat_name.indexOf(': ') >= 0) {
@@ -26,7 +26,7 @@ module.exports = function cat_tooltip_text(
   // var cat_string = cat_title + ': '+ cat_name;
 
   /* new string with click instructions */
-  var cat_string =
+  const cat_string =
     '<div>' +
     cat_title +
     ': ' +
@@ -40,10 +40,10 @@ module.exports = function cat_tooltip_text(
   return cat_string;
 
   function highlight_categories() {
-    var run_highlighting = false;
+    let run_highlighting = false;
 
     if (d3.select(inst_selection).classed('hovering')) {
-      var node_types = [inst_rc];
+      let node_types = [inst_rc];
 
       if (params.viz.sim_mat) {
         node_types = ['row', 'col'];
@@ -61,14 +61,14 @@ module.exports = function cat_tooltip_text(
           d3.selectAll(params.root + ' .' + tmp_rc + '_cat_group')
             .selectAll('rect')
             .style('opacity', function (d) {
-              var inst_opacity = d3.select(this).style('opacity');
+              let inst_opacity = d3.select(this).style('opacity');
 
               if (
                 d3.select(this).classed('cat_strings') &&
                 d3.select(this).classed('filtered_cat') === false
               ) {
-                var tmp_name;
-                var tmp_cat = d3.select(this).attr('cat');
+                let tmp_name;
+                const tmp_cat = d3.select(this).attr('cat');
 
                 if (d[tmp_cat].indexOf(': ') >= 0) {
                   tmp_name = d[tmp_cat].split(': ')[1];

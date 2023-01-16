@@ -1,32 +1,32 @@
-var get_max_distance_in_dm = require('./get_max_distance_in_dm');
-var $ = require('jquery');
-var utils = require('../Utils_clust');
+const get_max_distance_in_dm = require('./get_max_distance_in_dm');
+const $ = require('jquery');
+const utils = require('../Utils_clust');
 
 module.exports = function get_order_and_groups_clusterfck_tree(
   clusters,
   names
 ) {
-  var max_distance_in_dm = get_max_distance_in_dm(clusters.hc.dists_backup);
+  const max_distance_in_dm = get_max_distance_in_dm(clusters.hc.dists_backup);
 
   // get order information from clusterfck tree
   ///////////////////////////////////////////////
-  var inst_order = 0;
-  var group = [];
-  var order_array = [];
-  var order_list = [];
-  var inst_leaf;
-  var inst_key;
+  let inst_order = 0;
+  const group = [];
+  const order_array = [];
+  const order_list = [];
+  let inst_leaf;
+  let inst_key;
 
   // start hierarchy
-  var tree = clusters.tree;
-  var ini_level = 1;
-  var tree_height = tree.dist;
+  const tree = clusters.tree;
+  const ini_level = 1;
+  const tree_height = tree.dist;
 
   // var cutoff_fractions = [];
-  var cutoff_vals = [];
-  var cutoff_indexes = [];
-  var threshold_status = [];
-  for (var i = 0; i <= 10; i++) {
+  const cutoff_vals = [];
+  const cutoff_indexes = [];
+  const threshold_status = [];
+  for (let i = 0; i <= 10; i++) {
     cutoff_vals.push((max_distance_in_dm * i) / 10);
     // cutoff_vals.push(manual_cutoff);
     threshold_status.push('above');
@@ -99,14 +99,14 @@ module.exports = function get_order_and_groups_clusterfck_tree(
   });
 
   // generate ordered names
-  var inst_name;
-  var ordered_names = [];
+  let inst_name;
+  const ordered_names = [];
   order_list.forEach(function (index) {
     inst_name = names[index];
     ordered_names.push(inst_name);
   });
 
-  var order_info = {};
+  const order_info = {};
   order_info.info = order_array;
   order_info.order = order_list;
   order_info.ordered_names = ordered_names;

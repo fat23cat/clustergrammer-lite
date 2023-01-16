@@ -1,11 +1,11 @@
-var d3 = require('d3');
-var make_slider_filter = require('./make_slider_filter');
-var make_button_filter = require('./make_button_filter');
+const d3 = require('d3');
+const make_slider_filter = require('./make_slider_filter');
+const make_button_filter = require('./make_button_filter');
 
 module.exports = function set_up_filters(cgm, filter_type) {
-  var params = cgm.params;
+  const params = cgm.params;
 
-  var div_filters = d3
+  const div_filters = d3
     .select(params.root + ' .sidebar_wrapper')
     .append('div')
     .classed('div_filters', true)

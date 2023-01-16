@@ -1,5 +1,5 @@
 module.exports = function ini_sidebar_params(params) {
-  var sidebar = {};
+  const sidebar = {};
 
   sidebar.wrapper = {};
   // sidebar.wrapper.width = 170;

@@ -1,10 +1,10 @@
-var d3 = require('d3');
-var draw_up_tile = require('../enter/draw_up_tile');
-var draw_dn_tile = require('../enter/draw_dn_tile');
-var mouseover_tile = require('../matrix/mouseover_tile');
-var mouseout_tile = require('../matrix/mouseout_tile');
-var fine_position_tile = require('../matrix/fine_position_tile');
-var filter = require('underscore/cjs/filter');
+const d3 = require('d3');
+const draw_up_tile = require('../enter/draw_up_tile');
+const draw_dn_tile = require('../enter/draw_dn_tile');
+const mouseover_tile = require('../matrix/mouseover_tile');
+const mouseout_tile = require('../matrix/mouseout_tile');
+const fine_position_tile = require('../matrix/fine_position_tile');
+const filter = require('underscore/cjs/filter');
 
 module.exports = function update_split_tiles(
   params,
@@ -16,12 +16,12 @@ module.exports = function update_split_tiles(
   tip
 ) {
   // value split
-  var row_split_data = filter(inp_row_data, function (num) {
+  const row_split_data = filter(inp_row_data, function (num) {
     return num.value_up != 0 || num.value_dn != 0;
   });
 
   // tile_up
-  var cur_tiles_up = d3
+  const cur_tiles_up = d3
     .select(row_selection)
     .selectAll('.tile_up')
     .data(row_split_data, function (d) {
@@ -29,7 +29,7 @@ module.exports = function update_split_tiles(
     });
 
   // update split tiles_up
-  var update_tiles_up = cur_tiles_up
+  const update_tiles_up = cur_tiles_up
     .on('mouseover', function (...args) {
       mouseover_tile(params, this, tip, args);
     })
@@ -59,7 +59,7 @@ module.exports = function update_split_tiles(
   }
 
   // tile_dn
-  var cur_tiles_dn = d3
+  const cur_tiles_dn = d3
     .select(row_selection)
     .selectAll('.tile_dn')
     .data(row_split_data, function (d) {
@@ -67,7 +67,7 @@ module.exports = function update_split_tiles(
     });
 
   // update split tiles_dn
-  var update_tiles_dn = cur_tiles_dn
+  const update_tiles_dn = cur_tiles_dn
     .on('mouseover', function (...args) {
       mouseover_tile(params, this, tip, args);
     })

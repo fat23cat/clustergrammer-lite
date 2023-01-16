@@ -12,7 +12,7 @@ module.exports = function resize_borders(params, svg_group) {
     .attr('width', params.viz.grey_border_width)
     .attr('height', params.viz.svg_dim.height)
     .attr('transform', function () {
-      var inst_offset = params.viz.svg_dim.width - params.viz.grey_border_width;
+      const inst_offset = params.viz.svg_dim.width - params.viz.grey_border_width;
       return 'translate(' + inst_offset + ',0)';
     });
 
@@ -22,7 +22,7 @@ module.exports = function resize_borders(params, svg_group) {
     .attr('width', params.viz.svg_dim.width)
     .attr('height', params.viz.grey_border_width)
     .attr('transform', function () {
-      var inst_offset = 0;
+      const inst_offset = 0;
       return 'translate(' + inst_offset + ',0)';
     });
 
@@ -32,7 +32,7 @@ module.exports = function resize_borders(params, svg_group) {
     .attr('width', params.viz.svg_dim.width)
     .attr('height', params.viz.grey_border_width)
     .attr('transform', function () {
-      var inst_offset =
+      const inst_offset =
         params.viz.svg_dim.height - params.viz.grey_border_width;
       return 'translate(0,' + inst_offset + ')';
     });

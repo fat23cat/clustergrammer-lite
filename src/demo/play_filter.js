@@ -1,17 +1,17 @@
-var d3 = require('d3');
-var demo_text = require('./demo_text');
-var highlight_sidebar_element = require('./highlight_sidebar_element');
-var update_viz_with_view = require('../network/update_viz_with_view');
-var $ = require('jquery');
+const d3 = require('d3');
+const demo_text = require('./demo_text');
+const highlight_sidebar_element = require('./highlight_sidebar_element');
+const update_viz_with_view = require('../network/update_viz_with_view');
+const $ = require('jquery');
 
 module.exports = function play_filter() {
   function run(cgm) {
-    var params = cgm.params;
+    const params = cgm.params;
 
-    var text = 'Filter rows based on sum or\nvariance using the sliders';
+    let text = 'Filter rows based on sum or\nvariance using the sliders';
     demo_text(params, text, 4000);
 
-    var filter_type = 'N_row_sum';
+    const filter_type = 'N_row_sum';
 
     setTimeout(
       highlight_sidebar_element,
@@ -39,16 +39,16 @@ module.exports = function play_filter() {
   }
 
   function run_update(cgm, filter_type, filter_value, filter_index) {
-    var params = cgm.params;
+    const params = cgm.params;
 
-    var requested_view = {};
+    const requested_view = {};
     requested_view[filter_type] = filter_value;
     update_viz_with_view(cgm, requested_view);
 
     // quick fix for slider
     $(params.root + ' .slider_' + filter_type).slider('value', filter_index);
 
-    var unit_name;
+    let unit_name;
     if (filter_type === 'N_row_sum') {
       unit_name = 'sum';
     } else {

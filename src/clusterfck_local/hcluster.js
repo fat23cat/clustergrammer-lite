@@ -1,7 +1,7 @@
-var distances = require('./distance');
-var $ = require('jquery');
+const distances = require('./distance');
+const $ = require('jquery');
 
-var HierarchicalClustering = function (distance, linkage, threshold) {
+const HierarchicalClustering = function (distance, linkage, threshold) {
   this.distance = distance || 'euclidean';
   this.linkage = linkage || 'average';
   this.threshold = threshold == undefined ? Infinity : threshold;
@@ -19,7 +19,7 @@ HierarchicalClustering.prototype = {
     this.index = []; // keep a hash of all clusters by key
 
     for (var i = 0; i < items.length; i++) {
-      var cluster = {
+      const cluster = {
         value: items[i],
         key: i,
         index: i,
@@ -33,8 +33,8 @@ HierarchicalClustering.prototype = {
 
     // Calculate Distance Matrix
     for (var i = 0; i < this.tree.length; i++) {
-      for (var j = 0; j <= i; j++) {
-        var dist =
+      for (let j = 0; j <= i; j++) {
+        const dist =
           i == j
             ? Infinity
             : this.distance(this.tree[i].value, this.tree[j].value);
@@ -49,7 +49,7 @@ HierarchicalClustering.prototype = {
 
     this.dists_backup = $.extend(true, [], this.dists);
 
-    var merged = this.mergeClosest();
+    let merged = this.mergeClosest();
     var i = 0;
     while (merged) {
       if (snapshotCb && i++ % snapshotPeriod == 0) {
@@ -85,11 +85,10 @@ HierarchicalClustering.prototype = {
       return false;
     }
 
-    var c1 = this.index[minKey],
-      c2 = this.index[this.mins[minKey]];
+    const c1 = this.index[minKey], c2 = this.index[this.mins[minKey]];
 
     // merge two closest clusters
-    var merged = {
+    const merged = {
       dist: min,
       left: c1,
       right: c2,
@@ -103,7 +102,7 @@ HierarchicalClustering.prototype = {
 
     // update distances with new merged cluster
     for (var i = 0; i < this.tree.length; i++) {
-      var ci = this.tree[i];
+      const ci = this.tree[i];
       var dist;
       if (c1.key == ci.key) {
         dist = Infinity;
@@ -131,11 +130,11 @@ HierarchicalClustering.prototype = {
 
     // update cached mins
     for (var i = 0; i < this.tree.length; i++) {
-      var key1 = this.tree[i].key;
+      const key1 = this.tree[i].key;
       if (this.mins[key1] == c1.key || this.mins[key1] == c2.key) {
         var min = key1;
-        for (var j = 0; j < this.tree.length; j++) {
-          var key2 = this.tree[j].key;
+        for (let j = 0; j < this.tree.length; j++) {
+          const key2 = this.tree[j].key;
           if (this.dists[key1][key2] < this.dists[key1][min]) {
             min = key2;
           }
@@ -156,12 +155,11 @@ HierarchicalClustering.prototype = {
     //  Return all nodes if num is invalid
     if (num > this.tree.size || num < 1) num = this.tree.size;
 
-    var result = [],
-      subtrees = [this.tree];
+    const result = [], subtrees = [this.tree];
 
     //  Get a list of root nodes for num different clusters
     while (num > 1) {
-      var furthest = _findNextFurthest(subtrees);
+      const furthest = _findNextFurthest(subtrees);
       subtrees.splice(subtrees.indexOf(furthest), 1);
       subtrees.push(furthest.left, furthest.right);
       num--;
@@ -174,8 +172,7 @@ HierarchicalClustering.prototype = {
 
     //  Split the next furthest distance root node
     function _findNextFurthest(subtrees) {
-      var max = -1,
-        furthest;
+      let max = -1, furthest;
       subtrees.forEach(function (tree) {
         if (tree.dist > max) {
           max = tree.dist;
@@ -195,7 +192,7 @@ HierarchicalClustering.prototype = {
   }
 };
 
-var hcluster = function (
+const hcluster = function (
   items,
   distance,
   linkage,
@@ -203,8 +200,8 @@ var hcluster = function (
   snapshot,
   snapshotCallback
 ) {
-  var hc = new HierarchicalClustering(distance, linkage, threshold);
-  var tree = hc.tree(items, snapshot, snapshotCallback);
+  const hc = new HierarchicalClustering(distance, linkage, threshold);
+  const tree = hc.tree(items, snapshot, snapshotCallback);
 
   return {
     hc: hc,

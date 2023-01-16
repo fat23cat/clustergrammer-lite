@@ -1,12 +1,12 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function (params, clicked_col, id_clicked_col) {
   if (id_clicked_col != params.click_hlight_col) {
     params.click_hlight_col = id_clicked_col;
 
-    var rel_width_hlight = 6;
-    var opacity_hlight = 0.85;
-    var hlight_width = rel_width_hlight * params.viz.border_width.x;
+    const rel_width_hlight = 6;
+    const opacity_hlight = 0.85;
+    const hlight_width = rel_width_hlight * params.viz.border_width.x;
 
     d3.selectAll(params.root + ' .click_hlight').remove();
 
@@ -30,8 +30,8 @@ module.exports = function (params, clicked_col, id_clicked_col) {
       .attr('fill', params.matrix.hlight_color)
       .attr('opacity', opacity_hlight)
       .attr('transform', function () {
-        var tmp_translate_y = 0;
-        var tmp_translate_x = -(
+        const tmp_translate_y = 0;
+        const tmp_translate_x = -(
           params.viz.clust.dim.height +
           params.viz.cat_room.col +
           params.viz.uni_margin
@@ -49,8 +49,8 @@ module.exports = function (params, clicked_col, id_clicked_col) {
       .attr('opacity', opacity_hlight)
       .attr('transform', function () {
         // reverse x and y since rotated
-        var tmp_translate_y = params.viz.x_scale.rangeBand() - hlight_width;
-        var tmp_translate_x = -(
+        const tmp_translate_y = params.viz.x_scale.rangeBand() - hlight_width;
+        const tmp_translate_x = -(
           params.viz.clust.dim.height +
           params.viz.cat_room.col +
           params.viz.uni_margin

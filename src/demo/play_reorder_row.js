@@ -1,34 +1,34 @@
-var demo_text = require('./demo_text');
-var sim_click = require('./sim_click');
-var $ = require('jquery');
-var d3 = require('d3');
+const demo_text = require('./demo_text');
+const sim_click = require('./sim_click');
+const $ = require('jquery');
+const d3 = require('d3');
 
 module.exports = function play_reorder_row() {
   function run(params) {
-    var text =
+    const text =
       'Reorder the matrix based on a single\nrow or column by double-clicking a\nlabel';
     demo_text(params, text, 7000);
 
-    var inst_element = get_row_element(params, 'EGFR');
+    const inst_element = get_row_element(params, 'EGFR');
 
-    var group_trans = d3.select(inst_element).attr('transform');
+    const group_trans = d3.select(inst_element).attr('transform');
 
-    var container_trans = d3
+    const container_trans = d3
       .select(params.root + ' .clust_container')
       .attr('transform')
       .split(',')[1]
       .replace(')', '');
 
-    var x_trans = params.viz.norm_labels.width.row * 0.9;
+    const x_trans = params.viz.norm_labels.width.row * 0.9;
 
-    var row_trans = group_trans.split(',')[1].replace(')', '');
-    var y_trans = String(
+    const row_trans = group_trans.split(',')[1].replace(')', '');
+    const y_trans = String(
       Number(row_trans) + Number(container_trans) + params.viz.rect_height / 2
     );
 
-    var wait_click = 4000;
+    const wait_click = 4000;
     setTimeout(sim_click, wait_click, params, 'double', x_trans, y_trans);
-    var wait_reorder = wait_click + 300;
+    const wait_reorder = wait_click + 300;
     setTimeout(fire_double_click_row, wait_reorder, params, inst_element);
   }
 
@@ -37,10 +37,10 @@ module.exports = function play_reorder_row() {
   }
 
   function get_row_element(params, inst_row) {
-    var inst_element = d3
+    const inst_element = d3
       .selectAll(params.root + ' .row_label_group')
       .filter(function () {
-        var inst_data = this.__data__;
+        const inst_data = this.__data__;
         return inst_data.name == inst_row;
       })[0][0];
 
@@ -54,7 +54,7 @@ module.exports = function play_reorder_row() {
   // allows doubleclicking on d3 element
   $.fn.d3DblClick = function () {
     this.each(function (i, e) {
-      var evt = document.createEvent('MouseEvents');
+      const evt = document.createEvent('MouseEvents');
       evt.initMouseEvent(
         'dblclick',
         true,

@@ -1,18 +1,18 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function (params, inst_selection, inst_rc) {
   if (d3.select(inst_selection).style('display') != 'none') {
     // trim text that is longer than the container
-    var inst_zoom;
+    let inst_zoom;
     var inst_width;
     var trimmed_text;
     var current_num_char;
     var inst_text;
     var original_text;
     var keep_num_char;
-    var i;
+    let i;
 
-    var max_width = params.viz.norm_labels.width[inst_rc];
+    const max_width = params.viz.norm_labels.width[inst_rc];
 
     if (inst_rc === 'row') {
       if (params.viz.zoom_ratio.y) {
@@ -30,14 +30,14 @@ module.exports = function (params, inst_selection, inst_rc) {
       // num_trims = params.labels.col_max_char;
     }
 
-    var num_trims;
+    let num_trims;
     d3.select(inst_selection)
       .select('text')
       .each(function (d) {
         num_trims = d.name.length;
       });
 
-    var tmp_width = d3
+    let tmp_width = d3
       .select(inst_selection)
       .select('text')
       .node()

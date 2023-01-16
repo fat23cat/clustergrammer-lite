@@ -1,15 +1,15 @@
-var d3 = require('d3');
-var cat_tooltip_text = require('./cat_tooltip_text');
-var d3_tip_custom = require('../tooltip/d3_tip_custom');
-var reset_cat_opacity = require('./reset_cat_opacity');
-var ini_cat_opacity = require('./ini_cat_opacity');
+const d3 = require('d3');
+const cat_tooltip_text = require('./cat_tooltip_text');
+const d3_tip_custom = require('../tooltip/d3_tip_custom');
+const reset_cat_opacity = require('./reset_cat_opacity');
+const ini_cat_opacity = require('./ini_cat_opacity');
 // var click_filter_cats = require('./click_filter_cats');
-var get_cat_names = require('../categories/get_cat_names');
-var each = require('underscore/cjs/each');
-var $ = require('jquery');
+const get_cat_names = require('../categories/get_cat_names');
+const each = require('underscore/cjs/each');
+const $ = require('jquery');
 
 module.exports = function make_col_cat(cgm) {
-  var params = cgm.params;
+  const params = cgm.params;
 
   // make or reuse outer container
   if (d3.select(params.root + ' .col_cat_outer_container').empty()) {
@@ -17,7 +17,7 @@ module.exports = function make_col_cat(cgm) {
       .append('g')
       .attr('class', 'col_cat_outer_container')
       .attr('transform', function () {
-        var inst_offset = params.viz.norm_labels.width.col + 2;
+        const inst_offset = params.viz.norm_labels.width.col + 2;
         return 'translate(0,' + inst_offset + ')';
       })
       .append('g')
@@ -26,7 +26,7 @@ module.exports = function make_col_cat(cgm) {
     d3.select(params.root + ' .col_container')
       .select('col_cat_outer_container')
       .attr('transform', function () {
-        var inst_offset = params.viz.norm_labels.width.col + 2;
+        const inst_offset = params.viz.norm_labels.width.col + 2;
         return 'translate(0,' + inst_offset + ')';
       });
   }
@@ -35,10 +35,10 @@ module.exports = function make_col_cat(cgm) {
   d3.selectAll(params.viz.root_tips + '_col_cat_tip').remove();
 
   // d3-tooltip
-  var cat_tip = d3_tip_custom()
+  const cat_tip = d3_tip_custom()
     .attr('class', function () {
-      var root_tip_selector = params.viz.root_tips.replace('.', '');
-      var class_string =
+      const root_tip_selector = params.viz.root_tips.replace('.', '');
+      const class_string =
         root_tip_selector + ' d3-tip ' + root_tip_selector + '_col_cat_tip';
       return class_string;
     })
@@ -59,7 +59,7 @@ module.exports = function make_col_cat(cgm) {
     .append('g')
     .attr('class', 'col_cat_group')
     .attr('transform', function (d) {
-      var inst_index = (params.network_data.col_nodes_names || []).indexOf(
+      const inst_index = (params.network_data.col_nodes_names || []).indexOf(
         d.name
       );
       // return 'translate(' + params.viz.x_scale(d.col_index) + ',0)';
@@ -72,12 +72,12 @@ module.exports = function make_col_cat(cgm) {
 
   // add category rects
   d3.selectAll(params.root + ' .col_cat_group').each(function () {
-    var inst_selection = this;
-    var cat_rect;
+    const inst_selection = this;
+    let cat_rect;
 
     each(params.viz.all_cats.col, function (inst_cat) {
-      var inst_num = parseInt(inst_cat.split('-')[1], 10);
-      var cat_rect_class = 'col_cat_rect_' + String(inst_num);
+      const inst_num = parseInt(inst_cat.split('-')[1], 10);
+      const cat_rect_class = 'col_cat_rect_' + String(inst_num);
 
       if (
         d3
@@ -91,17 +91,17 @@ module.exports = function make_col_cat(cgm) {
           .attr('class', cat_rect_class)
           .attr('cat', inst_cat)
           .attr('transform', function () {
-            var cat_room =
+            const cat_room =
               params.viz.cat_room.symbol_width + params.viz.cat_room.separation;
-            var inst_shift = inst_num * cat_room;
+            const inst_shift = inst_num * cat_room;
             return 'translate(0,' + inst_shift + ')';
           })
           .on('click', function (d) {
             if (d3.select(this).classed('cat_strings')) {
-              var found_names = get_cat_names(params, d, this, 'col');
+              const found_names = get_cat_names(params, d, this, 'col');
 
               $(params.root + ' .dendro_info').modal('toggle');
-              var group_string = found_names.join(', ');
+              const group_string = found_names.join(', ');
               d3.select(params.root + ' .dendro_info input').attr(
                 'value',
                 group_string
@@ -116,8 +116,8 @@ module.exports = function make_col_cat(cgm) {
         .attr('width', params.viz.x_scale.rangeBand())
         .attr('height', params.viz.cat_room.symbol_width)
         .style('fill', function (d) {
-          var cat_name = d[inst_cat];
-          var inst_color = params.viz.cat_colors.col[inst_cat][cat_name];
+          const cat_name = d[inst_cat];
+          const inst_color = params.viz.cat_colors.col[inst_cat][cat_name];
           return inst_color;
         })
         .on('mouseover', cat_tip.show)

@@ -1,7 +1,7 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function run_dendro_filter(cgm, d, inst_rc) {
-  var names = {};
+  const names = {};
 
   if (
     cgm.params.dendro_filter.row === false &&
@@ -15,11 +15,11 @@ module.exports = function run_dendro_filter(cgm, d, inst_rc) {
 
     names[inst_rc] = d.all_names;
 
-    var tmp_names = cgm.params.network_data[inst_rc + '_nodes_names'];
+    const tmp_names = cgm.params.network_data[inst_rc + '_nodes_names'];
 
     // keep a backup of the inst_view
-    var inst_row_nodes = cgm.params.network_data.row_nodes;
-    var inst_col_nodes = cgm.params.network_data.col_nodes;
+    const inst_row_nodes = cgm.params.network_data.row_nodes;
+    const inst_col_nodes = cgm.params.network_data.col_nodes;
 
     cgm.filter_viz_using_names(names);
 

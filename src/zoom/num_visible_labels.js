@@ -1,9 +1,9 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function num_visible_labels(params, inst_rc) {
   // counting the number of visible labels, probably not necessary
 
-  var num_visible;
+  let num_visible;
   if (inst_rc === 'row') {
     // initialize at high number
     num_visible = 10000;

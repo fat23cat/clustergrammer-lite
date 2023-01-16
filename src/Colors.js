@@ -1,5 +1,5 @@
 // colors from http://graphicdesign.stackexchange.com/revisions/3815/8
-var all_colors;
+let all_colors;
 
 all_colors = [
   '#393b79',

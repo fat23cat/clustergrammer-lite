@@ -1,17 +1,17 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function find_viz_rows(params, viz_area) {
-  var should_be_rows = [];
-  var curr_rows = [];
+  const should_be_rows = [];
+  const curr_rows = [];
 
   // find rows that should be visible
-  var y_trans;
+  let y_trans;
 
   // default y_scale (no downsampling)
-  var y_scale = params.viz.y_scale;
-  var ds_level = params.viz.ds_level;
-  var row_names = params.network_data.row_nodes_names;
-  var row_class = '.row';
+  let y_scale = params.viz.y_scale;
+  const ds_level = params.viz.ds_level;
+  let row_names = params.network_data.row_nodes_names;
+  let row_class = '.row';
 
   // if downsampling redefine variables
   if (ds_level >= 0) {
@@ -21,7 +21,7 @@ module.exports = function find_viz_rows(params, viz_area) {
   }
 
   // find rows that should be visible
-  for (var i = 0; i < row_names.length; i++) {
+  for (let i = 0; i < row_names.length; i++) {
     y_trans = y_scale(i);
     if (y_trans < viz_area.max_y && y_trans > viz_area.min_y) {
       should_be_rows.push(row_names[i]);

@@ -1,16 +1,16 @@
 module.exports = function col_viz_aid_triangle(params) {
   // x and y are flipped since its rotated
-  var reduce_rect_width = params.viz.x_scale.rangeBand() * 0.36;
-  var origin_y = -params.viz.border_width.x;
-  var start_x = 0;
-  var final_x = params.viz.x_scale.rangeBand() - reduce_rect_width;
-  var start_y = -(
+  const reduce_rect_width = params.viz.x_scale.rangeBand() * 0.36;
+  const origin_y = -params.viz.border_width.x;
+  const start_x = 0;
+  const final_x = params.viz.x_scale.rangeBand() - reduce_rect_width;
+  const start_y = -(
     params.viz.x_scale.rangeBand() -
     reduce_rect_width +
     params.viz.border_width.x
   );
-  var final_y = -params.viz.border_width.x;
-  var output_string =
+  const final_y = -params.viz.border_width.x;
+  const output_string =
     'M ' +
     origin_y +
     ',0 L ' +

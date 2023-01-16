@@ -1,4 +1,4 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function d3_tip_custom() {
   // Copyright (c) 2013 Justin Palmer
@@ -13,13 +13,7 @@ module.exports = function d3_tip_custom() {
   // improved multiple svg, scrolling+zooming support
   // made syntax fixes
   //////////////////////////////////////////////
-  var direction = d3_tip_direction,
-    offset = d3_tip_offset,
-    html = d3_tip_html,
-    node = initNode(),
-    svg = null,
-    point = null,
-    target = null;
+  let direction = d3_tip_direction, offset = d3_tip_offset, html = d3_tip_html, node = initNode(), svg = null, point = null, target = null;
 
   function tip(vis) {
     svg = getSVGNode(vis);
@@ -31,17 +25,17 @@ module.exports = function d3_tip_custom() {
   //
   // Returns a tip
   tip.show = function () {
-    var args = Array.prototype.slice.call(arguments);
+    const args = Array.prototype.slice.call(arguments);
     if (args[args.length - 1] instanceof SVGElement) {
       target = args.pop();
     }
 
-    var content = html.apply(this, args);
-    var poffset = offset.apply(this, args);
-    var dir = direction.apply(this, args);
-    var nodel = d3.select(node);
-    var i = 0;
-    var coords;
+    const content = html.apply(this, args);
+    const poffset = offset.apply(this, args);
+    const dir = direction.apply(this, args);
+    const nodel = d3.select(node);
+    let i = 0;
+    let coords;
 
     // add z-index to make sure tooltips appear on top
     nodel
@@ -60,7 +54,7 @@ module.exports = function d3_tip_custom() {
 
     // quick fix for fading tile tooltips
     if (isFunction(this) === false) {
-      var inst_class = d3.select(this).attr('class');
+      const inst_class = d3.select(this).attr('class');
 
       if (inst_class.indexOf('tile') >= 0) {
         setTimeout(fade_tips, 5000, this);
@@ -78,7 +72,7 @@ module.exports = function d3_tip_custom() {
     // d3.selectAll('.d3-tip')
     //   .style('display', 'none');
 
-    var nodel = d3.select(node);
+    const nodel = d3.select(node);
     nodel.style({ opacity: 0, 'pointer-events': 'none' });
     return tip;
   };
@@ -93,7 +87,7 @@ module.exports = function d3_tip_custom() {
     if (arguments.length < 2 && typeof n === 'string') {
       return d3.select(node).attr(n);
     } else {
-      var args = Array.prototype.slice.call(arguments);
+      const args = Array.prototype.slice.call(arguments);
       d3.selection.prototype.attr.apply(d3.select(node), args);
     }
 
@@ -110,7 +104,7 @@ module.exports = function d3_tip_custom() {
     if (arguments.length < 2 && typeof n === 'string') {
       return d3.select(node).style(n);
     } else {
-      var args = Array.prototype.slice.call(arguments);
+      const args = Array.prototype.slice.call(arguments);
       d3.selection.prototype.style.apply(d3.select(node), args);
     }
 
@@ -170,21 +164,21 @@ module.exports = function d3_tip_custom() {
     return ' ';
   }
 
-  var direction_callbacks = d3.map({
-      n: direction_n,
-      s: direction_s,
-      e: direction_e,
-      w: direction_w,
-      nw: direction_nw,
-      ne: direction_ne,
-      sw: direction_sw,
-      se: direction_se,
-      south_custom: direction_south_custom
-    }),
-    directions = direction_callbacks.keys();
+  const direction_callbacks = d3.map({
+            n: direction_n,
+            s: direction_s,
+            e: direction_e,
+            w: direction_w,
+            nw: direction_nw,
+            ne: direction_ne,
+            sw: direction_sw,
+            se: direction_se,
+            south_custom: direction_south_custom
+          }),
+        directions = direction_callbacks.keys();
 
   function direction_south_custom() {
-    var bbox = getScreenBBox();
+    const bbox = getScreenBBox();
 
     return {
       top: bbox.s.y,
@@ -193,7 +187,7 @@ module.exports = function d3_tip_custom() {
   }
 
   function direction_n() {
-    var bbox = getScreenBBox();
+    const bbox = getScreenBBox();
     return {
       top: bbox.n.y - node.offsetHeight,
       left: bbox.n.x - node.offsetWidth / 2
@@ -201,7 +195,7 @@ module.exports = function d3_tip_custom() {
   }
 
   function direction_s() {
-    var bbox = getScreenBBox();
+    const bbox = getScreenBBox();
     return {
       top: bbox.s.y,
       left: bbox.s.x - node.offsetWidth / 2
@@ -209,7 +203,7 @@ module.exports = function d3_tip_custom() {
   }
 
   function direction_e() {
-    var bbox = getScreenBBox();
+    const bbox = getScreenBBox();
     return {
       top: bbox.e.y - node.offsetHeight / 2,
       left: bbox.e.x
@@ -217,7 +211,7 @@ module.exports = function d3_tip_custom() {
   }
 
   function direction_w() {
-    var bbox = getScreenBBox();
+    const bbox = getScreenBBox();
     return {
       top: bbox.w.y - node.offsetHeight / 2,
       left: bbox.w.x - node.offsetWidth
@@ -225,7 +219,7 @@ module.exports = function d3_tip_custom() {
   }
 
   function direction_nw() {
-    var bbox = getScreenBBox();
+    const bbox = getScreenBBox();
     return {
       top: bbox.nw.y - node.offsetHeight,
       left: bbox.nw.x - node.offsetWidth
@@ -233,7 +227,7 @@ module.exports = function d3_tip_custom() {
   }
 
   function direction_ne() {
-    var bbox = getScreenBBox();
+    const bbox = getScreenBBox();
     return {
       top: bbox.ne.y - node.offsetHeight,
       left: bbox.ne.x
@@ -241,7 +235,7 @@ module.exports = function d3_tip_custom() {
   }
 
   function direction_sw() {
-    var bbox = getScreenBBox();
+    const bbox = getScreenBBox();
     return {
       top: bbox.sw.y,
       left: bbox.sw.x - node.offsetWidth
@@ -249,7 +243,7 @@ module.exports = function d3_tip_custom() {
   }
 
   function direction_se() {
-    var bbox = getScreenBBox();
+    const bbox = getScreenBBox();
     return {
       top: bbox.se.y,
       left: bbox.e.x
@@ -257,7 +251,7 @@ module.exports = function d3_tip_custom() {
   }
 
   function initNode() {
-    var node = d3.select(document.createElement('div'));
+    const node = d3.select(document.createElement('div'));
     node.style({
       position: 'absolute',
       opacity: 0,
@@ -291,17 +285,17 @@ module.exports = function d3_tip_custom() {
   //
   // Returns an Object {n, s, e, w, nw, sw, ne, se}
   function getScreenBBox() {
-    var targetel = target || d3.event.target;
-    var bbox = {};
-    var matrix = targetel.getScreenCTM();
-    var tbbox = targetel.getBBox();
-    var width = tbbox.width;
-    var height = tbbox.height;
-    var x = tbbox.x;
-    var y = tbbox.y;
-    var scrollTop =
+    const targetel = target || d3.event.target;
+    const bbox = {};
+    const matrix = targetel.getScreenCTM();
+    const tbbox = targetel.getBBox();
+    const width = tbbox.width;
+    const height = tbbox.height;
+    const x = tbbox.x;
+    const y = tbbox.y;
+    const scrollTop =
       document.documentElement.scrollTop || document.body.scrollTop;
-    var scrollLeft =
+    const scrollLeft =
       document.documentElement.scrollLeft || document.body.scrollLeft;
 
     // Nick - prevents bugs with scrolling and zooming on the same object
@@ -337,7 +331,7 @@ module.exports = function d3_tip_custom() {
 
   // only fade tips if you are still hovering on the current tip
   function fade_tips(inst_selection) {
-    var is_hovering = d3.select(inst_selection).classed('hovering');
+    const is_hovering = d3.select(inst_selection).classed('hovering');
 
     if (is_hovering) {
       d3.selectAll('.d3-tip')
@@ -349,7 +343,7 @@ module.exports = function d3_tip_custom() {
   }
 
   function isFunction(functionToCheck) {
-    var getType = {};
+    const getType = {};
     return (
       functionToCheck &&
       getType.toString.call(functionToCheck) === '[object Function]'

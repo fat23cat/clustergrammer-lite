@@ -1,16 +1,16 @@
 // var utils = require('../Utils_clust');
-var reposition_tile_highlight = require('./reposition_tile_highlight');
-var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
-var show_visible_area = require('../zoom/show_visible_area');
-var ini_zoom_info = require('../zoom/ini_zoom_info');
-var get_previous_zoom = require('../zoom/get_previous_zoom');
-var calc_downsampled_levels = require('../matrix/calc_downsampled_levels');
-var $ = require('jquery');
-var d3 = require('d3');
+const reposition_tile_highlight = require('./reposition_tile_highlight');
+const toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
+const show_visible_area = require('../zoom/show_visible_area');
+const ini_zoom_info = require('../zoom/ini_zoom_info');
+const get_previous_zoom = require('../zoom/get_previous_zoom');
+const calc_downsampled_levels = require('../matrix/calc_downsampled_levels');
+const $ = require('jquery');
+const d3 = require('d3');
 
 module.exports = function col_reorder(cgm, col_selection, inst_term) {
-  var params = cgm.params;
-  var prev_zoom = get_previous_zoom(params);
+  const params = cgm.params;
+  const prev_zoom = get_previous_zoom(params);
 
   if (prev_zoom.zoom_y === 1 && prev_zoom.zoom_x === 1) {
     params.viz.inst_order.col = 'custom';
@@ -24,19 +24,19 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
 
     params.viz.run_trans = true;
 
-    var mat = $.extend(true, {}, params.matrix.matrix);
-    var row_nodes = params.network_data.row_nodes;
-    var col_nodes = params.network_data.col_nodes;
+    const mat = $.extend(true, {}, params.matrix.matrix);
+    const row_nodes = params.network_data.row_nodes;
+    const col_nodes = params.network_data.col_nodes;
 
     // find the column number of col_selection term from col_nodes
     // gather column node names
-    var tmp_arr = [];
+    let tmp_arr = [];
     col_nodes.forEach(function (node) {
       tmp_arr.push(node.name);
     });
 
     // find index
-    var inst_col = tmp_arr.indexOf(inst_term);
+    const inst_col = tmp_arr.indexOf(inst_term);
 
     // gather the values of the input genes
     tmp_arr = [];
@@ -45,7 +45,7 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
     });
 
     // sort the cols
-    var tmp_sort = d3.range(tmp_arr.length).sort(function (a, b) {
+    const tmp_sort = d3.range(tmp_arr.length).sort(function (a, b) {
       return tmp_arr[b] - tmp_arr[a];
     });
 
@@ -55,9 +55,9 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
     // save to custom row order
     params.matrix.orders.custom_col = tmp_sort;
 
-    var t;
+    let t;
 
-    var row_nodes_names = params.network_data.row_nodes_names || [];
+    const row_nodes_names = params.network_data.row_nodes_names || [];
 
     // reorder
     if (params.network_data.links.length > params.matrix.def_large_matrix) {
@@ -71,7 +71,7 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
 
     // reorder row_label_triangle groups
     t.selectAll('.row_cat_group').attr('transform', function (d) {
-      var inst_index = row_nodes_names.indexOf(d.name);
+      const inst_index = row_nodes_names.indexOf(d.name);
       return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
     });
 
@@ -79,7 +79,7 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
     t.select('.row_label_zoom_container')
       .selectAll('.row_label_group')
       .attr('transform', function (d) {
-        var inst_index = row_nodes_names.indexOf(d.name);
+        const inst_index = row_nodes_names.indexOf(d.name);
         return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
       });
 
@@ -87,7 +87,7 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
     if (params.viz.ds_level === -1) {
       // reorder matrix rows
       t.selectAll('.row').attr('transform', function (d) {
-        var inst_index = row_nodes_names.indexOf(d.name);
+        const inst_index = row_nodes_names.indexOf(d.name);
         return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
       });
     }
@@ -119,9 +119,9 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
     if (params.viz.ds_num_levels > 0 && params.viz.ds_level >= 0) {
       calc_downsampled_levels(params);
 
-      var zooming_stopped = true;
-      var zooming_out = true;
-      var make_all_rows = true;
+      const zooming_stopped = true;
+      const zooming_out = true;
+      const make_all_rows = true;
       // show_visible_area is also run with two_translate_zoom, but at that point
       // the parameters were not updated and two_translate_zoom if only run
       // if needed to reset zoom

@@ -1,11 +1,11 @@
-var distances = require('./distance');
+const distances = require('./distance');
 
 function KMeans(centroids) {
   this.centroids = centroids || [];
 }
 
 KMeans.prototype.randomCentroids = function (points, k) {
-  var centroids = points.slice(0); // copy
+  const centroids = points.slice(0); // copy
   centroids.sort(function () {
     return Math.round(Math.random()) - 0.5;
   });
@@ -13,16 +13,15 @@ KMeans.prototype.randomCentroids = function (points, k) {
 };
 
 KMeans.prototype.classify = function (point, distance) {
-  var min = Infinity,
-    index = 0;
+  let min = Infinity, index = 0;
 
   distance = distance || 'euclidean';
   if (typeof distance == 'string') {
     distance = distances[distance];
   }
 
-  for (var i = 0; i < this.centroids.length; i++) {
-    var dist = distance(point, this.centroids[i]);
+  for (let i = 0; i < this.centroids.length; i++) {
+    const dist = distance(point, this.centroids[i]);
     if (dist < min) {
       min = dist;
       index = i;
@@ -48,12 +47,12 @@ KMeans.prototype.cluster = function (
 
   this.centroids = this.randomCentroids(points, k);
 
-  var assignment = new Array(points.length);
-  var clusters = new Array(k);
+  const assignment = new Array(points.length);
+  const clusters = new Array(k);
 
-  var i;
-  var iterations = 0;
-  var movement = true;
+  let i;
+  let iterations = 0;
+  let movement = true;
   while (movement) {
     // update point-to-centroid assignments
     for (i = 0; i < points.length; i++) {
@@ -62,8 +61,8 @@ KMeans.prototype.cluster = function (
 
     // update location of each centroid
     movement = false;
-    for (var j = 0; j < k; j++) {
-      var assigned = [];
+    for (let j = 0; j < k; j++) {
+      const assigned = [];
       for (i = 0; i < assignment.length; i++) {
         if (assignment[i] == j) {
           assigned.push(points[i]);
@@ -74,11 +73,11 @@ KMeans.prototype.cluster = function (
         continue;
       }
 
-      var centroid = this.centroids[j];
-      var newCentroid = new Array(centroid.length);
+      const centroid = this.centroids[j];
+      const newCentroid = new Array(centroid.length);
 
-      for (var g = 0; g < centroid.length; g++) {
-        var sum = 0;
+      for (let g = 0; g < centroid.length; g++) {
+        let sum = 0;
         for (i = 0; i < assigned.length; i++) {
           sum += assigned[i][g];
         }

@@ -1,4 +1,4 @@
-var col_viz_aid_triangle = require('../labels/col_viz_aid_triangle');
+const col_viz_aid_triangle = require('../labels/col_viz_aid_triangle');
 
 module.exports = function resize_col_triangle(
   params,
@@ -6,12 +6,12 @@ module.exports = function resize_col_triangle(
   delay_info = false
 ) {
   // resize column triangle
-  var ini_triangle_group = ini_svg_group
+  const ini_triangle_group = ini_svg_group
     .selectAll('.col_label_group')
     .select('path');
 
-  var delays = {};
-  var duration = params.viz.duration;
+  let delays = {};
+  const duration = params.viz.duration;
 
   if (delay_info === false) {
     delays.run_transition = false;
@@ -19,7 +19,7 @@ module.exports = function resize_col_triangle(
     delays = delay_info;
   }
 
-  var triangle_group;
+  let triangle_group;
   if (delays.run_transition) {
     triangle_group = ini_triangle_group
       .transition()

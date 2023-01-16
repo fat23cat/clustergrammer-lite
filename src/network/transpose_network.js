@@ -1,10 +1,8 @@
-var utils = require('../Utils_clust');
+const utils = require('../Utils_clust');
 /* Transpose network.
  */
 module.exports = function (net) {
-  var tnet = {},
-    inst_link,
-    i;
+  let tnet = {}, inst_link, i;
 
   tnet.row_nodes = net.col_nodes;
   tnet.col_nodes = net.row_nodes;

@@ -1,15 +1,15 @@
-var d3 = require('d3');
-var constrain_font_size = require('./constrain_font_size');
-var trim_text = require('./trim_text');
-var num_visible_labels = require('./num_visible_labels');
-var toggle_grid_lines = require('../matrix/toggle_grid_lines');
-var show_visible_area = require('./show_visible_area');
-var check_zoom_stop_status = require('./check_zoom_stop_status');
+const d3 = require('d3');
+const constrain_font_size = require('./constrain_font_size');
+const trim_text = require('./trim_text');
+const num_visible_labels = require('./num_visible_labels');
+const toggle_grid_lines = require('../matrix/toggle_grid_lines');
+const show_visible_area = require('./show_visible_area');
+const check_zoom_stop_status = require('./check_zoom_stop_status');
 
 module.exports = function run_when_zoom_stopped(cgm) {
-  var params = cgm.params;
+  const params = cgm.params;
 
-  var stop_attributes = check_zoom_stop_status(params);
+  const stop_attributes = check_zoom_stop_status(params);
 
   if (stop_attributes === true) {
     // ///////////////////////////////////////////////
@@ -53,11 +53,11 @@ module.exports = function run_when_zoom_stopped(cgm) {
     // reset x_offset
     cgm.params.viz.x_offset = 0;
 
-    var max_labels_to_trim = 150;
+    const max_labels_to_trim = 150;
     // probably do not need
     /////////////////////////
     ['row', 'col'].forEach(function (inst_rc) {
-      var inst_num_visible = num_visible_labels(params, inst_rc);
+      const inst_num_visible = num_visible_labels(params, inst_rc);
 
       if (inst_num_visible < max_labels_to_trim) {
         d3.selectAll(params.root + ' .' + inst_rc + '_label_group').each(
@@ -86,7 +86,7 @@ module.exports = function run_when_zoom_stopped(cgm) {
         })
         .select('text')
         .style('font-size', function () {
-          var inst_fs = Number(
+          const inst_fs = Number(
             d3.select(this).style('font-size').replace('px', '')
           );
           return inst_fs;

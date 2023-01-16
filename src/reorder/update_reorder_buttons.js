@@ -1,8 +1,8 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function update_reorder_buttons(tmp_config, params) {
   ['row', 'col'].forEach(function (inst_rc) {
-    var other_rc;
+    let other_rc;
     if (inst_rc === 'row') {
       other_rc = 'col';
     } else {
