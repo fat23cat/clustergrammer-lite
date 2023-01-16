@@ -55,8 +55,8 @@ module.exports = function Spillover(cgm) {
       return 'translate(' + tmp_left + ', ' + tmp_top + ')';
     });
 
-  x_offset = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin;
-  y_offset =
+  let x_offset = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin;
+  let y_offset =
     viz.norm_labels.margin.top +
     viz.norm_labels.width.col +
     2.5 * viz.uni_margin;
@@ -130,8 +130,8 @@ module.exports = function Spillover(cgm) {
     make_dendro_crop_buttons(cgm, 'col');
   }
 
-  var x_offset = viz.clust.margin.left + viz.clust.dim.width;
-  var y_offset = viz.clust.margin.top + viz.clust.dim.height;
+  x_offset = viz.clust.margin.left + viz.clust.dim.width;
+  y_offset = viz.clust.margin.top + viz.clust.dim.height;
   let tmp_width = viz.cat_room.col + viz.clust.dim.width;
   let tmp_height = viz.cat_room.row + 10 * viz.uni_margin;
   d3.select(viz.viz_svg)

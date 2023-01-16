@@ -14,7 +14,7 @@ const make_colorbar = require('./make_colorbar');
 module.exports = function sidebar(cgm) {
   const params = cgm.params;
 
-  var sidebar = d3.select(params.root + ' .sidebar_wrapper');
+  const sidebar = d3.select(params.root + ' .sidebar_wrapper');
 
   // console.log('is_expand ',params.viz.is_expand)
 

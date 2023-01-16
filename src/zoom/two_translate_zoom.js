@@ -16,8 +16,14 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
 
   show_visible_area(cgm);
 
+  // search duration - the duration of zooming and panning
+  const search_duration = 700;
+
   // do not allow while transitioning, e.g. reordering
   if (!params.viz.run_trans) {
+    let shift_top_viz;
+    let shift_up_viz;
+
     // define the commonly used variable half_height
     const half_height = params.viz.clust.dim.height / 2;
 
@@ -55,8 +61,8 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
         visible)
       */
 
-      var shift_top_viz = half_height - pan_dy;
-      var shift_up_viz = -half_height / fin_zoom + shift_top_viz;
+      shift_top_viz = half_height - pan_dy;
+      shift_up_viz = -half_height / fin_zoom + shift_top_viz;
 
       // reduce pan_dy so that the visualization does not get panned to far down
       pan_dy = pan_dy + shift_up_viz;
@@ -76,9 +82,6 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
     // will improve this !!
     const zoom_y = fin_zoom;
     const zoom_x = 1;
-
-    // search duration - the duration of zooming and panning
-    var search_duration = 700;
 
     // center_y
     const center_y = -(zoom_y - 1) * half_height;
@@ -223,7 +226,8 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
     // set y translate: center_y is positive, positive moves the visualization down
     // the translate vector has the initial margin, the first y centering, and pan_dy
     // times the scaling zoom_y
-    const net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
+    const net_y_offset =
+      params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
     const net_x_offset = params.viz.clust.margin.left + pan_dx;
 
     // reset the zoom and translate

@@ -1,15 +1,16 @@
 const d3 = require('d3');
 
 module.exports = function (params, inst_selection, inst_rc) {
+  let inst_width;
+  let trimmed_text;
+  let current_num_char;
+  let inst_text;
+  let original_text;
+  let keep_num_char;
+
   if (d3.select(inst_selection).style('display') != 'none') {
     // trim text that is longer than the container
     let inst_zoom;
-    var inst_width;
-    var trimmed_text;
-    var current_num_char;
-    var inst_text;
-    var original_text;
-    var keep_num_char;
     let i;
 
     const max_width = params.viz.norm_labels.width[inst_rc];

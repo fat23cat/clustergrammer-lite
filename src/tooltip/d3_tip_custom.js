@@ -13,7 +13,13 @@ module.exports = function d3_tip_custom() {
   // improved multiple svg, scrolling+zooming support
   // made syntax fixes
   //////////////////////////////////////////////
-  let direction = d3_tip_direction, offset = d3_tip_offset, html = d3_tip_html, node = initNode(), svg = null, point = null, target = null;
+  let direction = d3_tip_direction,
+    offset = d3_tip_offset,
+    html = d3_tip_html,
+    svg = null,
+    point = null,
+    target = null;
+  const node = initNode();
 
   function tip(vis) {
     svg = getSVGNode(vis);
@@ -35,7 +41,6 @@ module.exports = function d3_tip_custom() {
     const dir = direction.apply(this, args);
     const nodel = d3.select(node);
     let i = 0;
-    let coords;
 
     // add z-index to make sure tooltips appear on top
     nodel
@@ -46,7 +51,7 @@ module.exports = function d3_tip_custom() {
     while (i--) {
       nodel.classed(directions[i], false);
     }
-    coords = direction_callbacks.get(dir).apply(this);
+    const coords = direction_callbacks.get(dir).apply(this);
     nodel.classed(dir, true).style({
       top: coords.top + poffset[0] + 'px',
       left: coords.left + poffset[1] + 'px'
@@ -165,17 +170,17 @@ module.exports = function d3_tip_custom() {
   }
 
   const direction_callbacks = d3.map({
-            n: direction_n,
-            s: direction_s,
-            e: direction_e,
-            w: direction_w,
-            nw: direction_nw,
-            ne: direction_ne,
-            sw: direction_sw,
-            se: direction_se,
-            south_custom: direction_south_custom
-          }),
-        directions = direction_callbacks.keys();
+      n: direction_n,
+      s: direction_s,
+      e: direction_e,
+      w: direction_w,
+      nw: direction_nw,
+      ne: direction_ne,
+      sw: direction_sw,
+      se: direction_se,
+      south_custom: direction_south_custom
+    }),
+    directions = direction_callbacks.keys();
 
   function direction_south_custom() {
     const bbox = getScreenBBox();
