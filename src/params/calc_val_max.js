@@ -1,5 +1,5 @@
 import d3 from 'd3';
-import max from 'underscore/modules/max';
+import max from 'underscore/modules/max.js';
 export default (function calc_val_max(params) {
   let val_max = Math.abs(
     max(params.network_data.col_nodes, function (d) {

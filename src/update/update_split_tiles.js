@@ -4,7 +4,7 @@ import draw_dn_tile from '../enter/draw_dn_tile.js';
 import mouseover_tile from '../matrix/mouseover_tile.js';
 import mouseout_tile from '../matrix/mouseout_tile.js';
 import fine_position_tile from '../matrix/fine_position_tile.js';
-import filter from 'underscore/modules/filter';
+import filter from 'underscore/modules/filter.js';
 export default (function update_split_tiles(
   params,
   inp_row_data,

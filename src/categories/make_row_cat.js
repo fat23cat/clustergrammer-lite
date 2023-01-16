@@ -4,7 +4,7 @@ import d3_tip_custom from '../tooltip/d3_tip_custom.js';
 import reset_cat_opacity from './reset_cat_opacity.js';
 import ini_cat_opacity from './ini_cat_opacity.js';
 import get_cat_names from './get_cat_names.js';
-import each from 'underscore/modules/each';
+import each from 'underscore/modules/each.js';
 import * as $ from 'jquery';
 export default (function make_row_cat(cgm, updating = false) {
   const params = cgm.params;

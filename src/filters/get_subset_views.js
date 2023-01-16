@@ -1,7 +1,7 @@
 import utils from '../Utils_clust.js';
 import get_filter_default_state from './get_filter_default_state.js';
-import filter from 'underscore/modules/filter';
-import each from 'underscore/modules/each';
+import filter from 'underscore/modules/filter.js';
+import each from 'underscore/modules/each.js';
 export default (function get_subset_views(params, views, requested_view) {
   let inst_value;
   let found_filter;

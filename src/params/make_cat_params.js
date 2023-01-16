@@ -2,8 +2,8 @@ import calc_cat_params from './calc_cat_params.js';
 import utils from '../Utils_clust.js';
 import colors from '../Colors.js';
 import check_if_value_cats from './check_if_value_cats.js';
-import each from 'underscore/modules/each';
-import countBy from 'underscore/modules/countBy';
+import each from 'underscore/modules/each.js';
+import countBy from 'underscore/modules/countBy.js';
 export default (function make_cat_params(
   params,
   viz,

@@ -1,4 +1,4 @@
-import each from 'underscore/modules/each';
+import each from 'underscore/modules/each.js';
 export default (function check_nodes_for_categories(nodes) {
   const super_string = ': ';
   let has_cat = true;

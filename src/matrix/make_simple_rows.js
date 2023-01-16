@@ -4,7 +4,7 @@ import draw_dn_tile from '../enter/draw_dn_tile.js';
 import mouseover_tile from './mouseover_tile.js';
 import mouseout_tile from './mouseout_tile.js';
 import fine_position_tile from './fine_position_tile.js';
-import filter from 'underscore/modules/filter';
+import filter from 'underscore/modules/filter.js';
 import utils from '../Utils_clust.js';
 import click_tile from './click_tile.js';
 const POSITION_INACCURACY = 2;

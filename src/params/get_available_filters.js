@@ -1,4 +1,4 @@
-import each from 'underscore/modules/each';
+import each from 'underscore/modules/each.js';
 import utils from '../Utils_clust.js';
 export default (function get_available_filters(views) {
   const possible_filters = {};

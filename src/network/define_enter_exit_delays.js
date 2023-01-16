@@ -1,5 +1,5 @@
-import map from 'underscore/modules/map';
-import difference from 'underscore/modules/difference';
+import map from 'underscore/modules/map.js';
+import difference from 'underscore/modules/difference.js';
 export default (function (old_params, params) {
   // exit, update, enter
   // check if exit or enter or both are required

@@ -1,5 +1,5 @@
 import d3 from 'd3';
-import filter from 'underscore/modules/filter';
+import filter from 'underscore/modules/filter.js';
 export default (function exit_existing_row(
   params,
   delays,

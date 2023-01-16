@@ -1,5 +1,5 @@
 import make_full_name from './make_full_name.js';
-import each from 'underscore/modules/each';
+import each from 'underscore/modules/each.js';
 export default (function make_matrix_string(params) {
   const inst_matrix = params.matrix;
   // get order indexes

@@ -1,6 +1,6 @@
 import d3 from 'd3';
 import calc_cat_cluster_breakdown from './calc_cat_cluster_breakdown.js';
-import each from 'underscore/modules/each';
+import each from 'underscore/modules/each.js';
 import cat_breakdown_bars from './cat_breakdown_bars.js';
 import cat_breakdown_values from './cat_breakdown_values.js';
 export default (function make_cat_breakdown_graph(

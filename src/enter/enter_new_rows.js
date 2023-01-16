@@ -3,7 +3,7 @@ import enter_split_tiles from './enter_split_tiles.js';
 import mouseover_tile from '../matrix/mouseover_tile.js';
 import mouseout_tile from '../matrix/mouseout_tile.js';
 import fine_position_tile from '../matrix/fine_position_tile.js';
-import filter from 'underscore/modules/filter';
+import filter from 'underscore/modules/filter.js';
 export default (function enter_new_rows(
   params,
   ini_inp_row_data,

@@ -1,4 +1,4 @@
-import max from 'underscore/modules/max';
+import max from 'underscore/modules/max.js';
 export default (function ini_label_params(params) {
   const labels = {};
   labels.super_label_scale = params.super_label_scale;

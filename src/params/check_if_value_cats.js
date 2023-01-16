@@ -1,5 +1,5 @@
 import d3 from 'd3';
-import max from 'underscore/modules/max';
+import max from 'underscore/modules/max.js';
 export default (function check_if_value_cats(cat_states) {
   let tmp_cat = cat_states[0];
   let has_title = false;

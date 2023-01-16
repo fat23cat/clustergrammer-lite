@@ -1,4 +1,4 @@
-import each from 'underscore/modules/each';
+import each from 'underscore/modules/each.js';
 export default (function generate_cat_data(cgm) {
   // only row category resetting is supported currently
   // get row_nodes from config, since this is has the original network

@@ -2,7 +2,7 @@ import utils from '../Utils_clust.js';
 import * as core from 'mathjs/core';
 import matrix from 'mathjs/lib/type/matrix';
 import * as zeros from 'mathjs/lib/function/matrix/zeros';
-import filter from 'underscore/modules/filter';
+import filter from 'underscore/modules/filter.js';
 const math = core.create();
 math.import(matrix);
 math.import(zeros);

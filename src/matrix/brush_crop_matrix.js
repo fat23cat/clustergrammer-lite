@@ -1,6 +1,6 @@
 import d3 from 'd3';
 import deactivate_cropping from './deactivate_cropping.js';
-import each from 'underscore/modules/each';
+import each from 'underscore/modules/each.js';
 export default (function brush_crop_matrix() {
   // get rows/cols from brush-extent
   // works for differnt brushing directions (e.g. start end sites)

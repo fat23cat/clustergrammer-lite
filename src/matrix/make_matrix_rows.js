@@ -1,8 +1,8 @@
 import d3 from 'd3';
 import make_simple_rows from './make_simple_rows.js';
 import d3_tip_custom from '../tooltip/d3_tip_custom.js';
-import each from 'underscore/modules/each';
-import contains from 'underscore/modules/contains';
+import each from 'underscore/modules/each.js';
+import contains from 'underscore/modules/contains.js';
 export default (function make_matrix_rows(
   params,
   current_matrix,

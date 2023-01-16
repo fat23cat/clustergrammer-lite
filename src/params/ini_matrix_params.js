@@ -1,7 +1,7 @@
 import d3 from 'd3';
 import utils from '../Utils_clust.js';
 import initialize_matrix from '../initialize_matrix.js';
-import max from 'underscore/modules/max';
+import max from 'underscore/modules/max.js';
 export default (function ini_matrix_params(params) {
   const matrix = {};
   const network_data = params.network_data;

@@ -1,5 +1,5 @@
 import d3 from 'd3';
-import range from 'underscore/modules/range';
+import range from 'underscore/modules/range.js';
 export default (function calc_clust_width(viz) {
   viz.clust = {};
   viz.clust.margin = {};

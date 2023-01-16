@@ -4,7 +4,7 @@ import calc_clust_height from '../params/calc_clust_height.js';
 import calc_clust_width from '../params/calc_clust_width.js';
 import calc_default_fs from '../params/calc_default_fs.js';
 import calc_zoom_switching from '../zoom/calc_zoom_switching.js';
-import each from 'underscore/modules/each';
+import each from 'underscore/modules/each.js';
 export default (function recalc_params_for_resize(params) {
   // Resetting some visualization parameters
   params = get_svg_dim(params);

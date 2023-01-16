@@ -1,4 +1,4 @@
-import each from 'underscore/modules/each';
+import each from 'underscore/modules/each.js';
 import utils from '../Utils_clust.js';
 export default (function calc_downsampled_matrix(params, mat, ds_level) {
   const inst_num_rows = params.viz.ds[ds_level].num_rows;

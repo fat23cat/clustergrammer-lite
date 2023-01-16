@@ -3,8 +3,8 @@ import utils from '../Utils_clust.js';
 import add_row_click_hlight from './add_row_click_hlight.js';
 import row_reorder from '../reorder/row_reorder.js';
 import make_row_tooltips from './make_row_tooltips.js';
-import each from 'underscore/modules/each';
-import contains from 'underscore/modules/contains';
+import each from 'underscore/modules/each.js';
+import contains from 'underscore/modules/contains.js';
 export default (function make_row_labels(
   cgm,
   row_names = 'all',

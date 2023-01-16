@@ -31,7 +31,7 @@ import position_filter_icon from '../menus/position_filter_icon.js';
 import position_tree_menu from '../menus/position_tree_menu.js';
 import ini_zoom_info from '../zoom/ini_zoom_info.js';
 import grid_lines_viz from '../matrix/grid_lines_viz.js';
-import each from 'underscore/modules/each';
+import each from 'underscore/modules/each.js';
 export default (function resize_viz(cgm) {
   let params = cgm.params;
   const cont_dim = calc_viz_dimensions(params);

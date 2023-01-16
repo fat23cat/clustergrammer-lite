@@ -3,8 +3,8 @@ import find_viz_rows from './find_viz_rows.js';
 import make_matrix_rows from '../matrix/make_matrix_rows.js';
 import make_row_labels from '../labels/make_row_labels.js';
 import make_row_visual_aid_triangles from '../labels/make_row_visual_aid_triangles.js';
-import contains from 'underscore/modules/contains';
-import difference from 'underscore/modules/difference';
+import contains from 'underscore/modules/contains.js';
+import difference from 'underscore/modules/difference.js';
 export default (function show_visible_area(
   cgm,
   zooming_stopped = false,

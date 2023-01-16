@@ -5,8 +5,8 @@ import update_split_tiles from '../update/update_split_tiles.js';
 import mouseover_tile from '../matrix/mouseover_tile.js';
 import mouseout_tile from '../matrix/mouseout_tile.js';
 import fine_position_tile from '../matrix/fine_position_tile.js';
-import filter from 'underscore/modules/filter';
-import contains from 'underscore/modules/contains';
+import filter from 'underscore/modules/filter.js';
+import contains from 'underscore/modules/contains.js';
 export default (function eeu_existing_row(
   params,
   ini_inp_row_data,

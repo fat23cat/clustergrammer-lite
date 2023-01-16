@@ -2,7 +2,7 @@ import d3 from 'd3';
 import draw_up_tile from './draw_up_tile.js';
 import draw_dn_tile from './draw_dn_tile.js';
 import fine_position_tile from '../matrix/fine_position_tile.js';
-import filter from 'underscore/modules/filter';
+import filter from 'underscore/modules/filter.js';
 export default (function enter_split_tiles(
   params,
   inp_row_data,

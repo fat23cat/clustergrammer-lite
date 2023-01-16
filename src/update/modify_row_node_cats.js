@@ -1,7 +1,7 @@
 import remove_node_cats from './remove_node_cats.js';
 import utils from '../Utils_clust.js';
-import each from 'underscore/modules/each';
-import contains from 'underscore/modules/contains';
+import each from 'underscore/modules/each.js';
+import contains from 'underscore/modules/contains.js';
 export default (function modify_row_node_cats(
   cat_data,
   inst_nodes,

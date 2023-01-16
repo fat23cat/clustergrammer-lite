@@ -1,4 +1,4 @@
-import each from 'underscore/modules/each';
+import each from 'underscore/modules/each.js';
 export default (function check_sim_mat(config) {
   let sim_mat = false;
   const num_rows = config.network_data.row_nodes_names.length;

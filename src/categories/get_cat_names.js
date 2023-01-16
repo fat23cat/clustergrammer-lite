@@ -1,6 +1,6 @@
 import d3 from 'd3';
 import utils from '../Utils_clust.js';
-import filter from 'underscore/modules/each';
+import filter from 'underscore/modules/each.js';
 export default (function get_cat_names(
   params,
   inst_data,

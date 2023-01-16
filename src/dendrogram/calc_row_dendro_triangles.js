@@ -1,4 +1,4 @@
-import each from 'underscore/modules/each';
+import each from 'underscore/modules/each.js';
 import utils from '../Utils_clust.js';
 export default (function calc_row_dendro_triangles(params) {
   const triangle_info = {};
