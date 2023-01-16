@@ -18,7 +18,7 @@ HierarchicalClustering.prototype = {
     this.mins = []; // closest cluster for each cluster
     this.index = []; // keep a hash of all clusters by key
 
-    for (var i = 0; i < items.length; i++) {
+    for (let i = 0; i < items.length; i++) {
       const cluster = {
         value: items[i],
         key: i,
@@ -32,7 +32,7 @@ HierarchicalClustering.prototype = {
     }
 
     // Calculate Distance Matrix
-    for (var i = 0; i < this.tree.length; i++) {
+    for (let i = 0; i < this.tree.length; i++) {
       for (let j = 0; j <= i; j++) {
         const dist =
           i == j
@@ -50,7 +50,7 @@ HierarchicalClustering.prototype = {
     this.dists_backup = $.extend(true, [], this.dists);
 
     let merged = this.mergeClosest();
-    var i = 0;
+    let i = 0;
     while (merged) {
       if (snapshotCb && i++ % snapshotPeriod == 0) {
         snapshotCb(this.tree);
@@ -71,11 +71,11 @@ HierarchicalClustering.prototype = {
 
   mergeClosest: function () {
     // find two closest clusters from cached mins
-    var minKey = 0;
-    var min = Infinity;
-    for (var i = 0; i < this.tree.length; i++) {
-      var key = this.tree[i].key;
-      var dist = this.dists[key][this.mins[key]];
+    let minKey = 0;
+    let min = Infinity;
+    for (let i = 0; i < this.tree.length; i++) {
+      const key = this.tree[i].key;
+      const dist = this.dists[key][this.mins[key]];
       if (dist < min) {
         minKey = key;
         min = dist;
@@ -102,9 +102,9 @@ HierarchicalClustering.prototype = {
     this.index[c1.key] = merged;
 
     // update distances with new merged cluster
-    for (var i = 0; i < this.tree.length; i++) {
+    for (let i = 0; i < this.tree.length; i++) {
       const ci = this.tree[i];
-      var dist;
+      let dist;
       if (c1.key == ci.key) {
         dist = Infinity;
       } else if (this.linkage == 'single') {
@@ -130,10 +130,10 @@ HierarchicalClustering.prototype = {
     }
 
     // update cached mins
-    for (var i = 0; i < this.tree.length; i++) {
+    for (let i = 0; i < this.tree.length; i++) {
       const key1 = this.tree[i].key;
       if (this.mins[key1] == c1.key || this.mins[key1] == c2.key) {
-        var min = key1;
+        let min = key1;
         for (let j = 0; j < this.tree.length; j++) {
           const key2 = this.tree[j].key;
           if (this.dists[key1][key2] < this.dists[key1][min]) {

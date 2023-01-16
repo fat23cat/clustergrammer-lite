@@ -228,20 +228,15 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
   icons
     .style('cursor', 'pointer')
     .style('opacity', function () {
-      let inst_opacity;
-
       // if (d3.select(this).classed('hide_crop')){
       //   inst_opacity = 0;
       // } else {
       //   inst_opacity = button_opacity;
       // }
 
-      inst_opacity = button_opacity;
-      return inst_opacity;
+      return button_opacity;
     })
     .attr('transform', function (d) {
-      let inst_translate;
-
       let inst_x;
       let inst_y;
 
@@ -253,8 +248,7 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
         inst_y = params.viz.uni_margin;
       }
 
-      inst_translate = 'translate(' + inst_x + ',' + inst_y + ')';
-      return inst_translate;
+      return 'translate(' + inst_x + ',' + inst_y + ')';
     })
     .on('mouseover', function (d) {
       d3.select(this).classed('hovering', true);

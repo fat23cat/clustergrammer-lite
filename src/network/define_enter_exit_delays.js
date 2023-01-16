@@ -15,8 +15,8 @@ module.exports = function (old_params, params) {
   });
   const all_old_nodes = old_row.concat(old_col);
 
-  var row_nodes = params.network_data.row_nodes;
-  var col_nodes = params.network_data.col_nodes;
+  const row_nodes = params.network_data.row_nodes;
+  const col_nodes = params.network_data.col_nodes;
   const row = map(row_nodes, function (d) {
     return d.name;
   });

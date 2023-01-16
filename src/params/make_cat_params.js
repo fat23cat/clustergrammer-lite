@@ -92,8 +92,7 @@ module.exports = function make_cat_params(
         // add histogram to inst_info
         if (inst_info.type === 'cat_strings') {
           // remove titles from categories in hist
-          var cat_hist = countBy(cat_instances);
-          inst_info.cat_hist = cat_hist;
+          inst_info.cat_hist = countBy(cat_instances);
         } else {
           inst_info.cat_hist = null;
         }

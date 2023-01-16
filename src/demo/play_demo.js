@@ -68,6 +68,6 @@ module.exports = function play_demo() {
     // conclusion
     ///////////////////////////////////
     inst_time = run_segment(params, inst_time, quick_cluster);
-    inst_time = run_segment(params, inst_time, play_conclusion);
+    run_segment(params, inst_time, play_conclusion);
   }
 };

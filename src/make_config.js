@@ -53,7 +53,10 @@ module.exports = function make_config(args) {
 
   const default_states = {};
   Object.keys(filters.possible_filters || {}).forEach(function (inst_filter) {
-    const tmp_state = get_filter_default_state(filters.filter_data, inst_filter);
+    const tmp_state = get_filter_default_state(
+      filters.filter_data,
+      inst_filter
+    );
 
     default_states[inst_filter] = tmp_state;
   });
@@ -92,15 +95,15 @@ module.exports = function make_config(args) {
     });
   }
 
-  var col_nodes = config.network_data.col_nodes;
-  var row_nodes = config.network_data.row_nodes;
+  const col_nodes = config.network_data.col_nodes;
+  const row_nodes = config.network_data.row_nodes;
 
   ///////////////////////////
   // convert 'mat' to links
   ///////////////////////////
 
   if (utils.has(config.network_data, 'mat')) {
-    var links = [];
+    const links = [];
     const mat = config.network_data.mat;
     let inst_link = {};
 

@@ -66,11 +66,10 @@ module.exports = function click_filter_cats(
         let inst_opacity = d3.select(this).style('opacity');
 
         if (d3.select(this).classed('cat_strings')) {
-          let tmp_name;
           const tmp_cat = d3.select(this).attr('cat');
 
           // no need to filter out title
-          tmp_name = d[tmp_cat];
+          const tmp_name = d[tmp_cat];
 
           if (tmp_cat === inst_cat && tmp_name === cat_name) {
             inst_opacity = 1;

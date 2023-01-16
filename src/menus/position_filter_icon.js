@@ -22,10 +22,8 @@ module.exports = function position_filter_icon(cgm) {
   // reposition tree icon
   d3.select(cgm.params.root + ' .' + 'filter_icon')
     .attr('transform', function () {
-      let inst_translation;
       tmp_top = tmp_top - 75;
-      inst_translation = 'translate(' + tmp_left + ',' + tmp_top + ')';
-      return inst_translation;
+      return 'translate(' + tmp_left + ',' + tmp_top + ')';
     })
     .style('opacity', 1);
 };

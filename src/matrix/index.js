@@ -8,10 +8,9 @@ module.exports = function (params, svg_elem) {
   const network_data = params.network_data;
 
   const matrix = [];
-  let clust_group;
 
   // append a group that will hold clust_group and position it once
-  clust_group = svg_elem
+  const clust_group = svg_elem
     .append('g')
     .attr('class', 'clust_container')
     .attr(

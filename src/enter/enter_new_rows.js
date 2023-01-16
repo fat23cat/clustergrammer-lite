@@ -17,7 +17,7 @@ module.exports = function enter_new_rows(
   const inp_row_data = ini_inp_row_data.row_data;
 
   // remove zero values to make visualization faster
-  var row_data = filter(inp_row_data, function (num) {
+  const row_data = filter(inp_row_data, function (num) {
     return num.value !== 0;
   });
 

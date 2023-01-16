@@ -24,12 +24,11 @@ function vec_diff_value(vec, val) {
 
 function vec_mean(vec) {
   let sum = 0;
-  let mean;
   for (let i = 0; i < vec.length; i++) {
     sum = sum + vec[i];
   }
 
-  mean = sum / vec.length;
+  const mean = sum / vec.length;
 
   return mean;
 }

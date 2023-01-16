@@ -89,13 +89,7 @@ module.exports = function make_simple_rows(
     let posY = null;
     tile
       .on('mouseover', function mouseover() {
-        for (
-          var inst_len = arguments.length, args = Array(inst_len), inst_key = 0;
-          inst_key < inst_len;
-          inst_key++
-        ) {
-          args[inst_key] = arguments[inst_key];
-        }
+        const args = Array.from(arguments);
         mouseover_tile(params, this, tip, args);
         data = args;
       })

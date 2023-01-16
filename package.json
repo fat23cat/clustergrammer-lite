@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "parcel example/index.html",
     "lint": "eslint --ext .js ./src",
-    "fix": "eslint --ext .js ./src --fix",
     "pre-commit": "lint-staged --allow-empty",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

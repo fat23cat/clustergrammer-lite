@@ -51,7 +51,7 @@ module.exports = function resize_row_tiles(params, svg_group) {
     // downsampling
     /////////////////////////
 
-    var ds_level = params.viz.ds_level;
+    const ds_level = params.viz.ds_level;
     const row_class = '.ds' + String(ds_level) + '_row';
     const ds_rect_height = params.viz.ds[ds_level].rect_height;
 

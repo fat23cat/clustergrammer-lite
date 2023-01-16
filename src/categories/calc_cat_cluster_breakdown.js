@@ -173,7 +173,8 @@ module.exports = function calc_cat_cluster_breakdown(
           }
 
           // num_nodes: number of cat-nodes drawn in cluster
-          var num_nodes = inst_run_count[inst_cat].num_nodes;
+          const num_nodes = inst_run_count[inst_cat].num_nodes;
+          let num_nodes_ds = null;
 
           const actual_k = num_nodes;
           const pval = binom_test(actual_k, num_in_clust, expect_prob);
@@ -181,9 +182,7 @@ module.exports = function calc_cat_cluster_breakdown(
           // working on tracking the 'real' number of nodes, which is only different
           // if downsampling has been done
           if (utils.has(inst_run_count[inst_cat], 'num_nodes_ds')) {
-            var num_nodes_ds = inst_run_count[inst_cat].num_nodes_ds;
-          } else {
-            num_nodes_ds = null;
+            num_nodes_ds = inst_run_count[inst_cat].num_nodes_ds;
           }
 
           bar_color =

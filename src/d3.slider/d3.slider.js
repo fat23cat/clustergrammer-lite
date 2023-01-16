@@ -40,9 +40,9 @@
 
     // Private variables
     let axisScale;
-    let dispatch = d3.dispatch('slide', 'slideend');
-    let formatPercent = d3.format('.2%');
-    let tickFormat = d3.format('.0');
+    const dispatch = d3.dispatch('slide', 'slideend');
+    const formatPercent = d3.format('.2%');
+    const tickFormat = d3.format('.0');
     let handle1;
     let handle2 = null;
     let divRange;
@@ -111,7 +111,7 @@
             divRange.style('left', formatPercent(scale(value[0])));
             drag.on('drag', onDragHorizontal);
 
-            var width = 100 - parseFloat(formatPercent(scale(value[1])));
+            const width = 100 - parseFloat(formatPercent(scale(value[1])));
             handle2.style('left', formatPercent(scale(value[1])));
             divRange.style('right', width + '%');
             drag.on('drag', onDragHorizontal);
@@ -169,7 +169,7 @@
           axis.scale(axisScale);
 
           // Create SVG axis container
-          var svg = dom
+          const svg = dom
             .append('svg')
             .classed('d3-slider-axis d3-slider-axis-' + axis.orient(), true)
             .on('click', stopPropagation);

@@ -70,7 +70,7 @@ module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
   });
 
   // all names were found
-  var all_names = [];
+  let all_names = [];
 
   ds_mat.forEach(function (inst_row) {
     all_names = all_names.concat(inst_row.all_names);

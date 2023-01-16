@@ -24,6 +24,8 @@ module.exports = function make_matrix_rows(
     row_class = 'ds' + String(ds_level) + '_row';
   }
 
+  let tip;
+
   if (make_tip) {
     // do not remove tile_tip here
     /////////////////////////////////
@@ -31,7 +33,7 @@ module.exports = function make_matrix_rows(
     // make rows in the matrix - add key names to rows in matrix
     /////////////////////////////////////////////////////////////
     // d3-tooltip - for tiles
-    var tip = d3_tip_custom()
+    tip = d3_tip_custom()
       .attr('class', function () {
         const root_tip_selector = params.viz.root_tips.replace('.', '');
         const class_string =

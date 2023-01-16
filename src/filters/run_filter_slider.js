@@ -13,7 +13,7 @@ module.exports = function run_filter_slider(
 ) {
   // only update if not running update
   if (d3.select(cgm.params.viz.viz_svg).classed('running_update') === false) {
-    var params = cgm.params;
+    let params = cgm.params;
 
     // get value
     const inst_state = available_views[inst_index][filter_type];

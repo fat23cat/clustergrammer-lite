@@ -35,8 +35,6 @@ module.exports = function calc_downsampled_levels(params) {
       .range([1, max_opacity_scale])
       .clamp(true);
 
-    var ds;
-
     params.viz.ds_num_levels = num_levels;
 
     // array of downsampled parameters
@@ -55,7 +53,7 @@ module.exports = function calc_downsampled_levels(params) {
       // instantaneous ds_level (-1 means no downsampling)
       params.viz.ds_level = 0;
 
-      ds = {};
+      const ds = {};
 
       ds.height = ds_height;
       ds.num_levels = num_levels;
@@ -93,7 +91,7 @@ module.exports = function calc_downsampled_levels(params) {
 
       params.viz.ds.push(ds);
 
-      var matrix = calc_downsampled_matrix(params, mat, i);
+      const matrix = calc_downsampled_matrix(params, mat, i);
       params.matrix.ds_matrix.push(matrix);
     }
 
