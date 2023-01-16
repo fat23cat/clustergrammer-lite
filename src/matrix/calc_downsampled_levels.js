@@ -19,7 +19,12 @@ module.exports = function calc_downsampled_levels(params) {
 
   var num_levels = Math.floor(Math.log(total_zoom) / Math.log(inst_zt));
 
-  if (params.viz.rect_height < min_rect_height && num_levels > 0) {
+  // TODO: Decide about downsampling feature
+  // Here the downsampling can be turned off
+  const shouldBeDownsampled =
+    params.viz.rect_height < min_rect_height && num_levels > 0;
+
+  if (shouldBeDownsampled) {
     // increase ds opacity, as more rows are compressed into a single downsampled
     // row, increase the opacity of the downsampled row. Max increase will be 2x
     // when 100 or more rows are compressed
