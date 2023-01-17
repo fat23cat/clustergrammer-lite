@@ -2,7 +2,7 @@
  * ----------------------------------------------------------------------- */
 module.exports = {
   normal_name: function (d) {
-    const inst_name = d.name.replace(/_/g, ' ').split('#')[0];
+    const inst_name = d.name.split('#')[0];
     return inst_name;
   },
   is_supported_order: function (order) {
