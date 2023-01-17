@@ -1,12 +1,12 @@
-var d3 = require('d3');
-var calc_real_font_size = require('./calc_real_font_size');
+const d3 = require('d3');
+const calc_real_font_size = require('./calc_real_font_size');
 
 module.exports = function constrain_font_size(params) {
-  var tmp_font_size = params.labels.default_fs_row;
-  var inst_zoom;
-  var min_font_size = 3;
+  let tmp_font_size = params.labels.default_fs_row;
+  let inst_zoom;
+  const min_font_size = 3;
 
-  var real_font_size = calc_real_font_size(params);
+  const real_font_size = calc_real_font_size(params);
 
   // rows
   ////////////////////////////////////

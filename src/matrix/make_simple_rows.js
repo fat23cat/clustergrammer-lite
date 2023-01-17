@@ -1,12 +1,12 @@
-var d3 = require('d3');
-var draw_up_tile = require('../enter/draw_up_tile');
-var draw_dn_tile = require('../enter/draw_dn_tile');
-var mouseover_tile = require('./mouseover_tile');
-var mouseout_tile = require('./mouseout_tile');
-var fine_position_tile = require('./fine_position_tile');
-var filter = require('underscore/cjs/filter');
-var utils = require('../Utils_clust');
-var click_tile = require('./click_tile');
+const d3 = require('d3');
+const draw_up_tile = require('../enter/draw_up_tile');
+const draw_dn_tile = require('../enter/draw_dn_tile');
+const mouseover_tile = require('./mouseover_tile');
+const mouseout_tile = require('./mouseout_tile');
+const fine_position_tile = require('./fine_position_tile');
+const filter = require('underscore/cjs/filter');
+const utils = require('../Utils_clust');
+const click_tile = require('./click_tile');
 
 const POSITION_INACCURACY = 2;
 
@@ -17,23 +17,23 @@ module.exports = function make_simple_rows(
   row_selection,
   ds_level = -1
 ) {
-  var inp_row_data = inst_data.row_data;
+  const inp_row_data = inst_data.row_data;
 
-  var make_tip = true;
-  var rect_height = params.viz.rect_height;
+  const make_tip = true;
+  let rect_height = params.viz.rect_height;
   if (ds_level >= 0) {
     // make_tip = false;
     rect_height = params.viz.ds[ds_level].rect_height;
   }
 
-  var keep_orig;
+  let keep_orig;
   if (utils.has(params.network_data.links[0], 'value_orig')) {
     keep_orig = true;
   } else {
     keep_orig = false;
   }
 
-  var row_values;
+  let row_values;
   if (keep_orig === false) {
     // value: remove zero values to make visualization faster
     row_values = filter(inp_row_data, function (num) {
@@ -44,7 +44,7 @@ module.exports = function make_simple_rows(
   }
 
   // generate tiles in the current row
-  var tile = d3
+  const tile = d3
     .select(row_selection)
     .selectAll('rect')
     .data(row_values, function (d) {
@@ -57,7 +57,7 @@ module.exports = function make_simple_rows(
     .attr('height', rect_height)
     .style('fill', function (d) {
       // switch the color based on up/dn value
-      var inst_fill;
+      let inst_fill;
       if (d.value_orig === 'NaN') {
         inst_fill = '#000000';
       } else {
@@ -70,7 +70,7 @@ module.exports = function make_simple_rows(
     })
     .style('fill-opacity', function (d) {
       // calculate output opacity using the opacity scale
-      var inst_opacity;
+      let inst_opacity;
       if (d.value_orig === 'NaN') {
         // console.log('found NaN while making tiles');
         inst_opacity = 0.175;
@@ -85,17 +85,11 @@ module.exports = function make_simple_rows(
 
   if (make_tip) {
     let data = null;
-    let posX,
-      posY = null;
+    let posX;
+    let posY = null;
     tile
       .on('mouseover', function mouseover() {
-        for (
-          var inst_len = arguments.length, args = Array(inst_len), inst_key = 0;
-          inst_key < inst_len;
-          inst_key++
-        ) {
-          args[inst_key] = arguments[inst_key];
-        }
+        const args = Array.from(arguments);
         mouseover_tile(params, this, tip, args);
         data = args;
       })
@@ -164,7 +158,7 @@ module.exports = function make_simple_rows(
 
   if (params.matrix.tile_type == 'updn') {
     // value split
-    var row_split_data = filter(inp_row_data, function (num) {
+    const row_split_data = filter(inp_row_data, function (num) {
       return num.value_up != 0 || num.value_dn != 0;
     });
 
@@ -187,7 +181,7 @@ module.exports = function make_simple_rows(
         return params.matrix.tile_colors[0];
       })
       .style('fill-opacity', function (d) {
-        var inst_opacity = 0;
+        let inst_opacity = 0;
         if (Math.abs(d.value_dn) > 0) {
           inst_opacity = params.matrix.opacity_scale(Math.abs(d.value_up));
         }
@@ -219,7 +213,7 @@ module.exports = function make_simple_rows(
         return params.matrix.tile_colors[1];
       })
       .style('fill-opacity', function (d) {
-        var inst_opacity = 0;
+        let inst_opacity = 0;
         if (Math.abs(d.value_up) > 0) {
           inst_opacity = params.matrix.opacity_scale(Math.abs(d.value_dn));
         }
@@ -243,7 +237,7 @@ module.exports = function make_simple_rows(
   // append title to group
   if (params.matrix.tile_title) {
     tile.append('title').text(function (d) {
-      var inst_string = 'value: ' + d.value;
+      const inst_string = 'value: ' + d.value;
       return inst_string;
     });
   }

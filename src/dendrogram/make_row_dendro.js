@@ -1,14 +1,14 @@
-var d3 = require('d3');
-var make_dendro_triangles = require('./make_dendro_triangles');
+const d3 = require('d3');
+const make_dendro_triangles = require('./make_dendro_triangles');
 
 module.exports = function make_row_dendro(cgm) {
-  var params = cgm.params;
+  const params = cgm.params;
 
-  var spillover_width = params.viz.dendro_room.row + params.viz.uni_margin;
+  const spillover_width = params.viz.dendro_room.row + params.viz.uni_margin;
 
   // position row_dendro_outer_container
-  var x_offset = params.viz.clust.margin.left + params.viz.clust.dim.width;
-  var y_offset = params.viz.clust.margin.top;
+  const x_offset = params.viz.clust.margin.left + params.viz.clust.dim.width;
+  const y_offset = params.viz.clust.margin.top;
 
   // make or reuse outer container
   if (d3.select(params.root + ' .row_dendro_outer_container').empty()) {

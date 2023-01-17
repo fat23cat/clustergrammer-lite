@@ -1,6 +1,6 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
-var range = require('underscore/cjs/range');
+const range = require('underscore/cjs/range');
 
 module.exports = function calc_clust_width(viz) {
   viz.clust = {};
@@ -25,20 +25,20 @@ module.exports = function calc_clust_width(viz) {
   // the margin of the clustergram on the left
   // the room for the spillover on the right
   // ** the dendro will fit in the spillover room on the right
-  var ini_clust_width =
+  let ini_clust_width =
     viz.svg_dim.width - viz.clust.margin.left - viz.spillover_col_slant;
 
   // make tmp scale to calc height of triangle col labels
-  var tmp_x_scale = d3.scale
+  const tmp_x_scale = d3.scale
     .ordinal()
     .rangeBands([0, ini_clust_width])
     .domain(range(viz.num_col_nodes));
 
-  var triangle_height = tmp_x_scale.rangeBand() / 2;
+  const triangle_height = tmp_x_scale.rangeBand() / 2;
 
   // prevent the visualization from being unnecessarily wide
   if (triangle_height > viz.norm_labels.width.col) {
-    var reduce_width = viz.norm_labels.width.col / triangle_height;
+    const reduce_width = viz.norm_labels.width.col / triangle_height;
     ini_clust_width = ini_clust_width * reduce_width;
   }
 

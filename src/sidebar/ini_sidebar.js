@@ -1,16 +1,16 @@
-var change_groups = require('../dendrogram/change_groups');
-var all_reorder = require('../reorder/all_reorder');
-var ini_cat_reorder = require('../reorder/ini_cat_reorder');
-var run_row_search = require('../search/run_row_search');
-var $ = require('jquery');
-var d3 = require('d3');
+const change_groups = require('../dendrogram/change_groups');
+const all_reorder = require('../reorder/all_reorder');
+const ini_cat_reorder = require('../reorder/ini_cat_reorder');
+const run_row_search = require('../search/run_row_search');
+const $ = require('jquery');
+const d3 = require('d3');
 
 module.exports = function ini_sidebar(cgm) {
-  var params = cgm.params;
+  const params = cgm.params;
 
-  var input = d3.select(params.root + ' .gene_search_box')[0][0];
-  var awesomplete = new Awesomplete(input, { minChars: 1, maxItems: 15 });
-  var entities = cgm.params.network_data.row_nodes_names;
+  const input = d3.select(params.root + ' .gene_search_box')[0][0];
+  const awesomplete = new Awesomplete(input, { minChars: 1, maxItems: 15 });
+  const entities = cgm.params.network_data.row_nodes_names;
   awesomplete.list = entities;
 
   // position awesomplete list elements above other elements in the page
@@ -19,7 +19,7 @@ module.exports = function ini_sidebar(cgm) {
   // submit genes button
   $(params.root + ' .gene_search_box').keyup(function (e) {
     if (e.keyCode === 13) {
-      var search_gene = $(params.root + ' .gene_search_box').val();
+      const search_gene = $(params.root + ' .gene_search_box').val();
       run_row_search(cgm, search_gene, entities);
     }
   });
@@ -27,11 +27,11 @@ module.exports = function ini_sidebar(cgm) {
   $(params.root + ' .submit_gene_button')
     .off()
     .click(function () {
-      var search_gene = $(params.root + ' .gene_search_box').val();
+      const search_gene = $(params.root + ' .gene_search_box').val();
       run_row_search(cgm, search_gene, entities);
     });
 
-  var reorder_types;
+  let reorder_types;
   if (params.sim_mat) {
     reorder_types = ['both'];
   } else {
@@ -43,7 +43,7 @@ module.exports = function ini_sidebar(cgm) {
     $(params.root + ' .toggle_' + inst_rc + '_order .btn')
       .off()
       .click(function (evt) {
-        var order_id = $(evt.target)
+        const order_id = $(evt.target)
           .attr('name')
           .replace('_row', '')
           .replace('_col', '');
@@ -73,7 +73,7 @@ module.exports = function ini_sidebar(cgm) {
       .select('#handle-one')
       .empty()
   ) {
-    var slider_fun = d3
+    const slider_fun = d3
       .slider()
       .snap(true)
       .value(1)
@@ -89,7 +89,7 @@ module.exports = function ini_sidebar(cgm) {
 
   function run_on_dendro_slide(evt, value, inst_rc) {
     $('#amount').val('$' + value);
-    var inst_index = value * 10;
+    const inst_index = value * 10;
     // var inst_rc;
 
     if (inst_rc != 'both') {
@@ -101,8 +101,8 @@ module.exports = function ini_sidebar(cgm) {
   }
 
   function run_on_opacity_slide(evt, value) {
-    var inst_index = 2 - value;
-    var scaled_max = cgm.params.matrix.abs_max_val * inst_index;
+    const inst_index = 2 - value;
+    const scaled_max = cgm.params.matrix.abs_max_val * inst_index;
 
     cgm.params.matrix.opacity_scale.domain([0, scaled_max]);
 
@@ -110,7 +110,7 @@ module.exports = function ini_sidebar(cgm) {
       'fill-opacity',
       function (d) {
         // calculate output opacity using the opacity scale
-        var output_opacity = cgm.params.matrix.opacity_scale(Math.abs(d.value));
+        const output_opacity = cgm.params.matrix.opacity_scale(Math.abs(d.value));
         return output_opacity;
       }
     );

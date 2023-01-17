@@ -26,27 +26,27 @@
     'use strict';
 
     // Public variables width default settings
-    var min = 0,
-      max = 100,
-      step = 0.01,
-      animate = false,
-      orientation = 'horizontal',
-      axis = false,
-      margin = 50,
-      value,
-      active = 1,
-      snap = false,
-      scale;
+    let min = 0;
+    let max = 100;
+    let step = 0.01;
+    let animate = false;
+    let orientation = 'horizontal';
+    let axis = false;
+    let margin = 50;
+    let value;
+    let active = 1;
+    let snap = false;
+    let scale;
 
     // Private variables
-    var axisScale,
-      dispatch = d3.dispatch('slide', 'slideend'),
-      formatPercent = d3.format('.2%'),
-      tickFormat = d3.format('.0'),
-      handle1,
-      handle2 = null,
-      divRange,
-      sliderLength;
+    let axisScale;
+    const dispatch = d3.dispatch('slide', 'slideend');
+    const formatPercent = d3.format('.2%');
+    const tickFormat = d3.format('.0');
+    let handle1;
+    let handle2 = null;
+    let divRange;
+    let sliderLength;
 
     function slider(selection) {
       selection.each(function () {
@@ -59,11 +59,11 @@
         value = value || scale.domain()[0];
 
         // DIV container
-        var div = d3
+        const div = d3
           .select(this)
           .classed('d3-slider d3-slider-' + orientation, true);
 
-        var drag = d3.behavior.drag();
+        const drag = d3.behavior.drag();
         drag.on('dragend', function () {
           dispatch.slideend(d3.event, value);
         });
@@ -111,7 +111,7 @@
             divRange.style('left', formatPercent(scale(value[0])));
             drag.on('drag', onDragHorizontal);
 
-            var width = 100 - parseFloat(formatPercent(scale(value[1])));
+            const width = 100 - parseFloat(formatPercent(scale(value[1])));
             handle2.style('left', formatPercent(scale(value[1])));
             divRange.style('right', width + '%');
             drag.on('drag', onDragHorizontal);
@@ -136,7 +136,7 @@
             divRange.style('bottom', formatPercent(scale(value[0])));
             drag.on('drag', onDragVertical);
 
-            var top = 100 - parseFloat(formatPercent(scale(value[1])));
+            const top = 100 - parseFloat(formatPercent(scale(value[1])));
             handle2.style('bottom', formatPercent(scale(value[1])));
             divRange.style('top', top + '%');
             drag.on('drag', onDragVertical);
@@ -169,12 +169,12 @@
           axis.scale(axisScale);
 
           // Create SVG axis container
-          var svg = dom
+          const svg = dom
             .append('svg')
             .classed('d3-slider-axis d3-slider-axis-' + axis.orient(), true)
             .on('click', stopPropagation);
 
-          var g = svg.append('g');
+          const g = svg.append('g');
 
           // Horizontal axis
           if (orientation === 'horizontal') {
@@ -216,7 +216,7 @@
 
         function onClickHorizontal() {
           if (toType(value) != 'array') {
-            var pos = Math.max(
+            const pos = Math.max(
               0,
               Math.min(sliderLength, d3.event.offsetX || d3.event.layerX)
             );
@@ -230,7 +230,7 @@
 
         function onClickVertical() {
           if (toType(value) != 'array') {
-            var pos =
+            const pos =
               sliderLength -
               Math.max(
                 0,
@@ -250,7 +250,7 @@
           } else if (d3.event.sourceEvent.target.id == 'handle-two') {
             active = 2;
           }
-          var pos = Math.max(0, Math.min(sliderLength, d3.event.x));
+          const pos = Math.max(0, Math.min(sliderLength, d3.event.x));
           moveHandle(
             scale.invert
               ? stepValue(scale.invert(pos / sliderLength))
@@ -264,7 +264,7 @@
           } else if (d3.event.sourceEvent.target.id == 'handle-two') {
             active = 2;
           }
-          var pos =
+          const pos =
             sliderLength - Math.max(0, Math.min(sliderLength, d3.event.y));
           moveHandle(
             scale.invert
@@ -281,13 +281,13 @@
 
     // Move slider handle on click/drag
     function moveHandle(newValue) {
-      var currentValue =
-          toType(value) == 'array' && value.length == 2
-            ? value[active - 1]
-            : value,
-        oldPos = formatPercent(scale(stepValue(currentValue))),
-        newPos = formatPercent(scale(stepValue(newValue))),
-        position = orientation === 'horizontal' ? 'left' : 'bottom';
+      const currentValue =
+        toType(value) == 'array' && value.length == 2
+          ? value[active - 1]
+          : value;
+      const oldPos = formatPercent(scale(stepValue(currentValue)));
+      const newPos = formatPercent(scale(stepValue(newValue)));
+      const position = orientation === 'horizontal' ? 'left' : 'bottom';
       if (oldPos !== newPos) {
         if (toType(value) == 'array' && value.length == 2) {
           value[active - 1] = newValue;
@@ -322,8 +322,8 @@
             handle1.style(position, newPos);
           }
         } else {
-          var width = 100 - parseFloat(newPos);
-          var top = 100 - parseFloat(newPos);
+          const width = 100 - parseFloat(newPos);
+          const top = 100 - parseFloat(newPos);
 
           position === 'left'
             ? divRange.style('right', width + '%')
@@ -349,11 +349,11 @@
         return val;
       }
 
-      var alignValue = val;
+      let alignValue = val;
       if (snap) {
         alignValue = nearestTick(scale(val));
       } else {
-        var valModStep = (val - scale.domain()[0]) % step;
+        const valModStep = (val - scale.domain()[0]) % step;
         alignValue = val - valModStep;
 
         if (Math.abs(valModStep) * 2 >= step) {
@@ -366,13 +366,13 @@
 
     // Find the nearest tick
     function nearestTick(pos) {
-      var ticks = scale.ticks ? scale.ticks() : scale.domain();
-      var dist = ticks.map(function (d) {
+      const ticks = scale.ticks ? scale.ticks() : scale.domain();
+      const dist = ticks.map(function (d) {
         return pos - scale(d);
       });
-      var i = -1,
-        index = 0,
-        r = scale.ticks ? scale.range()[1] : scale.rangeExtent()[1];
+      let i = -1;
+      let index = 0;
+      let r = scale.ticks ? scale.range()[1] : scale.rangeExtent()[1];
       do {
         i++;
         if (Math.abs(dist[i]) < r) {

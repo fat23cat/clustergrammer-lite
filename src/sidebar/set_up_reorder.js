@@ -1,21 +1,21 @@
 // var get_cat_title = require('../categories/get_cat_title');
 
 module.exports = function set_up_reorder(params, sidebar) {
-  var button_dict;
-  var tmp_orders;
-  var rc_dict = { row: 'Row', col: 'Column', both: '' };
-  var is_active;
-  var inst_reorder;
+  let button_dict;
+  let tmp_orders;
+  const rc_dict = { row: 'Row', col: 'Column', both: '' };
+  let is_active;
+  let inst_reorder;
   // var all_cats;
   // var inst_order_label;
 
-  var reorder_section = sidebar
+  const reorder_section = sidebar
     .append('div')
     .style('padding-left', '10px')
     .style('padding-right', '10px')
     .classed('reorder_section', true);
 
-  var reorder_types;
+  let reorder_types;
   if (params.sim_mat) {
     reorder_types = ['both'];
   } else {
@@ -31,7 +31,7 @@ module.exports = function set_up_reorder(params, sidebar) {
       alpha: 'Alphabetically'
     };
 
-    var other_rc;
+    let other_rc;
     if (inst_rc === 'row') {
       other_rc = 'col';
     } else {
@@ -40,7 +40,7 @@ module.exports = function set_up_reorder(params, sidebar) {
 
     tmp_orders = Object.keys(params.matrix.orders || {});
 
-    var possible_orders = [];
+    let possible_orders = [];
 
     tmp_orders.forEach(function (inst_name) {
       if (inst_name.indexOf(other_rc) > -1) {
@@ -63,7 +63,7 @@ module.exports = function set_up_reorder(params, sidebar) {
 
     possible_orders = possible_orders.sort();
 
-    var reorder_text;
+    let reorder_text;
     if (inst_rc != 'both') {
       reorder_text = ' Order';
     } else {

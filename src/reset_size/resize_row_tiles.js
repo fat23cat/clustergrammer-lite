@@ -1,9 +1,9 @@
-var draw_up_tile = require('../enter/draw_up_tile');
-var draw_dn_tile = require('../enter/draw_dn_tile');
-var fine_position_tile = require('../matrix/fine_position_tile');
+const draw_up_tile = require('../enter/draw_up_tile');
+const draw_dn_tile = require('../enter/draw_dn_tile');
+const fine_position_tile = require('../matrix/fine_position_tile');
 
 module.exports = function resize_row_tiles(params, svg_group) {
-  var row_nodes_names = params.network_data.row_nodes_names || [];
+  const row_nodes_names = params.network_data.row_nodes_names || [];
 
   if (params.viz.ds_level === -1) {
     // no downsampling
@@ -11,8 +11,8 @@ module.exports = function resize_row_tiles(params, svg_group) {
 
     // resize rows
     svg_group.selectAll('.row').attr('transform', function (d) {
-      var tmp_index = row_nodes_names.indexOf(d.name);
-      var inst_y = params.viz.y_scale(tmp_index);
+      const tmp_index = row_nodes_names.indexOf(d.name);
+      const inst_y = params.viz.y_scale(tmp_index);
       return 'translate(0,' + inst_y + ')';
     });
 
@@ -51,12 +51,12 @@ module.exports = function resize_row_tiles(params, svg_group) {
     // downsampling
     /////////////////////////
 
-    var ds_level = params.viz.ds_level;
-    var row_class = '.ds' + String(ds_level) + '_row';
-    var ds_rect_height = params.viz.ds[ds_level].rect_height;
+    const ds_level = params.viz.ds_level;
+    const row_class = '.ds' + String(ds_level) + '_row';
+    const ds_rect_height = params.viz.ds[ds_level].rect_height;
 
     svg_group.selectAll(row_class).attr('transform', function (d) {
-      var inst_y = params.viz.ds[ds_level].y_scale(d.row_index);
+      const inst_y = params.viz.ds[ds_level].y_scale(d.row_index);
       return 'translate(0,' + inst_y + ')';
     });
 

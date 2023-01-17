@@ -3,9 +3,9 @@ module.exports = function resize_super_labels(
   ini_svg_group,
   delay_info = false
 ) {
-  var delays = {};
-  var duration = params.viz.duration;
-  var svg_group;
+  let delays = {};
+  const duration = params.viz.duration;
+  let svg_group;
 
   if (delay_info === false) {
     delays.run_transition = false;
@@ -36,9 +36,9 @@ module.exports = function resize_super_labels(
 
   // super col title
   svg_group.select('.super_col').attr('transform', function () {
-    var inst_x =
+    const inst_x =
       params.viz.clust.dim.width / 2 + params.viz.norm_labels.width.row;
-    var inst_y = params.viz.super_labels.dim.width;
+    const inst_y = params.viz.super_labels.dim.width;
     return 'translate(' + inst_x + ',' + inst_y + ')';
   });
 
@@ -48,8 +48,8 @@ module.exports = function resize_super_labels(
     .attr('transform', 'translate(' + params.viz.grey_border_width + ',0)');
 
   svg_group.select('.super_row').attr('transform', function () {
-    var inst_x = params.viz.super_labels.dim.width;
-    var inst_y =
+    const inst_x = params.viz.super_labels.dim.width;
+    const inst_y =
       params.viz.clust.dim.height / 2 + params.viz.norm_labels.width.col;
     return 'translate(' + inst_x + ',' + inst_y + ')';
   });

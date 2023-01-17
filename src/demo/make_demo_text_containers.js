@@ -1,21 +1,21 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function make_demo_text_containers(params, demo_text_size) {
   if (d3.select(params.root + ' .demo_group').empty()) {
-    var clust_transform = d3
+    const clust_transform = d3
       .select(params.root + ' .clust_container')
       .attr('transform');
-    var clust_x = Number(clust_transform.split('(')[1].split(',')[0]);
-    var clust_y = Number(clust_transform.split(',')[1].replace(')', ''));
+    const clust_x = Number(clust_transform.split('(')[1].split(',')[0]);
+    const clust_y = Number(clust_transform.split(',')[1].replace(')', ''));
 
     // demo text container
-    var demo_group = d3
+    const demo_group = d3
       .select(params.root + ' .viz_svg')
       .append('g')
       .classed('demo_group', true)
       .attr('transform', function () {
-        var pos_x = clust_x + 20;
-        var pos_y = clust_y + 40;
+        const pos_x = clust_x + 20;
+        const pos_y = clust_y + 40;
         return 'translate(' + pos_x + ',' + pos_y + ')';
       });
 
@@ -25,7 +25,7 @@ module.exports = function make_demo_text_containers(params, demo_text_size) {
 
     demo_group.append('rect').classed('rect_3', true);
 
-    var shift_height = 1.3 * demo_text_size;
+    const shift_height = 1.3 * demo_text_size;
 
     demo_group
       .append('text')

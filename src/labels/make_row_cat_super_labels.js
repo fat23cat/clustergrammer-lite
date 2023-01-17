@@ -1,13 +1,13 @@
-var d3 = require('d3');
-var get_cat_title = require('../categories/get_cat_title');
-var d3_tip_custom = require('../tooltip/d3_tip_custom');
-var utils = require('../Utils_clust');
+const d3 = require('d3');
+const get_cat_title = require('../categories/get_cat_title');
+const d3_tip_custom = require('../tooltip/d3_tip_custom');
+const utils = require('../Utils_clust');
 
 module.exports = function make_row_cat_super_labels(cgm) {
-  var params = cgm.params;
+  const params = cgm.params;
 
-  var viz = params.viz;
-  var extra_x_room = 2.75;
+  const viz = params.viz;
+  const extra_x_room = 2.75;
 
   if (d3.select(params.root + ' .row_cat_label_container').empty()) {
     d3.select(cgm.params.viz.viz_svg)
@@ -20,14 +20,14 @@ module.exports = function make_row_cat_super_labels(cgm) {
       .classed('row_cat_label_bar_container', true);
   }
 
-  var x_offset = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin;
-  var y_offset =
+  let x_offset = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin;
+  let y_offset =
     viz.norm_labels.margin.top +
     viz.norm_labels.width.col +
     2.5 * viz.uni_margin;
-  var cat_text_size = 1.15 * viz.cat_room.symbol_width;
-  var cat_super_opacity = 0.65;
-  var extra_y_room = 1.25;
+  const cat_text_size = 1.15 * viz.cat_room.symbol_width;
+  const cat_super_opacity = 0.65;
+  const extra_y_room = 1.25;
 
   d3.select(params.root + ' .row_cat_label_container').attr(
     'transform',
@@ -51,12 +51,12 @@ module.exports = function make_row_cat_super_labels(cgm) {
   d3.selectAll(cgm.params.viz.root_tips + '_row_cat_super').remove();
 
   // d3-tooltip
-  var tmp_y_offset = 50; // viz.clust.margin.top - viz.uni_margin;
-  var tmp_x_offset = -75;
-  var cat_tip = d3_tip_custom()
+  const tmp_y_offset = 50; // viz.clust.margin.top - viz.uni_margin;
+  const tmp_x_offset = -75;
+  const cat_tip = d3_tip_custom()
     .attr('class', function () {
-      var root_tip_selector = params.viz.root_tips.replace('.', '');
-      var class_string =
+      const root_tip_selector = params.viz.root_tips.replace('.', '');
+      const class_string =
         root_tip_selector + ' d3-tip ' + root_tip_selector + '_row_cat_super';
       return class_string;
     })
@@ -65,13 +65,13 @@ module.exports = function make_row_cat_super_labels(cgm) {
     .style('display', 'none')
     .style('opacity', 0)
     .html(function (d) {
-      var full_string;
+      let full_string;
 
-      var tmp_string = params.network_data.row_nodes[0][d];
+      const tmp_string = params.network_data.row_nodes[0][d];
 
       if (tmp_string.indexOf('<p>') > -1) {
-        var start_string = tmp_string.split(': ')[0];
-        var end_string = tmp_string.split('<p>')[1];
+        const start_string = tmp_string.split(': ')[0];
+        const end_string = tmp_string.split('<p>')[1];
 
         full_string = start_string + '<p>' + end_string;
       } else {
@@ -81,8 +81,8 @@ module.exports = function make_row_cat_super_labels(cgm) {
       return full_string;
     });
 
-  var unit_length = extra_y_room * viz.cat_room.symbol_width;
-  var bar_width = unit_length * 0.9;
+  const unit_length = extra_y_room * viz.cat_room.symbol_width;
+  const bar_width = unit_length * 0.9;
 
   // show row label categories even if viewing a simmilarity matrix
 
@@ -98,7 +98,7 @@ module.exports = function make_row_cat_super_labels(cgm) {
     .style('opacity', cat_super_opacity)
     .style('cursor', 'default')
     .attr('transform', function (d) {
-      var inst_y =
+      const inst_y =
         extra_y_room *
         viz.cat_room.symbol_width *
         parseInt(d.split('-')[1], 10);
@@ -122,7 +122,7 @@ module.exports = function make_row_cat_super_labels(cgm) {
     .style('width', '120px')
     .style('opacity', 0)
     .attr('transform', function (d) {
-      var inst_y = unit_length * (parseInt(d.split('-')[1], 10) - 0.75);
+      const inst_y = unit_length * (parseInt(d.split('-')[1], 10) - 0.75);
       return 'translate(0,' + inst_y + ')';
     })
     .on('mouseover', function (d) {
@@ -153,17 +153,17 @@ module.exports = function make_row_cat_super_labels(cgm) {
     /////////////////////
     d3.select(params.root + ' .enr_title').remove();
 
-    var enr_title = d3
+    const enr_title = d3
       .select(params.root + ' .viz_svg')
       .append('g')
       .classed('enr_title', true)
       .attr('transform', function () {
-        var trans = d3
+        const trans = d3
           .select(params.root + ' .row_cat_label_container')
           .attr('transform')
           .split('(')[1]
           .split(')')[0];
-        var x_offset = Number(trans.split(',')[0]) - 10;
+        const x_offset = Number(trans.split(',')[0]) - 10;
 
         return 'translate(' + String(x_offset) + ', 0)';
       });
@@ -174,7 +174,7 @@ module.exports = function make_row_cat_super_labels(cgm) {
       .attr('height', 25)
       .attr('fill', 'white');
 
-    var library_string = params.network_data.enrichrgram_lib.substring(0, 40);
+    const library_string = params.network_data.enrichrgram_lib.substring(0, 40);
 
     enr_title
       .append('text')
@@ -187,9 +187,9 @@ module.exports = function make_row_cat_super_labels(cgm) {
     ////////////////////
     d3.selectAll(params.root + ' .enrichr_bars').remove();
 
-    var bar_height = params.viz.clust.margin.top - 35;
-    var max_score = params.network_data.row_cat_bars[0];
-    var bar_scale = d3.scale
+    const bar_height = params.viz.clust.margin.top - 35;
+    const max_score = params.network_data.row_cat_bars[0];
+    const bar_scale = d3.scale
       .linear()
       .domain([0, max_score])
       .range([0, bar_height]);
@@ -203,12 +203,12 @@ module.exports = function make_row_cat_super_labels(cgm) {
       .attr('height', bar_width + 'px')
       .attr('fill', 'red')
       .attr('width', function (d) {
-        var bar_length = bar_scale(d);
+        const bar_length = bar_scale(d);
         return bar_length + 'px';
       })
       .attr('opacity', 0.4)
       .attr('transform', function (d, i) {
-        var inst_y = unit_length * (i - 0.75);
+        const inst_y = unit_length * (i - 0.75);
         return 'translate(0, ' + inst_y + ')';
       });
   }

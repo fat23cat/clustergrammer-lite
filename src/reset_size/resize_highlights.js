@@ -1,13 +1,13 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function resize_highlights(params) {
   // reposition tile highlight
   ////////////////////////////////
 
-  var rel_width_hlight = 6;
+  const rel_width_hlight = 6;
   // var opacity_hlight = 0.85;
-  var hlight_width = rel_width_hlight * params.viz.border_width.x;
-  var hlight_height = rel_width_hlight * params.viz.border_width.y;
+  const hlight_width = rel_width_hlight * params.viz.border_width.x;
+  const hlight_height = rel_width_hlight * params.viz.border_width.y;
 
   // top highlight
   d3.select(params.root + ' .top_hlight')
@@ -38,7 +38,7 @@ module.exports = function resize_highlights(params) {
     .attr('width', hlight_width)
     .attr('height', params.viz.rect_height - hlight_height * 0.99)
     .attr('transform', function () {
-      var tmp_translate =
+      const tmp_translate =
         params.viz.x_scale(params.matrix.click_hlight_x) +
         params.viz.rect_width -
         hlight_width;
@@ -52,9 +52,9 @@ module.exports = function resize_highlights(params) {
     })
     .attr('height', hlight_height)
     .attr('transform', function () {
-      var tmp_translate_x =
+      const tmp_translate_x =
         params.viz.x_scale(params.matrix.click_hlight_x) + hlight_width * 0.99;
-      var tmp_translate_y = params.viz.rect_height - hlight_height;
+      const tmp_translate_y = params.viz.rect_height - hlight_height;
       return 'translate(' + tmp_translate_x + ',' + tmp_translate_y + ')';
     });
 
@@ -68,7 +68,7 @@ module.exports = function resize_highlights(params) {
     .attr('width', params.viz.svg_dim.width)
     .attr('height', hlight_height)
     .attr('transform', function () {
-      var tmp_translate_y = params.viz.rect_height - hlight_height;
+      const tmp_translate_y = params.viz.rect_height - hlight_height;
       return 'translate(0,' + tmp_translate_y + ')';
     });
 
@@ -78,8 +78,8 @@ module.exports = function resize_highlights(params) {
     .attr('width', params.viz.clust.dim.height)
     .attr('height', hlight_width)
     .attr('transform', function () {
-      var tmp_translate_y = 0;
-      var tmp_translate_x = -(
+      const tmp_translate_y = 0;
+      const tmp_translate_x = -(
         params.viz.clust.dim.height +
         params.viz.cat_room.col +
         params.viz.uni_margin
@@ -91,8 +91,8 @@ module.exports = function resize_highlights(params) {
     .attr('width', params.viz.clust.dim.height)
     .attr('height', hlight_width)
     .attr('transform', function () {
-      var tmp_translate_y = params.viz.rect_width - hlight_width;
-      var tmp_translate_x = -(
+      const tmp_translate_y = params.viz.rect_width - hlight_width;
+      const tmp_translate_x = -(
         params.viz.clust.dim.height +
         params.viz.cat_room.col +
         params.viz.uni_margin

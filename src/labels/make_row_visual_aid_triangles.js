@@ -1,17 +1,17 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function make_row_visual_aid_triangles(params) {
   if (d3.select(params.root + ' .row_cat_group path').empty() === true) {
     d3.selectAll(params.root + ' .row_cat_group')
       .append('path')
       .attr('d', function () {
-        var origin_x = params.viz.cat_room.symbol_width - 1;
-        var origin_y = 0;
-        var mid_x = 1;
-        var mid_y = params.viz.y_scale.rangeBand() / 2;
-        var final_x = params.viz.cat_room.symbol_width - 1;
-        var final_y = params.viz.y_scale.rangeBand();
-        var output_string =
+        const origin_x = params.viz.cat_room.symbol_width - 1;
+        const origin_y = 0;
+        const mid_x = 1;
+        const mid_y = params.viz.y_scale.rangeBand() / 2;
+        const final_x = params.viz.cat_room.symbol_width - 1;
+        const final_y = params.viz.y_scale.rangeBand();
+        const output_string =
           'M ' +
           origin_x +
           ',' +

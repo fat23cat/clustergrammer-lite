@@ -1,4 +1,4 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function (params) {
   d3.select(params.viz.viz_svg)
@@ -23,17 +23,17 @@ module.exports = function (params) {
     .text(params.labels.super.col)
     .attr('text-anchor', 'center')
     .attr('transform', function () {
-      var inst_text_width = d3.select(this)[0][0].getBBox().width;
+      const inst_text_width = d3.select(this)[0][0].getBBox().width;
 
-      var inst_x =
+      const inst_x =
         params.viz.clust.dim.width / 2 +
         params.viz.norm_labels.width.row -
         inst_text_width / 2;
-      var inst_y = params.viz.super_labels.dim.width;
+      const inst_y = params.viz.super_labels.dim.width;
       return 'translate(' + inst_x + ',' + inst_y + ')';
     })
     .style('font-size', function () {
-      var inst_font_size =
+      const inst_font_size =
         params.labels.super_label_fs * params.labels.super_label_scale;
       return inst_font_size + 'px';
     })
@@ -57,8 +57,8 @@ module.exports = function (params) {
     .classed('super_row', true)
     .attr('transform', function () {
       // position in the middle of the clustergram
-      var inst_x = params.viz.super_labels.dim.width;
-      var inst_y =
+      const inst_x = params.viz.super_labels.dim.width;
+      const inst_y =
         params.viz.clust.dim.height / 2 + params.viz.norm_labels.width.col;
       return 'translate(' + inst_x + ',' + inst_y + ')';
     });
@@ -69,14 +69,14 @@ module.exports = function (params) {
     .text(params.labels.super.row)
     .attr('text-anchor', 'center')
     .attr('transform', function () {
-      var inst_text_width = d3.select(this)[0][0].getBBox().width;
-      var inst_x_offset =
+      const inst_text_width = d3.select(this)[0][0].getBBox().width;
+      const inst_x_offset =
         inst_text_width / 2 + params.viz.norm_labels.width.col;
-      var inst_offset = 'translate(0,' + inst_x_offset + '), rotate(-90)';
+      const inst_offset = 'translate(0,' + inst_x_offset + '), rotate(-90)';
       return inst_offset;
     })
     .style('font-size', function () {
-      var inst_font_size =
+      const inst_font_size =
         params.labels.super_label_fs * params.labels.super_label_scale;
       return inst_font_size + 'px';
     })

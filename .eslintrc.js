@@ -9,5 +9,9 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest'
   },
-  rules: {}
+  rules: {
+    'no-var': 'warn',
+    'prefer-const': 'warn',
+    'one-var': ['warn', 'never']
+  }
 };

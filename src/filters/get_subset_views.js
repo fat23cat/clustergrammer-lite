@@ -1,13 +1,13 @@
-var utils = require('../Utils_clust');
-var get_filter_default_state = require('./get_filter_default_state');
-var filter = require('underscore/cjs/filter');
-var each = require('underscore/cjs/each');
+const utils = require('../Utils_clust');
+const get_filter_default_state = require('./get_filter_default_state');
+const filter = require('underscore/cjs/filter');
+const each = require('underscore/cjs/each');
 
 module.exports = function get_subset_views(params, views, requested_view) {
-  var inst_value;
-  var found_filter;
+  let inst_value;
+  let found_filter;
 
-  var request_filters = Object.keys(requested_view || {});
+  const request_filters = Object.keys(requested_view || {});
 
   // find a view that matches all of the requested view/filter-attributes
   request_filters.forEach(function (inst_filter) {
@@ -34,10 +34,10 @@ module.exports = function get_subset_views(params, views, requested_view) {
   });
 
   // remove duplicate complete default states
-  var export_views = [];
-  var found_default = false;
-  var check_default;
-  var inst_default_state;
+  const export_views = [];
+  let found_default = false;
+  let check_default;
+  let inst_default_state;
 
   // check if each view is a default state: all filters are at default
   // there can only be one of these

@@ -1,8 +1,8 @@
-var d3 = require('d3');
-var make_simple_rows = require('./make_simple_rows');
-var d3_tip_custom = require('../tooltip/d3_tip_custom');
-var each = require('underscore/cjs/each');
-var contains = require('underscore/cjs/contains');
+const d3 = require('d3');
+const make_simple_rows = require('./make_simple_rows');
+const d3_tip_custom = require('../tooltip/d3_tip_custom');
+const each = require('underscore/cjs/each');
+const contains = require('underscore/cjs/contains');
 
 // current matrix can change with downsampling
 module.exports = function make_matrix_rows(
@@ -12,9 +12,9 @@ module.exports = function make_matrix_rows(
   ds_level = -1
 ) {
   // defaults
-  var y_scale = params.viz.y_scale;
-  var make_tip = true;
-  var row_class = 'row';
+  let y_scale = params.viz.y_scale;
+  let make_tip = true;
+  let row_class = 'row';
 
   if (ds_level >= 0) {
     y_scale = params.viz.ds[ds_level].y_scale;
@@ -24,6 +24,8 @@ module.exports = function make_matrix_rows(
     row_class = 'ds' + String(ds_level) + '_row';
   }
 
+  let tip;
+
   if (make_tip) {
     // do not remove tile_tip here
     /////////////////////////////////
@@ -31,10 +33,10 @@ module.exports = function make_matrix_rows(
     // make rows in the matrix - add key names to rows in matrix
     /////////////////////////////////////////////////////////////
     // d3-tooltip - for tiles
-    var tip = d3_tip_custom()
+    tip = d3_tip_custom()
       .attr('class', function () {
-        var root_tip_selector = params.viz.root_tips.replace('.', '');
-        var class_string =
+        const root_tip_selector = params.viz.root_tips.replace('.', '');
+        const class_string =
           root_tip_selector + ' d3-tip ' + root_tip_selector + '_tile_tip';
         return class_string;
       })
@@ -42,11 +44,11 @@ module.exports = function make_matrix_rows(
       .direction('nw')
       .offset([0, 0])
       .html(function (d) {
-        var inst_value = String(d.value.toFixed(3));
-        var tooltip_string;
+        const inst_value = String(d.value.toFixed(3));
+        let tooltip_string;
 
         if (params.keep_orig) {
-          var orig_value = String(d.value_orig.toFixed(3));
+          const orig_value = String(d.value_orig.toFixed(3));
           tooltip_string =
             '<p>' +
             d.row_name +
@@ -78,7 +80,7 @@ module.exports = function make_matrix_rows(
   }
 
   // gather a subset of row data from the matrix or use all rows
-  var matrix_subset = [];
+  let matrix_subset = [];
   if (row_names === 'all') {
     matrix_subset = current_matrix;
   } else {

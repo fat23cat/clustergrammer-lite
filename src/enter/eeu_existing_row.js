@@ -1,12 +1,12 @@
-var d3 = require('d3');
-var exit_existing_row = require('../exit/exit_existing_row');
-var enter_existing_row = require('./enter_existing_row');
-var update_split_tiles = require('../update/update_split_tiles');
-var mouseover_tile = require('../matrix/mouseover_tile');
-var mouseout_tile = require('../matrix/mouseout_tile');
-var fine_position_tile = require('../matrix/fine_position_tile');
-var filter = require('underscore/cjs/filter');
-var contains = require('underscore/cjs/contains');
+const d3 = require('d3');
+const exit_existing_row = require('../exit/exit_existing_row');
+const enter_existing_row = require('./enter_existing_row');
+const update_split_tiles = require('../update/update_split_tiles');
+const mouseover_tile = require('../matrix/mouseover_tile');
+const mouseout_tile = require('../matrix/mouseout_tile');
+const fine_position_tile = require('../matrix/fine_position_tile');
+const filter = require('underscore/cjs/filter');
+const contains = require('underscore/cjs/contains');
 
 // TODO add tip back to arguments
 module.exports = function eeu_existing_row(
@@ -17,15 +17,15 @@ module.exports = function eeu_existing_row(
   row_selection,
   tip
 ) {
-  var inp_row_data = ini_inp_row_data.row_data;
+  const inp_row_data = ini_inp_row_data.row_data;
 
   // remove zero values from
-  var row_values = filter(inp_row_data, function (num) {
+  const row_values = filter(inp_row_data, function (num) {
     return num.value != 0;
   });
 
   // bind data to tiles
-  var cur_row_tiles = d3
+  const cur_row_tiles = d3
     .select(row_selection)
     .selectAll('.tile')
     .data(row_values, function (d) {
@@ -39,7 +39,7 @@ module.exports = function eeu_existing_row(
   ///////////////////////////
 
   // update tiles in x direction
-  var update_row_tiles = cur_row_tiles
+  const update_row_tiles = cur_row_tiles
     .on('mouseover', function mouseover(...args) {
       mouseover_tile(params, this, tip, args);
     })
@@ -47,7 +47,7 @@ module.exports = function eeu_existing_row(
       mouseout_tile(params, this, tip);
     });
 
-  var col_nodes_names = params.network_data.col_nodes_names;
+  const col_nodes_names = params.network_data.col_nodes_names;
 
   if (delays.run_transition) {
     update_row_tiles

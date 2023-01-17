@@ -7,8 +7,8 @@ module.exports = function ini_cat_opacity(
 ) {
   // debugger;
 
-  var super_string = ': ';
-  var inst_type = viz.cat_info[inst_rc][inst_cat].type;
+  const super_string = ': ';
+  const inst_type = viz.cat_info[inst_rc][inst_cat].type;
 
   // set opacity based on string or value cats
   if (inst_type === 'cat_strings') {
@@ -31,16 +31,16 @@ module.exports = function ini_cat_opacity(
     cat_rect
       .classed('cat_values', true)
       .style('opacity', function (d) {
-        var unprocessed_val = d[inst_cat];
+        const unprocessed_val = d[inst_cat];
 
-        var cat_value = get_cat_value(unprocessed_val);
+        const cat_value = get_cat_value(unprocessed_val);
 
         return viz.cat_info[inst_rc][inst_cat].cat_scale(Math.abs(cat_value));
       })
       .style('fill', function (d) {
-        var inst_color;
+        let inst_color;
 
-        var cat_value = get_cat_value(d[inst_cat]);
+        const cat_value = get_cat_value(d[inst_cat]);
 
         // get positive and negative colors
         if (cat_value > 0) {
@@ -60,7 +60,7 @@ module.exports = function ini_cat_opacity(
       }
     }
 
-    var cat_value = parseFloat(unprocessed_value);
+    const cat_value = parseFloat(unprocessed_value);
 
     return cat_value;
   }

@@ -1,17 +1,16 @@
-var d3 = require('d3');
-var utils = require('../Utils_clust');
-var draw_gridlines = require('../matrix/draw_gridlines');
-var add_click_hlight = require('./add_click_hlight');
-var make_matrix_rows = require('./make_matrix_rows');
+const d3 = require('d3');
+const utils = require('../Utils_clust');
+const draw_gridlines = require('../matrix/draw_gridlines');
+const add_click_hlight = require('./add_click_hlight');
+const make_matrix_rows = require('./make_matrix_rows');
 
 module.exports = function (params, svg_elem) {
-  var network_data = params.network_data;
+  const network_data = params.network_data;
 
-  var matrix = [];
-  var clust_group;
+  const matrix = [];
 
   // append a group that will hold clust_group and position it once
-  clust_group = svg_elem
+  const clust_group = svg_elem
     .append('g')
     .attr('class', 'clust_container')
     .attr(
@@ -57,7 +56,7 @@ module.exports = function (params, svg_elem) {
   if (typeof params.click_tile === 'function') {
     d3.selectAll(params.root + ' .tile').on('click', function (d) {
       // export row/col name and value from tile
-      var tile_info = {};
+      const tile_info = {};
       tile_info.row = params.network_data.row_nodes[d.pos_y].name;
       tile_info.col = params.network_data.col_nodes[d.pos_x].name;
       tile_info.value = d.value;
@@ -85,8 +84,8 @@ module.exports = function (params, svg_elem) {
   }
 
   // draw grid lines after drawing tiles
-  var delays = {};
-  var duration = 0;
+  const delays = {};
+  const duration = 0;
   delays.enter = 0;
   draw_gridlines(params, delays, duration);
 

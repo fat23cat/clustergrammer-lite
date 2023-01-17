@@ -1,15 +1,15 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function position_dendro_slider(cgm, inst_rc = 'row') {
-  var viz = cgm.params.viz;
-  var tmp_left;
-  var tmp_top;
+  const viz = cgm.params.viz;
+  let tmp_left;
+  let tmp_top;
   if (inst_rc === 'row') {
     // row dendrogram
     ///////////////////////
 
     // keep slider near clustergram
-    var max_room = viz.svg_dim.width - 3 * viz.uni_margin;
+    const max_room = viz.svg_dim.width - 3 * viz.uni_margin;
 
     // position close to row dendrogram trapezoids
     tmp_left =
@@ -41,7 +41,7 @@ module.exports = function position_dendro_slider(cgm, inst_rc = 'row') {
   // reposiiton slider
   d3.select(cgm.params.root + ' .' + inst_rc + '_slider_group')
     .attr('transform', function () {
-      var inst_translation;
+      let inst_translation;
       if (inst_rc === 'row') {
         tmp_left = tmp_left + 0.8 * viz.dendro_room.row;
         inst_translation = 'translate(' + tmp_left + ',' + tmp_top + ')';

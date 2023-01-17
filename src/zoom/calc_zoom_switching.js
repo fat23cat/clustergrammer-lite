@@ -1,6 +1,6 @@
 module.exports = function calc_zoom_switching(viz) {
-  var width_by_col = viz.clust.dim.width / viz.num_col_nodes;
-  var height_by_row = viz.clust.dim.height / viz.num_row_nodes;
+  const width_by_col = viz.clust.dim.width / viz.num_col_nodes;
+  const height_by_row = viz.clust.dim.height / viz.num_row_nodes;
 
   viz.zoom_ratio = {};
   viz.zoom_ratio.x = width_by_col / height_by_row;

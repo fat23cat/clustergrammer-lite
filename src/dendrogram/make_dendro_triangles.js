@@ -1,25 +1,25 @@
-var calc_row_dendro_triangles = require('./calc_row_dendro_triangles');
-var calc_col_dendro_triangles = require('./calc_col_dendro_triangles');
-var dendro_group_highlight = require('./dendro_group_highlight');
-var d3_tip_custom = require('../tooltip/d3_tip_custom');
-var make_dendro_crop_buttons = require('./make_dendro_crop_buttons');
-var make_cat_breakdown_graph = require('../categories/make_cat_breakdown_graph');
-var $ = require('jquery');
-var d3 = require('d3');
+const calc_row_dendro_triangles = require('./calc_row_dendro_triangles');
+const calc_col_dendro_triangles = require('./calc_col_dendro_triangles');
+const dendro_group_highlight = require('./dendro_group_highlight');
+const d3_tip_custom = require('../tooltip/d3_tip_custom');
+const make_dendro_crop_buttons = require('./make_dendro_crop_buttons');
+const make_cat_breakdown_graph = require('../categories/make_cat_breakdown_graph');
+const $ = require('jquery');
+const d3 = require('d3');
 
 module.exports = function make_dendro_triangles(
   cgm,
   inst_rc,
   is_change_group = false
 ) {
-  var params = cgm.params;
+  const params = cgm.params;
 
   // in case sim_mat
   if (inst_rc === 'both') {
     inst_rc = 'row';
   }
 
-  var other_rc;
+  let other_rc;
   if (inst_rc === 'row') {
     other_rc = 'col';
   } else {
@@ -34,7 +34,7 @@ module.exports = function make_dendro_triangles(
     );
   }
 
-  var dendro_info;
+  let dendro_info;
 
   if (params.viz.show_dendrogram) {
     if (inst_rc === 'row') {
@@ -53,12 +53,12 @@ module.exports = function make_dendro_triangles(
   }
 
   // constant dendrogram opacity
-  var inst_dendro_opacity = params.viz.dendro_opacity;
+  const inst_dendro_opacity = params.viz.dendro_opacity;
 
   function still_hovering(inst_selection, inst_data, i) {
     if (d3.select(inst_selection).classed('hovering')) {
       // define where graph should be built
-      var inst_selector = params.viz.root_tips + '_' + inst_rc + '_dendro_tip';
+      const inst_selector = params.viz.root_tips + '_' + inst_rc + '_dendro_tip';
 
       // prevent mouseover from making multiple graphs
       if (d3.select(inst_selector + ' .cat_graph').empty()) {
@@ -81,7 +81,7 @@ module.exports = function make_dendro_triangles(
     }
   }
 
-  var wait_before_tooltip = 500;
+  const wait_before_tooltip = 500;
 
   // remove any old dendro tooltips from this visualization
   d3.selectAll(
@@ -89,7 +89,7 @@ module.exports = function make_dendro_triangles(
   ).remove();
 
   // run transition rules
-  var run_transition;
+  let run_transition;
   if (d3.selectAll(params.root + ' .' + inst_rc + '_dendro_group').empty()) {
     run_transition = false;
   } else {
@@ -99,13 +99,13 @@ module.exports = function make_dendro_triangles(
   }
 
   // d3-tooltip
-  var tmp_y_offset = 0;
-  var tmp_x_offset = -5;
-  var dendro_tip = d3_tip_custom()
+  const tmp_y_offset = 0;
+  const tmp_x_offset = -5;
+  const dendro_tip = d3_tip_custom()
     .attr('class', function () {
       // add root element to class
-      var root_tip_selector = params.viz.root_tips.replace('.', '');
-      var class_string =
+      const root_tip_selector = params.viz.root_tips.replace('.', '');
+      const class_string =
         root_tip_selector +
         ' d3-tip ' +
         root_tip_selector +
@@ -121,7 +121,7 @@ module.exports = function make_dendro_triangles(
     .style('opacity', 0);
 
   dendro_tip.html(function () {
-    var full_string =
+    const full_string =
       '<div class="cluster_info_container"></div>Click for cluster information <br>' +
       'and additional options.';
     return full_string;
@@ -131,7 +131,7 @@ module.exports = function make_dendro_triangles(
     run_transition = false;
   }
 
-  var dendro_traps = d3
+  const dendro_traps = d3
     .select(params.root + ' .' + inst_rc + '_dendro_container')
     .selectAll('path')
     .data(dendro_info, function (d) {
@@ -146,12 +146,12 @@ module.exports = function make_dendro_triangles(
 
   // draw triangles (shown as trapezoids)
   //////////////////////////////////////////
-  var start_x;
-  var start_y;
-  var mid_x;
-  var mid_y;
-  var final_x;
-  var final_y;
+  let start_x;
+  let start_y;
+  let mid_x;
+  let mid_y;
+  let final_x;
+  let final_y;
 
   // row triangles
   dendro_traps.attr('d', function (d) {
@@ -173,7 +173,7 @@ module.exports = function make_dendro_triangles(
       final_y = 0;
     }
 
-    var output_string =
+    const output_string =
       'M' +
       start_x +
       ',' +
@@ -238,13 +238,13 @@ module.exports = function make_dendro_triangles(
     .on('click', function (d, i) {
       $(params.root + ' .dendro_info').modal('toggle');
 
-      var group_string = d.all_names.join(', ');
+      const group_string = d.all_names.join(', ');
       d3.select(params.root + ' .dendro_info input').attr(
         'value',
         group_string
       );
 
-      var inst_selector = params.root + ' .dendro_info';
+      const inst_selector = params.root + ' .dendro_info';
 
       // remove old graphs (modals are not within params.root)
       d3.selectAll('.dendro_info .cluster_info_container .cat_graph').remove();
@@ -265,7 +265,7 @@ module.exports = function make_dendro_triangles(
     })
     .call(dendro_tip);
 
-  var triangle_opacity;
+  let triangle_opacity;
   if (params.viz.inst_order[other_rc] === 'clust') {
     triangle_opacity = inst_dendro_opacity;
   } else {

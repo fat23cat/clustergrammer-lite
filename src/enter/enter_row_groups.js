@@ -1,9 +1,9 @@
-var d3 = require('d3');
-var enter_new_rows = require('./enter_new_rows');
+const d3 = require('d3');
+const enter_new_rows = require('./enter_new_rows');
 
 module.exports = function enter_row_groups(params, delays, duration, tip) {
   // enter new rows
-  var new_row_groups = d3
+  const new_row_groups = d3
     .select(params.root + ' .clust_group')
     .selectAll('.row')
     .data(params.matrix.matrix, function (d) {

@@ -1,13 +1,13 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function resize_spillover(
   viz,
   ini_svg_group,
   delay_info = false
 ) {
-  var delays = {};
-  var duration = viz.duration;
-  var svg_group;
+  let delays = {};
+  const duration = viz.duration;
+  let svg_group;
 
   if (delay_info === false) {
     delays.run_transition = false;
@@ -35,18 +35,18 @@ module.exports = function resize_spillover(
     .select(viz.root + ' .left_slant_triangle')
     .attr('transform', 'translate(-1,' + viz.norm_labels.width.col + ')');
 
-  var rect_height = viz.clust.margin.top + viz.uni_margin / 5;
+  const rect_height = viz.clust.margin.top + viz.uni_margin / 5;
   svg_group
     .select(viz.root + ' .top_left_white')
     .attr('width', viz.clust.margin.left)
     .attr('height', rect_height);
 
-  var tmp_left =
+  const tmp_left =
     viz.clust.margin.left +
     viz.clust.dim.width +
     viz.uni_margin +
     viz.dendro_room.row;
-  var tmp_top = viz.norm_labels.margin.top + viz.norm_labels.width.col;
+  let tmp_top = viz.norm_labels.margin.top + viz.norm_labels.width.col;
 
   svg_group
     .select(viz.root + ' .right_spillover_container')
@@ -67,10 +67,10 @@ module.exports = function resize_spillover(
     .attr('height', viz.svg_dim.height + 'px');
 
   // resize dendro spillovers
-  var x_offset = viz.clust.margin.left + viz.clust.dim.width;
-  var y_offset = tmp_top;
-  var tmp_width = viz.dendro_room.row + viz.uni_margin;
-  var tmp_height = viz.cat_room.col + viz.uni_margin;
+  let x_offset = viz.clust.margin.left + viz.clust.dim.width;
+  let y_offset = tmp_top;
+  let tmp_width = viz.dendro_room.row + viz.uni_margin;
+  let tmp_height = viz.cat_room.col + viz.uni_margin;
   d3.select(viz.root + ' .dendro_row_spillover')
     .attr('width', tmp_width)
     .attr('height', tmp_height)
@@ -110,14 +110,14 @@ module.exports = function resize_spillover(
     viz.norm_labels.margin.top +
     viz.norm_labels.width.col +
     2.5 * viz.uni_margin;
-  var extra_x_room = 2.75;
-  var extra_y_room = 1.2;
+  const extra_x_room = 2.75;
+  const extra_y_room = 1.2;
 
   // reposition category superlabels
   if (viz.show_categories.col) {
     d3.selectAll(viz.root + ' .col_cat_super').attr('transform', function (d) {
-      var inst_cat = parseInt(d.split('-')[1], 10);
-      var inst_y =
+      const inst_cat = parseInt(d.split('-')[1], 10);
+      const inst_y =
         y_offset + extra_y_room * viz.cat_room.symbol_width * inst_cat;
       return 'translate(' + x_offset + ',' + inst_y + ')';
     });
@@ -162,15 +162,15 @@ module.exports = function resize_spillover(
     .attr('width', viz.svg_dim.width)
     .attr('height', 2 * viz.svg_dim.height);
 
-  var inst_height = viz.cat_room.col + 1.5 * viz.uni_margin;
+  const inst_height = viz.cat_room.col + 1.5 * viz.uni_margin;
   // white rect to cover excess labels
   d3.select(viz.viz_svg + ' .top_right_white')
     .attr('fill', viz.background_color)
     .attr('width', 2 * viz.clust.dim.width)
     .attr('height', inst_height)
     .attr('transform', function () {
-      var tmp_left = viz.clust.margin.left + viz.clust.dim.width;
-      var tmp_top =
+      const tmp_left = viz.clust.margin.left + viz.clust.dim.width;
+      const tmp_top =
         viz.norm_labels.width.col + viz.norm_labels.margin.top - viz.uni_margin;
       return 'translate(' + tmp_left + ', ' + tmp_top + ')';
     });

@@ -1,7 +1,6 @@
 // colors from http://graphicdesign.stackexchange.com/revisions/3815/8
-var all_colors;
 
-all_colors = [
+const all_colors = [
   '#393b79',
   '#aec7e8',
   '#ff7f0e',

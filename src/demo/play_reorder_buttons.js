@@ -1,11 +1,11 @@
-var demo_text = require('./demo_text');
-var highlight_sidebar_element = require('./highlight_sidebar_element');
-var $ = require('jquery');
-var d3 = require('d3');
+const demo_text = require('./demo_text');
+const highlight_sidebar_element = require('./highlight_sidebar_element');
+const $ = require('jquery');
+const d3 = require('d3');
 
 module.exports = function play_reorder_buttons() {
   function run(params) {
-    var text =
+    const text =
       'Reorder all rows and columns\nby clicking the reorder\n buttons';
     demo_text(params, text, 9000);
 
@@ -21,7 +21,7 @@ module.exports = function play_reorder_buttons() {
   }
 
   function click_reorder_button(params, inst_rc, inst_order) {
-    var inst_button = d3
+    const inst_button = d3
       .selectAll('.toggle_' + inst_rc + '_order .btn')
       .filter(function () {
         return this.__data__ == inst_order;

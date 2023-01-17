@@ -1,8 +1,8 @@
-var d3 = require('d3');
-var draw_up_tile = require('./draw_up_tile');
-var draw_dn_tile = require('./draw_dn_tile');
-var fine_position_tile = require('../matrix/fine_position_tile');
-var filter = require('underscore/cjs/filter');
+const d3 = require('d3');
+const draw_up_tile = require('./draw_up_tile');
+const draw_dn_tile = require('./draw_dn_tile');
+const fine_position_tile = require('../matrix/fine_position_tile');
+const filter = require('underscore/cjs/filter');
 
 module.exports = function enter_split_tiles(
   params,
@@ -14,12 +14,12 @@ module.exports = function enter_split_tiles(
   tile
 ) {
   // value split
-  var row_split_data = filter(inp_row_data, function (num) {
+  const row_split_data = filter(inp_row_data, function (num) {
     return num.value_up != 0 || num.value_dn != 0;
   });
 
   // tile_up
-  var new_tiles_up = d3
+  const new_tiles_up = d3
     .select(row_selection)
     .selectAll('.tile_up')
     .data(row_split_data, function (d) {
@@ -69,7 +69,7 @@ module.exports = function enter_split_tiles(
     .delay(delays.enter)
     .duration(duration)
     .style('fill-opacity', function (d) {
-      var inst_opacity = 0;
+      let inst_opacity = 0;
       if (Math.abs(d.value_dn) > 0) {
         inst_opacity = params.matrix.opacity_scale(Math.abs(d.value_up));
       }
@@ -77,7 +77,7 @@ module.exports = function enter_split_tiles(
     });
 
   // tile_dn
-  var new_tiles_dn = d3
+  const new_tiles_dn = d3
     .select(row_selection)
     .selectAll('.tile_dn')
     .data(row_split_data, function (d) {
@@ -127,7 +127,7 @@ module.exports = function enter_split_tiles(
     .delay(delays.enter)
     .duration(duration)
     .style('fill-opacity', function (d) {
-      var inst_opacity = 0;
+      let inst_opacity = 0;
       if (Math.abs(d.value_up) > 0) {
         inst_opacity = params.matrix.opacity_scale(Math.abs(d.value_dn));
       }

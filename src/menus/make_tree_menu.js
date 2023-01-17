@@ -1,19 +1,19 @@
-var d3 = require('d3');
-var make_menu_button_section = require('./make_menu_button_section');
-var make_menu_update_button = require('./make_menu_update_button');
-var position_tree_menu = require('./position_tree_menu');
-var toggle_menu = require('./toggle_menu');
-var recluster = require('../recluster/recluster');
+const d3 = require('d3');
+const make_menu_button_section = require('./make_menu_button_section');
+const make_menu_update_button = require('./make_menu_update_button');
+const position_tree_menu = require('./position_tree_menu');
+const toggle_menu = require('./toggle_menu');
+const recluster = require('../recluster/recluster');
 
 module.exports = function make_tree_menu(cgm) {
-  var params = cgm.params;
-  var menu_width = cgm.params.viz.tree_menu_width;
-  var menu_height = cgm.params.viz.tree_menu_height;
-  var x_offset = cgm.params.viz.tree_menu_x_offset;
+  const params = cgm.params;
+  const menu_width = cgm.params.viz.tree_menu_width;
+  const menu_height = cgm.params.viz.tree_menu_height;
+  const x_offset = cgm.params.viz.tree_menu_x_offset;
 
   // make tree menu (state is in cgm, remade each time)
   /////////////////////////////////////////////////////
-  var tree_menu = d3
+  const tree_menu = d3
     .select(params.root + ' .viz_svg')
     .append('g')
     .attr('cursor', 'default')
@@ -24,13 +24,13 @@ module.exports = function make_tree_menu(cgm) {
 
   tree_menu.attr('opacity', 0.0).transition().attr('opacity', 1.0);
 
-  var menu_opacity = 0.95;
+  const menu_opacity = 0.95;
 
   tree_menu
     .append('rect')
     .classed('tree_menu_background', true)
     .attr('width', function () {
-      var inst_width = menu_width;
+      const inst_width = menu_width;
       return inst_width;
     })
     .attr('height', menu_height)
@@ -50,7 +50,7 @@ module.exports = function make_tree_menu(cgm) {
     .attr('cursor', 'default')
     .text('Clustering Parameters');
 
-  var button_info = {};
+  const button_info = {};
   button_info.cgm = cgm;
   button_info.selection = tree_menu;
   button_info.menu_width = menu_width;
@@ -60,7 +60,7 @@ module.exports = function make_tree_menu(cgm) {
 
   // distance
   /////////////////
-  var distance_names = ['cosine', 'euclidean', 'correlation'];
+  const distance_names = ['cosine', 'euclidean', 'correlation'];
   button_info.name = 'Distance Metric';
   button_info.y_offset = 65;
   button_info.x_offset = 0;
@@ -73,7 +73,7 @@ module.exports = function make_tree_menu(cgm) {
 
   // linkage
   /////////////////
-  var linkage_names = ['average', 'single', 'complete'];
+  const linkage_names = ['average', 'single', 'complete'];
   button_info.name = 'Linkage Type';
   button_info.y_offset = 65;
   button_info.x_offset = menu_width / 2;

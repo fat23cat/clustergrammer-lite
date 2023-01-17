@@ -1,4 +1,4 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function dendro_shade_bars(
   params,
@@ -6,8 +6,8 @@ module.exports = function dendro_shade_bars(
   inst_rc,
   inst_data
 ) {
-  var inst_opacity = 0.2;
-  var bot_height;
+  const inst_opacity = 0.2;
+  let bot_height;
 
   d3.selectAll(params.root + ' .dendro_shadow').remove();
 

@@ -1,23 +1,23 @@
-var d3 = require('d3');
-var utils = require('../Utils_clust');
-var calc_clust_height = require('../params/calc_clust_height');
-var get_svg_dim = require('../params/get_svg_dim');
-var calc_clust_width = require('../params/calc_clust_width');
-var reset_zoom = require('../zoom/reset_zoom');
-var resize_dendro = require('./resize_dendro');
-var resize_super_labels = require('./resize_super_labels');
-var resize_spillover = require('./resize_spillover');
-var resize_row_labels = require('./resize_row_labels');
-var resize_row_viz = require('./resize_row_viz');
-var resize_col_labels = require('./resize_col_labels');
-var resize_col_text = require('./resize_col_text');
-var resize_col_triangle = require('./resize_col_triangle');
-var resize_col_hlight = require('./resize_col_hlight');
-var resize_label_bars = require('./resize_label_bars');
-var calc_default_fs = require('../params/calc_default_fs');
-var calc_zoom_switching = require('../zoom/calc_zoom_switching');
+const d3 = require('d3');
+const utils = require('../Utils_clust');
+const calc_clust_height = require('../params/calc_clust_height');
+const get_svg_dim = require('../params/get_svg_dim');
+const calc_clust_width = require('../params/calc_clust_width');
+const reset_zoom = require('../zoom/reset_zoom');
+const resize_dendro = require('./resize_dendro');
+const resize_super_labels = require('./resize_super_labels');
+const resize_spillover = require('./resize_spillover');
+const resize_row_labels = require('./resize_row_labels');
+const resize_row_viz = require('./resize_row_viz');
+const resize_col_labels = require('./resize_col_labels');
+const resize_col_text = require('./resize_col_text');
+const resize_col_triangle = require('./resize_col_triangle');
+const resize_col_hlight = require('./resize_col_hlight');
+const resize_label_bars = require('./resize_label_bars');
+const calc_default_fs = require('../params/calc_default_fs');
+const calc_zoom_switching = require('../zoom/calc_zoom_switching');
 // var show_visible_area = require('../zoom/show_visible_area');
-var ini_zoom_info = require('../zoom/ini_zoom_info');
+const ini_zoom_info = require('../zoom/ini_zoom_info');
 
 module.exports = function reset_size_after_update(
   cgm,
@@ -31,9 +31,9 @@ module.exports = function reset_size_after_update(
     delays.run_transition = false;
   }
 
-  var params = cgm.params;
+  let params = cgm.params;
 
-  var row_nodes = cgm.params.network_data.row_nodes;
+  const row_nodes = cgm.params.network_data.row_nodes;
 
   params.zoom_info = ini_zoom_info();
 
@@ -43,7 +43,7 @@ module.exports = function reset_size_after_update(
   // // quick fix for column filtering
   // setTimeout(show_visible_area, 2200, cgm);
 
-  var row_nodes_names = params.network_data.row_nodes_names || [];
+  const row_nodes_names = params.network_data.row_nodes_names || [];
 
   reset_zoom(params);
 
@@ -84,7 +84,7 @@ module.exports = function reset_size_after_update(
 
   // resize the svg
   ///////////////////////
-  var svg_group = d3.select(params.viz.viz_wrapper).select('svg');
+  const svg_group = d3.select(params.viz.viz_wrapper).select('svg');
 
   svg_group
     .select(params.root + ' .grey_background')
@@ -107,7 +107,7 @@ module.exports = function reset_size_after_update(
 
   // change the size of the highlighting rects
   svg_group.selectAll('.row_label_group').each(function () {
-    var bbox = d3.select(this).select('text')[0][0].getBBox();
+    const bbox = d3.select(this).select('text')[0][0].getBBox();
     d3.select(this)
       .select('rect')
       .attr('x', bbox.x)
@@ -116,7 +116,7 @@ module.exports = function reset_size_after_update(
       .attr('height', params.viz.y_scale.rangeBand())
       .style('fill', 'yellow')
       .style('opacity', function (d) {
-        var inst_opacity = 0;
+        let inst_opacity = 0;
         // highlight target genes
         if (d.target === 1) {
           inst_opacity = 1;
@@ -149,7 +149,7 @@ module.exports = function reset_size_after_update(
       .delay(delays.update)
       .duration(duration)
       .attr('transform', function (d) {
-        var inst_index = row_nodes_names.indexOf(d.name);
+        const inst_index = row_nodes_names.indexOf(d.name);
         return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
       });
 
@@ -160,13 +160,13 @@ module.exports = function reset_size_after_update(
       .delay(delays.update)
       .duration(duration)
       .attr('d', function () {
-        var origin_x = params.viz.cat_room.symbol_width - 1;
-        var origin_y = 0;
-        var mid_x = 1;
-        var mid_y = params.viz.y_scale.rangeBand() / 2;
-        var final_x = params.viz.cat_room.symbol_width - 1;
-        var final_y = params.viz.y_scale.rangeBand();
-        var output_string =
+        const origin_x = params.viz.cat_room.symbol_width - 1;
+        const origin_y = 0;
+        const mid_x = 1;
+        const mid_y = params.viz.y_scale.rangeBand() / 2;
+        const final_x = params.viz.cat_room.symbol_width - 1;
+        const final_y = params.viz.y_scale.rangeBand();
+        const output_string =
           'M ' +
           origin_x +
           ',' +
@@ -192,7 +192,7 @@ module.exports = function reset_size_after_update(
       .delay(delays.update)
       .duration(duration)
       .attr('transform', function (d) {
-        var inst_index = row_nodes_names.indexOf(d.name);
+        const inst_index = row_nodes_names.indexOf(d.name);
         return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
       });
   } else {
@@ -211,7 +211,7 @@ module.exports = function reset_size_after_update(
         return d.name;
       })
       .attr('transform', function (d) {
-        var inst_index = row_nodes_names.indexOf(d.name);
+        const inst_index = row_nodes_names.indexOf(d.name);
         return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
       });
 
@@ -219,13 +219,13 @@ module.exports = function reset_size_after_update(
       .selectAll('.row_cat_group')
       .select('path')
       .attr('d', function () {
-        var origin_x = params.viz.cat_room.symbol_width - 1;
-        var origin_y = 0;
-        var mid_x = 1;
-        var mid_y = params.viz.y_scale.rangeBand() / 2;
-        var final_x = params.viz.cat_room.symbol_width - 1;
-        var final_y = params.viz.y_scale.rangeBand();
-        var output_string =
+        const origin_x = params.viz.cat_room.symbol_width - 1;
+        const origin_y = 0;
+        const mid_x = 1;
+        const mid_y = params.viz.y_scale.rangeBand() / 2;
+        const final_x = params.viz.cat_room.symbol_width - 1;
+        const final_y = params.viz.y_scale.rangeBand();
+        const output_string =
           'M ' +
           origin_x +
           ',' +
@@ -248,7 +248,7 @@ module.exports = function reset_size_after_update(
         return d.name;
       })
       .attr('transform', function (d) {
-        var inst_index = row_nodes_names.indexOf(d.name);
+        const inst_index = row_nodes_names.indexOf(d.name);
         return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
       });
   }

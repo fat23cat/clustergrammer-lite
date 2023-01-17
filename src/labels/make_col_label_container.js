@@ -1,19 +1,19 @@
-var d3 = require('d3');
-var utils = require('../Utils_clust');
-var add_col_click_hlight = require('./add_col_click_hlight');
-var col_reorder = require('../reorder/col_reorder');
-var row_reorder = require('../reorder/row_reorder');
-var make_col_tooltips = require('./make_col_tooltips');
-var col_viz_aid_triangle = require('./col_viz_aid_triangle');
+const d3 = require('d3');
+const utils = require('../Utils_clust');
+const add_col_click_hlight = require('./add_col_click_hlight');
+const col_reorder = require('../reorder/col_reorder');
+const row_reorder = require('../reorder/row_reorder');
+const make_col_tooltips = require('./make_col_tooltips');
+const col_viz_aid_triangle = require('./col_viz_aid_triangle');
 
 module.exports = function make_col_label_container(cgm, text_delay = 0) {
-  var params = cgm.params;
-  var col_container;
+  const params = cgm.params;
+  let col_container;
 
-  var col_nodes = params.network_data.col_nodes;
+  const col_nodes = params.network_data.col_nodes;
 
   // offset click group column label
-  var x_offset_click =
+  const x_offset_click =
     params.viz.x_scale.rangeBand() / 2 + params.viz.border_width.x;
   // reduce width of rotated rects
 
@@ -75,7 +75,7 @@ module.exports = function make_col_label_container(cgm, text_delay = 0) {
   }
 
   // add main column label group
-  var col_label_obj = d3
+  const col_label_obj = d3
     .select(params.root + ' .col_zoom_container')
     .selectAll('.col_label_text')
     .data(col_nodes, function (d) {
@@ -85,12 +85,12 @@ module.exports = function make_col_label_container(cgm, text_delay = 0) {
     .append('g')
     .attr('class', 'col_label_text')
     .attr('transform', function (d) {
-      var inst_index = d.col_index;
+      const inst_index = d.col_index;
       return 'translate(' + params.viz.x_scale(inst_index) + ', 0) rotate(-90)';
     });
 
   // append group for individual column label
-  var col_label_group = col_label_obj
+  const col_label_group = col_label_obj
     // append new group for rect and label (not white lines)
     .append('g')
     .attr('class', 'col_label_group')
@@ -116,7 +116,7 @@ module.exports = function make_col_label_container(cgm, text_delay = 0) {
       .append('rect')
       .attr('class', 'col_bars')
       .attr('width', function (d) {
-        var inst_value = 0;
+        let inst_value = 0;
         if (d.value > 0) {
           inst_value = params.labels.bar_scale_col(d.value);
         }
@@ -185,13 +185,13 @@ module.exports = function make_col_label_container(cgm, text_delay = 0) {
       }
     })
     .on('dblclick', function (d) {
-      var data_attr = '__data__';
-      var col_name = this[data_attr].name;
+      const data_attr = '__data__';
+      const col_name = this[data_attr].name;
 
       if (params.sim_mat) {
         col_reorder(cgm, this, col_name);
 
-        var row_selection = d3
+        const row_selection = d3
           .selectAll(params.root + ' .row_label_group')
           .filter(function (d) {
             return d.name == col_name;

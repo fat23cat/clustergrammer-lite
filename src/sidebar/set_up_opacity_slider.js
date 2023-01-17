@@ -1,5 +1,5 @@
 module.exports = function set_up_opacity_slider(sidebar) {
-  var slider_container = sidebar
+  const slider_container = sidebar
     .append('div')
     .classed('opacity_slider_container', true)
     .style('margin-top', '5px')

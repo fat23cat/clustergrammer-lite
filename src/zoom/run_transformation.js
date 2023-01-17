@@ -1,18 +1,18 @@
-var d3 = require('d3');
-var constrain_font_size = require('./constrain_font_size');
-var show_visible_area = require('./show_visible_area');
-var resize_label_val_bars = require('./resize_label_val_bars');
-var zoom_crop_triangles = require('./zoom_crop_triangles');
-var get_previous_zoom = require('./get_previous_zoom');
-var run_when_zoom_stopped = require('./run_when_zoom_stopped');
-var check_zoom_stop_status = require('./check_zoom_stop_status');
+const d3 = require('d3');
+const constrain_font_size = require('./constrain_font_size');
+const show_visible_area = require('./show_visible_area');
+const resize_label_val_bars = require('./resize_label_val_bars');
+const zoom_crop_triangles = require('./zoom_crop_triangles');
+const get_previous_zoom = require('./get_previous_zoom');
+const run_when_zoom_stopped = require('./run_when_zoom_stopped');
+const check_zoom_stop_status = require('./check_zoom_stop_status');
 
 module.exports = function run_transformation(cgm) {
-  var params = cgm.params;
+  const params = cgm.params;
 
-  var zoom_info = params.zoom_info;
+  const zoom_info = params.zoom_info;
 
-  var prev_zoom = get_previous_zoom(params);
+  const prev_zoom = get_previous_zoom(params);
 
   d3.select(params.root + ' .clust_group').attr(
     'transform',
@@ -57,10 +57,10 @@ module.exports = function run_transformation(cgm) {
   d3.select(params.root + ' .row_dendro_icons_group').attr(
     'transform',
     function () {
-      var inst_y = zoom_info.trans_y;
-      var inst_translate = 'translate(' + [0, inst_y] + ') ';
-      var inst_zoom = 'scale(1, ' + zoom_info.zoom_y + ')';
-      var transform_string = inst_translate + inst_zoom;
+      const inst_y = zoom_info.trans_y;
+      const inst_translate = 'translate(' + [0, inst_y] + ') ';
+      const inst_zoom = 'scale(1, ' + zoom_info.zoom_y + ')';
+      const transform_string = inst_translate + inst_zoom;
       return transform_string;
     }
   );
@@ -68,10 +68,10 @@ module.exports = function run_transformation(cgm) {
   d3.select(params.root + ' .col_dendro_icons_group').attr(
     'transform',
     function () {
-      var inst_x = zoom_info.trans_x;
-      var inst_translate = 'translate(' + [inst_x, 0] + ')';
-      var inst_zoom = 'scale(' + zoom_info.zoom_x + ', 1)';
-      var transform_string = inst_translate + inst_zoom;
+      const inst_x = zoom_info.trans_x;
+      const inst_translate = 'translate(' + [inst_x, 0] + ')';
+      const inst_zoom = 'scale(' + zoom_info.zoom_x + ', 1)';
+      const transform_string = inst_translate + inst_zoom;
       return transform_string;
     }
   );
@@ -100,7 +100,7 @@ module.exports = function run_transformation(cgm) {
   resize_label_val_bars(params, zoom_info);
 
   d3.select(params.root + ' .viz_svg').attr('is_zoom', function () {
-    var inst_zoom = Number(
+    const inst_zoom = Number(
       d3.select(params.root + ' .viz_svg').attr('is_zoom')
     );
     d3.select(params.root + ' .viz_svg').attr('stopped_zoom', 1);
@@ -110,9 +110,9 @@ module.exports = function run_transformation(cgm) {
   // this function runs with a slight delay and tells the visualization that
   // this particular zoom event is over, reducing the total number of zoom
   // events that need to finish
-  var not_zooming = function () {
+  const not_zooming = function () {
     d3.select(params.root + ' .viz_svg').attr('is_zoom', function () {
-      var inst_zoom = Number(
+      const inst_zoom = Number(
         d3.select(params.root + ' .viz_svg').attr('is_zoom')
       );
       return inst_zoom - 1;
@@ -122,13 +122,13 @@ module.exports = function run_transformation(cgm) {
   constrain_font_size(params);
 
   if (zoom_info.zoom_y <= prev_zoom.zoom_y) {
-    var zooming_out = false;
+    let zooming_out = false;
     if (zoom_info.zoom_y < prev_zoom.zoom_y) {
       zooming_out = true;
     }
 
     // zooming has not stopped and zooming out is true
-    var zooming_stopped = false;
+    const zooming_stopped = false;
     show_visible_area(cgm, zooming_stopped, zooming_out);
   }
 
@@ -136,9 +136,9 @@ module.exports = function run_transformation(cgm) {
   setTimeout(check_if_zooming_has_stopped, 100, cgm);
 
   function check_if_zooming_has_stopped(cgm) {
-    var params = cgm.params;
+    const params = cgm.params;
 
-    var stop_attributes = check_zoom_stop_status(params);
+    const stop_attributes = check_zoom_stop_status(params);
 
     if (stop_attributes === true) {
       // wait and double check that zooming has stopped

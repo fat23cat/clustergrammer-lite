@@ -1,6 +1,6 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
-var calc_viz_dimensions = require('./params/calc_viz_dimensions');
+const calc_viz_dimensions = require('./params/calc_viz_dimensions');
 
 module.exports = function set_viz_wrapper_size(params) {
   // Create wrapper around SVG visualization
@@ -14,7 +14,7 @@ module.exports = function set_viz_wrapper_size(params) {
   }
 
   // customization
-  var cont_dim = calc_viz_dimensions(
+  const cont_dim = calc_viz_dimensions(
     Object.assign(params, { sidebar_width: 0 })
   );
 

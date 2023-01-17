@@ -1,7 +1,7 @@
-var remove_node_cats = require('./remove_node_cats');
-var utils = require('../Utils_clust');
-var each = require('underscore/cjs/each');
-var contains = require('underscore/cjs/contains');
+const remove_node_cats = require('./remove_node_cats');
+const utils = require('../Utils_clust');
+const each = require('underscore/cjs/each');
+const contains = require('underscore/cjs/contains');
 
 module.exports = function modify_row_node_cats(
   cat_data,
@@ -12,16 +12,16 @@ module.exports = function modify_row_node_cats(
   // console.log('CAT_DATA')
   // console.log(cat_data)
 
-  var cat_type_num = 0;
-  var inst_index = 0;
-  var inst_cat_title;
-  var inst_cats;
-  var inst_members;
-  var inst_name;
-  var inst_category;
-  var inst_cat_name;
-  var inst_full_cat;
-  var inst_cat_num;
+  let cat_type_num = 0;
+  let inst_index = 0;
+  let inst_cat_title;
+  let inst_cats;
+  let inst_members;
+  let inst_name;
+  let inst_category;
+  let inst_cat_name;
+  let inst_full_cat;
+  let inst_cat_num;
 
   // loop through row nodes
   //////////////////////////
@@ -72,7 +72,7 @@ module.exports = function modify_row_node_cats(
       });
 
       if (utils.has(inst_cat_data, 'pval')) {
-        var inst_pval = inst_cat_data.pval.toExponential();
+        const inst_pval = inst_cat_data.pval.toExponential();
         inst_full_cat =
           inst_cat_title +
           ': ' +

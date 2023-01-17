@@ -1,15 +1,15 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function (params) {
   // reset zoom
   //////////////////////////////
-  var zoom_y = 1;
+  const zoom_y = 1;
   // var zoom_x = 1;
-  var pan_dx = 0;
-  var pan_dy = 0;
+  const pan_dx = 0;
+  const pan_dy = 0;
 
-  var half_height = params.viz.clust.dim.height / 2;
-  var center_y = -(zoom_y - 1) * half_height;
+  const half_height = params.viz.clust.dim.height / 2;
+  const center_y = -(zoom_y - 1) * half_height;
 
   d3.select(params.root + ' .clust_group').attr(
     'transform',
@@ -104,8 +104,8 @@ module.exports = function (params) {
   d3.select(params.root + ' .row_dendro_icons_group')
     .selectAll('path')
     .attr('transform', function (d) {
-      var inst_x = 7;
-      var inst_y = d.pos_mid;
+      const inst_x = 7;
+      const inst_y = d.pos_mid;
       return 'translate(' + inst_x + ',' + inst_y + ') ' + 'scale(1, 1)';
     });
 };

@@ -1,9 +1,9 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function sim_click(params, single_double, pos_x, pos_y) {
-  var click_duration = 200;
+  const click_duration = 200;
 
-  var click_circle = d3
+  const click_circle = d3
     .select(params.root + ' .viz_svg')
     .append('circle')
     .attr('cx', pos_x)

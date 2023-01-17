@@ -1,14 +1,14 @@
-var d3 = require('d3');
-var make_filter_title = require('./make_filter_title');
+const d3 = require('d3');
+const make_filter_title = require('./make_filter_title');
 
 module.exports = function reset_other_filter_sliders(
   cgm,
   filter_type,
   inst_state
 ) {
-  var params = cgm.params;
-  var inst_rc;
-  var reset_rc;
+  const params = cgm.params;
+  let inst_rc;
+  let reset_rc;
 
   d3.select(params.root + ' .slider_' + filter_type).attr(
     'current_state',
@@ -36,7 +36,7 @@ module.exports = function reset_other_filter_sliders(
 
     if (filter_type != reset_filter && inst_rc != 'neither') {
       if (inst_rc == reset_rc) {
-        var tmp_title = make_filter_title(params, reset_filter);
+        const tmp_title = make_filter_title(params, reset_filter);
 
         cgm.slider_functions[reset_filter].value(0);
 
@@ -52,7 +52,7 @@ module.exports = function reset_other_filter_sliders(
     }
   });
 
-  var filter_title = make_filter_title(params, filter_type);
+  const filter_title = make_filter_title(params, filter_type);
 
   d3.select(params.root + ' .title_' + filter_type).text(
     filter_title.text + inst_state + filter_title.suffix

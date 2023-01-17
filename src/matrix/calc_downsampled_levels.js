@@ -1,23 +1,23 @@
-var d3 = require('d3');
-var calc_downsampled_matrix = require('../matrix/calc_downsampled_matrix');
-var $ = require('jquery');
+const d3 = require('d3');
+const calc_downsampled_matrix = require('../matrix/calc_downsampled_matrix');
+const $ = require('jquery');
 
 module.exports = function calc_downsampled_levels(params) {
   // console.log('---- before ---------')
   // console.log(params.matrix.matrix[0].row_data[0].value)
 
   // height of downsampled rectangles
-  var ds_height = 3;
+  const ds_height = 3;
 
-  var min_rect_height = 2;
+  const min_rect_height = 2;
 
-  var total_zoom = ds_height / params.viz.rect_height;
+  const total_zoom = ds_height / params.viz.rect_height;
 
   // amount of zooming that is tolerated for the downsampled rows
-  var inst_zt = 2;
+  const inst_zt = 2;
   params.viz.ds_zt = inst_zt;
 
-  var num_levels = Math.floor(Math.log(total_zoom) / Math.log(inst_zt));
+  const num_levels = Math.floor(Math.log(total_zoom) / Math.log(inst_zt));
 
   // TODO: Decide about downsampling feature
   // Here the downsampling can be turned off
@@ -28,14 +28,12 @@ module.exports = function calc_downsampled_levels(params) {
     // increase ds opacity, as more rows are compressed into a single downsampled
     // row, increase the opacity of the downsampled row. Max increase will be 2x
     // when 100 or more rows are compressed
-    var max_opacity_scale = 2;
+    const max_opacity_scale = 2;
     params.viz.ds_opacity_scale = d3.scale
       .linear()
       .domain([1, 100])
       .range([1, max_opacity_scale])
       .clamp(true);
-
-    var ds;
 
     params.viz.ds_num_levels = num_levels;
 
@@ -45,22 +43,22 @@ module.exports = function calc_downsampled_levels(params) {
     // array of downsampled matrices at varying levels
     params.matrix.ds_matrix = [];
 
-    var inst_order = params.viz.inst_order.row;
+    const inst_order = params.viz.inst_order.row;
 
     // cloning
-    var mat = $.extend(true, {}, params.matrix.matrix);
+    const mat = $.extend(true, {}, params.matrix.matrix);
 
     // calculate parameters for different levels
-    for (var i = 0; i < num_levels; i++) {
+    for (let i = 0; i < num_levels; i++) {
       // instantaneous ds_level (-1 means no downsampling)
       params.viz.ds_level = 0;
 
-      ds = {};
+      const ds = {};
 
       ds.height = ds_height;
       ds.num_levels = num_levels;
 
-      var inst_zoom_tolerance = Math.pow(inst_zt, i);
+      const inst_zoom_tolerance = Math.pow(inst_zt, i);
 
       ds.zt = inst_zoom_tolerance;
 
@@ -93,7 +91,7 @@ module.exports = function calc_downsampled_levels(params) {
 
       params.viz.ds.push(ds);
 
-      var matrix = calc_downsampled_matrix(params, mat, i);
+      const matrix = calc_downsampled_matrix(params, mat, i);
       params.matrix.ds_matrix.push(matrix);
     }
 

@@ -1,4 +1,4 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function toggle_grid_lines(params) {
   if (params.zoom_info.zoom_x * params.viz.border_width.x > 1) {

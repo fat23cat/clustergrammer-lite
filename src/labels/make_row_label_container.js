@@ -1,10 +1,10 @@
-var d3 = require('d3');
-var make_row_labels = require('./make_row_labels');
+const d3 = require('d3');
+const make_row_labels = require('./make_row_labels');
 
 module.exports = function make_row_label_container(cgm, text_delay) {
-  var params = cgm.params;
+  const params = cgm.params;
 
-  var row_container;
+  let row_container;
 
   // row container holds all row text and row visualizations (triangles rects)
   ////////////////////////////////////////////////////////////////////////////

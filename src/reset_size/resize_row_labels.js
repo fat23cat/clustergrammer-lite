@@ -3,12 +3,12 @@ module.exports = function resize_row_labels(
   ini_svg_group,
   delay_info = false
 ) {
-  var delays = {};
-  var duration = params.viz.duration;
-  var svg_group;
+  let delays = {};
+  const duration = params.viz.duration;
+  let svg_group;
 
-  var row_nodes = params.network_data.row_nodes;
-  var row_nodes_names = params.network_data.row_nodes_names || [];
+  const row_nodes = params.network_data.row_nodes;
+  const row_nodes_names = params.network_data.row_nodes_names || [];
 
   if (delay_info === false) {
     delays.run_transition = false;
@@ -27,7 +27,7 @@ module.exports = function resize_row_labels(
       .delay(delays.update)
       .duration(duration)
       .attr('transform', function (d) {
-        var inst_index = row_nodes_names.indexOf(d.name);
+        const inst_index = row_nodes_names.indexOf(d.name);
         return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
       })
       .attr(
@@ -47,7 +47,7 @@ module.exports = function resize_row_labels(
         return d.name;
       })
       .attr('transform', function (d) {
-        var inst_index = row_nodes_names.indexOf(d.name);
+        const inst_index = row_nodes_names.indexOf(d.name);
         return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
       })
       .attr(

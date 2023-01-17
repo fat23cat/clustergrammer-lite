@@ -1,6 +1,6 @@
 module.exports = function (params, inst_rc, d) {
-  var inst_level;
-  var inst_nodes;
+  let inst_level;
+  let inst_nodes;
 
   if (inst_rc === 'col') {
     inst_level = params.group_level.col;
@@ -10,8 +10,8 @@ module.exports = function (params, inst_rc, d) {
     inst_nodes = params.network_data.row_nodes;
   }
 
-  var inst_group = d.group[inst_level];
-  var group_nodes_list = [];
+  const inst_group = d.group[inst_level];
+  const group_nodes_list = [];
 
   inst_nodes.forEach(function (node) {
     if (node.group[inst_level] === inst_group) {

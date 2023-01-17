@@ -1,12 +1,12 @@
-var d3 = require('d3');
-var run_transformation = require('./run_transformation');
-var zoom_rules_y = require('./zoom_rules_y');
-var zoom_rules_x = require('./zoom_rules_x');
+const d3 = require('d3');
+const run_transformation = require('./run_transformation');
+const zoom_rules_y = require('./zoom_rules_y');
+const zoom_rules_x = require('./zoom_rules_x');
 
 module.exports = function zoomed(cgm) {
-  var params = cgm.params;
+  const params = cgm.params;
 
-  var zoom_info = {};
+  const zoom_info = {};
   zoom_info.zoom_x = d3.event.scale;
   zoom_info.zoom_y = d3.event.scale;
 
@@ -25,8 +25,8 @@ module.exports = function zoomed(cgm) {
   // do not run transformation if moving slider
   if (params.is_slider_drag === false && params.is_cropping === false) {
     // reset translate vector - add back margins to trans_x and trans_y
-    var new_x = params.zoom_info.trans_x + params.viz.clust.margin.left;
-    var new_y = params.zoom_info.trans_y + params.viz.clust.margin.top;
+    const new_x = params.zoom_info.trans_x + params.viz.clust.margin.left;
+    const new_y = params.zoom_info.trans_y + params.viz.clust.margin.top;
 
     params.zoom_behavior.translate([new_x, new_y]);
     cgm.params = params;

@@ -1,8 +1,8 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function calc_viz_dimensions(params) {
-  var cont_dim = {};
-  var extra_space = params.buffer_width;
+  const cont_dim = {};
+  const extra_space = params.buffer_width;
 
   // var screen_width = window.innerWidth;
   // var screen_height = window.innerHeight;
@@ -12,14 +12,14 @@ module.exports = function calc_viz_dimensions(params) {
   //   .style('width', screen_width+'px')
   //   .style('height', screen_height+'px');
 
-  var container_width = d3.select(params.root).style('width').replace('px', '');
-  var container_height = d3
+  const container_width = d3.select(params.root).style('width').replace('px', '');
+  const container_height = d3
     .select(params.root)
     .style('height')
     .replace('px', '');
 
   // get outer_margins
-  var outer_margins;
+  let outer_margins;
   if (params.viz.is_expand === false) {
     outer_margins = params.viz.outer_margins;
     cont_dim.width = container_width - params.sidebar_width - extra_space;

@@ -1,17 +1,17 @@
-var d3 = require('d3');
-var make_dendro_crop_buttons = require('../dendrogram/make_dendro_crop_buttons');
+const d3 = require('d3');
+const make_dendro_crop_buttons = require('../dendrogram/make_dendro_crop_buttons');
 
 module.exports = function make_row_dendro_spillover(cgm) {
-  var viz = cgm.params.viz;
+  const viz = cgm.params.viz;
 
   // hide spillover from right
-  var tmp_left =
+  const tmp_left =
     viz.clust.margin.left +
     viz.clust.dim.width +
     viz.uni_margin +
     viz.dendro_room.row;
 
-  var r_spill_container = d3
+  const r_spill_container = d3
     .select(viz.viz_svg)
     .append('g')
     .classed('right_spillover_container', true)
@@ -19,7 +19,7 @@ module.exports = function make_row_dendro_spillover(cgm) {
       return 'translate(' + tmp_left + ', 0)';
     });
 
-  var tmp_top = viz.norm_labels.margin.top + viz.norm_labels.width.col;
+  const tmp_top = viz.norm_labels.margin.top + viz.norm_labels.width.col;
 
   r_spill_container
     .append('rect')
@@ -32,8 +32,8 @@ module.exports = function make_row_dendro_spillover(cgm) {
       return 'translate( 0,' + tmp_top + ')';
     });
 
-  var x_offset = 0;
-  var y_offset = viz.clust.margin.top;
+  let x_offset = 0;
+  let y_offset = viz.clust.margin.top;
   r_spill_container
     .append('g')
     .classed('row_dendro_icons_container', true)
@@ -49,8 +49,8 @@ module.exports = function make_row_dendro_spillover(cgm) {
   x_offset = viz.clust.margin.left + viz.clust.dim.width;
   y_offset = tmp_top;
 
-  var tmp_width = viz.dendro_room.row + viz.uni_margin;
-  var tmp_height = viz.cat_room.col + viz.uni_margin;
+  const tmp_width = viz.dendro_room.row + viz.uni_margin;
+  const tmp_height = viz.cat_room.col + viz.uni_margin;
   d3.select(viz.viz_svg)
     .append('rect')
     .attr('fill', viz.background_color)

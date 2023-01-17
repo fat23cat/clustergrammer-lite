@@ -1,4 +1,4 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function mouseout_tile(params, inst_selection, tip) {
   d3.select(inst_selection).classed('hovering', false);

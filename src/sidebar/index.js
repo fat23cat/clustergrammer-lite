@@ -1,20 +1,20 @@
-var d3 = require('d3');
-var ini_sidebar = require('./ini_sidebar');
-var set_up_filters = require('../filters/set_up_filters');
-var set_up_search = require('./set_up_search');
-var set_up_reorder = require('./set_up_reorder');
-var set_sidebar_ini_view = require('./set_sidebar_ini_view');
-var make_icons = require('./make_icons');
-var make_modals = require('./make_modals');
-var set_up_opacity_slider = require('./set_up_opacity_slider');
-var make_colorbar = require('./make_colorbar');
+const d3 = require('d3');
+const ini_sidebar = require('./ini_sidebar');
+const set_up_filters = require('../filters/set_up_filters');
+const set_up_search = require('./set_up_search');
+const set_up_reorder = require('./set_up_reorder');
+const set_sidebar_ini_view = require('./set_sidebar_ini_view');
+const make_icons = require('./make_icons');
+const make_modals = require('./make_modals');
+const set_up_opacity_slider = require('./set_up_opacity_slider');
+const make_colorbar = require('./make_colorbar');
 
 /* Represents sidebar with controls.
  */
 module.exports = function sidebar(cgm) {
-  var params = cgm.params;
+  const params = cgm.params;
 
-  var sidebar = d3.select(params.root + ' .sidebar_wrapper');
+  const sidebar = d3.select(params.root + ' .sidebar_wrapper');
 
   // console.log('is_expand ',params.viz.is_expand)
 
@@ -71,7 +71,7 @@ module.exports = function sidebar(cgm) {
 
   set_up_opacity_slider(sidebar);
 
-  var possible_filter_names = Object.keys(params.viz.possible_filters || {});
+  const possible_filter_names = Object.keys(params.viz.possible_filters || {});
 
   if (possible_filter_names.indexOf('enr_score_type') > -1) {
     possible_filter_names.sort(function (a, b) {

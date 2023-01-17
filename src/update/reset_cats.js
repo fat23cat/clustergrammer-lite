@@ -1,18 +1,18 @@
-var make_row_cat = require('../categories/make_row_cat');
-var calc_viz_params = require('../params/calc_viz_params');
-var resize_viz = require('../reset_size/resize_viz');
-var modify_row_node_cats = require('./modify_row_node_cats');
-var generate_cat_data = require('./generate_cat_data');
+const make_row_cat = require('../categories/make_row_cat');
+const calc_viz_params = require('../params/calc_viz_params');
+const resize_viz = require('../reset_size/resize_viz');
+const modify_row_node_cats = require('./modify_row_node_cats');
+const generate_cat_data = require('./generate_cat_data');
 
 module.exports = function reset_cats(run_resize_viz = true) {
   // console.log('RESET CATS')
 
-  var cgm = this;
+  const cgm = this;
 
-  var cat_data = generate_cat_data(cgm);
+  const cat_data = generate_cat_data(cgm);
 
   // do not change column category info
-  var col_cat_colors = cgm.params.viz.cat_colors.col;
+  const col_cat_colors = cgm.params.viz.cat_colors.col;
 
   modify_row_node_cats(cat_data, cgm.params.network_data.row_nodes);
   // modify the current inst copy of nodes
@@ -25,7 +25,7 @@ module.exports = function reset_cats(run_resize_viz = true) {
     // resize visualizatino
     ////////////////////////////
     // recalculate the visualization parameters using the updated network_data
-    var predefine_cat_colors = true;
+    const predefine_cat_colors = true;
     cgm.params = calc_viz_params(cgm.params, predefine_cat_colors);
 
     make_row_cat(cgm, true);

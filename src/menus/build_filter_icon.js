@@ -1,20 +1,20 @@
-var d3 = require('d3');
-var position_filter_icon = require('./position_filter_icon');
-var d3_tip_custom = require('../tooltip/d3_tip_custom');
-var toggle_menu = require('./toggle_menu');
-var make_filter_menu = require('./make_filter_menu');
+const d3 = require('d3');
+const position_filter_icon = require('./position_filter_icon');
+const d3_tip_custom = require('../tooltip/d3_tip_custom');
+const toggle_menu = require('./toggle_menu');
+const make_filter_menu = require('./make_filter_menu');
 
 module.exports = function build_filter_icon(cgm) {
-  var slider_length = 40;
-  var params = cgm.params;
-  var default_opacity = 0.35;
-  var high_opacity = 0.6;
+  const slider_length = 40;
+  const params = cgm.params;
+  const default_opacity = 0.35;
+  const high_opacity = 0.6;
 
   // d3-tooltip
-  var filter_icon_tip = d3_tip_custom()
+  const filter_icon_tip = d3_tip_custom()
     .attr('class', function () {
-      var root_tip_selector = params.viz.root_tips.replace('.', '');
-      var class_string = root_tip_selector + '_filter_icon_tip d3-tip';
+      const root_tip_selector = params.viz.root_tips.replace('.', '');
+      const class_string = root_tip_selector + '_filter_icon_tip d3-tip';
       return class_string;
     })
     .direction('w')
@@ -24,7 +24,7 @@ module.exports = function build_filter_icon(cgm) {
       return 'Filtering Menu';
     });
 
-  var filter_icon_outer_group = d3
+  const filter_icon_outer_group = d3
     .select(params.root + ' .viz_svg')
     .append('g')
     .classed('filter_icon', true)
@@ -52,7 +52,7 @@ module.exports = function build_filter_icon(cgm) {
     })
     .call(filter_icon_tip);
 
-  var filter_icon_group = filter_icon_outer_group
+  const filter_icon_group = filter_icon_outer_group
     .append('g')
     .classed('filter_container', true)
     .on('click', function () {
@@ -71,8 +71,8 @@ module.exports = function build_filter_icon(cgm) {
 
   position_filter_icon(cgm);
 
-  var offset_triangle = 0;
-  var filter_width = 30;
+  const offset_triangle = 0;
+  const filter_width = 30;
 
   // main branch
   filter_icon_group
@@ -81,16 +81,16 @@ module.exports = function build_filter_icon(cgm) {
     .attr('transform', 'translate(' + offset_triangle + ', 0)')
     .attr('d', function () {
       // up triangle
-      var start_x = 0;
-      var start_y = 0;
+      const start_x = 0;
+      const start_y = 0;
 
-      var mid_x = filter_width / 2; //left_x + slider_length/10;
-      var mid_y = slider_length;
+      const mid_x = filter_width / 2; //left_x + slider_length/10;
+      const mid_y = slider_length;
 
-      var final_x = filter_width; //left_x + slider_length/5;
-      var final_y = 0;
+      const final_x = filter_width; //left_x + slider_length/5;
+      const final_y = 0;
 
-      var output_string =
+      const output_string =
         'M' +
         start_x +
         ',' +

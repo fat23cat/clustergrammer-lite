@@ -1,7 +1,7 @@
 // var update_network = require('../network/update_network');
-var make_requested_view = require('./make_requested_view');
-var $ = require('jquery');
-var d3 = require('d3');
+const make_requested_view = require('./make_requested_view');
+const $ = require('jquery');
+const d3 = require('d3');
 
 module.exports = function make_button_filter(
   config,
@@ -13,7 +13,7 @@ module.exports = function make_button_filter(
   Enrichr specific code
   */
 
-  var buttons = div_filters
+  const buttons = div_filters
     .append('div')
     .classed('categorical_filter', true)
     .classed('toggle_' + filter_type, true)
@@ -22,9 +22,9 @@ module.exports = function make_button_filter(
     .style('margin-top', '10px')
     .attr('current_state', 'combined_score');
 
-  var filter_options = params.viz.filter_data[filter_type];
+  const filter_options = params.viz.filter_data[filter_type];
 
-  var button_dict = {
+  const button_dict = {
     combined_score: 'Combined Score',
     pval: 'P-Value',
     zscore: 'Z-score'
@@ -40,7 +40,7 @@ module.exports = function make_button_filter(
     .classed('btn-primary', true)
     .classed('.filter_button', true)
     .classed('active', function (d) {
-      var is_active = false;
+      let is_active = false;
       if (d == 'combined_score') {
         is_active = true;
       }
@@ -63,9 +63,9 @@ module.exports = function make_button_filter(
 
       d3.select(this).classed('active', true);
 
-      var inst_state = d3.select(this).attr('name');
+      const inst_state = d3.select(this).attr('name');
 
-      var requested_view = { enr_score_type: inst_state };
+      const requested_view = { enr_score_type: inst_state };
 
       make_requested_view(params, requested_view);
 

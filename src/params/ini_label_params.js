@@ -1,7 +1,7 @@
-var max = require('underscore/cjs/max');
+const max = require('underscore/cjs/max');
 
 module.exports = function ini_label_params(params) {
-  var labels = {};
+  const labels = {};
   labels.super_label_scale = params.super_label_scale;
   labels.super_labels = params.super_labels;
   labels.super_label_fs = 13.8;

@@ -1,15 +1,15 @@
-var demo_text = require('./demo_text');
-var highlight_sidebar_element = require('./highlight_sidebar_element');
-var two_translate_zoom = require('../zoom/two_translate_zoom');
-var $ = require('jquery');
+const demo_text = require('./demo_text');
+const highlight_sidebar_element = require('./highlight_sidebar_element');
+const two_translate_zoom = require('../zoom/two_translate_zoom');
+const $ = require('jquery');
 
 module.exports = function play_search() {
   function run(cgm) {
-    var params = cgm.params;
-    var text = 'Search for rows using\nthe search box';
+    const params = cgm.params;
+    const text = 'Search for rows using\nthe search box';
     demo_text(params, text, 5000);
 
-    var ini_delay = 2500;
+    const ini_delay = 2500;
     setTimeout(
       highlight_sidebar_element,
       ini_delay,

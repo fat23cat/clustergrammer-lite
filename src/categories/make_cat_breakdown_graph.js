@@ -1,8 +1,8 @@
-var d3 = require('d3');
-var calc_cat_cluster_breakdown = require('./calc_cat_cluster_breakdown');
-var each = require('underscore/cjs/each');
-var cat_breakdown_bars = require('./cat_breakdown_bars');
-var cat_breakdown_values = require('./cat_breakdown_values');
+const d3 = require('d3');
+const calc_cat_cluster_breakdown = require('./calc_cat_cluster_breakdown');
+const each = require('underscore/cjs/each');
+const cat_breakdown_bars = require('./cat_breakdown_bars');
+const cat_breakdown_values = require('./cat_breakdown_values');
 
 module.exports = function make_cat_breakdown_graph(
   params,
@@ -22,28 +22,28 @@ module.exports = function make_cat_breakdown_graph(
     inst_rc = 'row';
   }
 
-  var cat_breakdown = calc_cat_cluster_breakdown(params, inst_data, inst_rc);
+  let cat_breakdown = calc_cat_cluster_breakdown(params, inst_data, inst_rc);
 
   if (cat_breakdown.length > 0) {
     // put cluster information in dendro_tip
     ///////////////////////////////////////////
-    var cluster_info_container = d3.select(
+    const cluster_info_container = d3.select(
       selector + ' .cluster_info_container'
     );
 
     // loop through cat_breakdown data
-    var width = 370;
-    var title_height = 27;
-    var shift_tooltip_left = 177;
-    var bar_offset = 23;
+    let width = 370;
+    const title_height = 27;
+    let shift_tooltip_left = 177;
+    const bar_offset = 23;
 
     // these are the indexes where the number-of-nodes and the number of downsampled
     // nodes are stored
-    var num_nodes_index = 4;
-    var num_nodes_ds_index = 5;
-    var offset_ds_count = 150;
+    const num_nodes_index = 4;
+    const num_nodes_ds_index = 5;
+    const offset_ds_count = 150;
 
-    var is_downsampled = false;
+    let is_downsampled = false;
     if (cat_breakdown[0].bar_data[0][num_nodes_ds_index] != null) {
       width = width + 100;
       shift_tooltip_left = shift_tooltip_left + offset_ds_count - 47;
@@ -52,13 +52,13 @@ module.exports = function make_cat_breakdown_graph(
 
     // the index that will be used to generate the bars (will be different if
     // downsampled)
-    var cluster_total = dendro_info.all_names.length;
-    var bars_index = num_nodes_index;
+    let cluster_total = dendro_info.all_names.length;
+    let bars_index = num_nodes_index;
     if (is_downsampled) {
       bars_index = num_nodes_ds_index;
 
       // calculate the total number of nodes in downsampled case
-      var inst_bar_data = cat_breakdown[0].bar_data;
+      const inst_bar_data = cat_breakdown[0].bar_data;
       cluster_total = 0;
       each(inst_bar_data, function (tmp_data) {
         cluster_total = cluster_total + tmp_data[num_nodes_ds_index];
@@ -66,14 +66,14 @@ module.exports = function make_cat_breakdown_graph(
     }
 
     // limit on the number of category types shown
-    var max_cats = 3;
+    const max_cats = 3;
     // limit the number of bars shown
-    var max_bars = 25;
+    const max_bars = 25;
 
     // calculate height needed for svg based on cat_breakdown data
-    var svg_height = 20;
+    let svg_height = 20;
     cat_breakdown.slice(0, max_cats).forEach(function (tmp_break) {
-      var num_bars = tmp_break.bar_data.length;
+      let num_bars = tmp_break.bar_data.length;
       if (num_bars > max_bars) {
         num_bars = max_bars;
       }
@@ -85,7 +85,7 @@ module.exports = function make_cat_breakdown_graph(
       cluster_info_container.append('text').text('Cluster Information');
     }
 
-    var main_dendro_svg = cluster_info_container
+    const main_dendro_svg = cluster_info_container
       .append('div')
       .style('margin-top', '5px')
       .classed('cat_graph', true)
@@ -109,37 +109,37 @@ module.exports = function make_cat_breakdown_graph(
 
     // shift the position of the numbers based on the size of the number
     // offset the count column based on how large the counts are
-    var digit_offset_scale = d3.scale
+    const digit_offset_scale = d3.scale
       .linear()
       .domain([0, 100000])
       .range([20, 30]);
 
     // the total amout to shift down the next category
-    var shift_down = title_height;
+    let shift_down = title_height;
 
     cat_breakdown.forEach(function (cat_data) {
-      var max_bar_value = cat_data.bar_data[0][bars_index];
+      const max_bar_value = cat_data.bar_data[0][bars_index];
 
-      var count_offset = digit_offset_scale(max_bar_value);
+      const count_offset = digit_offset_scale(max_bar_value);
 
-      var cat_graph_group = main_dendro_svg
+      const cat_graph_group = main_dendro_svg
         .append('g')
         .classed('cat_graph_group', true)
         .attr('transform', 'translate(10, ' + shift_down + ')');
 
-      var cat_bar_container = cat_graph_group
+      const cat_bar_container = cat_graph_group
         .append('g')
         .classed('cat_bar_container', true)
         .attr('transform', 'translate(0, 10)');
 
       // make bar groups (hold bar and text)
-      var cat_bar_groups = cat_bar_container
+      const cat_bar_groups = cat_bar_container
         .selectAll('g')
         .data(cat_data.bar_data)
         .enter()
         .append('g')
         .attr('transform', function (d, i) {
-          var inst_y = i * bar_offset;
+          const inst_y = i * bar_offset;
           return 'translate(0,' + inst_y + ')';
         });
 
@@ -171,11 +171,11 @@ module.exports = function make_cat_breakdown_graph(
     // reposition tooltip
     /////////////////////////////////////////////////
     if (tooltip) {
-      var dendro_tip = d3.select(selector);
-      var old_top = dendro_tip.style('top').split('.px')[0];
-      var old_left = dendro_tip.style('left').split('.px')[0];
-      var shift_top = 0;
-      var shift_left = 0;
+      const dendro_tip = d3.select(selector);
+      const old_top = dendro_tip.style('top').split('.px')[0];
+      const old_left = dendro_tip.style('left').split('.px')[0];
+      let shift_top = 0;
+      let shift_left = 0;
 
       // shifting
       if (inst_rc === 'row') {
@@ -198,11 +198,11 @@ module.exports = function make_cat_breakdown_graph(
 
       dendro_tip
         .style('top', function () {
-          var new_top = String(parseInt(old_top, 10) - shift_top) + 'px';
+          const new_top = String(parseInt(old_top, 10) - shift_top) + 'px';
           return new_top;
         })
         .style('left', function () {
-          var new_left = String(parseInt(old_left, 10) - shift_left) + 'px';
+          const new_left = String(parseInt(old_left, 10) - shift_left) + 'px';
           return new_left;
         });
     }

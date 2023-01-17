@@ -1,7 +1,7 @@
-var make_row_cat = require('../categories/make_row_cat');
-var calc_viz_params = require('../params/calc_viz_params');
-var resize_viz = require('../reset_size/resize_viz');
-var modify_row_node_cats = require('./modify_row_node_cats');
+const make_row_cat = require('../categories/make_row_cat');
+const calc_viz_params = require('../params/calc_viz_params');
+const resize_viz = require('../reset_size/resize_viz');
+const modify_row_node_cats = require('./modify_row_node_cats');
 
 module.exports = function update_cats(cgm, cat_data) {
   // Only accessible from the cgm API, cat_data is provided by externally
@@ -12,7 +12,7 @@ module.exports = function update_cats(cgm, cat_data) {
   }
 
   // do not change column category info
-  var col_cat_colors = cgm.params.viz.cat_colors.col;
+  const col_cat_colors = cgm.params.viz.cat_colors.col;
 
   modify_row_node_cats(cat_data, cgm.params.network_data.row_nodes, true);
   // modify the current inst copy of nodes

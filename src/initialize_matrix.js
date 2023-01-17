@@ -1,11 +1,11 @@
-var d3 = require('d3');
-var utils = require('./Utils_clust');
+const d3 = require('d3');
+const utils = require('./Utils_clust');
 
 module.exports = function (network_data) {
-  var matrix = [];
-  var ini_object;
+  const matrix = [];
+  let ini_object;
 
-  var keep_orig;
+  let keep_orig;
   if (utils.has(network_data.links[0], 'value_orig')) {
     keep_orig = true;
   } else {

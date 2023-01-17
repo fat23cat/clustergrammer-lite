@@ -1,13 +1,13 @@
-var d3 = require('d3');
-var get_cat_title = require('../categories/get_cat_title');
-var ini_cat_reorder = require('../reorder/ini_cat_reorder');
-var make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
-var make_dendro_crop_buttons = require('../dendrogram/make_dendro_crop_buttons');
+const d3 = require('d3');
+const get_cat_title = require('../categories/get_cat_title');
+const ini_cat_reorder = require('../reorder/ini_cat_reorder');
+const make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
+const make_dendro_crop_buttons = require('../dendrogram/make_dendro_crop_buttons');
 
 module.exports = function Spillover(cgm) {
-  var params = cgm.params;
+  const params = cgm.params;
 
-  var viz = params.viz;
+  const viz = params.viz;
 
   // hide spillover from slanted column labels on right side
   d3.select(viz.root + ' .col_container')
@@ -31,7 +31,7 @@ module.exports = function Spillover(cgm) {
     // shift left by 1 px to prevent cutting off labels
     .attr('transform', 'translate(-1,' + viz.norm_labels.width.col + ')');
 
-  var rect_height = viz.clust.margin.top + viz.uni_margin / 5;
+  const rect_height = viz.clust.margin.top + viz.uni_margin / 5;
   // white rect to cover excess labels
   d3.select(viz.viz_svg)
     .append('rect')
@@ -40,7 +40,7 @@ module.exports = function Spillover(cgm) {
     .attr('height', rect_height - 1)
     .attr('class', 'top_left_white');
 
-  var inst_height = viz.cat_room.col + 1.5 * viz.uni_margin;
+  const inst_height = viz.cat_room.col + 1.5 * viz.uni_margin;
   // white rect to cover excess labels
   d3.select(viz.viz_svg)
     .append('rect')
@@ -49,20 +49,20 @@ module.exports = function Spillover(cgm) {
     .attr('height', inst_height)
     .attr('class', 'top_right_white')
     .attr('transform', function () {
-      var tmp_left = viz.clust.margin.left + viz.clust.dim.width;
-      var tmp_top =
+      const tmp_left = viz.clust.margin.left + viz.clust.dim.width;
+      const tmp_top =
         viz.norm_labels.width.col + viz.norm_labels.margin.top - viz.uni_margin;
       return 'translate(' + tmp_left + ', ' + tmp_top + ')';
     });
 
-  x_offset = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin;
-  y_offset =
+  let x_offset = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin;
+  let y_offset =
     viz.norm_labels.margin.top +
     viz.norm_labels.width.col +
     2.5 * viz.uni_margin;
-  var cat_text_size = 1.15 * viz.cat_room.symbol_width;
-  var cat_super_opacity = 0.65;
-  var extra_y_room = 1.25;
+  const cat_text_size = 1.15 * viz.cat_room.symbol_width;
+  const cat_super_opacity = 0.65;
+  const extra_y_room = 1.25;
 
   // col category super labels
   if (viz.show_categories.col) {
@@ -76,8 +76,8 @@ module.exports = function Spillover(cgm) {
       .style('opacity', cat_super_opacity)
       .style('cursor', 'default')
       .attr('transform', function (d) {
-        var inst_cat = parseInt(d.split('-')[1], 10);
-        var inst_y =
+        const inst_cat = parseInt(d.split('-')[1], 10);
+        const inst_y =
           y_offset + extra_y_room * viz.cat_room.symbol_width * inst_cat;
         return 'translate(' + x_offset + ',' + inst_y + ')';
       })
@@ -101,7 +101,7 @@ module.exports = function Spillover(cgm) {
     y_offset = viz.clust.margin.top + viz.clust.dim.height;
   }
 
-  var b_spill_container = d3
+  const b_spill_container = d3
     .select(viz.viz_svg)
     .append('g')
     .classed('bottom_spillover_container', true)
@@ -130,10 +130,10 @@ module.exports = function Spillover(cgm) {
     make_dendro_crop_buttons(cgm, 'col');
   }
 
-  var x_offset = viz.clust.margin.left + viz.clust.dim.width;
-  var y_offset = viz.clust.margin.top + viz.clust.dim.height;
-  var tmp_width = viz.cat_room.col + viz.clust.dim.width;
-  var tmp_height = viz.cat_room.row + 10 * viz.uni_margin;
+  x_offset = viz.clust.margin.left + viz.clust.dim.width;
+  y_offset = viz.clust.margin.top + viz.clust.dim.height;
+  let tmp_width = viz.cat_room.col + viz.clust.dim.width;
+  let tmp_height = viz.cat_room.row + 10 * viz.uni_margin;
   d3.select(viz.viz_svg)
     .append('rect')
     .attr('fill', viz.background_color)

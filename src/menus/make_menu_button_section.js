@@ -1,4 +1,4 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function make_menu_button_section(
   menu_type,
@@ -6,16 +6,16 @@ module.exports = function make_menu_button_section(
   button_info,
   button_names
 ) {
-  var cgm = button_info.cgm;
-  var menu_width = button_info.menu_width;
-  var button_offset = 35;
+  const cgm = button_info.cgm;
+  const menu_width = button_info.menu_width;
+  const button_offset = 35;
 
   // Linkage menu options
-  var vertical_space = 30;
-  var menu_x_offset = menu_width / 20 + button_info.x_offset;
-  var underline_width = menu_width / 2 - 40;
+  const vertical_space = 30;
+  const menu_x_offset = menu_width / 20 + button_info.x_offset;
+  const underline_width = menu_width / 2 - 40;
 
-  var inst_menu = button_info.selection
+  const inst_menu = button_info.selection
     .append('g')
     .classed('inst_menu', true)
     .attr(
@@ -41,23 +41,23 @@ module.exports = function make_menu_button_section(
     .attr('fill', 'black')
     .attr('transform', 'translate(0,10)');
 
-  var inst_section = inst_menu
+  const inst_section = inst_menu
     .append('g')
     .attr('transform', 'translate(0,' + button_offset + ')')
     .classed('inst_section', true);
 
-  var button_class =
+  const button_class =
     cgm.params.root.replace('#', '') + '_' + button_type + '_buttons';
 
-  var section_groups = inst_section
+  const section_groups = inst_section
     .selectAll('g')
     .data(button_names)
     .enter()
     .append('g')
     .classed(button_class, true)
     .attr('transform', function (d, i) {
-      var vert = i * vertical_space;
-      var transform_string = 'translate(0,' + vert + ')';
+      const vert = i * vertical_space;
+      const transform_string = 'translate(0,' + vert + ')';
       return transform_string;
     })
     .attr('cursor', 'default')
@@ -86,7 +86,7 @@ module.exports = function make_menu_button_section(
     });
 
   function circle_fill_function(d, button_type) {
-    var inst_color = 'white';
+    let inst_color = 'white';
     if (d === cgm.params.matrix[button_type]) {
       inst_color = 'red';
     }

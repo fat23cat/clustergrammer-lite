@@ -1,9 +1,9 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function make_modal_skeleton(params, modal_class) {
-  var modal_skeleton = {};
+  const modal_skeleton = {};
 
-  var modal = d3
+  const modal = d3
     .select(params.root)
     .append('div')
     .classed('modal', true)
@@ -11,9 +11,9 @@ module.exports = function make_modal_skeleton(params, modal_class) {
     .classed(modal_class, true)
     .attr('role', 'dialog');
 
-  var modal_dialog = modal.append('div').classed('modal-dialog', true);
+  const modal_dialog = modal.append('div').classed('modal-dialog', true);
 
-  var modal_content = modal_dialog.append('div').classed('modal-content', true);
+  const modal_content = modal_dialog.append('div').classed('modal-content', true);
 
   modal_skeleton.header = modal_content
     .append('div')

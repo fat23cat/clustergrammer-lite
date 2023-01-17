@@ -1,9 +1,9 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function get_previous_zoom(params) {
-  var prev_zoom = {};
+  const prev_zoom = {};
 
-  var inst_trans = d3.select(params.root + ' .clust_group').attr('transform');
+  const inst_trans = d3.select(params.root + ' .clust_group').attr('transform');
 
   if (inst_trans != null) {
     // prevent from crashing if no scaling was done

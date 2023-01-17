@@ -1,21 +1,21 @@
-var file_saver = require('../screenshot/file_saver');
-var two_translate_zoom = require('../zoom/two_translate_zoom');
-var deactivate_cropping = require('../matrix/deactivate_cropping');
-var $ = require('jquery');
-var d3 = require('d3');
+const file_saver = require('../screenshot/file_saver');
+const two_translate_zoom = require('../zoom/two_translate_zoom');
+const deactivate_cropping = require('../matrix/deactivate_cropping');
+const $ = require('jquery');
+const d3 = require('d3');
 
 module.exports = function make_icons(cgm, sidebar) {
-  var params = cgm.params;
-  var saveAs = file_saver();
+  const params = cgm.params;
+  const saveAs = file_saver();
 
-  var row = sidebar
+  const row = sidebar
     .select('.icons_section')
     .style('margin-top', '7px')
     .style('margin-left', '5%');
 
-  var width_pct = '22%';
-  var padding_left = '0px';
-  var padding_right = '0px';
+  const width_pct = '22%';
+  const padding_left = '0px';
+  const padding_right = '0px';
 
   row
     .append('div')
@@ -100,9 +100,9 @@ module.exports = function make_icons(cgm, sidebar) {
         cgm.params.dendro_filter.row === false &&
         cgm.params.dendro_filter.col === false
       ) {
-        var is_crop = d3.select(this).classed('fa-crop');
+        const is_crop = d3.select(this).classed('fa-crop');
 
-        var is_undo = d3.select(this).classed('fa-undo');
+        const is_undo = d3.select(this).classed('fa-undo');
 
         // press crop button (can be active/incative)
         if (is_crop) {
@@ -165,14 +165,14 @@ module.exports = function make_icons(cgm, sidebar) {
   function save_clust_svg() {
     d3.select(params.root + ' .expand_button').style('opacity', 0);
 
-    var html = d3
+    const html = d3
       .select(params.root + ' .viz_svg')
       .attr('title', 'test2')
       .attr('version', 1.1)
       .attr('xmlns', 'http://www.w3.org/2000/svg')
       .node().parentNode.innerHTML;
 
-    var blob = new Blob([html], { type: 'image/svg+xml' });
+    const blob = new Blob([html], { type: 'image/svg+xml' });
 
     saveAs(blob, 'clustergrammer.svg');
 
@@ -187,7 +187,7 @@ module.exports = function make_icons(cgm, sidebar) {
       save_clust_svg();
     });
 
-  var svg_id = 'svg_' + params.root.replace('#', '');
+  const svg_id = 'svg_' + params.root.replace('#', '');
 
   // save as PNG
   /////////////////////////////////////////

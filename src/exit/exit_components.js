@@ -1,11 +1,11 @@
-var d3 = require('d3');
+const d3 = require('d3');
 
 module.exports = function exit_components(params, delays, duration) {
-  var row_nodes = params.network_data.row_nodes;
-  var col_nodes = params.network_data.col_nodes;
+  const row_nodes = params.network_data.row_nodes;
+  const col_nodes = params.network_data.col_nodes;
 
   // remove entire rows
-  var exiting_rows = d3
+  const exiting_rows = d3
     .select(params.root + ' .clust_group')
     .selectAll('.row')
     .data(params.matrix.matrix, function (d) {

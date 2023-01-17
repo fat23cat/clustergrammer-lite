@@ -1,5 +1,5 @@
 module.exports = function ini_zoom_info() {
-  var zoom_info = {};
+  const zoom_info = {};
   zoom_info.zoom_x = 1;
   zoom_info.zoom_y = 1;
   zoom_info.trans_x = 0;

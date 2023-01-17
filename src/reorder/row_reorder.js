@@ -1,14 +1,14 @@
-var reposition_tile_highlight = require('./reposition_tile_highlight');
-var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
-var ini_zoom_info = require('../zoom/ini_zoom_info');
-var get_previous_zoom = require('../zoom/get_previous_zoom');
-var calc_downsampled_levels = require('../matrix/calc_downsampled_levels');
-var $ = require('jquery');
-var d3 = require('d3');
+const reposition_tile_highlight = require('./reposition_tile_highlight');
+const toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
+const ini_zoom_info = require('../zoom/ini_zoom_info');
+const get_previous_zoom = require('../zoom/get_previous_zoom');
+const calc_downsampled_levels = require('../matrix/calc_downsampled_levels');
+const $ = require('jquery');
+const d3 = require('d3');
 
 module.exports = function row_reorder(cgm, row_selection, inst_row) {
-  var params = cgm.params;
-  var prev_zoom = get_previous_zoom(params);
+  const params = cgm.params;
+  const prev_zoom = get_previous_zoom(params);
 
   if (prev_zoom.zoom_y === 1 && prev_zoom.zoom_x === 1) {
     params.viz.inst_order.row = 'custom';
@@ -21,12 +21,12 @@ module.exports = function row_reorder(cgm, row_selection, inst_row) {
 
     params.viz.run_trans = true;
 
-    var mat = $.extend(true, {}, params.matrix.matrix);
-    var row_nodes = params.network_data.row_nodes;
-    var col_nodes = params.network_data.col_nodes;
+    const mat = $.extend(true, {}, params.matrix.matrix);
+    const row_nodes = params.network_data.row_nodes;
+    const col_nodes = params.network_data.col_nodes;
 
     // find the index of the row
-    var tmp_arr = [];
+    let tmp_arr = [];
     row_nodes.forEach(function (node) {
       tmp_arr.push(node.name);
     });
@@ -41,7 +41,7 @@ module.exports = function row_reorder(cgm, row_selection, inst_row) {
     });
 
     // sort the rows
-    var tmp_sort = d3.range(tmp_arr.length).sort(function (a, b) {
+    const tmp_sort = d3.range(tmp_arr.length).sort(function (a, b) {
       return tmp_arr[b] - tmp_arr[a];
     });
 
@@ -53,7 +53,7 @@ module.exports = function row_reorder(cgm, row_selection, inst_row) {
 
     // reorder matrix
     ////////////////////
-    var t;
+    let t;
     if (params.network_data.links.length > params.matrix.def_large_matrix) {
       t = d3.select(params.root + ' .viz_svg');
     } else {
@@ -63,19 +63,19 @@ module.exports = function row_reorder(cgm, row_selection, inst_row) {
         .duration(2500);
     }
 
-    var col_nodes_names = params.network_data.col_nodes_names || [];
+    const col_nodes_names = params.network_data.col_nodes_names || [];
 
     // Move Col Labels
     t.select('.col_zoom_container')
       .selectAll('.col_label_text')
       .attr('transform', function (d) {
-        var inst_index = col_nodes_names.indexOf(d.name);
+        const inst_index = col_nodes_names.indexOf(d.name);
         return 'translate(' + params.viz.x_scale(inst_index) + ')rotate(-90)';
       });
 
     // reorder col_class groups
     t.selectAll('.col_cat_group').attr('transform', function (d) {
-      var inst_index = col_nodes_names.indexOf(d.name);
+      const inst_index = col_nodes_names.indexOf(d.name);
       return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
     });
 

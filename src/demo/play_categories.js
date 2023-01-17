@@ -1,29 +1,29 @@
-var d3 = require('d3');
-var demo_text = require('./demo_text');
-var sim_click = require('./sim_click');
-var $ = require('jquery');
+const d3 = require('d3');
+const demo_text = require('./demo_text');
+const sim_click = require('./sim_click');
+const $ = require('jquery');
 
 module.exports = function play_category() {
   function run(params) {
-    var text =
+    const text =
       'Row and column categories\ncan be use to reorder\nby double-clicking';
     demo_text(params, text, 7000);
 
-    var inst_element = d3
+    const inst_element = d3
       .selectAll(params.root + ' .col_cat_super')
       .filter(function () {
         return this.__data__ === 'cat-1';
       })[0];
 
-    var tmp_pos = d3.select('.col_cat_super').attr('transform');
-    var x_trans =
+    const tmp_pos = d3.select('.col_cat_super').attr('transform');
+    const x_trans =
       Number(tmp_pos.split('(')[1].split(',')[0].replace(')', '')) + 20;
-    var y_trans = Number(tmp_pos.split(',')[1].replace(')', ''));
+    const y_trans = Number(tmp_pos.split(',')[1].replace(')', ''));
 
-    var wait_click = 4000;
+    const wait_click = 4000;
     setTimeout(sim_click, wait_click, params, 'double', x_trans, y_trans);
 
-    var wait_reorder = wait_click + 300;
+    const wait_reorder = wait_click + 300;
     setTimeout(fire_double_click_row, wait_reorder, params, inst_element);
   }
 
@@ -38,7 +38,7 @@ module.exports = function play_category() {
   // allows doubleclicking on d3 element
   $.fn.d3DblClick = function () {
     this.each(function (i, e) {
-      var evt = document.createEvent('MouseEvents');
+      const evt = document.createEvent('MouseEvents');
       evt.initMouseEvent(
         'dblclick',
         true,

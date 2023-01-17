@@ -1,9 +1,9 @@
-var d3 = require('d3');
-var max = require('underscore/cjs/max');
-var min = require('underscore/cjs/min');
+const d3 = require('d3');
+const max = require('underscore/cjs/max');
+const min = require('underscore/cjs/min');
 
 module.exports = function make_colorbar(cgm) {
-  var params = cgm.params;
+  const params = cgm.params;
 
   d3.select(params.root + ' .sidebar_wrapper')
     .append('div')
@@ -12,41 +12,41 @@ module.exports = function make_colorbar(cgm) {
     .style('padding-top', '5px')
     .text('Matrix Values');
 
-  var colorbar_width = params.sidebar.width - 20;
-  var colorbar_height = 13;
-  var svg_height = 3 * colorbar_height;
-  var svg_width = 1.2 * colorbar_width;
-  var low_left_margin = 10;
-  var top_margin = 33;
-  var high_left_margin = colorbar_width + 10;
-  var bar_margin_left = 10;
-  var bar_margin_top = 3;
+  const colorbar_width = params.sidebar.width - 20;
+  const colorbar_height = 13;
+  const svg_height = 3 * colorbar_height;
+  const svg_width = 1.2 * colorbar_width;
+  const low_left_margin = 10;
+  const top_margin = 33;
+  const high_left_margin = colorbar_width + 10;
+  const bar_margin_left = 10;
+  const bar_margin_top = 3;
 
-  var network_data = params.network_data;
+  const network_data = params.network_data;
 
-  var max_link = max(network_data.links, function (d) {
+  const max_link = max(network_data.links, function (d) {
     return d.value;
   }).value;
 
-  var min_link = min(network_data.links, function (d) {
+  const min_link = min(network_data.links, function (d) {
     return d.value;
   }).value;
 
-  var main_svg = d3
+  const main_svg = d3
     .select(params.root + ' .sidebar_wrapper')
     .append('svg')
     .attr('height', svg_height + 'px')
     .attr('width', svg_width + 'px');
 
   //Append a defs (for definition) element to your SVG
-  var defs = main_svg.append('defs');
+  const defs = main_svg.append('defs');
 
   //Append a linearGradient element to the defs and give it a unique id
-  var linearGradient = defs
+  const linearGradient = defs
     .append('linearGradient')
     .attr('id', 'linear-gradient');
 
-  var special_case = 'none';
+  let special_case = 'none';
 
   // no negative numbers
   if (min_link >= 0) {
@@ -119,13 +119,13 @@ module.exports = function make_colorbar(cgm) {
   // make title
   ///////////////
 
-  var max_abs_val = Math.abs(Math.round(params.matrix.max_link * 10) / 10);
-  var font_size = 13;
+  const max_abs_val = Math.abs(Math.round(params.matrix.max_link * 10) / 10);
+  const font_size = 13;
 
   main_svg
     .append('text')
     .text(function () {
-      var inst_string;
+      let inst_string;
       if (special_case === 'all_postiive') {
         inst_string = 0;
       } else {
@@ -143,7 +143,7 @@ module.exports = function make_colorbar(cgm) {
     .append('text')
     .text(max_abs_val.toLocaleString())
     .text(function () {
-      var inst_string;
+      let inst_string;
       if (special_case === 'all_negative') {
         inst_string = 0;
       } else {

@@ -1,10 +1,10 @@
 module.exports = function draw_up_tile(params) {
-  var start_x = 0;
-  var final_x = params.viz.x_scale.rangeBand() - params.viz.border_width.x;
-  var start_y = 0;
-  var final_y = params.viz.y_scale.rangeBand() - params.viz.border_width.y;
+  const start_x = 0;
+  const final_x = params.viz.x_scale.rangeBand() - params.viz.border_width.x;
+  const start_y = 0;
+  const final_y = params.viz.y_scale.rangeBand() - params.viz.border_width.y;
 
-  var output_string =
+  const output_string =
     'M' +
     start_x +
     ',' +

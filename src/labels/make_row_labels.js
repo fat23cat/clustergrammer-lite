@@ -1,10 +1,10 @@
-var d3 = require('d3');
-var utils = require('../Utils_clust');
-var add_row_click_hlight = require('./add_row_click_hlight');
-var row_reorder = require('../reorder/row_reorder');
-var make_row_tooltips = require('./make_row_tooltips');
-var each = require('underscore/cjs/each');
-var contains = require('underscore/cjs/contains');
+const d3 = require('d3');
+const utils = require('../Utils_clust');
+const add_row_click_hlight = require('./add_row_click_hlight');
+const row_reorder = require('../reorder/row_reorder');
+const make_row_tooltips = require('./make_row_tooltips');
+const each = require('underscore/cjs/each');
+const contains = require('underscore/cjs/contains');
 
 module.exports = function make_row_labels(
   cgm,
@@ -14,8 +14,8 @@ module.exports = function make_row_labels(
   // console.log('make_row_labels')
   // console.log(row_names)
 
-  var params = cgm.params;
-  var row_nodes = [];
+  const params = cgm.params;
+  let row_nodes = [];
 
   if (row_names === 'all') {
     row_nodes = params.network_data.row_nodes;
@@ -28,7 +28,7 @@ module.exports = function make_row_labels(
   }
 
   // make row labels in row_label_zoom_container, bind row_nodes data
-  var row_labels = d3
+  const row_labels = d3
     .select(params.root + ' .row_label_zoom_container')
     .selectAll('g')
     .data(row_nodes, function (d) {
@@ -38,16 +38,16 @@ module.exports = function make_row_labels(
     .append('g')
     .classed('row_label_group', true);
 
-  var row_nodes_names = params.network_data.row_nodes_names || [];
+  const row_nodes_names = params.network_data.row_nodes_names || [];
   row_labels.attr('transform', function (d) {
     // var inst_index = d.row_index;
-    var inst_index = row_nodes_names.indexOf(d.name);
+    const inst_index = row_nodes_names.indexOf(d.name);
     return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
   });
 
   row_labels.on('dblclick', function (d) {
-    var data_attr = '__data__';
-    var row_name = this[data_attr].name;
+    const data_attr = '__data__';
+    const row_name = this[data_attr].name;
 
     // if (params.sim_mat){
     //   row_reorder(cgm, this, row_name);
@@ -99,7 +99,7 @@ module.exports = function make_row_labels(
 
   // change the size of the highlighting rects
   row_labels.each(function () {
-    var bbox = d3.select(this).select('text')[0][0].getBBox();
+    const bbox = d3.select(this).select('text')[0][0].getBBox();
     d3.select(this)
       .select('rect')
       .attr('x', bbox.x)
@@ -107,11 +107,11 @@ module.exports = function make_row_labels(
       .attr('width', bbox.width)
       .attr('height', params.viz.y_scale.rangeBand())
       .style('fill', function () {
-        var inst_hl = 'yellow';
+        const inst_hl = 'yellow';
         return inst_hl;
       })
       .style('opacity', function (d) {
-        var inst_opacity = 0;
+        let inst_opacity = 0;
         // highlight target genes
         if (d.target === 1) {
           inst_opacity = 1;
@@ -127,12 +127,12 @@ module.exports = function make_row_labels(
       .append('rect')
       .classed('row_bars', true)
       .attr('width', function (d) {
-        var inst_value = 0;
+        let inst_value = 0;
         inst_value = params.labels.bar_scale_row(Math.abs(d.value));
         return inst_value;
       })
       .attr('x', function (d) {
-        var inst_value = 0;
+        let inst_value = 0;
         inst_value = -params.labels.bar_scale_row(Math.abs(d.value));
         return inst_value;
       })

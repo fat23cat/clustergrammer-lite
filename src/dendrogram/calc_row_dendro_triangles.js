@@ -1,17 +1,17 @@
-var each = require('underscore/cjs/each');
-var utils = require('../Utils_clust');
+const each = require('underscore/cjs/each');
+const utils = require('../Utils_clust');
 
 module.exports = function calc_row_dendro_triangles(params) {
-  var triangle_info = {};
-  var inst_level = params.group_level.row;
-  var row_nodes = params.network_data.row_nodes || [];
-  var row_nodes_names = params.network_data.row_nodes_names || [];
+  const triangle_info = {};
+  const inst_level = params.group_level.row;
+  const row_nodes = params.network_data.row_nodes || [];
+  const row_nodes_names = params.network_data.row_nodes_names || [];
 
   each(row_nodes, function (d) {
-    var tmp_group = d.group[inst_level];
-    var inst_index = row_nodes_names.indexOf(d.name);
-    var inst_top = params.viz.y_scale(inst_index);
-    var inst_bot = inst_top + params.viz.y_scale.rangeBand();
+    const tmp_group = d.group[inst_level];
+    const inst_index = row_nodes_names.indexOf(d.name);
+    const inst_top = params.viz.y_scale(inst_index);
+    const inst_bot = inst_top + params.viz.y_scale.rangeBand();
 
     if (!utils.has(triangle_info, tmp_group)) {
       triangle_info[tmp_group] = {};
@@ -42,7 +42,7 @@ module.exports = function calc_row_dendro_triangles(params) {
     }
   });
 
-  var group_info = [];
+  const group_info = [];
 
   each(triangle_info, function (d) {
     group_info.push(d);
