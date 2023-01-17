@@ -179,7 +179,7 @@ module.exports = function make_row_cat_super_labels(cgm) {
     enr_title
       .append('text')
       .attr('transform', 'translate(0, 17)')
-      .text(library_string.replace(/_/g, ' '))
+      .text(library_string)
       .style('font-size', '15px')
       .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif');
 

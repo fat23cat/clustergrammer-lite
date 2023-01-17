@@ -13,8 +13,7 @@ module.exports = function mouseover_tile(
       'font-weight',
       function (d) {
         let font_weight;
-        const inst_found =
-          (inst_data[inst_rc + '_name'] || '').replace(/_/g, ' ') === d.name;
+        const inst_found = (inst_data[inst_rc + '_name'] || '') === d.name;
         if (inst_found) {
           font_weight = 'bold';
         } else {
