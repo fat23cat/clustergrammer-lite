@@ -2,16 +2,16 @@ const make_config = require('./make_config');
 const make_params = require('./params/make_params');
 const make_viz = require('./make_viz');
 const resize_viz = require('./reset_size/resize_viz');
-const play_demo = require('./demo/play_demo');
-const ini_demo = require('./demo/ini_demo');
-const filter_viz_using_nodes = require('./network/filter_viz_using_nodes');
-const filter_viz_using_names = require('./network/filter_viz_using_names');
-const update_cats = require('./update/update_cats');
-const reset_cats = require('./update/reset_cats');
+// const play_demo = require('./demo/play_demo');
+// const ini_demo = require('./demo/ini_demo');
+// const filter_viz_using_nodes = require('./network/filter_viz_using_nodes');
+// const filter_viz_using_names = require('./network/filter_viz_using_names');
+// const update_cats = require('./update/update_cats');
+// const reset_cats = require('./update/reset_cats');
 const two_translate_zoom = require('./zoom/two_translate_zoom');
 const update_view = require('./update/update_view');
-const save_matrix = require('./matrix/save_matrix');
-const brush_crop_matrix = require('./matrix/brush_crop_matrix');
+// const save_matrix = require('./matrix/save_matrix');
+// const brush_crop_matrix = require('./matrix/brush_crop_matrix');
 const run_zoom = require('./zoom/run_zoom');
 const d3_tip_custom = require('./tooltip/d3_tip_custom');
 const all_reorder = require('./reorder/all_reorder');
@@ -60,9 +60,10 @@ class Clustergrammer {
     setTimeout(resize_viz, wait_time, this);
   }
 
-  update_cats(cat_data) {
-    update_cats(this, cat_data);
-  }
+  // // Commented to minimize the bundle (todo: make it tree-shakable in future)
+  // update_cats(cat_data) {
+  //   update_cats(this, cat_data);
+  // }
 
   zoom(pan_dx, pan_dy, fin_zoom) {
     two_translate_zoom(this, pan_dx, pan_dy, fin_zoom);
@@ -97,12 +98,13 @@ class Clustergrammer {
   }
 }
 
-Clustergrammer.prototype.play_demo = play_demo;
-Clustergrammer.prototype.ini_demo = ini_demo;
-Clustergrammer.prototype.filter_viz_using_nodes = filter_viz_using_nodes;
-Clustergrammer.prototype.filter_viz_using_names = filter_viz_using_names;
-Clustergrammer.prototype.reset_cats = reset_cats;
-Clustergrammer.prototype.save_matrix = save_matrix;
-Clustergrammer.prototype.brush_crop_matrix = brush_crop_matrix;
+// // Commented to minimize the bundle (todo: make it tree-shakable in future)
+// Clustergrammer.prototype.play_demo = play_demo;
+// Clustergrammer.prototype.ini_demo = ini_demo;
+// Clustergrammer.prototype.filter_viz_using_nodes = filter_viz_using_nodes;
+// Clustergrammer.prototype.filter_viz_using_names = filter_viz_using_names;
+// Clustergrammer.prototype.reset_cats = reset_cats;
+// Clustergrammer.prototype.save_matrix = save_matrix;
+// Clustergrammer.prototype.brush_crop_matrix = brush_crop_matrix;
 
 module.exports = Clustergrammer;
