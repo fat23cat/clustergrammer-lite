@@ -1,11 +1,7 @@
 import utils from '../Utils_clust.js';
-import * as core from 'mathjs/core';
-import matrix from 'mathjs/lib/type/matrix';
-import * as zeros from 'mathjs/lib/function/matrix/zeros';
 import filter from 'underscore/modules/filter.js';
-const math = core.create();
-math.import(matrix);
-math.import(zeros);
+import { matrix, zeros } from 'mathjs';
+
 export default (function filter_network_using_new_nodes(config, new_nodes) {
   const links = config.network_data.links;
   // // make new mat from links
@@ -13,8 +9,8 @@ export default (function filter_network_using_new_nodes(config, new_nodes) {
   // get new names of rows and cols
   const row_names = utils.pluck(new_nodes.row_nodes, 'name') || [];
   const col_names = utils.pluck(new_nodes.col_nodes, 'name') || [];
-  let new_mat = math.matrix(
-    math.zeros([new_nodes.row_nodes.length, new_nodes.col_nodes.length])
+  let new_mat = matrix(
+    zeros([new_nodes.row_nodes.length, new_nodes.col_nodes.length])
   );
   new_mat = new_mat.toArray();
   const new_links = filter(links, function (inst_link) {

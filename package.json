@@ -1,6 +1,6 @@
 {
   "name": "clustergrammer-lite",
-  "version": "3.3.2",
+  "version": "3.3.3",
   "description": "This is a clustergram implemented in D3.js. I started from the example http://bost.ocks.org/mike/miserables/ and added the following features",
   "main": "src/main.js",
   "type": "module",
@@ -31,7 +31,7 @@
   "dependencies": {
     "d3": "^3.5.15",
     "jquery": "^3.6.3",
-    "mathjs": "3.17.0",
+    "mathjs": "^11.5.0",
     "underscore": "1.13.6"
   },
   "lint-staged": {

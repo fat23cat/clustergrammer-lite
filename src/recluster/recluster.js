@@ -1,15 +1,12 @@
 // var clusterfck = require('cornhundred-clusterfck');
 const clusterfck = require('../clusterfck_local/clusterfck');
-const core = require('mathjs/core');
-const math = core.create();
 const dist_fun = require('./distance_functions');
 const get_order_and_groups_clusterfck_tree = require('./get_order_and_groups_clusterfck_tree');
 const update_view = require('../update/update_view');
 const $ = require('jquery');
 const d3 = require('d3');
 
-math.import(require('mathjs/lib/function/matrix/transpose'));
-math.import(require('mathjs/lib/type/matrix'));
+import { transpose } from 'mathjs';
 
 module.exports = function recluster(cgm, distance_metric, linkage_type) {
   const new_view = {};
@@ -39,7 +36,6 @@ module.exports = function recluster(cgm, distance_metric, linkage_type) {
 
   ['row', 'col'].forEach(function (inst_rc) {
     let mat;
-    const transpose = math.transpose;
     let names;
     let name_nodes;
 
