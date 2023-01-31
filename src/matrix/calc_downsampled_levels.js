@@ -9,7 +9,7 @@ module.exports = function calc_downsampled_levels(params) {
   // height of downsampled rectangles
   const ds_height = 3;
 
-  const min_rect_height = 2;
+  // const min_rect_height = 2;
 
   const total_zoom = ds_height / params.viz.rect_height;
 
@@ -21,8 +21,10 @@ module.exports = function calc_downsampled_levels(params) {
 
   // TODO: Decide about downsampling feature
   // Here the downsampling can be turned off
-  const shouldBeDownsampled =
-    params.viz.rect_height < min_rect_height && num_levels > 0;
+  //
+  // const shouldBeDownsampled =
+  //   params.viz.rect_height < min_rect_height && num_levels > 0;
+  const shouldBeDownsampled = false;
 
   if (shouldBeDownsampled) {
     // increase ds opacity, as more rows are compressed into a single downsampled
