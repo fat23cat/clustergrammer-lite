@@ -23,6 +23,15 @@ module.exports = function make_col_tooltips(params) {
             }
           })
         );
+      })
+      .on('click', function (d) {
+        dispatchEvent(
+          new CustomEvent('COL_CLICK', {
+            detail: {
+              col: d
+            }
+          })
+        );
       });
   }
 };
